@@ -1,25 +1,25 @@
 package me.benjozork.onyx.entity;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.internal.GameConfiguration;
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.internal.GameUtils;
 import me.benjozork.onyx.object.Location;
 
 /**
  * Created by Benjozork on 2017-03-04.
  */
-public abstract class EntityLiving extends Entity {
+public abstract class LivingEntity extends Entity {
 
     private float health = GameConfiguration.DEFAULT_HEALTH;
     private int ammo = GameConfiguration.DEFAULT_AMMO;
 
-    public EntityLiving(int x, int y) {
-        super(x, y);
+    public LivingEntity(int x, int y) {
+        super(new Vector2(x, y));
     }
 
-    public EntityLiving(Location loc) {
-        super(loc);
+    public LivingEntity(Location loc) {
+        super(new Vector2(loc.getX(), loc.getY()) );
     }
 
     public float getHealth() {
@@ -38,10 +38,10 @@ public abstract class EntityLiving extends Entity {
         health -=v;
     }
 
-    public void fireProjectile(String path, int vx, int vy, float damage) {
-        EntityProjectile projectile = new EntityProjectile(GameUtils.getCenterPos(13), loc.getY());
+    public void fireProjectile(String path, int vx, int vy, float speed, float damage) {
+        EntityProjectile projectile = new EntityProjectile(GameUtils.getCenterPos(13), getY());
         projectile.setTexturePath(path);
-        projectile.setVelocity(vx, vy);
+        //@TODO projectile.setSpeed(speed);
         projectile.setDamage(damage);
         GameManager.registerEntity(projectile);
         if (ammo < 0) return;

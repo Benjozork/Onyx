@@ -2,10 +2,11 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 import com.badlogic.gdx.math.Rectangle;
+
+import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.internal.GameConfiguration;
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 
 /**
  * Created by Benjozork on 2017-03-03.
@@ -18,7 +19,7 @@ public class EntityBox extends Entity {
     private Color color = GameConfiguration.DEFAULT_DRAW_COLOR;
 
     public EntityBox(int x, int y) {
-        super(x, y);
+        super(new Vector2(x, y));
     }
 
     @Override
@@ -26,7 +27,12 @@ public class EntityBox extends Entity {
         // Get the ShapeRenderer
         renderer = GameManager.getShapeRenderer();
         // Initialize hitbox
-        boundingRectangle = new Rectangle(loc.getX(), loc.getY(), 50, 50);
+        bounds = new Rectangle(getX(), getY(), 50, 50);
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
@@ -34,7 +40,7 @@ public class EntityBox extends Entity {
         // Render box
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(color);
-        renderer.rect(loc.getX(), loc.getY(), width, height);
+        renderer.rect(getX(), getY(), width, height);
         renderer.end();
     }
     
