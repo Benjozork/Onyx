@@ -7,12 +7,12 @@ import com.badlogic.gdx.Gdx;
  */
 public class GameUtils {
 
-    public static float getDelta() {
-        return Gdx.graphics.getDeltaTime();
-    }
+     public static float getDelta() {
+          return Gdx.graphics.getDeltaTime();
+     }
 
-    public static float getCenterPos(int w) {
-        return (Gdx.graphics.getWidth() / 2) + w / 2;
-    }
+     public static float getCenterPos(int w) {
+          return (Gdx.graphics.getWidth() / 2) + w / 2;
+     }
 
 }

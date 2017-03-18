@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.GameManager;
 
@@ -14,37 +15,43 @@ import me.benjozork.onyx.GameManager;
 
 public class EntityProjectile extends Entity {
 
-    private SpriteBatch batch;
+     private SpriteBatch batch;
 
-    private float maxTimer;
-    private float bulletTimer;
-    private float damage = 0;
+     private float maxTimer;
+     private float bulletTimer;
+     private float damage = 0;
 
-    private String texturePath = new String();
-    private Texture texture;
+     private Vector3 mouse = new Vector3(0, 0, 0);
 
-    public EntityProjectile(float x, float y) {
-        super(new Vector2(x, y));
-    }
+     private String texturePath = new String();
+     private Texture texture;
 
-    @Override
-    public void init() {
-        batch = GameManager.getBatch();
-        // Initialize hitbox
-        setBounds(new Rectangle(getX(), getY(), 15, 25));
-        Gdx.app.log("t", getBounds().toString());
+     public EntityProjectile(float x, float y) {
+          super(new Vector2(x, y));
+     }
 
-        angle = Math.atan2(Gdx.input.getX() - getX(), Gdx.graphics.getHeight() - (Gdx.input.getY() - getY()));
-}
+     @Override
+     public void init() {
+          batch = GameManager.getBatch();
+          // initialize hitbox
+          setBounds(new Rectangle(getX(), getY(), 15, 25));
 
-    @Override
-    public void update() {
+          // get mouse point, unproject it, and set velocity accordingly
+          mouse.x = Gdx.input.getX();
+          mouse.y = Gdx.input.getY();
+          mouse = GameManager.getCamera().unproject(mouse);
+          velocity.x = mouse.x - getX();
+          velocity.y = mouse.y - getY();
+     }
 
-    }
+     @Override
+     public void update() {
 
-    @Override
-    public void draw() {
-        // For every entity registered, check if it is an LivingEntity and apply damage, then destroy entity
+     }
+
+     @Override
+     public void draw() {
+          // For every entity registered, check if it is an LivingEntity and apply damage, then destroy entity
            /* for (Entity e : GameManager.getRegisteredEntities()) {
                 if (this.collidesWith(e)) {
                     if (e instanceof LivingEntity) {
@@ -54,26 +61,26 @@ public class EntityProjectile extends Entity {
                 }
             }*/
 
-            batch.begin();
-            batch.draw(texture, getX(), getY());
-            batch.end();
-        }
+          batch.begin();
+          batch.draw(texture, getX(), getY());
+          batch.end();
+     }
 
-    public float getDamage() {
-        return damage;
-    }
+     public float getDamage() {
+          return damage;
+     }
 
-    public void setDamage(float damage) {
-        this.damage = damage;
-    }
+     public void setDamage(float damage) {
+          this.damage = damage;
+     }
 
-    public String getTexturePath() {
-        return texturePath;
-    }
+     public String getTexturePath() {
+          return texturePath;
+     }
 
-    public void setTexturePath(String texturePath) {
-        this.texturePath = texturePath;
-        this.texture = new Texture(texturePath);
-    }
+     public void setTexturePath(String texturePath) {
+          this.texturePath = texturePath;
+          this.texture = new Texture(texturePath);
+     }
 
 }

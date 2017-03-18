@@ -1,7 +1,8 @@
 package me.benjozork.onyx.object;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
 import me.benjozork.onyx.internal.GameUtils;
 
 /**
@@ -9,148 +10,145 @@ import me.benjozork.onyx.internal.GameUtils;
  */
 public abstract class Drawable {
 
-    public enum State {
-        MOVE,
-        STOP
-    }
+     protected Vector2 position;
+     protected Vector2 velocity = new Vector2(0, 0);
+     protected Vector2 acceleration = new Vector2(0, 0);
+     protected float maxVelocity = 100f;
+     protected double angle;
+     protected State state;
+     protected Rectangle bounds;
+     private float speed;
 
-    protected Vector2 position;
-    protected Vector2 velocity = new Vector2(0, 0);
-    protected Vector2 acceleration = new Vector2(0, 0);
+     public Drawable(int x, int y) {
+          this.position = new Vector2(x, y);
+     }
 
-    protected float maxVelocity = 100f;
+     public Drawable(Vector2 position) {
+          this.position = position;
+     }
 
-    private float speed;
-    protected double angle;
+     public void update(float dt) {
 
-    protected State state;
+          bounds.setPosition(position);
+          // double angle = Math.atan2((Gdx.graphics.getWidth() - Gdx.input.getX()) - loc.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()) - loc.getY());
+          // set velocity/direction vector with angle, if angle isnt zero ( to prevent garbage data in velocity vector )
+          if (angle != 0) {
+               velocity.x = (float) Math.sin(angle);
+               velocity.y = (float) Math.cos(angle);
+          }
 
-    protected Rectangle bounds;
+          // normalize velocity
+          velocity.nor();
 
-    public Drawable(int x, int y) {
-        this.position = new Vector2(x, y);
-    }
+          //velocity.add(acceleration);
+          // add velocity scaled to speed and timestep to position
+          position.add(velocity.scl(speed).scl(GameUtils.getDelta()));
+     }
 
-    public Drawable(Vector2 position) {
-        this.position = position;
-    }
+     public abstract void init();
 
-    public void update(float dt) {
-        // double angle = Math.atan2((Gdx.graphics.getWidth() - Gdx.input.getX()) - loc.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()) - loc.getY());
+     public abstract void update();
 
-        // debug sOutPln: System.out.println(angle + " " + velocity.toString() + " " + Math.sin(angle) + " " + Math.cos(angle));
+     public abstract void draw();
 
-        // set velocity/direction vector with angle
-        velocity.x = (float) Math.sin(angle);
-        velocity.y = (float) Math.cos(angle);
+     public Rectangle getBounds() {
+          return bounds;
+     }
 
-        velocity.nor();
+     public void setBounds(Rectangle bounds) {
+          this.bounds = bounds;
+     }
 
-        //velocity.add(acceleration);
-        position.x += velocity.x * dt * speed;
-        position.y += velocity.y * dt * speed;
-    }
+     public boolean collidesWith(Rectangle otherBounds) {
+          return bounds.overlaps(otherBounds);
+     }
 
-    public abstract void init();
+     public Vector2 getPosition() {
+          return position;
+     }
 
-    public abstract void update();
+     public void setPosition(Vector2 position) {
+          this.position = position;
+          this.bounds.setPosition(position);
+     }
 
-    public abstract void draw();
+     public float getX() {
+          return position.x;
+     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
+     public void setX(float v) {
+          position.x = v;
+          bounds.x = v;
+     }
 
-    public void setBounds(Rectangle bounds) {
-        this.bounds = bounds;
-    }
+     public float getY() {
+          return position.y;
+     }
 
-    public boolean collidesWith(Rectangle otherBounds) {
-        return bounds.overlaps(otherBounds);
-    }
+     public void setY(float v) {
+          position.y = v;
+          bounds.y = v;
+     }
 
+     public void move(float dx, float dy) {
+          // here, we move the position and the bounding box
+          position.x += dx * GameUtils.getDelta();
+          bounds.x += dx * GameUtils.getDelta();
+          position.y += dy * GameUtils.getDelta();
+          bounds.y += dy * GameUtils.getDelta();
+     }
 
-    public Vector2 getPosition() {
-        return position;
-    }
+     public Vector2 getVelocity() {
+          return velocity;
+     }
 
-    public float getX() {
-        return position.x;
-    }
+     public void setVelocity(Vector2 velocity) {
+          this.velocity = velocity;
+     }
 
-    public float getY() {
-        return position.y;
-    }
+     public Vector2 getAcceleration() {
+          return acceleration;
+     }
 
-    public void setX(float v) {
-        position.x = v;
-        bounds.x = v;
-    }
+     public void setAcceleration(Vector2 acceleration) {
+          this.acceleration = acceleration;
+     }
 
-    public void setY(float v) {
-        position.y = v;
-        bounds.y = v;
-    }
+     public void accelerate(float v) {
+          speed += v;
+     }
 
-    public void move(float dx, float dy) {
-        // Here, we move the position and the bounding box
-        position.x += dx * GameUtils.getDelta();
-        bounds.x += dx * GameUtils.getDelta();
-        position.y += dy * GameUtils.getDelta();
-        bounds.y += dy * GameUtils.getDelta();
-    }
+     public float getMaxVelocity() {
+          return maxVelocity;
+     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
+     public void setMaxVelocity(float maxVelocity) {
+          this.maxVelocity = maxVelocity;
+     }
 
-    public Vector2 getVelocity() {
-        return velocity;
-    }
+     public State getState() {
+          return state;
+     }
 
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
-    }
+     public void setState(State state) {
+          this.state = state;
+     }
 
-    public Vector2 getAcceleration() {
-        return acceleration;
-    }
+     public void rotate(float v) {
+          angle += v * GameUtils.getDelta();
+     }
 
-    public void setAcceleration(Vector2 acceleration) {
-        this.acceleration = acceleration;
-    }
+     public float getSpeed() {
+          return speed;
+     }
 
-    public void accelerate(float v) {
-        speed += v;
-    }
+     public void setSpeed(float speed) {
+          this.speed = speed;
+     }
 
-
-    public float getMaxVelocity() {
-        return maxVelocity;
-    }
-
-    public void setMaxVelocity(float maxVelocity) {
-        this.maxVelocity = maxVelocity;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public void rotate(float v) {
-        angle += v * GameUtils.getDelta();
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
+     public enum State {
+          MOVE,
+          STOP
+     }
 
 }
