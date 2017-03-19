@@ -41,13 +41,11 @@ public abstract class LivingEntity extends Entity {
           health -= v;
      }
 
-     public void fireProjectile(String path, int vx, int vy, float speed, float damage) {
+     public void fireProjectile(String path) {
           timer += GameUtils.getDelta();
           if (timer >= maxTime) {
                EntityProjectile projectile = new EntityProjectile(getX(), getY());
                projectile.setTexturePath(path);
-               //@TODO projectile.setSpeed(speed);
-               projectile.setDamage(damage);
                projectile.setSpeed(450f);
                GameManager.registerEntity(projectile);
 

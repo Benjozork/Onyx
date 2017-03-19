@@ -2,10 +2,14 @@ package me.benjozork.onyx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,31 +26,83 @@ import me.benjozork.onyx.internal.GameUtils;
 public class GameManager {
 
      static BitmapFont font = new BitmapFont();
+
      private static ShapeRenderer shapeRenderer;
+
      private static SpriteBatch batch = new SpriteBatch();
      private static SpriteBatch hudBatch = new SpriteBatch();
+
+     private static Sprite background;
+     private static Sprite lifeIcon;
+
      private static OrthographicCamera camera;
+
      private static EntityPlayer player;
-     private static EntityEnemy enemy;
 
      private static List<Entity> registeredEntities = new ArrayList<Entity>();
      private static List<Entity> collidingWithPlayer = new ArrayList<Entity>();
      private static List<Entity> toRemove = new ArrayList<Entity>();
 
      private static int score = 0, highScore = 0;
+     private static int lifeCount = 0, maxLife = 3;
+     private static float maxFrameTime;
+
+     private static boolean debugEnabled = false;
 
      public static void initGame() {
           player = (EntityPlayer) registeredEntities.get(0);
-          player.setSpeed(100f);
-          enemy = (EntityEnemy) registeredEntities.get(1);
+          player.setSpeed(0f);
+
+          background = new Sprite(new Texture("core/assets/hud/background_base.png"));
+          background.setPosition(0, 0);
+          background.setColor(0f, 0.9f, 0f, 1f);
+          background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+          lifeIcon = new Sprite(new Texture("core/assets/hud/ship_silouhette.png"));
+          lifeIcon.setScale(0.4f, 0.4f);
      }
 
      public static void tickGame() {
 
-          // Get player/enemy and modify player, depending on current inputs
-          if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-               player.rotate(5);
+          if (GameUtils.getDelta() > maxFrameTime) {
+               maxFrameTime = GameUtils.getDelta();
           }
+
+          // Draw background
+
+          background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+          hudBatch.disableBlending();
+          hudBatch.begin();
+          background.draw(hudBatch);
+          hudBatch.end();
+
+          // Draw life icons
+
+          hudBatch.enableBlending();
+          for (int i = 0; i < maxLife; i ++) {
+               lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
+               hudBatch.begin();
+               lifeIcon.draw(hudBatch);
+               hudBatch.end();
+          }
+
+          if (player.isFiring()) {
+               player.setState(EntityPlayer.DrawState.FIRING);
+          }
+          if (player.getSpeed() != 0) {
+               player.setState(EntityPlayer.DrawState.MOVING);
+               if (player.isFiring()) {
+                    player.setState(EntityPlayer.DrawState.FIRING_MOVING);
+               }
+          }
+          if (!player.isFiring() && player.getSpeed() == 0f) {
+               player.setState(EntityPlayer.DrawState.IDLE);
+          }
+
+     // Get player/enemy and modify player, depending on current inputs
+          if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+           player.rotate(5);
+            }
           if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                player.rotate(- 5);
           }
@@ -57,14 +113,19 @@ public class GameManager {
                player.accelerate(- 10f);
           }
           if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-               player.fireProjectile("android/assets/bullet.jpg", Gdx.graphics.getWidth() - Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 3000f, 0.3f);
+               player.fireProjectile("core/assets/bullet.png");
+          } if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+               toggleDebug();
           }
 
           camera.position.x = player.getX() + 38;
           camera.position.y = player.getY() + 55;
           camera.update();
+
           batch.setProjectionMatrix(camera.combined);
-          shapeRenderer.setProjectionMatrix(camera.combined);
+          Matrix4 matrix = new Matrix4();
+          matrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+          hudBatch.setProjectionMatrix(matrix);
 
           // Manage collidingWithPlayer list
           for (Iterator<Entity> it = registeredEntities.iterator(); it.hasNext(); ) {
@@ -101,18 +162,23 @@ public class GameManager {
                e.draw();
           }
 
+          registeredEntities.removeAll(toRemove);
+
           StringBuilder sb = new StringBuilder();
           for (Entity e : collidingWithPlayer) {
                sb.append(e.getClass().getName().replace("me.benjozork.onyx.entity.", ""));
                sb.append(", ");
           }
 
+          hudBatch.enableBlending();
           hudBatch.begin();
 
-          font.getData().markupEnabled = true;
-          font.draw(hudBatch, "[#FFFF00]fps:[] " + Gdx.graphics.getFramesPerSecond() + "   [#FFFF00]loc:[] " + player.getPosition().toString(), 0, Gdx.graphics.getHeight());
-          font.draw(hudBatch, "[#FFFF00]entities:[] " + registeredEntities.size() + "   [#FFFF00]ver:[] " + "0.0.1", 0, Gdx.graphics.getHeight() - 20);
-          font.draw(hudBatch, "[#FFFF00]player_colision:[] " + sb.toString(), 0, Gdx.graphics.getHeight() - 40);
+          if (debugEnabled) {
+               font.getData().markupEnabled = true;
+               font.draw(hudBatch, "[#FFFF00]fps:[] " + Gdx.graphics.getFramesPerSecond() + "  [#FFFF00]maxFrameTime:[] " + maxFrameTime + "   [#FFFF00]loc:[] " + player.getPosition().toString(), 0, Gdx.graphics.getHeight());
+               font.draw(hudBatch, "[#FFFF00]entities:[] " + registeredEntities.size() + "   [#FFFF00]ver:[] " + "0.0.1", 0, Gdx.graphics.getHeight() - 20);
+               font.draw(hudBatch, "[#FFFF00]player_colision:[] " + sb.toString(), 0, Gdx.graphics.getHeight() - 40);
+          }
 
           hudBatch.end();
      }
@@ -124,6 +190,10 @@ public class GameManager {
      public static void registerEntity(Entity e) {
           registeredEntities.add(e);
           e.init();
+     }
+
+     public static void removeEntity(Entity e) {
+          toRemove.add(e);
      }
 
      public static ShapeRenderer getShapeRenderer() {
@@ -170,5 +240,13 @@ public class GameManager {
 
      public static void setCamera(OrthographicCamera camera) {
           GameManager.camera = camera;
+     }
+
+     public static void toggleDebug() {
+          debugEnabled = ! debugEnabled;
+     }
+
+     public static EntityPlayer getPlayer() {
+          return player;
      }
 }
