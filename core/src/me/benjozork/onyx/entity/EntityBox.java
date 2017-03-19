@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.internal.GameConfiguration;
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-03.
@@ -25,7 +26,7 @@ public class EntityBox extends Entity {
      @Override
      public void init() {
           // Get the ShapeRenderer
-          renderer = GameManager.getShapeRenderer();
+          renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
      }
@@ -42,6 +43,11 @@ public class EntityBox extends Entity {
           renderer.setColor(color);
           renderer.rect(getX(), getY(), width, height);
           renderer.end();
+     }
+
+     @Override
+     public void dispose() {
+
      }
 
      public int getWidth() {

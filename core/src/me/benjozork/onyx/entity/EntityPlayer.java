@@ -2,6 +2,7 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,8 +11,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-04.
@@ -32,17 +34,10 @@ public class EntityPlayer extends LivingEntity {
           super(new Vector2(x, y));
      }
 
-     public enum DrawState {
-          IDLE,
-          FIRING,
-          MOVING,
-          FIRING_MOVING,
-     }
-
      @Override
      public void init() {
           // Get the ShapeRenderer
-          renderer = GameManager.getShapeRenderer();
+          renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
 
@@ -78,7 +73,6 @@ public class EntityPlayer extends LivingEntity {
           }*/
 
 
-
      }
 
      @Override
@@ -100,13 +94,19 @@ public class EntityPlayer extends LivingEntity {
                sprite = new Sprite(img_firing_moving);
           }
 
+          //sprite.setColor(GameManager.getCurrentColor());
           sprite.setPosition(getX(), getY());
           sprite.setRotation((float) - angle * MathUtils.radiansToDegrees);
 
-          GameManager.getBatch().begin();
+          ((GameScreen) GameManager.getCurrentScreen()).getBatch().begin();
           //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
-          sprite.draw(GameManager.getBatch());
-          GameManager.getBatch().end();
+          sprite.draw(((GameScreen) GameManager.getCurrentScreen()).getBatch());
+          ((GameScreen) GameManager.getCurrentScreen()).getBatch().end();
+     }
+
+     @Override
+     public void dispose() {
+
      }
 
      @Override
@@ -130,6 +130,13 @@ public class EntityPlayer extends LivingEntity {
 
      public boolean isFiring() {
           return Gdx.input.isKeyPressed(Input.Keys.SPACE);
+     }
+
+     public enum DrawState {
+          IDLE,
+          FIRING,
+          MOVING,
+          FIRING_MOVING,
      }
 
 }

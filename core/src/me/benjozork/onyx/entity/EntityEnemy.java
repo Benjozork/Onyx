@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.internal.GameConfiguration;
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-04.
@@ -21,7 +21,7 @@ public class EntityEnemy extends LivingEntity {
      @Override
      public void init() {
           // Get the ShapeRenderer
-          renderer = GameManager.getShapeRenderer();
+          renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
      }
@@ -35,9 +35,14 @@ public class EntityEnemy extends LivingEntity {
      public void draw() {
           // Render box
           renderer.begin(ShapeRenderer.ShapeType.Filled);
-          renderer.setColor(GameConfiguration.ENEMY_DEFAULT_COLOR);
+          //renderer.setColor(GameConfiguration.ENEMY_DEFAULT_COLOR);
           renderer.rect(getX(), getY(), 50, 50);
           renderer.end();
+     }
+
+     @Override
+     public void dispose() {
+
      }
 
 }

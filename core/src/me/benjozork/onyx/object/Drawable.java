@@ -146,6 +146,8 @@ public abstract class Drawable {
           this.speed = speed;
      }
 
+     public abstract void dispose();
+
      public enum State {
           MOVE,
           STOP

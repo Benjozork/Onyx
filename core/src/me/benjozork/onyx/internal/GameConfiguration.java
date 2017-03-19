@@ -14,10 +14,4 @@ public class GameConfiguration {
      public static final float DEFAULT_HEALTH = 1f;
      public static final int DEFAULT_AMMO = 100;
 
-     // Player constants
-     public static final Color PLAYER_DEFAULT_COLOR = Color.WHITE;
-
-     // Enemy constants
-     public static final Color ENEMY_DEFAULT_COLOR = Color.RED;
-
 }

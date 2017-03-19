@@ -1,7 +1,8 @@
-package me.benjozork.onyx;
+package me.benjozork.onyx.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,60 +17,78 @@ import java.util.Iterator;
 import java.util.List;
 
 import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameUtils;
 
 /**
- * Created by Benjozork on 2017-03-03.
+ * Created by Benjozork on 2017-03-19.
  */
-public class GameManager {
+public class GameScreen implements Screen {
 
-     static BitmapFont font = new BitmapFont();
+     private static final Color INITIAL_DRAW_COLOR = Color.GREEN;
 
-     private static ShapeRenderer shapeRenderer;
+     private int score = 0, highScore = 0;
+     private int lifeCount = 0, maxLife = 3;
+     private float maxFrameTime;
 
-     private static SpriteBatch batch = new SpriteBatch();
-     private static SpriteBatch hudBatch = new SpriteBatch();
+     private boolean debugEnabled = false;
 
-     private static Sprite background;
-     private static Sprite lifeIcon;
+     private BitmapFont font = new BitmapFont();
 
-     private static OrthographicCamera camera;
+     private Color currentColor = INITIAL_DRAW_COLOR;
 
-     private static EntityPlayer player;
+     private EntityPlayer player;
 
-     private static List<Entity> registeredEntities = new ArrayList<Entity>();
-     private static List<Entity> collidingWithPlayer = new ArrayList<Entity>();
-     private static List<Entity> toRemove = new ArrayList<Entity>();
+     private OrthographicCamera camera;
 
-     private static int score = 0, highScore = 0;
-     private static int lifeCount = 0, maxLife = 3;
-     private static float maxFrameTime;
+     private List<Entity> registeredEntities = new ArrayList<Entity>();
+     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
+     private List<Entity> toRemove = new ArrayList<Entity>();
 
-     private static boolean debugEnabled = false;
+     private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-     public static void initGame() {
-          player = (EntityPlayer) registeredEntities.get(0);
+     private SpriteBatch batch = new SpriteBatch();
+     private SpriteBatch hudBatch = new SpriteBatch();
+
+     private Sprite background;
+     private Sprite lifeIcon;
+
+     @Override
+     public void show() {
+          EntityPlayer player = new EntityPlayer(GameUtils.getCenterPos(78), 20);
+          registerEntity(player);
+          this.player = player;
           player.setSpeed(0f);
 
           background = new Sprite(new Texture("core/assets/hud/background_base.png"));
           background.setPosition(0, 0);
-          background.setColor(0f, 0.9f, 0f, 1f);
+          background.setColor(currentColor);
           background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
           lifeIcon = new Sprite(new Texture("core/assets/hud/ship_silouhette.png"));
           lifeIcon.setScale(0.4f, 0.4f);
+
+          batch.setProjectionMatrix(camera.combined);
+          Matrix4 matrix = new Matrix4();
+          matrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+          hudBatch.setProjectionMatrix(matrix);
+          camera.update();
      }
 
-     public static void tickGame() {
+     @Override
+     public void render(float delta) {
 
-          if (GameUtils.getDelta() > maxFrameTime) {
-               maxFrameTime = GameUtils.getDelta();
+          camera.position.x = player.getX() + 38;
+          camera.position.y = player.getY() + 55;
+          camera.update();
+
+          if (delta > maxFrameTime) {
+               maxFrameTime = delta;
           }
 
           // Draw background
 
+          background.setColor(currentColor);
           background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
           hudBatch.disableBlending();
           hudBatch.begin();
@@ -79,7 +98,8 @@ public class GameManager {
           // Draw life icons
 
           hudBatch.enableBlending();
-          for (int i = 0; i < maxLife; i ++) {
+          for (int i = 0; i < maxLife; i++) {
+               lifeIcon.setColor(currentColor);
                lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
                hudBatch.begin();
                lifeIcon.draw(hudBatch);
@@ -95,14 +115,14 @@ public class GameManager {
                     player.setState(EntityPlayer.DrawState.FIRING_MOVING);
                }
           }
-          if (!player.isFiring() && player.getSpeed() == 0f) {
+          if (! player.isFiring() && player.getSpeed() == 0f) {
                player.setState(EntityPlayer.DrawState.IDLE);
           }
 
-     // Get player/enemy and modify player, depending on current inputs
+          // Get player/enemy and modify player, depending on current inputs
           if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-           player.rotate(5);
-            }
+               player.rotate(5);
+          }
           if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                player.rotate(- 5);
           }
@@ -114,18 +134,10 @@ public class GameManager {
           }
           if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                player.fireProjectile("core/assets/bullet.png");
-          } if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+          }
+          if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
                toggleDebug();
           }
-
-          camera.position.x = player.getX() + 38;
-          camera.position.y = player.getY() + 55;
-          camera.update();
-
-          batch.setProjectionMatrix(camera.combined);
-          Matrix4 matrix = new Matrix4();
-          matrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-          hudBatch.setProjectionMatrix(matrix);
 
           // Manage collidingWithPlayer list
           for (Iterator<Entity> it = registeredEntities.iterator(); it.hasNext(); ) {
@@ -151,7 +163,7 @@ public class GameManager {
           // Update then draw entities and apply deltas
 
           for (Entity e : registeredEntities) {
-               e.update(GameUtils.getDelta());
+               e.update(delta);
           }
 
           for (Entity e : registeredEntities) {
@@ -183,70 +195,99 @@ public class GameManager {
           hudBatch.end();
      }
 
-     public static List<Entity> getRegisteredEntities() {
+     @Override
+     public void resize(int width, int height) {
+
+     }
+
+     @Override
+     public void pause() {
+
+     }
+
+     @Override
+     public void resume() {
+
+     }
+
+     @Override
+     public void hide() {
+
+     }
+
+     @Override
+     public void dispose() {
+
+     }
+
+     public void toggleDebug() {
+          debugEnabled = ! debugEnabled;
+     }
+
+     public List<Entity> getRegisteredEntities() {
           return registeredEntities;
      }
 
-     public static void registerEntity(Entity e) {
+     public void registerEntity(Entity e) {
           registeredEntities.add(e);
           e.init();
      }
 
-     public static void removeEntity(Entity e) {
+     public void removeEntity(Entity e) {
           toRemove.add(e);
      }
 
-     public static ShapeRenderer getShapeRenderer() {
+     public ShapeRenderer getShapeRenderer() {
           return shapeRenderer;
      }
 
-     public static void setShapeRenderer(ShapeRenderer shapeRenderer) {
-          GameManager.shapeRenderer = shapeRenderer;
+     public void setShapeRenderer(ShapeRenderer shapeRenderer) {
+          shapeRenderer = shapeRenderer;
      }
 
-     public static int getScore() {
+     public int getScore() {
           return score;
      }
 
-     public static void setScore(int score) {
-          GameManager.score = score;
-          if (GameManager.score > highScore) highScore = GameManager.score;
+     public void setScore(int score) {
+         this.score = score;
+          if (this.score > highScore) highScore = score;
      }
 
-     public static void addScore(int v) {
-          GameManager.score += v;
-          if (GameManager.score > highScore) highScore = GameManager.score;
+     public void addScore(int v) {
+          score += v;
+          if (score > highScore) highScore = score;
      }
 
-     public static int getHighScore() {
+     public int getHighScore() {
           return highScore;
      }
 
-     public static void setHighScore(int highScore) {
-          GameManager.highScore = highScore;
+     public void setHighScore(int highScore) {
+          this.highScore = highScore;
      }
 
-     public static SpriteBatch getBatch() {
+     public SpriteBatch getBatch() {
           return batch;
      }
 
-     public static void setBatch(SpriteBatch batch) {
-          GameManager.batch = batch;
+     public void setBatch(SpriteBatch batch) {
+          this.batch = batch;
      }
 
-     public static OrthographicCamera getCamera() {
+     public OrthographicCamera getCamera() {
           return camera;
      }
 
-     public static void setCamera(OrthographicCamera camera) {
-          GameManager.camera = camera;
+     public void setCamera(OrthographicCamera camera) {
+          this.camera = camera;
      }
 
-     public static void toggleDebug() {
-          debugEnabled = ! debugEnabled;
-     }
-
-     public static EntityPlayer getPlayer() {
+     public EntityPlayer getPlayer() {
           return player;
+     }
+
+     public Color getCurrentColor() {
+          return currentColor;
      }
 }

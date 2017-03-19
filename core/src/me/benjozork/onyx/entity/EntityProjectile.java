@@ -7,7 +7,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-04.
@@ -32,14 +33,14 @@ public class EntityProjectile extends Entity {
 
      @Override
      public void init() {
-          batch = GameManager.getBatch();
+          batch = ((GameScreen) GameManager.getCurrentScreen()).getBatch();
           // initialize hitbox
           setBounds(new Rectangle(getX(), getY(), 15, 25));
 
           // get mouse point, unproject it, and set velocity accordingly
           mouse.x = Gdx.input.getX();
           mouse.y = Gdx.input.getY();
-          mouse = GameManager.getCamera().unproject(mouse);
+          mouse = ((GameScreen) GameManager.getCurrentScreen()).getCamera().unproject(mouse);
           velocity.x = mouse.x - getX();
           velocity.y = mouse.y - getY();
      }
@@ -64,6 +65,11 @@ public class EntityProjectile extends Entity {
           batch.begin();
           batch.draw(texture, getX(), getY(), 10, 10);
           batch.end();
+     }
+
+     @Override
+     public void dispose() {
+
      }
 
      public float getDamage() {

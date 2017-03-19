@@ -2,9 +2,10 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.internal.GameConfiguration;
 import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-04.
@@ -47,7 +48,7 @@ public abstract class LivingEntity extends Entity {
                EntityProjectile projectile = new EntityProjectile(getX(), getY());
                projectile.setTexturePath(path);
                projectile.setSpeed(450f);
-               GameManager.registerEntity(projectile);
+               ((GameScreen) GameManager.getCurrentScreen()).registerEntity(projectile);
 
                //if (ammo < 0) return;
                //ammo -= 1;
