@@ -3,7 +3,7 @@ package me.benjozork.onyx.entity;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameConfiguration;
-import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.screen.GameScreen;
 
@@ -43,7 +43,7 @@ public abstract class LivingEntity extends Entity {
      }
 
      public void fireProjectile(String path) {
-          timer += GameUtils.getDelta();
+          timer += Utils.delta();
           if (timer >= maxTime) {
                EntityProjectile projectile = new EntityProjectile(getX(), getY());
                projectile.setTexturePath(path);

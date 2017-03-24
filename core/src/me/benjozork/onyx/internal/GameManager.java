@@ -1,5 +1,6 @@
 package me.benjozork.onyx.internal;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,6 +32,7 @@ public class GameManager {
      }
 
      public static void setCurrentScreen(Screen currentScreen) {
+          Gdx.app.log("[onyx/gm] ", "Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
           GameManager.currentScreen = currentScreen;
      }
 

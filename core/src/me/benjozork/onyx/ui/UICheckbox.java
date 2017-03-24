@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
@@ -15,7 +15,7 @@ import me.benjozork.onyx.internal.Utils;
 /**
  * Created by Benjozork on 2017-03-19.
  */
-public class UIButton extends UIElement {
+public class UICheckbox extends UIElement {
 
      private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("core/assets/ui/cc_red_alert_inet.ttf"));
      private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -23,38 +23,33 @@ public class UIButton extends UIElement {
 
      private GlyphLayout layout = new GlyphLayout();
 
-     private Runnable action;
-
      private Vector2 dimension = new Vector2();
 
      private String text = new String();
 
-     private final Texture BUTTON_TEXTURE = new Texture("core/assets/ui/button/button_0.png");
-     private final NinePatch BUTTON = new NinePatch(BUTTON_TEXTURE, 6, 6, 6, 6);
-     private final Texture HOVERED_BUTTON_TEXTURE = new Texture("core/assets/ui/button/button_1.png");
-     private final NinePatch HOVERED_BUTTON = new NinePatch(HOVERED_BUTTON_TEXTURE, 6, 6, 6, 6);
-     private final Texture CLICKED_BUTTON_TEXTURE = new Texture("core/assets/ui/button/button_2.png");
-     private final NinePatch CLICKED_BUTTON = new NinePatch(CLICKED_BUTTON_TEXTURE, 6, 6, 6, 6);
+     private final Texture CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_0.png");
+     private final Texture TICKED_CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_2.png");
+     private final Texture HOVERED_CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_1.png");
+     private final Texture HOVERED_TICKED_CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_3.png");
+     private Texture currentTexture = CHECKBOX_TEXTURE;
 
-     private NinePatch currentPatch = BUTTON;
+     private boolean checked = false;
 
      private float colorTimer;
      private float maxColorTimer = 0.1f;
 
-     public UIButton(float x, float y, float width, float height, BitmapFont font, String text, Runnable action) {
+     public UICheckbox(float x, float y, float width, float height, BitmapFont font, String text) {
           super(x, y);
           this.dimension.set(width, height);
           this.font = font;
           this.text = text;
-          this.action = action;
      }
 
-     public UIButton(Vector2 position, Vector2 dimension, BitmapFont font, String text, Runnable action) {
+     public UICheckbox(Vector2 position, Vector2 dimension, BitmapFont font, String text) {
           super(position);
           this.dimension = dimension;
           this.font = font;
           this.text = text;
-          this.action = action;
      }
 
      @Override
@@ -73,19 +68,10 @@ public class UIButton extends UIElement {
           bounds.width = getWidth() + layout.width + 10;
           bounds.height = getHeight();
 
-          if (colorTimer >= 0) {
-               if (colorTimer <= maxColorTimer) {
-                    colorTimer += Utils.delta();
-               } else {
-                    currentPatch = BUTTON;
-                    colorTimer = -1;
-               }
+          if (hovering()) {
+               currentTexture = (checked ? HOVERED_TICKED_CHECKBOX_TEXTURE : HOVERED_CHECKBOX_TEXTURE);
           } else {
-               if (hovering()) {
-                    currentPatch = HOVERED_BUTTON;
-               } else {
-                    currentPatch = BUTTON;
-               }
+               currentTexture = (checked ? TICKED_CHECKBOX_TEXTURE : CHECKBOX_TEXTURE);
           }
      }
 
@@ -101,8 +87,8 @@ public class UIButton extends UIElement {
           layout.setText(font, text);
 
           GameManager.getBatch().begin();
-          currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-          font.draw(GameManager.getBatch(), text, (getX() +  getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
+          GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
+          font.draw(GameManager.getBatch(), text, (getX() +  getWidth() + 50) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
 
           GameManager.getBatch().end();
      }
@@ -114,9 +100,7 @@ public class UIButton extends UIElement {
 
      @Override
      public boolean click(Vector2 localPosition) {
-          colorTimer = 0;
-          currentPatch = CLICKED_BUTTON;
-          action.run();
+          toggle();
           return true;
      }
 
@@ -158,6 +142,19 @@ public class UIButton extends UIElement {
      }
 
      public void setText(String v) {
-         text = v;
+          text = v;
+     }
+
+     public boolean isChecked() {
+          return checked;
+     }
+
+     public void setChecked(boolean checked) {
+          this.checked = checked;
+     }
+
+     public void toggle() {
+          currentTexture = !checked ? TICKED_CHECKBOX_TEXTURE : CHECKBOX_TEXTURE;
+          checked = !checked;
      }
 }

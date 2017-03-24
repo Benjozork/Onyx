@@ -18,7 +18,7 @@ import java.util.List;
 
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
-import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.Utils;
 
 /**
  * Created by Benjozork on 2017-03-19.
@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
 
      @Override
      public void show() {
-          EntityPlayer player = new EntityPlayer(GameUtils.getCenterPos(78), 20);
+          EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 20);
           registerEntity(player);
           this.player = player;
           player.setSpeed(0f);
@@ -182,17 +182,6 @@ public class GameScreen implements Screen {
                sb.append(", ");
           }
 
-          hudBatch.enableBlending();
-          hudBatch.begin();
-
-          if (debugEnabled) {
-               font.getData().markupEnabled = true;
-               font.draw(hudBatch, "[#FFFF00]fps:[] " + Gdx.graphics.getFramesPerSecond() + "  [#FFFF00]maxFrameTime:[] " + maxFrameTime + "   [#FFFF00]loc:[] " + player.getPosition().toString(), 0, Gdx.graphics.getHeight());
-               font.draw(hudBatch, "[#FFFF00]entities:[] " + registeredEntities.size() + "   [#FFFF00]ver:[] " + "0.0.1", 0, Gdx.graphics.getHeight() - 20);
-               font.draw(hudBatch, "[#FFFF00]player_colision:[] " + sb.toString(), 0, Gdx.graphics.getHeight() - 40);
-          }
-
-          hudBatch.end();
      }
 
      @Override

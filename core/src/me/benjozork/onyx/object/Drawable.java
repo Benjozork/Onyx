@@ -1,9 +1,12 @@
 package me.benjozork.onyx.object;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.Utils;
 
 /**
  * Created by Benjozork on 2017-03-16.
@@ -13,11 +16,15 @@ public abstract class Drawable {
      protected Vector2 position;
      protected Vector2 velocity = new Vector2(0, 0);
      protected Vector2 acceleration = new Vector2(0, 0);
+
      protected float maxVelocity = 100f;
+     private float speed;
      protected double angle;
+
      protected State state;
      protected Rectangle bounds;
-     private float speed;
+
+     private boolean boundsDebug = false;
 
      public Drawable(int x, int y) {
           this.position = new Vector2(x, y);
@@ -28,6 +35,12 @@ public abstract class Drawable {
      }
 
      public void update(float dt) {
+
+          if (boundsDebug) {
+               GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
+               GameManager.getShapeRenderer().rect(bounds.x, bounds.y, bounds.width, bounds.height);
+               GameManager.getShapeRenderer().end();
+          }
 
           bounds.setPosition(position);
           // double angle = Math.atan2((Gdx.graphics.getWidth() - Gdx.input.getX()) - loc.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()) - loc.getY());
@@ -42,7 +55,7 @@ public abstract class Drawable {
 
           //velocity.add(acceleration);
           // add velocity scaled to speed and timestep to position
-          position.add(velocity.scl(speed).scl(GameUtils.getDelta()));
+          position.add(velocity.scl(speed).scl(Utils.delta()));
      }
 
      public abstract void init();
@@ -92,10 +105,10 @@ public abstract class Drawable {
 
      public void move(float dx, float dy) {
           // here, we move the position and the bounding box
-          position.x += dx * GameUtils.getDelta();
-          bounds.x += dx * GameUtils.getDelta();
-          position.y += dy * GameUtils.getDelta();
-          bounds.y += dy * GameUtils.getDelta();
+          position.x += dx * Utils.delta();
+          bounds.x += dx * Utils.delta();
+          position.y += dy * Utils.delta();
+          bounds.y += dy * Utils.delta();
      }
 
      public Vector2 getVelocity() {
@@ -135,7 +148,7 @@ public abstract class Drawable {
      }
 
      public void rotate(float v) {
-          angle += v * GameUtils.getDelta();
+          angle += v * Utils.delta();
      }
 
      public float getSpeed() {
@@ -144,6 +157,21 @@ public abstract class Drawable {
 
      public void setSpeed(float speed) {
           this.speed = speed;
+     }
+
+     public boolean hovering() {
+          Vector2 mouse = Utils.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+
+          if (mouse.x > getBounds().getX()
+                  && mouse.x < (getBounds().getX() + getBounds().getWidth())
+                  && mouse.y > getBounds().getY()
+                  && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
+               return true;
+          } else return false;
+     }
+
+     public void toggleBoundsDebug() {
+          boundsDebug = !boundsDebug;
      }
 
      public abstract void dispose();

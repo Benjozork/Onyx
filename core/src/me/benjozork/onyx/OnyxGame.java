@@ -2,15 +2,15 @@ package me.benjozork.onyx;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.MenuScreen;
 
 public class OnyxGame extends Game {
@@ -55,7 +55,7 @@ public class OnyxGame extends Game {
           Gdx.gl.glClearColor(1f, 1f, 1f, 1);
           Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
           // Render frame
-          getScreen().render(GameUtils.getDelta());
+          getScreen().render(Utils.delta());
      }
 
      @Override

@@ -2,7 +2,6 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import me.benjozork.onyx.internal.GameUtils;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.screen.GameScreen;
 
@@ -52,9 +51,9 @@ public class EntityPlayer extends LivingEntity {
      @Override
      public void update() {
           if (angle > 360) {
-               angle = 120 * GameUtils.getDelta();
+               angle = 120 * Utils.delta();
           } else if (angle < - 360) {
-               angle = - 120 * GameUtils.getDelta();
+               angle = - 120 * Utils.delta();
           }
 
           /*// Check for out of bounds
@@ -111,10 +110,10 @@ public class EntityPlayer extends LivingEntity {
 
      @Override
      public void move(float vx, float vy) {
-          if ((getX() + vx * GameUtils.getDelta()) + 50 > Gdx.graphics.getWidth()
-                  || (getY() + vy * GameUtils.getDelta()) + 50 > Gdx.graphics.getHeight()
-                  || (getX() + vx * GameUtils.getDelta()) < 0
-                  || (getY() + vy * GameUtils.getDelta()) < 0) {
+          if ((getX() + vx * Utils.delta()) + 50 > Gdx.graphics.getWidth()
+                  || (getY() + vy * Utils.delta()) + 50 > Gdx.graphics.getHeight()
+                  || (getX() + vx * Utils.delta()) < 0
+                  || (getY() + vy * Utils.delta()) < 0) {
                return;
           }
           super.move(vx, vy);

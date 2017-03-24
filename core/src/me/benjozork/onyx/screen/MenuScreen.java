@@ -3,12 +3,17 @@ package me.benjozork.onyx.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-import java.awt.*;
-
+import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.ui.UIButton;
+import me.benjozork.onyx.ui.UICheckbox;
+import me.benjozork.onyx.ui.UIDropdown;
 import me.benjozork.onyx.ui.UIScreen;
 
 /**
@@ -18,24 +23,55 @@ public class MenuScreen implements Screen {
 
      private UIScreen uiScreen;
      private UIButton button;
+     private UICheckbox checkbox;
+     private UIDropdown dropdown;
+
+     private Sprite background;
 
      @Override
      public void show() {
+
+          background = new Sprite(new Texture("core/assets/hud/background_base.png"));
+          background.setPosition(0, 0);
+          background.setColor(Color.GRAY);
+          background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
           uiScreen = new UIScreen(new Vector2(0, 0));
 
-          button = new UIButton(50, 50, 500, 200, new BitmapFont(), "LIBGDX MASTER RACE", new Runnable() {
+          Vector2 center = Utils.center(95, 55, 1920, 1080);
+
+          button = new UIButton(960 - (95 / 2), 600 - 55 / 2, 95, 55, new BitmapFont(), "Play", new Runnable() {
                @Override
                public void run() {
                     System.out.println("click");
                }
           });
 
+          checkbox = new UICheckbox(960 - (95 / 2), 600 - (55 / 2) - 40, 32, 32, new BitmapFont(), "Check!");
+
+          dropdown = new UIDropdown(960 - (95 / 2), 600 - (55 / 2) - 100, 305, 55, new BitmapFont(), "Dropdown!");
+          dropdown.add("Apple", "Banana", "Orange", "Watermelon");
+
           uiScreen.init();
           uiScreen.add(button);
+          uiScreen.add(checkbox);
+          uiScreen.add(dropdown);
+
      }
 
      @Override
      public void render(float delta) {
+
+          // Draw background
+
+          background.setColor(Color.GRAY);
+          background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+          GameManager.getBatch().disableBlending();
+          GameManager.getBatch().begin();
+          background.draw(GameManager.getBatch());
+          GameManager.getBatch().end();
+          GameManager.getBatch().enableBlending();
+
           if (Gdx.input.justTouched()) {
                uiScreen.click(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
           }
