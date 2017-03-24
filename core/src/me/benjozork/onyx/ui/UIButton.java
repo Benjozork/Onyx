@@ -17,13 +17,11 @@ import me.benjozork.onyx.internal.Utils;
  */
 public class UIButton extends UIElement {
 
-     private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("core/assets/ui/cc_red_alert_inet.ttf"));
+     private FreeTypeFontGenerator generator;
      private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
      private BitmapFont font;
 
      private GlyphLayout layout = new GlyphLayout();
-
-     private Runnable action;
 
      private Vector2 dimension = new Vector2();
 
@@ -41,20 +39,11 @@ public class UIButton extends UIElement {
      private float colorTimer;
      private float maxColorTimer = 0.1f;
 
-     public UIButton(float x, float y, float width, float height, BitmapFont font, String text, Runnable action) {
+     public UIButton(float x, float y, float width, float height, String fontPath, String text) {
           super(x, y);
           this.dimension.set(width, height);
-          this.font = font;
           this.text = text;
-          this.action = action;
-     }
-
-     public UIButton(Vector2 position, Vector2 dimension, BitmapFont font, String text, Runnable action) {
-          super(position);
-          this.dimension = dimension;
-          this.font = font;
-          this.text = text;
-          this.action = action;
+          this.generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
      }
 
      @Override
@@ -116,7 +105,6 @@ public class UIButton extends UIElement {
      public boolean click(Vector2 localPosition) {
           colorTimer = 0;
           currentPatch = CLICKED_BUTTON;
-          action.run();
           return true;
      }
 

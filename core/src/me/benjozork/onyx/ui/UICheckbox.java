@@ -45,13 +45,6 @@ public class UICheckbox extends UIElement {
           this.text = text;
      }
 
-     public UICheckbox(Vector2 position, Vector2 dimension, BitmapFont font, String text) {
-          super(position);
-          this.dimension = dimension;
-          this.font = font;
-          this.text = text;
-     }
-
      @Override
      public void init() {
           bounds = new Rectangle(getX(), getY(), dimension.x, dimension.y);

@@ -66,21 +66,12 @@ public class UIDropdown extends UIElement {
      private float maxColorTimer = 0.1f, maxMovementTimer = 0.25f;
 
      private Array<String> items = new Array<String>();
+     private int currentItem;
      private boolean expanded = false;
-     private boolean expanding, collapsing;
-
-     private float movement_index = 0f;
 
      public UIDropdown(float x, float y, float width, float height, BitmapFont font, String text) {
           super(x, y);
           this.dimension.set(width, height);
-          this.font = font;
-          this.text = text;
-     }
-
-     public UIDropdown(Vector2 position, Vector2 dimension, BitmapFont font, String text) {
-          super(position);
-          this.dimension = dimension;
           this.font = font;
           this.text = text;
      }
@@ -102,11 +93,11 @@ public class UIDropdown extends UIElement {
           if (expanded) {
                bounds.height = ((items.size + 1) * getHeight()) - 6;
                bounds.y = getY() - (items.size * getHeight()) + 6;
-               System.out.println(bounds);
           }  else {
                bounds.height = getHeight();
                bounds.y = getY();
           }
+
 
           if (colorTimer <= maxColorTimer && colorTimer > 0) {
                colorTimer += Utils.delta();
@@ -119,6 +110,7 @@ public class UIDropdown extends UIElement {
           }
 
           if (hovering()) {
+               // Do element highlighting
                currentPatch = expanded ? EXPANDED_HOVERED_DROPDOWN : HOVERED_DROPDOWN;
           }
      }
@@ -128,25 +120,76 @@ public class UIDropdown extends UIElement {
 
           layout.setText(font, text);
 
-          GameManager.getBatch().begin();
-
           if (expanded) {
                for (int i = 0; i < items.size; i++) {
                     if (i == items.size - 1) {
-                         EXPANDED_MENU_LOWER.draw(GameManager.getBatch(), getX(), getY() - (getHeight() *  (i + 1)) + 6, getWidth(), getHeight());
-                         break;
+                         GameManager.getBatch().begin();
+                         EXPANDED_MENU_LOWER.draw(
+                                 GameManager.getBatch(),
+                                 getX(),
+                                 getY() - getHeight() * (i + 1),
+                                 getWidth(),
+                                 getHeight()
+                         );
+                         GameManager.getBatch().end();
+                    } else {
+                         GameManager.getBatch().begin();
+                         EXPANDED_MENU_UPPER.draw(
+                                 GameManager.getBatch(),
+                                 getX(),
+                                 getY() - getHeight() * (i + 1),
+                                 getWidth(),
+                                 getHeight()
+                         );
+                         GameManager.getBatch().end();
                     }
-                    EXPANDED_MENU_UPPER.draw(GameManager.getBatch(), getX(), getY() - (getHeight() * (i + 1)) + 6, getWidth(), getHeight());
                }
 
-               for (int i = 0; i < items.size; i++) {
-                    layout.setText(font, items.get(i));
-                    font.draw(GameManager.getBatch(), items.get(i), (getX() + getWidth() / 2) - layout.width / 2, getY() - (i * getHeight() + layout.height / 2));
+               if (hovering()) {
+                    Vector2 mouse = Utils.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+                    float dy = getY() - mouse.y;
+                    int index = (int) (dy / getHeight());
+                    if (index < 0 || dy < 0) {
+                         GameManager.getBatch().begin();
+                         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+                         font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
+                         GameManager.getBatch().end();
+
+                         drawText();
+
+                         return;
+                    }
+
+                    if (index == items.size - 1) {
+                         GameManager.getBatch().begin();
+                         EXPANDED_HOVERED_MENU_LOWER.draw(
+                                 GameManager.getBatch(),
+                                 getX(),
+                                 getY() - getHeight() * (index + 1),
+                                 getWidth(),
+                                 getHeight()
+                         );
+                         GameManager.getBatch().end();
+                    } else {
+                         GameManager.getBatch().begin();
+                         EXPANDED_HOVERED_MENU_UPPER.draw(
+                                 GameManager.getBatch(),
+                                 getX(),
+                                 getY() - getHeight() * (index + 1),
+                                 getWidth(),
+                                 getHeight()
+                         );
+                         GameManager.getBatch().end();
+                    }
+
                }
+
+               drawText();
 
                layout.setText(font, text);
           }
 
+          GameManager.getBatch().begin();
           currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
           font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
           GameManager.getBatch().end();
@@ -159,7 +202,17 @@ public class UIDropdown extends UIElement {
 
      @Override
      public boolean click(Vector2 localPosition) {
+          System.out.println("clickdropdown " + bounds);
           if (expanded) {
+               float position = localPosition.y;
+               for (int i = 0; i < items.size; i++) {
+                    if (position < getY() - (i * getHeight())) {
+                         if (position > getY() - getHeight() - ((i + 1) * getHeight())) {
+                              text = items.get(i);
+                         }
+                    }
+               }
+
                expanded = false;
           } else {
                expanded = true;
@@ -209,6 +262,15 @@ public class UIDropdown extends UIElement {
 
      public void setText(String v) {
           text = v;
+     }
+
+     public void drawText() {
+          GameManager.getBatch().begin();
+          for (int j = 0; j < items.size; j++) {
+               layout.setText(font, items.get(j));
+               font.draw(GameManager.getBatch(), items.get(j), (getX() + getWidth() / 2) - layout.width / 2, getY() - (j * getHeight() + layout.height / 2) - 4);
+          }
+          GameManager.getBatch().end();
      }
 
      public Array<String> getItems() {

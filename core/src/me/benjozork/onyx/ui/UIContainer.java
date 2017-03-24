@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 
 import me.benjozork.onyx.exception.DuplicateElementIdentifierException;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.object.Drawable;
 
 /**
@@ -56,19 +57,12 @@ public class UIContainer extends Drawable {
 
      public boolean click(Vector2 localPosition) {
           for (UIElement element : elements) {
-               Rectangle elementBounds = element.getBounds();
-               Rectangle localElementBounds = new Rectangle(0, 0, 0, 0);
 
-               localElementBounds.setPosition(-((Gdx.graphics.getWidth() - element.getX()) - dimension.x), -((Gdx.graphics.getHeight() - element.getY()) - dimension.y));
-               localElementBounds.setWidth(elementBounds.width);
-               localElementBounds.setHeight(elementBounds.height);
+               Vector2 mouse = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+               Vector2 unprojected = Utils.unproject(mouse);
 
-
-               Vector3 unprojected = GameManager.getCamera().unproject(new Vector3(localPosition.x, localPosition.y, 0f));
-               Vector2 unprojected2d = new Vector2(unprojected.x, unprojected.y);
-
-               if (localElementBounds.contains(unprojected2d)) {
-                    element.click(localPosition);
+               if (element.getBounds().contains(unprojected)) {
+                    element.clickElement(unprojected);
                     return true;
                }
           }

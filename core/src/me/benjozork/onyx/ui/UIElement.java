@@ -1,13 +1,17 @@
 package me.benjozork.onyx.ui;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
+import me.benjozork.onyx.object.Action;
 import me.benjozork.onyx.object.Drawable;
 
 /**
  * Created by Benjozork on 2017-03-19.
  */
 public abstract class UIElement extends Drawable {
+
+     private Array<Action> actions = new Array<Action>();
 
      private UIContainer parent;
 
@@ -30,6 +34,16 @@ public abstract class UIElement extends Drawable {
      @Override
      public abstract void draw();
 
+     public boolean clickElement(Vector2 localPosition) {
+          click(localPosition);
+          for (Action a : actions) {
+               if (a.getEvent() == Action.ActionEvent.CLICKED) {
+                    a.run();
+               }
+          }
+          return true;
+     }
+
      public abstract boolean click(Vector2 localPosition);
 
      public String getIdentifier() {
@@ -42,5 +56,13 @@ public abstract class UIElement extends Drawable {
 
      public UIContainer getParent() {
           return parent;
+     }
+
+     public Array<Action> getActions() {
+          return actions;
+     }
+
+     public void addAction(String identifier, Runnable action, Action.ActionEvent event) {
+          actions.add(new Action(this, identifier, action, event));
      }
 }
