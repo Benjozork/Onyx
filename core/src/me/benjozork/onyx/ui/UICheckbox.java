@@ -97,39 +97,6 @@ public class UICheckbox extends UIElement {
           return true;
      }
 
-     public Vector2 getDimension() {
-          return dimension;
-     }
-
-     public void setDimension(Vector2 dimension) {
-          this.dimension = dimension;
-     }
-
-     public float getWidth() {
-          return dimension.x;
-     }
-
-     public void setWidth(float v) {
-          dimension.x = v;
-          bounds.width = v;
-     }
-
-     public float getHeight() {
-          return dimension.y;
-     }
-
-     public void setHeight(float v) {
-          this.dimension.y = v;
-          bounds.height = v;
-     }
-
-     public void resize(float dx, float dy) {
-          this.dimension.x += dx;
-          this.bounds.width += dx;
-          this.dimension.y += dy;
-          this.bounds.height += dy;
-     }
-
      public String getText() {
           return text;
      }
