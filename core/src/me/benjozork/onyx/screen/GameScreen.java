@@ -83,7 +83,7 @@ public class GameScreen implements Screen {
 
           // Crossfade
           if (isFading) {
-               float totalFadeDelta;aa
+               float totalFadeDelta;
 
                deltaRed = fadeColors[fadeIndex].r - currentColor.r;
                deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
