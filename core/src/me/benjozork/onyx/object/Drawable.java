@@ -21,7 +21,6 @@ public abstract class Drawable {
      private float speed;
      protected double angle;
 
-     protected State state;
      protected Rectangle bounds;
 
      private boolean boundsDebug = false;
@@ -223,22 +222,6 @@ public abstract class Drawable {
      }
 
      /**
-      * The DrawState
-      * @return The DrawState
-      */
-     public State getState() {
-          return state;
-     }
-
-     /**
-      * Set the DrawState
-      * @param state The DrawState to be used
-      */
-     public void setState(State state) {
-          this.state = state;
-     }
-
-     /**
       * Rotate the Drawable
       * @param v The rotation offset
       */
@@ -288,10 +271,5 @@ public abstract class Drawable {
       * Dispose of the Drawable
       */
      public abstract void dispose();
-
-     public enum State {
-          MOVE,
-          STOP
-     }
 
 }
