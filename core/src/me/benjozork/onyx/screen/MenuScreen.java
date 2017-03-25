@@ -33,13 +33,13 @@ public class MenuScreen implements Screen {
 
      private Sprite background;
 
-     private String currentUIFont = "android/assets/ui/cc_red_alert_inet.ttf";
+     private String currentUIFont = "ui/cc_red_alert_inet.ttf";
      private FreeTypeFontGenerator.FreeTypeFontParameter currentParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
      @Override
      public void show() {
 
-          background = new Sprite(new Texture("android/assets/hud/background_base.png"));
+          background = new Sprite(new Texture("hud/background_base.png"));
           background.setPosition(0, 0);
           background.setColor(Color.GRAY);
           background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

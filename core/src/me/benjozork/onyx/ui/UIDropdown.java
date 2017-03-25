@@ -21,7 +21,7 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UIDropdown extends UIElement {
 
-     private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("android/assets/ui/cc_red_alert_inet.ttf"));
+     private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("ui/cc_red_alert_inet.ttf"));
      private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
      private BitmapFont font;
 
@@ -33,32 +33,32 @@ public class UIDropdown extends UIElement {
 
      // Textures
 
-     private final Texture DROPDOWN_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_0.png");
+     private final Texture DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_0.png");
      private final NinePatch DROPDOWN = new NinePatch(DROPDOWN_TEXTURE, 6, 40, 6, 6);
-     private final Texture HOVERED_DROPDOWN_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_1.png");
+     private final Texture HOVERED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_1.png");
      private final NinePatch HOVERED_DROPDOWN = new NinePatch(HOVERED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
-     private final Texture CLICKED_DROPDOWN_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_2.png");
+     private final Texture CLICKED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_2.png");
      private final NinePatch CLICKED_DROPDOWN = new NinePatch(CLICKED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
 
-     private final Texture EXPANDED_DROPDOWN_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_3.png");
+     private final Texture EXPANDED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_3.png");
      private final NinePatch EXPANDED_DROPDOWN = new NinePatch(EXPANDED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
-     private final Texture EXPANDED_HOVERED_DROPDOWN_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_4.png");
+     private final Texture EXPANDED_HOVERED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_4.png");
      private final NinePatch EXPANDED_HOVERED_DROPDOWN = new NinePatch(EXPANDED_HOVERED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
-     private final Texture EXPANDED_CLICKED_DROPDOWN_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_5.png");
+     private final Texture EXPANDED_CLICKED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_5.png");
      private final NinePatch EXPANDED_CLICKED_DROPDOWN = new NinePatch(EXPANDED_CLICKED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
 
-     private final Texture EXPANDED_MENU_UPPER_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_menu_upper_0.png");
+     private final Texture EXPANDED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_0.png");
      private final NinePatch EXPANDED_MENU_UPPER = new NinePatch(EXPANDED_MENU_UPPER_TEXTURE, 6, 6, 0, 6);
-     private final Texture EXPANDED_HOVERED_MENU_UPPER_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_menu_upper_1.png");
+     private final Texture EXPANDED_HOVERED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_1.png");
      private final NinePatch EXPANDED_HOVERED_MENU_UPPER = new NinePatch(EXPANDED_HOVERED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
-     private final Texture EXPANDED_CLICKED_MENU_UPPER_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_menu_upper_2.png");
+     private final Texture EXPANDED_CLICKED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_2.png");
      private final NinePatch EXPANDED_CLICKED_MENU_UPPER = new NinePatch(EXPANDED_CLICKED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
 
-     private final Texture EXPANDED_MENU_LOWER_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_menu_lower_0.png");
+     private final Texture EXPANDED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_0.png");
      private final NinePatch EXPANDED_MENU_LOWER = new NinePatch(EXPANDED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
-     private final Texture EXPANDED_HOVERED_MENU_LOWER_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_menu_lower_1.png");
+     private final Texture EXPANDED_HOVERED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_1.png");
      private final NinePatch EXPANDED_HOVERED_MENU_LOWER = new NinePatch(EXPANDED_HOVERED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
-     private final Texture EXPANDED_CLICKED_MENU_LOWER_TEXTURE = new Texture("android/assets/ui/dropdown/dropdown_menu_lower_2.png");
+     private final Texture EXPANDED_CLICKED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_2.png");
      private final NinePatch EXPANDED_CLICKED_MENU_LOWER = new NinePatch(EXPANDED_CLICKED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
 
      private NinePatch currentPatch = DROPDOWN;

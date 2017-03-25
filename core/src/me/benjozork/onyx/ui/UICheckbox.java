@@ -28,10 +28,10 @@ public class UICheckbox extends UIElement {
 
      private String text = new String();
 
-     private final Texture CHECKBOX_TEXTURE = new Texture("android/assets/ui/checkbox/checkbox_0.png");
-     private final Texture TICKED_CHECKBOX_TEXTURE = new Texture("android/assets/ui/checkbox/checkbox_2.png");
-     private final Texture HOVERED_CHECKBOX_TEXTURE = new Texture("android/assets/ui/checkbox/checkbox_1.png");
-     private final Texture HOVERED_TICKED_CHECKBOX_TEXTURE = new Texture("android/assets/ui/checkbox/checkbox_3.png");
+     private final Texture CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_0.png");
+     private final Texture TICKED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_2.png");
+     private final Texture HOVERED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_1.png");
+     private final Texture HOVERED_TICKED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_3.png");
      private Texture currentTexture = CHECKBOX_TEXTURE;
 
      private Vector2 dimension = new Vector2();

@@ -26,11 +26,11 @@ public class UIButton extends UIElement {
 
      private String text = new String();
 
-     private final Texture BUTTON_TEXTURE = new Texture("android/assets/ui/button/button_0.png");
+     private final Texture BUTTON_TEXTURE = new Texture("ui/button/button_0.png");
      private final NinePatch BUTTON = new NinePatch(BUTTON_TEXTURE, 6, 6, 6, 6);
-     private final Texture HOVERED_BUTTON_TEXTURE = new Texture("android/assets/ui/button/button_1.png");
+     private final Texture HOVERED_BUTTON_TEXTURE = new Texture("ui/button/button_1.png");
      private final NinePatch HOVERED_BUTTON = new NinePatch(HOVERED_BUTTON_TEXTURE, 6, 6, 6, 6);
-     private final Texture CLICKED_BUTTON_TEXTURE = new Texture("android/assets/ui/button/button_2.png");
+     private final Texture CLICKED_BUTTON_TEXTURE = new Texture("ui/button/button_2.png");
      private final NinePatch CLICKED_BUTTON = new NinePatch(CLICKED_BUTTON_TEXTURE, 6, 6, 6, 6);
 
      private NinePatch currentPatch = BUTTON;
