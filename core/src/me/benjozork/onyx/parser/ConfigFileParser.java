@@ -25,8 +25,8 @@ public class ConfigFileParser extends FileParser {
                     tag = tag.split("\"")[1];
 
                     String value = line;
-                    line.replace("@Meta(", "");
-                    line = line.split("\"")[2];
+                    value.replace("@Meta(", "");
+                    value = value.split("\"")[2];
 
                     meta.put(tag, value);
                } else if (line.startsWith("@Attribute")) {
@@ -35,14 +35,14 @@ public class ConfigFileParser extends FileParser {
                     tag = tag.split("\"")[1];
 
                     String value = line;
-                    line.replace("@Attribute(", "");
-                    line = line.split("\"")[2];
+                    value.replace("@Attribute(", "");
+                    value = value.split("\"")[2];
 
                     attributes.put(tag, value);
                } else if (line.startsWith("!ApplyTo")) {
                     String value = line;
-                    line.replace("!ApplyTo(", "");
-                    line = line.split("\"")[0];
+                    value.replace("!ApplyTo(", "");
+                    value = value.split("\"")[1];
 
                     filterMode = value;
                }

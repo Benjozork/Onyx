@@ -1,5 +1,4 @@
-package me.benjozork.onyx.object;
-
+package me.benjozork.onyx.ui.object;
 
 import me.benjozork.onyx.ui.UIElement;
 
@@ -7,14 +6,6 @@ import me.benjozork.onyx.ui.UIElement;
  * Created by Benjozork on 2017-03-20.
  */
 public class Action {
-
-     public enum ActionEvent {
-          CLICKED,
-          HOVERED,
-          VALUE_CHANGED,
-          DISABLED,
-          ENABLED
-     }
 
      private ActionEvent event;
      private Runnable action;

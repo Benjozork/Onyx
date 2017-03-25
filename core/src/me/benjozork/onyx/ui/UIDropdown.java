@@ -12,7 +12,9 @@ import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
-import me.benjozork.onyx.object.Action;
+import me.benjozork.onyx.ui.object.Action;
+import me.benjozork.onyx.ui.object.ActionEvent;
+import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
  * Created by Benjozork on 2017-03-19.
@@ -28,6 +30,8 @@ public class UIDropdown extends UIElement {
      private Vector2 dimension = new Vector2();
 
      private String text = new String();
+
+     // Textures
 
      private final Texture DROPDOWN_TEXTURE = new Texture("core/assets/ui/dropdown/dropdown_0.png");
      private final NinePatch DROPDOWN = new NinePatch(DROPDOWN_TEXTURE, 6, 40, 6, 6);
@@ -66,20 +70,18 @@ public class UIDropdown extends UIElement {
      private int currentItem;
      private boolean expanded = false;
 
-     public UIDropdown(float x, float y, float width, float height, BitmapFont font, String text) {
+     public UIDropdown(float x, float y, float width, float height, TextComponent component) {
           super(x, y);
-          this.dimension.set(width, height);
-          this.font = font;
-          this.text = text;
+          bounds = new Rectangle(getX(), getY(), width, height);
+          setWidth(width);
+          setHeight(height);
+          this.text = component.getText();
+          this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
+          this.parameter = component.getParameter();
      }
 
      @Override
      public void init() {
-          bounds = new Rectangle(getX(), getY(), dimension.x, dimension.y);
-
-          parameter.color = Utils.rgb(255, 255, 255);
-          parameter.size = 35;
-
           font = generator.generateFont(parameter);
      }
 
@@ -205,7 +207,7 @@ public class UIDropdown extends UIElement {
                     if (position < getY() - (i * getHeight())) {
                          if (position > getY() - getHeight() - ((i + 1) * getHeight())) {
                               text = items.get(i);
-                              triggerEvent(Action.ActionEvent.VALUE_CHANGED);
+                              triggerEvent(ActionEvent.VALUE_CHANGED);
                          }
                     }
                }

@@ -11,13 +11,16 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
+import me.benjozork.onyx.ui.object.Action;
+import me.benjozork.onyx.ui.object.ActionEvent;
+import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
  * Created by Benjozork on 2017-03-19.
  */
 public class UICheckbox extends UIElement {
 
-     private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("core/assets/ui/cc_red_alert_inet.ttf"));
+     private FreeTypeFontGenerator generator;
      private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
      private BitmapFont font;
 
@@ -38,20 +41,18 @@ public class UICheckbox extends UIElement {
      private float colorTimer;
      private float maxColorTimer = 0.1f;
 
-     public UICheckbox(float x, float y, float width, float height, BitmapFont font, String text) {
+     public UICheckbox(float x, float y, float width, float height, TextComponent component) {
           super(x, y);
-          this.dimension.set(width, height);
-          this.font = font;
-          this.text = text;
+          bounds = new Rectangle(getX(), getY(), width, height);
+          setWidth(width);
+          setHeight(height);
+          this.text = component.getText();
+          this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
+          this.parameter = component.getParameter();
      }
 
      @Override
      public void init() {
-          bounds = new Rectangle(getX(), getY(), dimension.x, dimension.y);
-
-          parameter.color = Utils.rgb(255, 255, 255);
-          parameter.size = 35;
-
           font = generator.generateFont(parameter);
      }
 
@@ -146,6 +147,7 @@ public class UICheckbox extends UIElement {
      }
 
      public void toggle() {
+          triggerEvent(ActionEvent.VALUE_CHANGED);
           currentTexture = !checked ? TICKED_CHECKBOX_TEXTURE : CHECKBOX_TEXTURE;
           checked = !checked;
      }

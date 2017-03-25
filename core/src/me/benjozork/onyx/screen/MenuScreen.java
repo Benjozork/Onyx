@@ -4,15 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
-import me.benjozork.onyx.object.Action;
-import me.benjozork.onyx.ui.*;
+import me.benjozork.onyx.ui.UIButton;
+import me.benjozork.onyx.ui.UICheckbox;
+import me.benjozork.onyx.ui.UIDropdown;
+import me.benjozork.onyx.ui.UIRadioButton;
+import me.benjozork.onyx.ui.UIRadioButtonGroup;
+import me.benjozork.onyx.ui.UIScreen;
+import me.benjozork.onyx.ui.object.Action;
+import me.benjozork.onyx.ui.object.ActionEvent;
+import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
  * Created by Benjozork on 2017-03-19.
@@ -28,6 +34,7 @@ public class MenuScreen implements Screen {
      private Sprite background;
 
      private String currentUIFont = "core/assets/ui/cc_red_alert_inet.ttf";
+     private FreeTypeFontGenerator.FreeTypeFontParameter currentParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
      @Override
      public void show() {
@@ -41,31 +48,44 @@ public class MenuScreen implements Screen {
 
           Vector2 center = Utils.center(95, 55, 1920, 1080);
 
+          // Init parameter
+          currentParameter.size = 35;
+          currentParameter.color = Color.WHITE;
+
           // Add button
 
-          button = new UIButton(960 - (95 / 2), 600 - 55 / 2, 95, 55, currentUIFont, "Play");
+          button = new UIButton(960 - (95 / 2), 600 - 55 / 2, 95, 55, new TextComponent("Play!", currentUIFont, currentParameter));
           button.addAction("action", new Runnable() {
                @Override
                public void run() {
                     System.out.println("click");
                }
-          }, Action.ActionEvent.CLICKED);
+          }, ActionEvent.CLICKED);
 
           // Add checkbox
 
-          checkbox = new UICheckbox(960 - (95 / 2), 600 - (55 / 2) - 40, 32, 32, new BitmapFont(), "Check!");
+          checkbox = new UICheckbox(960 - (95 / 2), 600 - (55 / 2) - 40, 32, 32, new TextComponent("Check!", currentUIFont, currentParameter));
 
           // Add dropdown
 
-          dropdown = new UIDropdown(960 - (95 / 2), 600 - (55 / 2) - 100, 305, 55, new BitmapFont(), "Dropdown!");
+          dropdown = new UIDropdown(960 - (95 / 2), 600 - (55 / 2) - 100, 305, 55, new TextComponent("Dropdown!", currentUIFont, currentParameter));
           dropdown.add("Apple", "Banana", "Orange", "Watermelon", "Raspberry");
 
-          // Add label
+          // Add radio buttons
+
+          TextComponent radioComponent  = new TextComponent("Radio!", currentUIFont, currentParameter);
 
           radioButtonGroup = new UIRadioButtonGroup();
-          radioButtonGroup.addButton(new UIRadioButton(200, 200, 26, 26, currentUIFont, "Radio!"));
-          radioButtonGroup.addButton(new UIRadioButton(200, 240, 26, 26, currentUIFont, "Radio!"));
-          radioButtonGroup.addButton(new UIRadioButton(200, 280, 26, 26, currentUIFont, "Radio!"));
+          radioButtonGroup.addAction("action", new Runnable() {
+               @Override
+               public void run() {
+                    System.out.println("value changed");
+               }
+          }, ActionEvent.VALUE_CHANGED);
+
+          radioButtonGroup.addButton(new UIRadioButton(200, 200, 26, 26, radioComponent));
+          radioButtonGroup.addButton(new UIRadioButton(200, 240, 26, 26, radioComponent));
+          radioButtonGroup.addButton(new UIRadioButton(200, 280, 26, 26, radioComponent));
 
           // Init screen
 

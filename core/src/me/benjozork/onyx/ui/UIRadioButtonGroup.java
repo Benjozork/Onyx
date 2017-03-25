@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.object.Action;
+import me.benjozork.onyx.ui.object.Action;
+import me.benjozork.onyx.ui.object.ActionEvent;
 
 /**
  * Created by Benjozork on 2017-03-24.
@@ -38,7 +39,7 @@ public class UIRadioButtonGroup extends UIElement {
      }
 
      public void select(UIRadioButton b) {
-          triggerEvent(Action.ActionEvent.VALUE_CHANGED);
+          triggerEvent(ActionEvent.VALUE_CHANGED);
           selected = buttons.indexOf(b, true);
           b.set(true);
           if (selected == -1) {
