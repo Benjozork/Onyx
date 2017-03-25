@@ -8,40 +8,42 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
+import me.benjozork.onyx.object.Action;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Created by Benjozork on 2017-03-24.
  */
-public class UICheckbox extends UIElement {
+public class UIRadioButton extends UIElement {
 
-     private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("core/assets/ui/cc_red_alert_inet.ttf"));
+     private FreeTypeFontGenerator generator;
      private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
      private BitmapFont font;
 
      private GlyphLayout layout = new GlyphLayout();
 
-     private String text = new String();
+     private Texture RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_0.png");
+     private Texture TICKED_RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_2.png");
 
-     private final Texture CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_0.png");
-     private final Texture TICKED_CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_2.png");
-     private final Texture HOVERED_CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_1.png");
-     private final Texture HOVERED_TICKED_CHECKBOX_TEXTURE = new Texture("core/assets/ui/checkbox/checkbox_3.png");
-     private Texture currentTexture = CHECKBOX_TEXTURE;
+     private Texture HOVERED_RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_1.png");
+     private Texture HOVERED_TICKED_RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_3.png");
+
+     private Texture currentTexture = RADIOBUTTON_TEXTURE;
+
+     private UIRadioButtonGroup group;
 
      private Vector2 dimension = new Vector2();
 
-     private boolean checked = false;
+     private boolean selected = false;
 
-     private float colorTimer;
-     private float maxColorTimer = 0.1f;
+     private String text;
 
-     public UICheckbox(float x, float y, float width, float height, BitmapFont font, String text) {
+     public UIRadioButton(float x, float y, float width, float height, String fontPath, String text) {
           super(x, y);
-          this.dimension.set(width, height);
-          this.font = font;
+          this.dimension.x = width;
+          this.dimension.y = height;
+          this.generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
           this.text = text;
      }
 
@@ -61,22 +63,17 @@ public class UICheckbox extends UIElement {
           bounds.width = getWidth() + layout.width + 10;
           bounds.height = getHeight();
 
-          if (hovering()) {
+          currentTexture = selected ? (hovering() ? HOVERED_TICKED_RADIOBUTTON_TEXTURE : TICKED_RADIOBUTTON_TEXTURE) : (hovering() ? HOVERED_RADIOBUTTON_TEXTURE : RADIOBUTTON_TEXTURE);
+
+          /*if (hovering()) {
                currentTexture = (checked ? HOVERED_TICKED_CHECKBOX_TEXTURE : HOVERED_CHECKBOX_TEXTURE);
           } else {
                currentTexture = (checked ? TICKED_CHECKBOX_TEXTURE : CHECKBOX_TEXTURE);
-          }
+          }*/
      }
 
      @Override
      public void draw() {
-          /*renderer.begin(ShapeRenderer.ShapeType.Filled);
-          renderer.setColor(outerColor);
-          renderer.rect(getX(), getY(), dimension.x, dimension.y);
-          renderer.setColor(innerColor);
-          renderer.rect(getX() + 5, getY() + 5, getWidth() - 10, getHeight() - 10);
-          renderer.end();*/
-
           layout.setText(font, text);
 
           GameManager.getBatch().begin();
@@ -92,8 +89,13 @@ public class UICheckbox extends UIElement {
 
      @Override
      public boolean click(Vector2 localPosition) {
-          toggle();
+          group.select(this);
           return true;
+     }
+
+     public void set(boolean b) {
+          triggerEvent(Action.ActionEvent.VALUE_CHANGED);
+          this.selected = b;
      }
 
      public Vector2 getDimension() {
@@ -137,16 +139,7 @@ public class UICheckbox extends UIElement {
           text = v;
      }
 
-     public boolean isChecked() {
-          return checked;
-     }
-
-     public void setChecked(boolean checked) {
-          this.checked = checked;
-     }
-
-     public void toggle() {
-          currentTexture = !checked ? TICKED_CHECKBOX_TEXTURE : CHECKBOX_TEXTURE;
-          checked = !checked;
+     public void setGroup(UIRadioButtonGroup group) {
+          this.group = group;
      }
 }

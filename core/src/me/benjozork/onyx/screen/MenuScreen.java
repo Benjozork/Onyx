@@ -23,7 +23,7 @@ public class MenuScreen implements Screen {
      private UIButton button;
      private UICheckbox checkbox;
      private UIDropdown dropdown;
-     private UILabel label;
+     private UIRadioButtonGroup radioButtonGroup;
 
      private Sprite background;
 
@@ -59,23 +59,23 @@ public class MenuScreen implements Screen {
 
           dropdown = new UIDropdown(960 - (95 / 2), 600 - (55 / 2) - 100, 305, 55, new BitmapFont(), "Dropdown!");
           dropdown.add("Apple", "Banana", "Orange", "Watermelon", "Raspberry");
-          dropdown.addAction("action", new Runnable() {
-               @Override
-               public void run() {
-                    System.out.println("dropclick");
-               }
-          }, Action.ActionEvent.CLICKED);
 
           // Add label
 
-          label = new UILabel(960 - (95 / 2), 600 - (55 / 2) - 105, currentUIFont, "Label!");
+          radioButtonGroup = new UIRadioButtonGroup();
+          radioButtonGroup.addButton(new UIRadioButton(200, 200, 26, 26, currentUIFont, "Radio!"));
+          radioButtonGroup.addButton(new UIRadioButton(200, 240, 26, 26, currentUIFont, "Radio!"));
+          radioButtonGroup.addButton(new UIRadioButton(200, 280, 26, 26, currentUIFont, "Radio!"));
 
           // Init screen
 
           uiScreen.init();
           uiScreen.add(button);
           uiScreen.add(checkbox);
-          uiScreen.add(label);
+          for (UIRadioButton button : radioButtonGroup.getButtons()) {
+               uiScreen.add(button);
+          }
+          uiScreen.add(radioButtonGroup);
           uiScreen.add(dropdown);
 
      }

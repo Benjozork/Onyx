@@ -17,12 +17,24 @@ public abstract class UIElement extends Drawable {
 
      private String identifier;
 
+     private boolean justHovered = false;
+
      public UIElement(float x, float y) {
           super(new Vector2(x, y));
      }
 
      public UIElement(Vector2 position) {
           super (position);
+     }
+
+     public void update(float dt) {
+          if (hovering()) {
+               if (justHovered) return;
+               triggerEvent(Action.ActionEvent.HOVERED);
+               justHovered = true;
+          } else {
+               justHovered = false;
+          }
      }
 
      @Override
@@ -36,11 +48,7 @@ public abstract class UIElement extends Drawable {
 
      public boolean clickElement(Vector2 localPosition) {
           click(localPosition);
-          for (Action a : actions) {
-               if (a.getEvent() == Action.ActionEvent.CLICKED) {
-                    a.run();
-               }
-          }
+          triggerEvent(Action.ActionEvent.CLICKED);
           return true;
      }
 
@@ -64,5 +72,13 @@ public abstract class UIElement extends Drawable {
 
      public void addAction(String identifier, Runnable action, Action.ActionEvent event) {
           actions.add(new Action(this, identifier, action, event));
+     }
+
+     public void triggerEvent(Action.ActionEvent e) {
+          for (Action a : actions) {
+               if (a.getEvent() == e) {
+                    a.run();
+               }
+          }
      }
 }

@@ -1,21 +1,18 @@
 package me.benjozork.onyx.ui;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Arrays;
-
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
+import me.benjozork.onyx.object.Action;
 
 /**
  * Created by Benjozork on 2017-03-19.
@@ -49,9 +46,9 @@ public class UIDropdown extends UIElement {
      private final Texture EXPANDED_MENU_UPPER_TEXTURE = new Texture("core/assets/ui/dropdown/dropdown_menu_upper_0.png");
      private final NinePatch EXPANDED_MENU_UPPER = new NinePatch(EXPANDED_MENU_UPPER_TEXTURE, 6, 6, 0, 6);
      private final Texture EXPANDED_HOVERED_MENU_UPPER_TEXTURE = new Texture("core/assets/ui/dropdown/dropdown_menu_upper_1.png");
-     private final NinePatch EXPANDED_HOVERED_MENU_UPPER = new NinePatch(EXPANDED_HOVERED_MENU_UPPER_TEXTURE, 6, 6, 0, 6);
+     private final NinePatch EXPANDED_HOVERED_MENU_UPPER = new NinePatch(EXPANDED_HOVERED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
      private final Texture EXPANDED_CLICKED_MENU_UPPER_TEXTURE = new Texture("core/assets/ui/dropdown/dropdown_menu_upper_2.png");
-     private final NinePatch EXPANDED_CLICKED_MENU_UPPER = new NinePatch(EXPANDED_CLICKED_MENU_UPPER_TEXTURE, 6, 6, 0, 6);
+     private final NinePatch EXPANDED_CLICKED_MENU_UPPER = new NinePatch(EXPANDED_CLICKED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
 
      private final Texture EXPANDED_MENU_LOWER_TEXTURE = new Texture("core/assets/ui/dropdown/dropdown_menu_lower_0.png");
      private final NinePatch EXPANDED_MENU_LOWER = new NinePatch(EXPANDED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
@@ -202,13 +199,13 @@ public class UIDropdown extends UIElement {
 
      @Override
      public boolean click(Vector2 localPosition) {
-          System.out.println("clickdropdown " + bounds);
           if (expanded) {
                float position = localPosition.y;
                for (int i = 0; i < items.size; i++) {
                     if (position < getY() - (i * getHeight())) {
                          if (position > getY() - getHeight() - ((i + 1) * getHeight())) {
                               text = items.get(i);
+                              triggerEvent(Action.ActionEvent.VALUE_CHANGED);
                          }
                     }
                }
