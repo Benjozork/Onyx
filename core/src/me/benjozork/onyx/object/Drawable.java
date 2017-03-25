@@ -18,11 +18,9 @@ public abstract class Drawable {
     protected Vector2 acceleration = new Vector2(0, 0);
 
     protected float maxVelocity = 100f;
-    private float speed;
     protected float angle;
-
     protected Rectangle bounds;
-
+    private float speed;
     private boolean boundsDebug = false;
 
     public Drawable(int x, int y) {
@@ -47,20 +45,12 @@ public abstract class Drawable {
         }
 
         bounds.setPosition(position);
-        // double angle = Math.atan2((Gdx.graphics.getWidth() - Gdx.input.getX()) - loc.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()) - loc.getY());
-        // set velocity/direction vector with angle, if angle isnt zero ( to prevent garbage data in velocity vector )
-        if (angle != 0) {
-            velocity.setAngle(angle);
-        }
+        velocity.setAngle(angle);
 
         //velocity.add(acceleration);
-        // add velocity scaled to speed and timestep to position
         position.add(velocity.nor().scl(speed).scl(Utils.delta()));
     }
 
-    /**
-     * Initialize the Drawable
-     */
     public abstract void init();
 
     /**
@@ -68,28 +58,7 @@ public abstract class Drawable {
      */
     public abstract void update();
 
-    /**
-     * Draw the Drawable
-     */
     public abstract void draw();
-
-    /**
-     * The bounding box
-     *
-     * @return The bounding box
-     */
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
-    /**
-     * Set the bounding box
-     *
-     * @param bounds The bounding box to be used
-     */
-    public void setBounds(Rectangle bounds) {
-        this.bounds = bounds;
-    }
 
     /**
      * Check if the Drawable collides with a rectangle
@@ -110,11 +79,6 @@ public abstract class Drawable {
         return position;
     }
 
-    /**
-     * Set the position
-     *
-     * @param position The position to be used
-     */
     public void setPosition(Vector2 position) {
         this.position = position;
         this.bounds.setPosition(position);
@@ -129,11 +93,6 @@ public abstract class Drawable {
         return position.x;
     }
 
-    /**
-     * Set the X coordinate value
-     *
-     * @param v The X coordinate value to be used
-     */
     public void setX(float v) {
         position.x = v;
         bounds.x = v;
@@ -148,22 +107,11 @@ public abstract class Drawable {
         return position.y;
     }
 
-    /**
-     * Set the Y coordinate value
-     *
-     * @param v The Y coordinate value to be used
-     */
     public void setY(float v) {
         position.y = v;
         bounds.y = v;
     }
 
-    /**
-     * Move the Drawable
-     *
-     * @param dx The X coordinate offset
-     * @param dy The Y coordinate offset
-     */
     public void move(float dx, float dy) {
         // here, we move the position and the bounding box
         position.x += dx * Utils.delta();
@@ -181,11 +129,6 @@ public abstract class Drawable {
         return velocity;
     }
 
-    /**
-     * Set the velocity
-     *
-     * @param velocity The velocity to be used
-     */
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
     }
@@ -199,11 +142,6 @@ public abstract class Drawable {
         return acceleration;
     }
 
-    /**
-     * Set the velocity
-     *
-     * @param acceleration The acceleration to be used
-     */
     public void setAcceleration(Vector2 acceleration) {
         this.acceleration = acceleration;
     }
@@ -226,20 +164,10 @@ public abstract class Drawable {
         return maxVelocity;
     }
 
-    /**
-     * Set the max velocity
-     *
-     * @param maxVelocity The max velocity to be used
-     */
     public void setMaxVelocity(float maxVelocity) {
         this.maxVelocity = maxVelocity;
     }
 
-    /**
-     * Rotate the Drawable
-     *
-     * @param v The rotation offset
-     */
     public void rotate(float v) {
         angle += v * Utils.delta();
     }
@@ -253,11 +181,6 @@ public abstract class Drawable {
         return speed;
     }
 
-    /**
-     * Set the speed
-     *
-     * @param speed The speed to be used
-     */
     public void setSpeed(float speed) {
         this.speed = speed;
     }
@@ -265,7 +188,7 @@ public abstract class Drawable {
     /**
      * Check if the mouse hovers above the hitbox
      *
-     * @return If the mouse hovers above the hitbox
+     * @return result
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
@@ -279,15 +202,25 @@ public abstract class Drawable {
     }
 
     /**
-     * Toggle the hitbox debug rendering
+     * The bounding box
+     *
+     * @return The bounding box
      */
-    public void toggleBoundsDebug() {
-        boundsDebug = !boundsDebug;
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(Rectangle bounds) {
+        this.bounds = bounds;
     }
 
     /**
-     * Dispose of the Drawable
+     * Toggle the hitbox debug rendering
      */
+    public void toggleBoundsDebug() {
+        boundsDebug = ! boundsDebug;
+    }
+
     public abstract void dispose();
 
 }

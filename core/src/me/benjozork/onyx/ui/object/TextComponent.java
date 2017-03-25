@@ -7,39 +7,57 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
  */
 public class TextComponent {
 
-     private String text;
-     private String fontPath;
-     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private String text;
+    private String fontPath;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
-     public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
-          this.text = text;
-          this.fontPath = fontPath;
-          this.parameter = parameter;
-     }
+    public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
+        this.text = text;
+        this.fontPath = fontPath;
+        this.parameter = parameter;
+    }
 
 
-     public String getText() {
-          return text;
-     }
+    /**
+     * The text to be displayed
+     */
+    public String getText() {
+        return text;
+    }
 
-     public void setText(String text) {
-          this.text = text;
-     }
+    /**
+     * Set the text to be displayed
+    */
+    public void setText(String text) {
+        this.text = text;
+    }
 
-     public String getFontPath() {
-          return fontPath;
-     }
+    /**
+     * The path of the font used to render the text
+     */
+    public String getFontPath() {
+        return fontPath;
+    }
 
-     public void setFontPath(String fontPath) {
-          this.fontPath = fontPath;
-     }
+    /**
+     * Set the path of the font used to render the text
+     */
+    public void setFontPath(String fontPath) {
+        this.fontPath = fontPath;
+    }
 
-     public FreeTypeFontGenerator.FreeTypeFontParameter getParameter() {
-          return parameter;
-     }
+    /**
+     * The FreeTypeFontParameter of the font used to render the text
+     */
+    public FreeTypeFontGenerator.FreeTypeFontParameter getParameter() {
+        return parameter;
+    }
 
-     public void setParameter(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
-          this.parameter = parameter;
-     }
+    /**
+     * Set the FreeTypeFontParameter of the font used to render the text
+     */
+    public void setParameter(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
+        this.parameter = parameter;
+    }
 
 }

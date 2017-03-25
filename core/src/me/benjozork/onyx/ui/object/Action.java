@@ -7,53 +7,60 @@ import me.benjozork.onyx.ui.UIElement;
  */
 public class Action {
 
-     private ActionEvent event;
-     private Runnable action;
-     private String identifier;
+    private ActionEvent event;
+    private Runnable action;
+    private String identifier;
 
-     private UIElement parent;
+    private UIElement parent;
 
-     public Action(UIElement parent, String identifier, Runnable action, ActionEvent event) {
-          this.parent = parent;
-          this.identifier = identifier;
-          this.action = action;
-          this.event = event;
-     }
+    public Action(UIElement parent, String identifier, Runnable action, ActionEvent event) {
+        this.parent = parent;
+        this.identifier = identifier;
+        this.action = action;
+        this.event = event;
+    }
 
-     public void run() {
-          action.run();
-     }
+    /**
+     * Run the assigned code
+     */
+    public void run() {
+        action.run();
+    }
 
-     public Runnable getAction() {
-          return action;
-     }
+    /**
+     * The
+     * @return
+     */
+    public Runnable getAction() {
+        return action;
+    }
 
-     public void setAction(Runnable action) {
-          this.action = action;
-     }
+    public void setAction(Runnable action) {
+        this.action = action;
+    }
 
-     public String getIdentifier() {
-          return identifier;
-     }
+    public String getIdentifier() {
+        return identifier;
+    }
 
-     public void setIdentifier(String identifier) {
-          this.identifier = identifier;
-     }
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
-     public ActionEvent getEvent() {
-          return event;
-     }
+    public ActionEvent getEvent() {
+        return event;
+    }
 
-     public void setEvent(ActionEvent event) {
-          this.event = event;
-     }
+    public void setEvent(ActionEvent event) {
+        this.event = event;
+    }
 
-     public UIElement getParent() {
-          return parent;
-     }
+    public UIElement getParent() {
+        return parent;
+    }
 
-     public void setParent(UIElement parent) {
-          this.parent = parent;
-     }
+    public void setParent(UIElement parent) {
+        this.parent = parent;
+    }
 
 }

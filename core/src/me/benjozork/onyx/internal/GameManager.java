@@ -11,100 +11,110 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class GameManager {
 
-     /**
-      * The camera instance that is used when rendering world objects
-      */
-     private static OrthographicCamera worldCamera;
+    /**
+     * The camera instance that is used when rendering world objects
+     */
+    private static OrthographicCamera worldCamera;
 
-     /**
-      * The camera instance that is used when rendering gui objects
-      */
-     private static OrthographicCamera guiCamera;
+    /**
+     * The camera instance that is used when rendering gui objects
+     */
+    private static OrthographicCamera guiCamera;
 
-     private static Screen currentScreen;
+    private static Screen currentScreen;
 
-     private static ShapeRenderer renderer;
+    private static ShapeRenderer renderer;
 
-     private static SpriteBatch batch;
+    private static SpriteBatch batch;
 
-     /**
-      * The camera instance that is used when rendering world objects
-      * @return the world camera
-      */
-     public static OrthographicCamera getWorldCamera() {
-          return worldCamera;
-     }
+    /**
+     * The camera instance that is used when rendering world objects
+     *
+     * @return the world camera
+     */
+    public static OrthographicCamera getWorldCamera() {
+        return worldCamera;
+    }
 
-     /**
-      * The camera instance that is used when rendering gui objects
-      * @return the gui camera
-      */
-     public static OrthographicCamera getGuiCamera() {
-          return guiCamera;
-     }
+    /**
+     * Set the camera instance to be used when rendering world objects
+     *
+     * @param worldCamera the camera instance to be used
+     */
+    public static void setWorldCamera(OrthographicCamera worldCamera) {
+        GameManager.worldCamera = worldCamera;
+    }
 
-     /**
-      * Set the camera instance to be used when rendering world objects
-      * @param worldCamera the camera instance to be used
-      */
-     public static void setWorldCamera(OrthographicCamera worldCamera) {
-          GameManager.worldCamera = worldCamera;
-     }
+    /**
+     * The camera instance that is used when rendering gui objects
+     *
+     * @return the gui camera
+     */
+    public static OrthographicCamera getGuiCamera() {
+        return guiCamera;
+    }
 
-     /**
-      * Set the camera instance to be used when rendering gui objects
-      * @param guiCamera the camera instance to be used
-      */
-     public static void setGuiCamera(OrthographicCamera guiCamera) {
-          GameManager.guiCamera = guiCamera;
-     }
+    /**
+     * Set the camera instance to be used when rendering gui objects
+     *
+     * @param guiCamera the camera instance to be used
+     */
+    public static void setGuiCamera(OrthographicCamera guiCamera) {
+        GameManager.guiCamera = guiCamera;
+    }
 
-     /**
-      * The current screen
-      * @return the current screen
-      */
-     public static Screen getCurrentScreen() {
-          return currentScreen;
-     }
+    /**
+     * The current screen
+     *
+     * @return the current screen
+     */
+    public static Screen getCurrentScreen() {
+        return currentScreen;
+    }
 
-     /**
-      * Set the current screen
-      * @param currentScreen the screen to be used
-      */
-     public static void setCurrentScreen(Screen currentScreen) {
-          Gdx.app.log("[onyx/gm] ", "Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
-          GameManager.currentScreen = currentScreen;
-     }
+    /**
+     * Set the current screen
+     *
+     * @param currentScreen the screen to be used
+     */
+    public static void setCurrentScreen(Screen currentScreen) {
+        Gdx.app.log("[onyx/gm] ", "Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
+        GameManager.currentScreen = currentScreen;
+    }
 
-     /**
-      * The ShapeRenderer
-      * @return the ShapeRenderer
-      */
-     public static ShapeRenderer getShapeRenderer() {
-          return renderer;
-     }
+    /**
+     * The ShapeRenderer
+     *
+     * @return the ShapeRenderer
+     */
+    public static ShapeRenderer getShapeRenderer() {
+        return renderer;
+    }
 
-     /**
-      * Set the ShapeRenderer
-      * @param renderer the ShapeRenderer to be used
-      */
-     public static void setRenderer(ShapeRenderer renderer) {
-          GameManager.renderer = renderer;
-     }
+    /**
+     * Set the ShapeRenderer
+     *
+     * @param renderer the ShapeRenderer to be used
+     */
+    public static void setRenderer(ShapeRenderer renderer) {
+        GameManager.renderer = renderer;
+    }
 
-     /**
-      * The SpriteBatch
-      * @return the SpriteBatch
-      */
-     public static SpriteBatch getBatch() {
-          return batch;
-     }
+    /**
+     * The SpriteBatch
+     *
+     * @return the SpriteBatch
+     */
+    public static SpriteBatch getBatch() {
+        return batch;
+    }
 
-     /**
-      * Set the SpriteBatch
-      * @param batch the SpriteBatch to be used
-      */
-     public static void setBatch(SpriteBatch batch) {
-          GameManager.batch = batch;
-     }
+    /**
+     * Set the SpriteBatch
+     *
+     * @param batch the SpriteBatch to be used
+     */
+    public static void setBatch(SpriteBatch batch) {
+        GameManager.batch = batch;
+    }
 }

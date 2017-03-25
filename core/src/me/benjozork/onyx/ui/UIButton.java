@@ -18,93 +18,88 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UIButton extends UIElement {
 
-     private FreeTypeFontGenerator generator;
-     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-     private BitmapFont font;
+    private final Texture BUTTON_TEXTURE = new Texture("ui/button/button_0.png");
+    private final NinePatch BUTTON = new NinePatch(BUTTON_TEXTURE, 6, 6, 6, 6);
+    private final Texture HOVERED_BUTTON_TEXTURE = new Texture("ui/button/button_1.png");
+    private final NinePatch HOVERED_BUTTON = new NinePatch(HOVERED_BUTTON_TEXTURE, 6, 6, 6, 6);
+    private final Texture CLICKED_BUTTON_TEXTURE = new Texture("ui/button/button_2.png");
+    private final NinePatch CLICKED_BUTTON = new NinePatch(CLICKED_BUTTON_TEXTURE, 6, 6, 6, 6);
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    private BitmapFont font;
+    private GlyphLayout layout = new GlyphLayout();
+    private String text = new String();
+    private NinePatch currentPatch = BUTTON;
 
-     private GlyphLayout layout = new GlyphLayout();
+    private float colorTimer;
+    private float maxColorTimer = 0.1f;
 
-     private String text = new String();
+    public UIButton(float x, float y, float width, float height, TextComponent component) {
+        super(x, y);
+        bounds = new Rectangle(getX(), getY(), width, height);
+        setWidth(width);
+        setHeight(height);
+        this.text = component.getText();
+        this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
+        this.parameter = component.getParameter();
+    }
 
-     private final Texture BUTTON_TEXTURE = new Texture("ui/button/button_0.png");
-     private final NinePatch BUTTON = new NinePatch(BUTTON_TEXTURE, 6, 6, 6, 6);
-     private final Texture HOVERED_BUTTON_TEXTURE = new Texture("ui/button/button_1.png");
-     private final NinePatch HOVERED_BUTTON = new NinePatch(HOVERED_BUTTON_TEXTURE, 6, 6, 6, 6);
-     private final Texture CLICKED_BUTTON_TEXTURE = new Texture("ui/button/button_2.png");
-     private final NinePatch CLICKED_BUTTON = new NinePatch(CLICKED_BUTTON_TEXTURE, 6, 6, 6, 6);
+    @Override
+    public void init() {
+        font = generator.generateFont(parameter);
+    }
 
-     private NinePatch currentPatch = BUTTON;
+    @Override
+    public void update() {
+        layout.setText(font, text);
+        bounds.width = getWidth() + layout.width + 10;
+        bounds.height = getHeight();
 
-     private float colorTimer;
-     private float maxColorTimer = 0.1f;
+        if (colorTimer >= 0) {
+            if (colorTimer <= maxColorTimer) {
+                colorTimer += Utils.delta();
+            } else {
+                currentPatch = BUTTON;
+                colorTimer = - 1;
+            }
+        } else {
+            if (hovering()) {
+                currentPatch = HOVERED_BUTTON;
+            } else {
+                currentPatch = BUTTON;
+            }
+        }
+    }
 
-     public UIButton(float x, float y, float width, float height, TextComponent component) {
-          super(x, y);
-          bounds = new Rectangle(getX(), getY(), width, height);
-          setWidth(width);
-          setHeight(height);
-          this.text = component.getText();
-          this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
-          this.parameter = component.getParameter();
-     }
+    @Override
+    public void draw() {
 
-     @Override
-     public void init() {
-          font = generator.generateFont(parameter);
-     }
+        layout.setText(font, text);
 
-     @Override
-     public void update() {
-          layout.setText(font, text);
-          bounds.width = getWidth() + layout.width + 10;
-          bounds.height = getHeight();
+        GameManager.getBatch().begin();
+        currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+        font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
 
-          if (colorTimer >= 0) {
-               if (colorTimer <= maxColorTimer) {
-                    colorTimer += Utils.delta();
-               } else {
-                    currentPatch = BUTTON;
-                    colorTimer = -1;
-               }
-          } else {
-               if (hovering()) {
-                    currentPatch = HOVERED_BUTTON;
-               } else {
-                    currentPatch = BUTTON;
-               }
-          }
-     }
+        GameManager.getBatch().end();
+    }
 
-     @Override
-     public void draw() {
+    @Override
+    public boolean click(Vector2 localPosition) {
+        colorTimer = 0;
+        currentPatch = CLICKED_BUTTON;
+        return true;
+    }
 
-          layout.setText(font, text);
+    @Override
+    public void dispose() {
 
-          GameManager.getBatch().begin();
-          currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-          font.draw(GameManager.getBatch(), text, (getX() +  getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
+    }
 
-          GameManager.getBatch().end();
-     }
+    public String getText() {
+        return text;
+    }
 
-     @Override
-     public void dispose() {
-
-     }
-
-     @Override
-     public boolean click(Vector2 localPosition) {
-          colorTimer = 0;
-          currentPatch = CLICKED_BUTTON;
-          return true;
-     }
-
-
-     public String getText() {
-          return text;
-     }
-
-     public void setText(String v) {
-         text = v;
-     }
+    public void setText(String v) {
+        text = v;
+    }
 }

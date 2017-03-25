@@ -44,11 +44,13 @@ public class OnyxGame extends Game {
     }
 
     @Override
-    public void resize(int width, int height) {
-        // Update cameras
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.viewportWidth = width;
-        worldCamera.viewportHeight = height;
+    public void dispose() {
+        // Dispose active screen
+        GameManager.getCurrentScreen().dispose();
+
+        // Dispose graphics resources
+        GameManager.getBatch().dispose();
+        GameManager.getShapeRenderer().dispose();
     }
 
     @Override
@@ -66,12 +68,10 @@ public class OnyxGame extends Game {
     }
 
     @Override
-    public void dispose() {
-        // Dispose active screen
-        GameManager.getCurrentScreen().dispose();
-
-        // Dispose graphics resources
-        GameManager.getBatch().dispose();
-        GameManager.getShapeRenderer().dispose();
+    public void resize(int width, int height) {
+        // Update cameras
+        OrthographicCamera worldCamera = GameManager.getWorldCamera();
+        worldCamera.viewportWidth = width;
+        worldCamera.viewportHeight = height;
     }
 }

@@ -24,7 +24,7 @@ import me.benjozork.onyx.internal.Utils;
  */
 public class GameScreen implements Screen {
 
-    private static final Color INITIAL_DRAW_COLOR = Color.GREEN;
+    private final Color INITIAL_DRAW_COLOR = Color.RED;
 
     private int score = 0, highScore = 0;
     private int lifeCount = 0, maxLife = 3;
@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
 
     private BitmapFont font = new BitmapFont();
 
-    private Color currentColor = INITIAL_DRAW_COLOR;
+    private Color currentColor = new Color(INITIAL_DRAW_COLOR);
 
     private EntityPlayer player;
 
@@ -94,6 +94,7 @@ public class GameScreen implements Screen {
             currentColor.g += (deltaGreen / fadeStep);
             currentColor.b += (deltaBlue / fadeStep);
 
+
             float deltaRed2, deltaGreen2, deltaBlue2;
             // Calculate total delta
             if (deltaRed < 0) {
@@ -115,13 +116,13 @@ public class GameScreen implements Screen {
                 deltaBlue2 = deltaBlue;
             }
 
+
             totalFadeDelta = deltaRed2 + deltaGreen2 + deltaBlue2;
             totalFadeDelta *= 255f;
 
-            if (totalFadeDelta < 4 && totalFadeDelta > -4) {
-                totalFadeDelta = 5f;
-                fadeIndex += 1;
-                if (fadeIndex + 1 == fadeColors.length) fadeIndex = 0;
+            if (totalFadeDelta < 32 && totalFadeDelta > - 32) {
+                fadeIndex++;
+                if (fadeIndex > fadeColors.length - 1) fadeIndex = 0;
                 deltaRed = fadeColors[fadeIndex].r - currentColor.r;
                 deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
                 deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
@@ -165,7 +166,7 @@ public class GameScreen implements Screen {
                 player.setState(EntityPlayer.DrawState.FIRING_MOVING);
             }
         }
-        if (!player.isFiring() && player.getSpeed() == 0f) {
+        if (! player.isFiring() && player.getSpeed() == 0f) {
             player.setState(EntityPlayer.DrawState.IDLE);
         }
 
@@ -174,13 +175,13 @@ public class GameScreen implements Screen {
             player.rotate(5);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.rotate(-5);
+            player.rotate(- 5);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(10f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-10f);
+            player.accelerate(- 10f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("bullet.png");
@@ -198,7 +199,7 @@ public class GameScreen implements Screen {
             if (player.collidesWith(e.getBounds())) {
                 collidingWithPlayer.add(e);
             }
-            if (collidingWithPlayer.contains(e) && !player.collidesWith(e.getBounds())) {
+            if (collidingWithPlayer.contains(e) && ! player.collidesWith(e.getBounds())) {
                 collidingWithPlayer.remove(e);
             }
 
@@ -227,6 +228,7 @@ public class GameScreen implements Screen {
         registeredEntities.removeAll(toRemove);
     }
 
+
     @Override
     public void resize(int width, int height) {
 
@@ -253,16 +255,16 @@ public class GameScreen implements Screen {
     }
 
     public void toggleDebug() {
-        debugEnabled = !debugEnabled;
-    }
-
-    public List<Entity> getRegisteredEntities() {
-        return registeredEntities;
+        debugEnabled = ! debugEnabled;
     }
 
     public void registerEntity(Entity e) {
         registeredEntities.add(e);
         e.init();
+    }
+
+    public List<Entity> getRegisteredEntities() {
+        return registeredEntities;
     }
 
     public void removeEntity(Entity e) {

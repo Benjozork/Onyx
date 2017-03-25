@@ -5,12 +5,12 @@ package me.benjozork.onyx.exception;
  */
 public class DuplicateElementIdentifierException extends IllegalArgumentException {
 
-     public DuplicateElementIdentifierException() {
-          super();
-     }
+    public DuplicateElementIdentifierException() {
+        super();
+    }
 
-     public DuplicateElementIdentifierException(String s) {
-          super(s);
-     }
+    public DuplicateElementIdentifierException(String s) {
+        super(s);
+    }
 
 }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameConfiguration;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-03.
