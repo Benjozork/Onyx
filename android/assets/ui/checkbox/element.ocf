@@ -1,0 +1,8 @@
+@Attribute("USE_SKIN_FONT", "TRUE");
+
+#Section("NINEPATCH"):
+!ApplyToImages("AlL");
+@Attribute("SIZE_LEFT", "6");
+@Attribute("SIZE_RIGHT", "6");
+@Attribute("SIZE_TOP", "6");
+@Attribute("SIZE_BOTTOM", "6");

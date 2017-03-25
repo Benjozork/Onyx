@@ -1,0 +1,5 @@
+@ApplyTo("AlL");
+@Attribute("SIZE_LEFT", "6");
+@Attribute("SIZE_RIGHT", "6");
+@Attribute("SIZE_TOP", "6");
+@Attribute("SIZE_BOTTOM", "6");

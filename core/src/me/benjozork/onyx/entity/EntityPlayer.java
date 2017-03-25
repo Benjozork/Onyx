@@ -42,10 +42,10 @@ public class EntityPlayer extends LivingEntity {
 
           sprite = new Sprite();
 
-          img = new Texture("core/assets/ship/ship.png");
-          img_firing = new Texture("core/assets/ship/ship_weapon_fire.png");
-          img_firing_moving = new Texture("core/assets/ship/ship_weapon_engine_fire.png");
-          img_moving = new Texture("core/assets/ship/ship_engine_fire.png");
+          img = new Texture("android/assets/ship/ship.png");
+          img_firing = new Texture("android/assets/ship/ship_weapon_fire.png");
+          img_firing_moving = new Texture("android/assets/ship/ship_weapon_engine_fire.png");
+          img_moving = new Texture("android/assets/ship/ship_engine_fire.png");
      }
 
      @Override

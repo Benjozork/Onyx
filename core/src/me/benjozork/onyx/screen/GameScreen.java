@@ -60,12 +60,12 @@ public class GameScreen implements Screen {
           this.player = player;
           player.setSpeed(0f);
 
-          background = new Sprite(new Texture("core/assets/hud/background_base.png"));
+          background = new Sprite(new Texture("android/assets/hud/background_base.png"));
           background.setPosition(0, 0);
           background.setColor(currentColor);
           background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-          lifeIcon = new Sprite(new Texture("core/assets/hud/ship_silouhette.png"));
+          lifeIcon = new Sprite(new Texture("android/assets/hud/ship_silouhette.png"));
           lifeIcon.setScale(0.4f, 0.4f);
 
           batch.setProjectionMatrix(camera.combined);
@@ -133,7 +133,7 @@ public class GameScreen implements Screen {
                player.accelerate(- 10f);
           }
           if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-               player.fireProjectile("core/assets/bullet.png");
+               player.fireProjectile("android/assets/bullet.png");
           }
           if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
                toggleDebug();

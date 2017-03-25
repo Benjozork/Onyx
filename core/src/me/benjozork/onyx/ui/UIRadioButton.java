@@ -23,10 +23,10 @@ public class UIRadioButton extends UIElement {
 
      private GlyphLayout layout = new GlyphLayout();
 
-     private final Texture RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_0.png");
-     private final Texture TICKED_RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_2.png");
-     private final Texture HOVERED_RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_1.png");
-     private final Texture HOVERED_TICKED_RADIOBUTTON_TEXTURE = new Texture("core/assets/ui/radiobutton/radiobutton_3.png");
+     private final Texture RADIOBUTTON_TEXTURE = new Texture("android/assets/ui/radiobutton/radiobutton_0.png");
+     private final Texture TICKED_RADIOBUTTON_TEXTURE = new Texture("android/assets/ui/radiobutton/radiobutton_2.png");
+     private final Texture HOVERED_RADIOBUTTON_TEXTURE = new Texture("android/assets/ui/radiobutton/radiobutton_1.png");
+     private final Texture HOVERED_TICKED_RADIOBUTTON_TEXTURE = new Texture("android/assets/ui/radiobutton/radiobutton_3.png");
 
      private Texture currentTexture = RADIOBUTTON_TEXTURE;
 

@@ -24,10 +24,10 @@ public class UISlider extends UIElement {
 
      private String text = new String();
 
-     private final Texture SLIDER_TEXTURE = new Texture("core/assets/ui/slider/slider_bar_0.png");
-     private final Texture HOVERED_SLIDER_TEXTURE = new Texture("core/assets/ui/slider/slider_bar_1.png");
-     private final Texture SLIDER_CONTROL_TEXTURE  = new Texture("core/assets/ui/slider/slider_control_0.png");
-     private final Texture HOVERED_SLIDER_CONTROL_TEXTURE  = new Texture("core/assets/ui/slider/slider_control_1.png");
+     private final Texture SLIDER_TEXTURE = new Texture("android/assets/ui/slider/slider_bar_0.png");
+     private final Texture HOVERED_SLIDER_TEXTURE = new Texture("android/assets/ui/slider/slider_bar_1.png");
+     private final Texture SLIDER_CONTROL_TEXTURE  = new Texture("android/assets/ui/slider/slider_control_0.png");
+     private final Texture HOVERED_SLIDER_CONTROL_TEXTURE  = new Texture("android/assets/ui/slider/slider_control_1.png");
 
      private Texture currentSliderTexture = SLIDER_TEXTURE;
      private Texture currentSliderControlTexture = SLIDER_CONTROL_TEXTURE;

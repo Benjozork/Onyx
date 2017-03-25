@@ -1,0 +1,6 @@
+@Meta("NAME", "Default Onyx UI");
+@Meta("AUTHOR", "Benjozork");
+@Meta("MIN_VERSION", "ANY");
+
+@Attribute("FONT_PATH", "cc_red_alert_inet.ttf");
+@Attribute("DEFAULT_FONT_SIZE", "35");
