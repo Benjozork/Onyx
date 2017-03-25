@@ -5,11 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.Utils;
-import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-04.
@@ -17,43 +15,39 @@ import me.benjozork.onyx.screen.GameScreen;
 
 public class EntityProjectile extends Entity {
 
-     private SpriteBatch batch;
+    private SpriteBatch batch;
 
-     private float maxTimer;
-     private float bulletTimer;
-     private float damage = 0;
+    private float maxTimer;
+    private float bulletTimer;
+    private float damage = 0;
 
-     private Vector2 mouse = new Vector2();
+    private String texturePath = new String();
+    private Texture texture;
 
-     private String texturePath = new String();
-     private Texture texture;
+    public EntityProjectile(float x, float y) {
+        super(new Vector2(x, y));
+    }
 
-     public EntityProjectile(float x, float y) {
-          super(new Vector2(x, y));
-     }
+    @Override
+    public void init() {
+        batch = GameManager.getBatch();
+        // initialize hitbox
+        setBounds(new Rectangle(getX(), getY(), 15, 25));
 
-     @Override
-     public void init() {
-          batch = GameManager.getBatch();
-          // initialize hitbox
-          setBounds(new Rectangle(getX(), getY(), 15, 25));
+        // get mouse point, unproject it, and set velocity accordingly
+        Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
+        velocity.set(mouse.sub(getX(), getY()));
+        angle = velocity.angle();
+    }
 
-          // get mouse point, unproject it, and set velocity accordingly
-          mouse.x = Gdx.input.getX();
-          mouse.y = Gdx.input.getY();
-          mouse = Utils.unprojectWorld(mouse);
-          velocity.x = mouse.x - getX();
-          velocity.y = mouse.y - getY();
-     }
+    @Override
+    public void update() {
 
-     @Override
-     public void update() {
+    }
 
-     }
-
-     @Override
-     public void draw() {
-          // For every entity registered, check if it is an LivingEntity and apply damage, then destroy entity
+    @Override
+    public void draw() {
+        // For every entity registered, check if it is an LivingEntity and apply damage, then destroy entity
            /* for (Entity e : GameManager.getRegisteredEntities()) {
                 if (this.collidesWith(e)) {
                     if (e instanceof LivingEntity) {
@@ -63,31 +57,31 @@ public class EntityProjectile extends Entity {
                 }
             }*/
 
-          batch.begin();
-          batch.draw(texture, getX(), getY(), 10, 10);
-          batch.end();
-     }
+        batch.begin();
+        batch.draw(texture, getX(), getY(), 10, 10);
+        batch.end();
+    }
 
-     @Override
-     public void dispose() {
+    @Override
+    public void dispose() {
 
-     }
+    }
 
-     public float getDamage() {
-          return damage;
-     }
+    public float getDamage() {
+        return damage;
+    }
 
-     public void setDamage(float damage) {
-          this.damage = damage;
-     }
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
 
-     public String getTexturePath() {
-          return texturePath;
-     }
+    public String getTexturePath() {
+        return texturePath;
+    }
 
-     public void setTexturePath(String texturePath) {
-          this.texturePath = texturePath;
-          this.texture = new Texture(texturePath);
-     }
+    public void setTexturePath(String texturePath) {
+        this.texturePath = texturePath;
+        this.texture = new Texture(texturePath);
+    }
 
 }

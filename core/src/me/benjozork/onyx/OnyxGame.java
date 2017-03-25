@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
 public class OnyxGame extends Game {

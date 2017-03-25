@@ -9,16 +9,16 @@ import me.benjozork.onyx.object.Drawable;
  */
 public abstract class Entity extends Drawable {
 
-     public Entity(Vector2 position) {
-          super(position);
-     }
+    public Entity(Vector2 position) {
+        super(position);
+    }
 
-     public abstract void init();
+    public abstract void init();
 
-     public abstract void update();
+    public abstract void update();
 
-     public abstract void draw();
+    public abstract void draw();
 
-     public abstract void dispose();
+    public abstract void dispose();
 
 }
