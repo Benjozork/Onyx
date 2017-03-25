@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class UIScreen extends UIContainer {
 
-     public UIScreen(Vector2 position) {
-          super(position);
-     }
+    public UIScreen(Vector2 position) {
+        super(position);
+    }
 
 }

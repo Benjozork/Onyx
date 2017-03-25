@@ -24,26 +24,26 @@ import me.benjozork.onyx.internal.Utils;
  */
 public class GameScreen implements Screen {
 
-     private final Color INITIAL_DRAW_COLOR = Color.RED;
+    private final Color INITIAL_DRAW_COLOR = Color.RED;
 
-     private int score = 0, highScore = 0;
-     private int lifeCount = 0, maxLife = 3;
-     private float maxFrameTime;
+    private int score = 0, highScore = 0;
+    private int lifeCount = 0, maxLife = 3;
+    private float maxFrameTime;
 
-     private boolean debugEnabled = false;
+    private boolean debugEnabled = false;
 
-     private BitmapFont font = new BitmapFont();
+    private BitmapFont font = new BitmapFont();
 
-     private Color currentColor = new Color(INITIAL_DRAW_COLOR);
+    private Color currentColor = new Color(INITIAL_DRAW_COLOR);
 
-     private EntityPlayer player;
+    private EntityPlayer player;
 
-     private List<Entity> registeredEntities = new ArrayList<Entity>();
-     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
-     private List<Entity> toRemove = new ArrayList<Entity>();
+    private List<Entity> registeredEntities = new ArrayList<Entity>();
+    private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
+    private List<Entity> toRemove = new ArrayList<Entity>();
 
-     private Sprite background;
-     private Sprite lifeIcon;
+    private Sprite background;
+    private Sprite lifeIcon;
 
     private boolean isFading;
     private float deltaRed;
@@ -53,252 +53,251 @@ public class GameScreen implements Screen {
     private int fadeIndex;
     private Color[] fadeColors = {Color.BLUE, Color.RED, Color.GREEN};
 
-     @Override
-     public void show() {
-          EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 20);
-          registerEntity(player);
-          this.player = player;
-          player.setSpeed(0f);
+    @Override
+    public void show() {
+        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 20);
+        registerEntity(player);
+        this.player = player;
+        player.setSpeed(0f);
 
-          background = new Sprite(new Texture("hud/background_base.png"));
-          background.setPosition(0, 0);
-          background.setColor(currentColor);
-          background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background = new Sprite(new Texture("hud/background_base.png"));
+        background.setPosition(0, 0);
+        background.setColor(currentColor);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-          lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
-          lifeIcon.setScale(0.4f, 0.4f);
-     }
+        lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
+        lifeIcon.setScale(0.4f, 0.4f);
+    }
 
-     @Override
-     public void render(float delta) {
-         OrthographicCamera worldCam = GameManager.getWorldCamera();
-         worldCam.position.x = player.getX() + 38;
-         worldCam.position.y = player.getY() + 55;
-         worldCam.update();
+    @Override
+    public void render(float delta) {
+        OrthographicCamera worldCam = GameManager.getWorldCamera();
+        worldCam.position.x = player.getX() + 38;
+        worldCam.position.y = player.getY() + 55;
+        worldCam.update();
 
-         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-             isFading = true;
-         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            isFading = true;
+        }
 
-         // Crossfade
-         if (isFading) {
-             float totalFadeDelta;
+        // Crossfade
+        if (isFading) {
+            float totalFadeDelta;
 
-             deltaRed = fadeColors[fadeIndex].r - currentColor.r;
-             deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
-             deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
+            deltaRed = fadeColors[fadeIndex].r - currentColor.r;
+            deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
+            deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
 
-             fadeStep = maxFadeTime / Utils.delta();
+            fadeStep = maxFadeTime / Utils.delta();
 
-             currentColor.r += (deltaRed / fadeStep);
-             currentColor.g += (deltaGreen / fadeStep);
-             currentColor.b += (deltaBlue / fadeStep);
-
-
-             float deltaRed2, deltaGreen2, deltaBlue2;
-             // Calculate total delta
-             if (deltaRed < 0) {
-                 deltaRed2 = deltaRed + deltaRed * 2;
-             } else {
-                 deltaRed2 = deltaRed;
-             }
-
-             if (deltaGreen < 0) {
-                 deltaGreen2 = deltaGreen + deltaGreen * 2;
-             } else {
-                 deltaGreen2 = deltaGreen;
-             }
+            currentColor.r += (deltaRed / fadeStep);
+            currentColor.g += (deltaGreen / fadeStep);
+            currentColor.b += (deltaBlue / fadeStep);
 
 
-             if (deltaBlue < 0) {
-                 deltaBlue2 = deltaBlue + deltaBlue * 2;
-             } else {
-                 deltaBlue2 = deltaBlue;
-             }
+            float deltaRed2, deltaGreen2, deltaBlue2;
+            // Calculate total delta
+            if (deltaRed < 0) {
+                deltaRed2 = deltaRed + deltaRed * 2;
+            } else {
+                deltaRed2 = deltaRed;
+            }
+
+            if (deltaGreen < 0) {
+                deltaGreen2 = deltaGreen + deltaGreen * 2;
+            } else {
+                deltaGreen2 = deltaGreen;
+            }
 
 
-             totalFadeDelta = deltaRed2 + deltaGreen2 + deltaBlue2;
-             totalFadeDelta *= 255f;
-
-             if (totalFadeDelta < 32 && totalFadeDelta > - 32) {
-                 fadeIndex++;
-                 if (fadeIndex > fadeColors.length - 1) fadeIndex = 0;
-                 deltaRed = fadeColors[fadeIndex].r - currentColor.r;
-                 deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
-                 deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
-             }
-         }
-
-         if (delta > maxFrameTime) {
-             maxFrameTime = delta;
-         }
-
-         SpriteBatch batch = GameManager.getBatch();
-         OrthographicCamera guiCam = GameManager.getGuiCamera();
-         guiCam.update();
-
-         // Draw background
-         background.setColor(currentColor);
-         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-         batch.disableBlending();
-         batch.setProjectionMatrix(guiCam.combined);
-         batch.begin();
-         background.draw(batch);
-         batch.end();
-
-         // Draw life icons
-         batch.enableBlending();
-         batch.setProjectionMatrix(worldCam.combined);
-         batch.begin();
-         for (int i = 0; i < maxLife; i++) {
-             lifeIcon.setColor(currentColor);
-             lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
-             lifeIcon.draw(batch);
-         }
-         batch.end();
-
-         if (player.isFiring()) {
-             player.setState(EntityPlayer.DrawState.FIRING);
-         }
-         if (player.getSpeed() != 0) {
-             player.setState(EntityPlayer.DrawState.MOVING);
-             if (player.isFiring()) {
-                 player.setState(EntityPlayer.DrawState.FIRING_MOVING);
-             }
-         }
-         if (! player.isFiring() && player.getSpeed() == 0f) {
-             player.setState(EntityPlayer.DrawState.IDLE);
-         }
-
-         // Get player/enemy and modify player, depending on current inputs
-         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-             player.rotate(5);
-         }
-         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-             player.rotate(- 5);
-         }
-         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-             player.accelerate(10f);
-         }
-         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-             player.accelerate(- 10f);
-         }
-         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-             player.fireProjectile("bullet.png");
-         }
-         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-             toggleDebug();
-         }
-
-         // Manage collidingWithPlayer list
-         for (Iterator<Entity> it = registeredEntities.iterator(); it.hasNext(); ) {
-             Entity e = it.next();
-
-             if (e instanceof EntityPlayer) break;
-
-             if (player.collidesWith(e.getBounds())) {
-                 collidingWithPlayer.add(e);
-             }
-             if (collidingWithPlayer.contains(e) && ! player.collidesWith(e.getBounds())) {
-                 collidingWithPlayer.remove(e);
-             }
-
-             if (collidingWithPlayer.contains(e) && collidingWithPlayer.size() > 1) {
-                 collidingWithPlayer.remove(e);
-             }
-         }
-
-         //batch.draw(image, x, y);
-         Gdx.graphics.setTitle("Onyx 0.0.1 | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
-
-         // Update then draw entities and apply deltas
-
-         for (Entity e : registeredEntities) {
-             e.update(delta);
-         }
-
-         for (Entity e : registeredEntities) {
-             e.update();
-         }
-
-         for (Entity e : registeredEntities) {
-             e.draw();
-         }
-
-         registeredEntities.removeAll(toRemove);
-     }
+            if (deltaBlue < 0) {
+                deltaBlue2 = deltaBlue + deltaBlue * 2;
+            } else {
+                deltaBlue2 = deltaBlue;
+            }
 
 
+            totalFadeDelta = deltaRed2 + deltaGreen2 + deltaBlue2;
+            totalFadeDelta *= 255f;
 
-     @Override
-     public void resize(int width, int height) {
+            if (totalFadeDelta < 32 && totalFadeDelta > - 32) {
+                fadeIndex++;
+                if (fadeIndex > fadeColors.length - 1) fadeIndex = 0;
+                deltaRed = fadeColors[fadeIndex].r - currentColor.r;
+                deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
+                deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
+            }
+        }
 
-     }
+        if (delta > maxFrameTime) {
+            maxFrameTime = delta;
+        }
 
-     @Override
-     public void pause() {
+        SpriteBatch batch = GameManager.getBatch();
+        OrthographicCamera guiCam = GameManager.getGuiCamera();
+        guiCam.update();
 
-     }
+        // Draw background
+        background.setColor(currentColor);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.disableBlending();
+        batch.setProjectionMatrix(guiCam.combined);
+        batch.begin();
+        background.draw(batch);
+        batch.end();
 
-     @Override
-     public void resume() {
+        // Draw life icons
+        batch.enableBlending();
+        batch.setProjectionMatrix(worldCam.combined);
+        batch.begin();
+        for (int i = 0; i < maxLife; i++) {
+            lifeIcon.setColor(currentColor);
+            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
+            lifeIcon.draw(batch);
+        }
+        batch.end();
 
-     }
+        if (player.isFiring()) {
+            player.setState(EntityPlayer.DrawState.FIRING);
+        }
+        if (player.getSpeed() != 0) {
+            player.setState(EntityPlayer.DrawState.MOVING);
+            if (player.isFiring()) {
+                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
+            }
+        }
+        if (! player.isFiring() && player.getSpeed() == 0f) {
+            player.setState(EntityPlayer.DrawState.IDLE);
+        }
 
-     @Override
-     public void hide() {
+        // Get player/enemy and modify player, depending on current inputs
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.rotate(5);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.rotate(- 5);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.accelerate(10f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.accelerate(- 10f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            player.fireProjectile("bullet.png");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            toggleDebug();
+        }
 
-     }
+        // Manage collidingWithPlayer list
+        for (Iterator<Entity> it = registeredEntities.iterator(); it.hasNext(); ) {
+            Entity e = it.next();
 
-     @Override
-     public void dispose() {
+            if (e instanceof EntityPlayer) break;
 
-     }
+            if (player.collidesWith(e.getBounds())) {
+                collidingWithPlayer.add(e);
+            }
+            if (collidingWithPlayer.contains(e) && ! player.collidesWith(e.getBounds())) {
+                collidingWithPlayer.remove(e);
+            }
 
-     public void toggleDebug() {
-          debugEnabled = !debugEnabled;
-     }
+            if (collidingWithPlayer.contains(e) && collidingWithPlayer.size() > 1) {
+                collidingWithPlayer.remove(e);
+            }
+        }
 
-     public List<Entity> getRegisteredEntities() {
-          return registeredEntities;
-     }
+        //batch.draw(image, x, y);
+        Gdx.graphics.setTitle("Onyx 0.0.1 | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
 
-     public void registerEntity(Entity e) {
-          registeredEntities.add(e);
-          e.init();
-     }
+        // Update then draw entities and apply deltas
 
-     public void removeEntity(Entity e) {
-          toRemove.add(e);
-     }
+        for (Entity e : registeredEntities) {
+            e.update(delta);
+        }
 
-     public int getScore() {
-          return score;
-     }
+        for (Entity e : registeredEntities) {
+            e.update();
+        }
 
-     public void setScore(int score) {
-          this.score = score;
-          if (this.score > highScore) highScore = score;
-     }
+        for (Entity e : registeredEntities) {
+            e.draw();
+        }
 
-     public void addScore(int v) {
-          score += v;
-          if (score > highScore) highScore = score;
-     }
+        registeredEntities.removeAll(toRemove);
+    }
 
-     public int getHighScore() {
-          return highScore;
-     }
 
-     public void setHighScore(int highScore) {
-          this.highScore = highScore;
-     }
+    @Override
+    public void resize(int width, int height) {
 
-     public EntityPlayer getPlayer() {
-          return player;
-     }
+    }
 
-     public Color getCurrentColor() {
-          return currentColor;
-     }
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    public void toggleDebug() {
+        debugEnabled = ! debugEnabled;
+    }
+
+    public void registerEntity(Entity e) {
+        registeredEntities.add(e);
+        e.init();
+    }
+
+    public List<Entity> getRegisteredEntities() {
+        return registeredEntities;
+    }
+
+    public void removeEntity(Entity e) {
+        toRemove.add(e);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        if (this.score > highScore) highScore = score;
+    }
+
+    public void addScore(int v) {
+        score += v;
+        if (score > highScore) highScore = score;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public EntityPlayer getPlayer() {
+        return player;
+    }
+
+    public Color getCurrentColor() {
+        return currentColor;
+    }
 }

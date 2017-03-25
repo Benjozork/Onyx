@@ -12,40 +12,41 @@ import java.util.List;
  */
 public abstract class FileParser {
 
-     protected FileParser(String path) {
-          file = new File(path);
-     }
-     private File file;
+    private File file;
 
-     private String[] decodeLines() {
-          BufferedReader br = null;
-          List<String> content = new ArrayList<String>();
+    protected FileParser(String path) {
+        file = new File(path);
+    }
 
-          try {
-               String currentLine;
+    private String[] decodeLines() {
+        BufferedReader br = null;
+        List<String> content = new ArrayList<String>();
 
-               br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+        try {
+            String currentLine;
 
-               while ((currentLine = br.readLine()) != null) {
-                    content.add(currentLine);
-               }
-               return content.toArray(new String[content.size()]);
-          } catch (IOException e) {
-               e.printStackTrace();
-          } finally {
-               try {
-                    if (br != null) br.close();
-               } catch (IOException e) {
-                    e.printStackTrace();
-               }
-          }
-          return null;
-     }
+            br = new BufferedReader(new FileReader(file.getAbsolutePath()));
 
-     protected abstract void parseLines(String[] lines) ;
+            while ((currentLine = br.readLine()) != null) {
+                content.add(currentLine);
+            }
+            return content.toArray(new String[content.size()]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
-     protected void parseFile(String[] lines) {
-          parseLines(lines);
-     }
+    protected void parseFile(String[] lines) {
+        parseLines(lines);
+    }
+
+    protected abstract void parseLines(String[] lines);
 
 }

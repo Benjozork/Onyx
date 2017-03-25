@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class GameConfiguration {
 
-     // Drawing constants
-     public static final Color DEFAULT_DRAW_COLOR = Color.WHITE;
+    // Drawing constants
+    public static final Color DEFAULT_DRAW_COLOR = Color.WHITE;
 
-     // Entity constants
-     public static final float DEFAULT_HEALTH = 1f;
-     public static final int DEFAULT_AMMO = 100;
+    // Entity constants
+    public static final float DEFAULT_HEALTH = 1f;
+    public static final int DEFAULT_AMMO = 100;
 
 }
