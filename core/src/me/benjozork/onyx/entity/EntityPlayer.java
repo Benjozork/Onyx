@@ -20,11 +20,14 @@ import me.benjozork.onyx.screen.GameScreen;
 public class EntityPlayer extends LivingEntity {
 
      ShapeRenderer renderer;
-     Sprite sprite;
-     Texture img;
-     Texture img_firing;
-     Texture img_firing_moving;
-     Texture img_moving;
+
+     private final Texture PLAYER_TEXTURE = new Texture("ship/ship.png");
+     private final Texture FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_fire.png");
+     private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_engine_fire.png");
+     private final Texture MOVING_PLAYER_TEXTURE = new Texture("ship/ship_engine_fire.png");
+
+     Sprite currentTexture = new Sprite(PLAYER_TEXTURE);
+
      private Vector3 mouse = new Vector3();
 
      private DrawState state = DrawState.IDLE;
@@ -39,13 +42,6 @@ public class EntityPlayer extends LivingEntity {
           renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
-
-          sprite = new Sprite();
-
-          img = new Texture("android/assets/ship/ship.png");
-          img_firing = new Texture("android/assets/ship/ship_weapon_fire.png");
-          img_firing_moving = new Texture("android/assets/ship/ship_weapon_engine_fire.png");
-          img_moving = new Texture("android/assets/ship/ship_engine_fire.png");
      }
 
      @Override
@@ -84,22 +80,22 @@ public class EntityPlayer extends LivingEntity {
         renderer.end();*/
 
           if (state == DrawState.IDLE) {
-               sprite = new Sprite(img);
+               currentTexture.setTexture(PLAYER_TEXTURE);
           } else if (state == DrawState.MOVING) {
-               sprite = new Sprite(img_moving);
+               currentTexture.setTexture(MOVING_PLAYER_TEXTURE);
           } else if (state == DrawState.FIRING) {
-               sprite = new Sprite(img_firing);
+               currentTexture.setTexture(FIRING_PLAYER_TEXTURE);
           } else if (state == DrawState.FIRING_MOVING) {
-               sprite = new Sprite(img_firing_moving);
+               currentTexture.setTexture(MOVING_FIRING_PLAYER_TEXTURE);
           }
 
           //sprite.setColor(GameManager.getCurrentColor());
-          sprite.setPosition(getX(), getY());
-          sprite.setRotation((float) - angle * MathUtils.radiansToDegrees);
+          currentTexture.setPosition(getX(), getY());
+          currentTexture.setRotation((float) - angle * MathUtils.radiansToDegrees);
 
           ((GameScreen) GameManager.getCurrentScreen()).getBatch().begin();
           //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
-          sprite.draw(((GameScreen) GameManager.getCurrentScreen()).getBatch());
+          currentTexture.draw(((GameScreen) GameManager.getCurrentScreen()).getBatch());
           ((GameScreen) GameManager.getCurrentScreen()).getBatch().end();
      }
 
