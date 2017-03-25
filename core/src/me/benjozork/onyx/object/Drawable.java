@@ -160,7 +160,7 @@ public abstract class Drawable {
      }
 
      public boolean hovering() {
-          Vector2 mouse = Utils.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+          Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
 
           if (mouse.x > getBounds().getX()
                   && mouse.x < (getBounds().getX() + getBounds().getWidth())

@@ -59,7 +59,7 @@ public class UIContainer extends Drawable {
           for (UIElement element : elements) {
 
                Vector2 mouse = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-               Vector2 unprojected = Utils.unproject(mouse);
+               Vector2 unprojected = Utils.unprojectGui(mouse);
 
                if (element.getBounds().contains(unprojected)) {
                     element.clickElement(unprojected);

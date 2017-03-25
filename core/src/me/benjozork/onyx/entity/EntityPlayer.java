@@ -1,9 +1,11 @@
 package me.benjozork.onyx.entity;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -39,7 +41,7 @@ public class EntityPlayer extends LivingEntity {
      @Override
      public void init() {
           // Get the ShapeRenderer
-          renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
+          renderer = GameManager.getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
      }
@@ -93,10 +95,11 @@ public class EntityPlayer extends LivingEntity {
           currentTexture.setPosition(getX(), getY());
           currentTexture.setRotation((float) - angle * MathUtils.radiansToDegrees);
 
-          ((GameScreen) GameManager.getCurrentScreen()).getBatch().begin();
+          SpriteBatch batch = GameManager.getBatch();
+          batch.begin();
           //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
-          currentTexture.draw(((GameScreen) GameManager.getCurrentScreen()).getBatch());
-          ((GameScreen) GameManager.getCurrentScreen()).getBatch().end();
+          currentTexture.draw(batch);
+          batch.end();
      }
 
      @Override

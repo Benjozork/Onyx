@@ -1,5 +1,6 @@
 package me.benjozork.onyx.entity;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -21,7 +22,7 @@ public class EntityEnemy extends LivingEntity {
      @Override
      public void init() {
           // Get the ShapeRenderer
-          renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
+          renderer = GameManager.getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
      }

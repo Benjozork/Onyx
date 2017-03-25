@@ -11,7 +11,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class GameManager {
 
-     private static OrthographicCamera camera;
+     /**
+      * The camera instance that is used when rendering world objects
+      */
+     private static OrthographicCamera worldCamera;
+
+     /**
+      * The camera instance that is used when rendering gui objects
+      */
+     private static OrthographicCamera guiCamera;
 
      private static Screen currentScreen;
 
@@ -19,12 +27,36 @@ public class GameManager {
 
      private static SpriteBatch batch;
 
-     public static OrthographicCamera getCamera() {
-          return camera;
+     /**
+      * The camera instance that is used when rendering world objects
+      * @return the world camera
+      */
+     public static OrthographicCamera getWorldCamera() {
+          return worldCamera;
      }
 
-     public static void setCamera(OrthographicCamera camera) {
-          GameManager.camera = camera;
+     /**
+      * The camera instance that is used when rendering gui objects
+      * @return the gui camera
+      */
+     public static OrthographicCamera getGuiCamera() {
+          return guiCamera;
+     }
+
+     /**
+      * Set the camera instance to be used when rendering world objects
+      * @param worldCamera
+      */
+     public static void setWorldCamera(OrthographicCamera worldCamera) {
+          GameManager.worldCamera = worldCamera;
+     }
+
+     /**
+      * Set the camera instance to be used when rendering gui objects
+      * @param guiCamera
+      */
+     public static void setGuiCamera(OrthographicCamera guiCamera) {
+          GameManager.guiCamera = guiCamera;
      }
 
      public static Screen getCurrentScreen() {

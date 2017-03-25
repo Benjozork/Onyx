@@ -14,7 +14,7 @@ public class DesktopLauncher {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		config.width = (int) dimension.getWidth();
 		config.height = (int) dimension.getHeight();
-		config.fullscreen = true;
+		config.fullscreen = false;
 		config.vSyncEnabled = false;
 		new LwjglApplication(new OnyxGame(), config);
 	}

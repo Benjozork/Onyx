@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
 /**
@@ -22,7 +23,7 @@ public class EntityProjectile extends Entity {
      private float bulletTimer;
      private float damage = 0;
 
-     private Vector3 mouse = new Vector3(0, 0, 0);
+     private Vector2 mouse = new Vector2();
 
      private String texturePath = new String();
      private Texture texture;
@@ -33,14 +34,14 @@ public class EntityProjectile extends Entity {
 
      @Override
      public void init() {
-          batch = ((GameScreen) GameManager.getCurrentScreen()).getBatch();
+          batch = GameManager.getBatch();
           // initialize hitbox
           setBounds(new Rectangle(getX(), getY(), 15, 25));
 
           // get mouse point, unproject it, and set velocity accordingly
           mouse.x = Gdx.input.getX();
           mouse.y = Gdx.input.getY();
-          mouse = ((GameScreen) GameManager.getCurrentScreen()).getCamera().unproject(mouse);
+          mouse = Utils.unprojectWorld(mouse);
           velocity.x = mouse.x - getX();
           velocity.y = mouse.y - getY();
      }

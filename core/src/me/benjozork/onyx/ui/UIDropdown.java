@@ -145,7 +145,7 @@ public class UIDropdown extends UIElement {
                }
 
                if (hovering()) {
-                    Vector2 mouse = Utils.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+                    Vector2 mouse = Utils.unprojectGui(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
                     float dy = getY() - mouse.y;
                     int index = (int) (dy / getHeight());
                     if (index < 0 || dy < 0) {

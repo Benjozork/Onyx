@@ -2,6 +2,7 @@ package me.benjozork.onyx.internal;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -11,6 +12,15 @@ import com.badlogic.gdx.utils.Array;
  * Created by Benjozork on 2017-03-04.
  */
 public class Utils {
+
+     /**
+      * Cached instances used for calculations or returning results.
+      * Note: This potentially leads to bugs if the same temporary instance is used
+      *       multiple times throughout a method without care. If more cached instances
+      *       are needed make sure to create a new one here.
+      */
+     private static final Vector2 v2 = new Vector2();
+     private static final Vector3 v3 = new Vector3();
 
      public static float delta() {
           return Gdx.graphics.getDeltaTime();
@@ -24,10 +34,54 @@ public class Utils {
           return new Vector2(cw - w / 2, ch - h / 2);
      }
 
-     public static Vector2 unproject(Vector2 vec) {
-          Vector3 vec3;
-          vec3 =  GameManager.getCamera().unproject(new Vector3(vec.x, vec.y, 0));
-          return new Vector2(vec3.x, vec3.y);
+     /**
+      * Translate a point from screen coordinates to world coordinates.<br>
+      * This method returns an internally cached vector instance, do not store this instance!
+      * @param vec the position of the point
+      * @return the point position in world coordinates.
+      */
+     public static Vector2 unprojectWorld(Vector2 vec) {
+          return unprojectWorld(vec.x, vec.y);
+     }
+
+     /**
+      * Translate a point from screen coordinates to world coordinates.<br>
+      * This method returns an internally cached vector instance, do not store this instance!
+      * @param x the x position of the point
+      * @param y the y position of the point
+      * @return the point position in world coordinates.
+      */
+     public static Vector2 unprojectWorld(float x, float y) {
+          v3.set(x, y, 0);
+          OrthographicCamera camera = GameManager.getWorldCamera();
+          camera.unproject(v3);
+          v2.set(v3.x, v3.y);
+          return v2;
+     }
+
+     /**
+      * Translate a point from screen coordinates to world coordinates.<br>
+      * This method returns an internally cached vector instance, do not store this instance!
+      * @param vec the position of the point
+      * @return the point position in world coordinates.
+      */
+     public static Vector2 unprojectGui(Vector2 vec) {
+          return unprojectGui(vec.x, vec.y);
+     }
+
+     /**
+      * Translate a point from screen coordinates to gui coordinates.<br>
+      * This method returns an internally cached vector instance, do not store this instance!
+      * @param x the x position of the point
+      * @param y the y position of the point
+      * @return the point position in world coordinates.
+      */
+     public static Vector2 unprojectGui(float x, float y) {
+          v3.set(x, y, 0);
+          OrthographicCamera camera = GameManager.getGuiCamera();
+          camera.unproject(v3);
+          v2.set(v3.x, v3.y);
+          return v2;
      }
 
      public static Color rgb(int r, int g, int b) {
