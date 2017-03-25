@@ -10,4 +10,4 @@ A small (or big ?) project of mine
 **angelickite**: Developer  
 **sozemego**: Developer  
 
-**We are actively looking for graphics/sound artists and developpers ! Hit us up on [Discord](https://discord.gg/gqhcbRP) for more information !**
+**We are actively looking for graphics/sound artists and developers ! Hit us up on [Discord](https://discord.gg/gqhcbRP) for more information !**
