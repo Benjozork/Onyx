@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,14 +11,12 @@ import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.Utils;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * Created by Benjozork on 2017-03-04.
  */
 public class EntityPlayer extends LivingEntity {
 
-     ShapeRenderer renderer;
 
      private final Texture PLAYER_TEXTURE = new Texture("ship/ship.png");
      private final Texture FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_fire.png");
@@ -38,8 +35,6 @@ public class EntityPlayer extends LivingEntity {
 
      @Override
      public void init() {
-          // Get the ShapeRenderer
-          renderer = ((GameScreen) GameManager.getCurrentScreen()).getShapeRenderer();
           // Initialize hitbox
           bounds = new Rectangle(getX(), getY(), 50, 50);
      }
@@ -73,12 +68,6 @@ public class EntityPlayer extends LivingEntity {
      @Override
      public void draw() {
 
-          // Render box
-        /*renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.WHITE);
-        renderer.rect(getX(), getY(), 25, 25, 50, 50, 1f, 1f, (float) -angle * MathUtils.radiansToDegrees);
-        renderer.end();*/
-
           if (state == DrawState.IDLE) {
                currentTexture.setTexture(PLAYER_TEXTURE);
           } else if (state == DrawState.MOVING) {
@@ -93,10 +82,10 @@ public class EntityPlayer extends LivingEntity {
           currentTexture.setPosition(getX(), getY());
           currentTexture.setRotation((float) - angle * MathUtils.radiansToDegrees);
 
-          ((GameScreen) GameManager.getCurrentScreen()).getBatch().begin();
+          GameManager.getBatch().begin();
           //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
-          currentTexture.draw(((GameScreen) GameManager.getCurrentScreen()).getBatch());
-          ((GameScreen) GameManager.getCurrentScreen()).getBatch().end();
+          currentTexture.draw(GameManager.getBatch());
+          GameManager.getBatch().end();
      }
 
      @Override
