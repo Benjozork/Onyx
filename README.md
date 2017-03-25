@@ -6,8 +6,8 @@ A small (or big ?) project of mine
 * **Platform**: Currently only supports Desktop JVM, but LibGDX supports Android/iOS/HTML5 so why not ?
 
 ## Contributors
-**Benjozork**: Developper
-**angelickite**: Developper
-**sozemego**: Developper
+**Benjozork**: Developper  
+**angelickite**: Developper  
+**sozemego**: Developper  
 
 **We are actively looking for graphics/sound artists and developpers ! Hit us up on Discord for more information !**
