@@ -155,10 +155,18 @@ public class MenuScreen implements Screen {
         uiScreen.dispose();
     }
 
+    /**
+     * The current UIScreen used by the MenuScreen.
+     * @return the screen
+     */
     public UIScreen getUIScreen() {
         return uiScreen;
     }
 
+    /**
+     * Sets the current UISCreen used by the MenuScreen.
+     * @param uiScreen the screen to be used
+     */
     public void setUIScreen(UIScreen uiScreen) {
         this.uiScreen = uiScreen;
     }
