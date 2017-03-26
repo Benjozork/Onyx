@@ -39,6 +39,10 @@ public class CrossFadeColorEffect {
         isActive = false;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     public void update() {
         if (!isActive) return;
 
