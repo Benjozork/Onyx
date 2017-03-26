@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
@@ -39,7 +40,7 @@ public class OnyxGame extends Game {
         GameManager.setBatch(new SpriteBatch());
 
         // Setup Initial Screen
-        GameManager.setCurrentScreen(new GameScreen());
+        GameManager.setCurrentScreen(new MenuScreen());
         setScreen(GameManager.getCurrentScreen());
     }
 

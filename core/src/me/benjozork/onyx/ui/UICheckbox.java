@@ -74,10 +74,8 @@ public class UICheckbox extends UIElement {
 
         layout.setText(font, text);
 
-        GameManager.getBatch().begin();
         GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
         font.draw(GameManager.getBatch(), text, (getX() + getWidth() + 50) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
-        GameManager.getBatch().end();
     }
 
     @Override

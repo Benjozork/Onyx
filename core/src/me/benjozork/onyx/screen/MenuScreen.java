@@ -100,14 +100,14 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Draw background
+        // Begin batching
+        GameManager.getBatch().begin();
 
+        // Draw background
         background.setColor(Color.GRAY);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         GameManager.getBatch().disableBlending();
-        GameManager.getBatch().begin();
         background.draw(GameManager.getBatch());
-        GameManager.getBatch().end();
         GameManager.getBatch().enableBlending();
 
         if (Gdx.input.justTouched()) {
@@ -128,6 +128,7 @@ public class MenuScreen implements Screen {
 
         uiScreen.update();
         uiScreen.draw();
+        GameManager.getBatch().end();
     }
 
     @Override

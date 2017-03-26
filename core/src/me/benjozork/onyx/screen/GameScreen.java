@@ -182,12 +182,14 @@ public class GameScreen implements Screen {
         // Update
         update(delta);
 
+        // Begin batching
+        batch.begin();
+
         // Draw background
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
         batch.setProjectionMatrix(guiCam.combined);
-        batch.begin();
         background.draw(batch);
 
         // Draw life icons

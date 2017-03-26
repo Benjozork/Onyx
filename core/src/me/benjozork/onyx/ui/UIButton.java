@@ -73,14 +73,10 @@ public class UIButton extends UIElement {
 
     @Override
     public void draw() {
-
         layout.setText(font, text);
 
-        GameManager.getBatch().begin();
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
         font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
-
-        GameManager.getBatch().end();
     }
 
     @Override

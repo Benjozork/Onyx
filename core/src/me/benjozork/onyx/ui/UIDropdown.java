@@ -113,7 +113,6 @@ public class UIDropdown extends UIElement {
         if (expanded) {
             for (int i = 0; i < items.size; i++) {
                 if (i == items.size - 1) {
-                    GameManager.getBatch().begin();
                     EXPANDED_MENU_LOWER.draw(
                             GameManager.getBatch(),
                             getX(),
@@ -121,9 +120,7 @@ public class UIDropdown extends UIElement {
                             getWidth(),
                             getHeight()
                     );
-                    GameManager.getBatch().end();
                 } else {
-                    GameManager.getBatch().begin();
                     EXPANDED_MENU_UPPER.draw(
                             GameManager.getBatch(),
                             getX(),
@@ -131,7 +128,6 @@ public class UIDropdown extends UIElement {
                             getWidth(),
                             getHeight()
                     );
-                    GameManager.getBatch().end();
                 }
             }
 
@@ -140,10 +136,8 @@ public class UIDropdown extends UIElement {
                 float dy = getY() - mouse.y;
                 int index = (int) (dy / getHeight());
                 if (index < 0 || dy < 0) {
-                    GameManager.getBatch().begin();
                     currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
                     font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
-                    GameManager.getBatch().end();
 
                     drawText();
 
@@ -151,7 +145,6 @@ public class UIDropdown extends UIElement {
                 }
 
                 if (index == items.size - 1) {
-                    GameManager.getBatch().begin();
                     EXPANDED_HOVERED_MENU_LOWER.draw(
                             GameManager.getBatch(),
                             getX(),
@@ -159,9 +152,7 @@ public class UIDropdown extends UIElement {
                             getWidth(),
                             getHeight()
                     );
-                    GameManager.getBatch().end();
                 } else {
-                    GameManager.getBatch().begin();
                     EXPANDED_HOVERED_MENU_UPPER.draw(
                             GameManager.getBatch(),
                             getX(),
@@ -169,7 +160,6 @@ public class UIDropdown extends UIElement {
                             getWidth(),
                             getHeight()
                     );
-                    GameManager.getBatch().end();
                 }
 
             }
@@ -179,10 +169,8 @@ public class UIDropdown extends UIElement {
             layout.setText(font, text);
         }
 
-        GameManager.getBatch().begin();
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
         font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
-        GameManager.getBatch().end();
     }
 
     @Override
@@ -209,12 +197,10 @@ public class UIDropdown extends UIElement {
     }
 
     public void drawText() {
-        GameManager.getBatch().begin();
         for (int j = 0; j < items.size; j++) {
             layout.setText(font, items.get(j));
             font.draw(GameManager.getBatch(), items.get(j), (getX() + getWidth() / 2) - layout.width / 2, getY() - (j * getHeight() + layout.height / 2) - 4);
         }
-        GameManager.getBatch().end();
     }
 
     @Override
