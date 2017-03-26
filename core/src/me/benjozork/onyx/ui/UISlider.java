@@ -15,17 +15,20 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UISlider extends UIElement {
 
+    // Slider textures
     private final Texture SLIDER_TEXTURE = new Texture("ui/slider/slider_bar_0.png");
     private final Texture HOVERED_SLIDER_TEXTURE = new Texture("ui/slider/slider_bar_1.png");
     private final Texture SLIDER_CONTROL_TEXTURE = new Texture("ui/slider/slider_control_0.png");
     private final Texture HOVERED_SLIDER_CONTROL_TEXTURE = new Texture("ui/slider/slider_control_1.png");
+
+    private Texture currentSliderTexture = SLIDER_TEXTURE;
+    private Texture currentSliderControlTexture = SLIDER_CONTROL_TEXTURE;
+
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private BitmapFont font;
     private GlyphLayout layout = new GlyphLayout();
     private String text = new String();
-    private Texture currentSliderTexture = SLIDER_TEXTURE;
-    private Texture currentSliderControlTexture = SLIDER_CONTROL_TEXTURE;
 
     public UISlider(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
@@ -59,6 +62,9 @@ public class UISlider extends UIElement {
 
     @Override
     public void dispose() {
-
+        SLIDER_TEXTURE.dispose();
+        HOVERED_SLIDER_TEXTURE.dispose();
+        SLIDER_CONTROL_TEXTURE.dispose();
+        HOVERED_SLIDER_CONTROL_TEXTURE.dispose();
     }
 }

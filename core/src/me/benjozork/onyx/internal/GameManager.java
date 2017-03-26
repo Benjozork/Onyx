@@ -63,20 +63,10 @@ public class GameManager {
         GameManager.guiCamera = guiCamera;
     }
 
-    /**
-     * The current screen
-     *
-     * @return the current screen
-     */
     public static Screen getCurrentScreen() {
         return currentScreen;
     }
 
-    /**
-     * Set the current screen
-     *
-     * @param currentScreen the screen to be used
-     */
     public static void setCurrentScreen(Screen currentScreen) {
         Gdx.app.log("[onyx/gm] ", "Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
         GameManager.currentScreen = currentScreen;

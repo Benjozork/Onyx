@@ -44,8 +44,12 @@ public class GameScreen implements Screen {
     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
     private List<Entity> toRemove = new ArrayList<Entity>();
 
+    private OrthographicCamera worldCam, guiCam;
+
     private Sprite background;
     private Sprite lifeIcon;
+
+    private SpriteBatch batch;
 
     // Crossfading
     private CrossFadeColorEffect crossFadeBackgroundColor;
@@ -58,16 +62,24 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        // Setup player
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 20);
         registerEntity(player);
         this.player = player;
         player.setSpeed(0f);
 
+        // Setup cameras
+        worldCam = GameManager.getWorldCamera();
+        guiCam = GameManager.getGuiCamera();
+        batch = GameManager.getBatch();
+
+        // Setup background
         background = new Sprite(new Texture("hud/background_base.png"));
         background.setPosition(0, 0);
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        // Setup life icons
         lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
         lifeIcon.setScale(0.4f, 0.4f);
 
@@ -80,18 +92,49 @@ public class GameScreen implements Screen {
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
     }
 
-    @Override
-    public void render(float delta) {
-        OrthographicCamera worldCam = GameManager.getWorldCamera();
+    public void update(float delta) {
+
+        // Update cameras
         worldCam.position.x = player.getX() + 38;
         worldCam.position.y = player.getY() + 55;
         worldCam.update();
 
-        SpriteBatch batch = GameManager.getBatch();
-        OrthographicCamera guiCam = GameManager.getGuiCamera();
         guiCam.update();
 
+        // Update DrawState of player
+        if (player.isFiring()) {
+            player.setState(EntityPlayer.DrawState.FIRING);
+        }
+        if (player.getSpeed() != 0) {
+            player.setState(EntityPlayer.DrawState.MOVING);
+            if (player.isFiring()) {
+                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
+            }
+        }
+        if (!player.isFiring() && player.getSpeed() == 0f) {
+            player.setState(EntityPlayer.DrawState.IDLE);
+        }
 
+        // Update input
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.rotate(5);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.rotate(-5);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.accelerate(10f);
+            System.out.println(player.getVelocity());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.accelerate(-10f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            player.fireProjectile("bullet.png");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            toggleDebug();
+        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
             else crossFadeBackgroundColor.resume();
@@ -100,9 +143,11 @@ public class GameScreen implements Screen {
             isZooming = true;
         }
 
+
+        // Update crossfade
         crossFadeBackgroundColor.update();
 
-        // Zoom pulse
+        // Update zoom
         if (isZooming) {
             if (zoomBack) {
                 deltaZoom = -(targetZoom - worldCam.zoom);
@@ -113,7 +158,7 @@ public class GameScreen implements Screen {
             zoomStep = maxZoomTime / Utils.delta();
 
             worldCam.zoom += (deltaZoom / zoomStep);
-            guiCam.zoom += (deltaZoom / zoomStep);
+            guiCam.zoom += (deltaZoom / zoomStep); // Make it possible to only zoom background. Sprite#scale() ?
 
             if (deltaZoom > -0.05f) {
                 zoomBack = true;
@@ -126,16 +171,25 @@ public class GameScreen implements Screen {
             }
         }
 
+        // Update maxFrametime
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
         }
+    }
+
+    public void render(float delta) {
+
+        // Update
+        update(delta);
+
+        // Begin batching
+        batch.begin();
 
         // Draw background
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
         batch.setProjectionMatrix(guiCam.combined);
-        batch.begin();
         background.draw(batch);
 
         // Draw life icons
@@ -152,64 +206,12 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(worldCam.combined);
 
-        if (player.isFiring()) {
-            player.setState(EntityPlayer.DrawState.FIRING);
-        }
-        if (player.getSpeed() != 0) {
-            player.setState(EntityPlayer.DrawState.MOVING);
-            if (player.isFiring()) {
-                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
-            }
-        }
-        if (!player.isFiring() && player.getSpeed() == 0f) {
-            player.setState(EntityPlayer.DrawState.IDLE);
-        }
-
-        // Get player/enemy and modify player, depending on current inputs
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.rotate(5);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.rotate(-5);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.accelerate(10f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-10f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player.fireProjectile("bullet.png");
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            toggleDebug();
-        }
-
-        // Manage collidingWithPlayer list
-        for (Iterator<Entity> it = registeredEntities.iterator(); it.hasNext(); ) {
-            Entity e = it.next();
-
-            if (e instanceof EntityPlayer) break;
-
-            if (player.collidesWith(e.getBounds())) {
-                collidingWithPlayer.add(e);
-            }
-            if (collidingWithPlayer.contains(e) && !player.collidesWith(e.getBounds())) {
-                collidingWithPlayer.remove(e);
-            }
-
-            if (collidingWithPlayer.contains(e) && collidingWithPlayer.size() > 1) {
-                collidingWithPlayer.remove(e);
-            }
-        }
-
-        //batch.draw(image, x, y);
+        // Set title
         Gdx.graphics.setTitle("Onyx 0.0.1 | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
 
-        // Update then draw entities and apply deltas
-
+        // Update then draw entities
         for (Entity e : registeredEntities) {
-            e.update(delta);
+            e.update(delta); // This call updates the Drawable class internally
         }
 
         for (Entity e : registeredEntities) {
@@ -220,6 +222,7 @@ public class GameScreen implements Screen {
             e.draw();
         }
 
+        // Remove entities that need to be
         registeredEntities.removeAll(toRemove);
         batch.end();
     }
