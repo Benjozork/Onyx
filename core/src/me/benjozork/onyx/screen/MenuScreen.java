@@ -164,7 +164,7 @@ public class MenuScreen implements Screen {
     }
 
     /**
-     * Sets the current UISCreen used by the MenuScreen.
+     * Sets the current UIScreen used by the MenuScreen.
      * @param uiScreen the screen to be used
      */
     public void setUIScreen(UIScreen uiScreen) {
