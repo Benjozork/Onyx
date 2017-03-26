@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.Utils;
+import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
 public class OnyxGame extends Game {
 
     @Override
     public void create() {
-        Gdx.app.log("[onyx/info] ", "Onyx 0.0.1 starting");
+        Gdx.app.log("[onyx/info] ", "Onyx 0.1.0 starting");
         Gdx.app.log("[onyx/debug] ", "Current libGDX version is " + Version.VERSION);
         Gdx.app.log("[onyx/debug] ", "Current backend is " + Gdx.app.getType() + "/" + System.getProperty("os.name"));
         Gdx.app.log("[onyx/debug] ", "Current JRE version is " + System.getProperty("java.version"));

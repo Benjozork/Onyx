@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.Utils;
+import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**

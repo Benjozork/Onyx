@@ -17,14 +17,16 @@ import java.util.List;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.Utils;
+import me.benjozork.onyx.utils.Utils;
+import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
+import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
 
 /**
  * Created by Benjozork on 2017-03-19.
  */
 public class GameScreen implements Screen {
 
-    private final Color INITIAL_DRAW_COLOR = Color.RED;
+    private final Color INITIAL_BACKGROUND_COLOR = Color.RED;
 
     private int score = 0, highScore = 0;
     private int lifeCount = 0, maxLife = 3;
@@ -34,7 +36,7 @@ public class GameScreen implements Screen {
 
     private BitmapFont font = new BitmapFont();
 
-    private Color currentColor = new Color(INITIAL_DRAW_COLOR);
+    private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
     private EntityPlayer player;
 
@@ -46,13 +48,7 @@ public class GameScreen implements Screen {
     private Sprite lifeIcon;
 
     // Crossfading
-    private boolean isFading;
-    private float deltaRed;
-    private float deltaGreen;
-    private float deltaBlue;
-    private float maxFadeTime = 1f / 2, fadeStep;
-    private int fadeIndex;
-    private Color[] fadeColors = {Color.BLUE, Color.RED, Color.GREEN};
+    private CrossFadeColorEffect crossFadeBackgroundColor;
 
     // Camera zoom pulse
     private boolean isZooming, zoomBack;
@@ -69,11 +65,18 @@ public class GameScreen implements Screen {
 
         background = new Sprite(new Texture("hud/background_base.png"));
         background.setPosition(0, 0);
-        background.setColor(currentColor);
+        background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
         lifeIcon.setScale(0.4f, 0.4f);
+
+        // Setup CrossFadeColorEffect
+        CrossFadeColorEffectConfiguration crossFadeConfig = new CrossFadeColorEffectConfiguration();
+        crossFadeConfig.cycleColors.addAll(Color.BLUE, Color.RED, Color.GREEN);
+        crossFadeConfig.maxFadeTime = .5f;
+        crossFadeConfig.totalFadeDeltaStepRequirement = 32f;
+        crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
     }
 
     @Override
@@ -89,60 +92,13 @@ public class GameScreen implements Screen {
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            isFading = true;
-        } if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+            crossFadeBackgroundColor.resume();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
             isZooming = true;
         }
 
-
-        // Crossfade
-        if (isFading) {
-            float totalFadeDelta;
-
-            deltaRed = fadeColors[fadeIndex].r - currentColor.r;
-            deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
-            deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
-
-            fadeStep = maxFadeTime / Utils.delta();
-
-            currentColor.r += (deltaRed / fadeStep);
-            currentColor.g += (deltaGreen / fadeStep);
-            currentColor.b += (deltaBlue / fadeStep);
-
-
-            float deltaRed2, deltaGreen2, deltaBlue2;
-            // Calculate total delta
-            if (deltaRed < 0) {
-                deltaRed2 = deltaRed + deltaRed * 2;
-            } else {
-                deltaRed2 = deltaRed;
-            }
-
-            if (deltaGreen < 0) {
-                deltaGreen2 = deltaGreen + deltaGreen * 2;
-            } else {
-                deltaGreen2 = deltaGreen;
-            }
-
-
-            if (deltaBlue < 0) {
-                deltaBlue2 = deltaBlue + deltaBlue * 2;
-            } else {
-                deltaBlue2 = deltaBlue;
-            }
-
-
-            totalFadeDelta = deltaRed2 + deltaGreen2 + deltaBlue2;
-            totalFadeDelta *= 255f;
-
-            if (totalFadeDelta < 32 && totalFadeDelta > - 32) {
-                fadeIndex++;
-                if (fadeIndex > fadeColors.length - 1) fadeIndex = 0;
-                deltaRed = fadeColors[fadeIndex].r - currentColor.r;
-                deltaGreen = fadeColors[fadeIndex].g - currentColor.g;
-                deltaBlue = fadeColors[fadeIndex].b - currentColor.b;
-            }
-        }
+        crossFadeBackgroundColor.update();
 
         // Zoom pulse
         if (isZooming) {
@@ -159,7 +115,8 @@ public class GameScreen implements Screen {
 
             if (deltaZoom > -0.05f) {
                 zoomBack = true;
-            } if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
+            }
+            if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
                 worldCam.zoom = 1f;
                 guiCam.zoom = 1f;
                 zoomBack = false;
@@ -172,7 +129,7 @@ public class GameScreen implements Screen {
         }
 
         // Draw background
-        background.setColor(currentColor);
+        background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
         batch.setProjectionMatrix(guiCam.combined);
@@ -183,7 +140,7 @@ public class GameScreen implements Screen {
         batch.enableBlending();
         batch.setProjectionMatrix(guiCam.combined);
         for (int i = 0; i < maxLife; i++) {
-            lifeIcon.setColor(currentColor);
+            lifeIcon.setColor(backgroundColor);
             lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
             lifeIcon.draw(batch);
         }
@@ -202,7 +159,7 @@ public class GameScreen implements Screen {
                 player.setState(EntityPlayer.DrawState.FIRING_MOVING);
             }
         }
-        if (! player.isFiring() && player.getSpeed() == 0f) {
+        if (!player.isFiring() && player.getSpeed() == 0f) {
             player.setState(EntityPlayer.DrawState.IDLE);
         }
 
@@ -211,13 +168,13 @@ public class GameScreen implements Screen {
             player.rotate(5);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.rotate(- 5);
+            player.rotate(-5);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(10f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(- 10f);
+            player.accelerate(-10f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("bullet.png");
@@ -235,7 +192,7 @@ public class GameScreen implements Screen {
             if (player.collidesWith(e.getBounds())) {
                 collidingWithPlayer.add(e);
             }
-            if (collidingWithPlayer.contains(e) && ! player.collidesWith(e.getBounds())) {
+            if (collidingWithPlayer.contains(e) && !player.collidesWith(e.getBounds())) {
                 collidingWithPlayer.remove(e);
             }
 
@@ -292,7 +249,7 @@ public class GameScreen implements Screen {
     }
 
     public void toggleDebug() {
-        debugEnabled = ! debugEnabled;
+        debugEnabled = !debugEnabled;
     }
 
     public void registerEntity(Entity e) {
@@ -332,9 +289,5 @@ public class GameScreen implements Screen {
 
     public EntityPlayer getPlayer() {
         return player;
-    }
-
-    public Color getCurrentColor() {
-        return currentColor;
     }
 }
