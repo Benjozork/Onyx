@@ -84,6 +84,10 @@ public class UIRadioButton extends UIElement {
 
     }
 
+    /**
+     * Sets wheter the UIRadioButton is selected
+     * @param b if it is selected
+     */
     public void set(boolean b) {
         triggerEvent(ActionEvent.VALUE_CHANGED);
         this.selected = b;
@@ -97,6 +101,10 @@ public class UIRadioButton extends UIElement {
         text = v;
     }
 
+    /**
+     * Sets which group the UIRadioButton belongs to
+     * @param group the group
+     */
     public void setGroup(UIRadioButtonGroup group) {
         this.group = group;
     }

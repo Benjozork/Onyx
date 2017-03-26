@@ -19,25 +19,45 @@ public class UIRadioButtonGroup extends UIElement {
         super(0, 0);
     }
 
-
+    /**
+     * The UIRadioBUtton that is currently selected
+     * @return the button's index
+     */
     public int getSelected() {
         return selected;
     }
 
+    /**
+     * Sets the UIRadioButton that is currently selected
+     * @param selected the button's index
+     */
     public void setSelected(int selected) {
         this.selected = selected;
     }
 
+    /**
+     * The list of buttons that the UIRadioButtonGroup contains
+     * @return the list of buttons
+     */
     public Array<UIRadioButton> getButtons() {
         return buttons;
     }
 
+    /**
+     * Adds a button to the list
+     * @param b the button
+     */
     public void addButton(UIRadioButton b) {
         b.setGroup(this);
         buttons.add(b);
     }
 
-    public void select(UIRadioButton b) {
+    /**
+     * Selects a button from the list
+     * @param b the button
+     * @throws IllegalArgumentException
+     */
+    public void select(UIRadioButton b) throws IllegalArgumentException {
         triggerEvent(ActionEvent.VALUE_CHANGED);
         selected = buttons.indexOf(b, true);
         b.set(true);

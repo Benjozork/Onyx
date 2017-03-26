@@ -49,6 +49,10 @@ public abstract class UIElement extends Drawable {
     @Override
     public abstract void draw();
 
+    /**
+     * Triggers an event and runs all the actions bound to this event
+     * @param e the event type
+     */
     public void triggerEvent(ActionEvent e) {
         for (Action a : actions) {
             if (a.getEvent() == e) {
@@ -57,6 +61,11 @@ public abstract class UIElement extends Drawable {
         }
     }
 
+    /**
+     * Call a click event
+     * @param localPosition the position of the click
+     * @return if the click was successful
+     */
     public boolean clickElement(Vector2 localPosition) {
         click(localPosition);
         triggerEvent(ActionEvent.CLICKED);
@@ -73,6 +82,10 @@ public abstract class UIElement extends Drawable {
         this.identifier = identifier;
     }
 
+    /**
+     * The UIContainer in which the element is stored
+     * @return the container
+     */
     public UIContainer getParent() {
         return parent;
     }
@@ -81,6 +94,12 @@ public abstract class UIElement extends Drawable {
         return actions;
     }
 
+    /**
+     * Adds a new action to the element
+     * @param identifier the action's identifier
+     * @param action the code to execute
+     * @param event the event to listen to
+     */
     public void addAction(String identifier, Runnable action, ActionEvent event) {
         actions.add(new Action(this, identifier, action, event));
     }
