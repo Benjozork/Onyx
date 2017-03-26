@@ -1,5 +1,7 @@
 package me.benjozork.onyx.ui.object;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
@@ -10,6 +12,7 @@ public class TextComponent {
     private String text;
     private String fontPath;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private GlyphLayout layout;
 
     /**
      * A TextComponent defines the text component of an UIElement. A certain font path is specified along with a string and a FreeTypeFontParameter.
@@ -21,6 +24,7 @@ public class TextComponent {
         this.text = text;
         this.fontPath = fontPath;
         this.parameter = parameter;
+        this.layout = new GlyphLayout(new FreeTypeFontGenerator(Gdx.files.internal(fontPath)).generateFont(parameter), text);
     }
 
     public String getText() {
@@ -52,6 +56,14 @@ public class TextComponent {
      */
     public void setParameter(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.parameter = parameter;
+    }
+
+    /**
+     * The GlyphLayout used
+     * @return the layout
+     */
+    public GlyphLayout getLayout() {
+        return layout;
     }
 
 }

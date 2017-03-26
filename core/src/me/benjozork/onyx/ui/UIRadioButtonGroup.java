@@ -20,7 +20,7 @@ public class UIRadioButtonGroup extends UIElement {
     }
 
     /**
-     * The UIRadioBUtton that is currently selected
+     * The UIRadioButton that is currently selected
      * @return the button's index
      */
     public int getSelected() {
@@ -99,6 +99,8 @@ public class UIRadioButtonGroup extends UIElement {
 
     @Override
     public void dispose() {
-
+        for (UIRadioButton b : buttons) {
+            b.dispose();
+        }
     }
 }
