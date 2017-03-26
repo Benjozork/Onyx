@@ -12,7 +12,9 @@ public class CrossFadeColorEffect {
 
     private boolean isActive;
     private float crossFadeTime;
-    private float totalFadeDeltaStepRequirement;
+    private float crossFadeDeltaTimeStepRequirement;
+    private float fadeInDeltaMultiplier;
+    private float fadeOutDeltaMultiplier;
 
     /**
      * A CrossFadeColorEffect allows transforming a source color according to the provided
@@ -23,8 +25,10 @@ public class CrossFadeColorEffect {
     public CrossFadeColorEffect(Color source, CrossFadeColorEffectConfiguration configuration) {
         this.source = source;
         this.cycle = CycleList.of(configuration.cycleColors);
-        this.crossFadeTime = configuration.maxFadeTime;
-        this.totalFadeDeltaStepRequirement = configuration.totalFadeDeltaStepRequirement;
+        this.crossFadeTime = configuration.crossFadeTime;
+        this.crossFadeDeltaTimeStepRequirement = configuration.crossFadeDeltaTimeStepRequirement;
+        fadeInDeltaMultiplier = configuration.fadeInDeltaMultiplier;
+        fadeOutDeltaMultiplier = configuration.fadeOutDeltaMultiplier;
     }
 
     public void resume() {
@@ -53,14 +57,14 @@ public class CrossFadeColorEffect {
         float totalFadeDelta = accumulateDelta(dr) + accumulateDelta(dg) + accumulateDelta(db);
         totalFadeDelta *= 255f;
 
-        if (Math.abs(totalFadeDelta) < totalFadeDeltaStepRequirement) {
+        if (Math.abs(totalFadeDelta) < crossFadeDeltaTimeStepRequirement) {
             cycle.next();
         }
     }
 
     private float accumulateDelta(float delta) {
-        if (delta < 0) return delta * 3;
-        else return delta;
+        if (delta < 0) return delta * fadeOutDeltaMultiplier;
+        else return delta * fadeInDeltaMultiplier;
     }
 
 }

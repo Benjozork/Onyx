@@ -74,8 +74,9 @@ public class GameScreen implements Screen {
         // Setup CrossFadeColorEffect
         CrossFadeColorEffectConfiguration crossFadeConfig = new CrossFadeColorEffectConfiguration();
         crossFadeConfig.cycleColors.addAll(Color.BLUE, Color.RED, Color.GREEN);
-        crossFadeConfig.maxFadeTime = .5f;
-        crossFadeConfig.totalFadeDeltaStepRequirement = 32f;
+        crossFadeConfig.crossFadeTime = .5f;
+        crossFadeConfig.crossFadeDeltaTimeStepRequirement = 32f;
+        crossFadeConfig.fadeOutDeltaMultiplier = 3f;
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
     }
 
