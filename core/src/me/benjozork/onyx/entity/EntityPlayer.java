@@ -29,6 +29,9 @@ public class EntityPlayer extends LivingEntity {
     private Vector3 mouse = new Vector3();
 
     private DrawState state = DrawState.IDLE;
+    private Direction direction = Direction.STRAIGHT;
+    private float spriteRotation;
+    private boolean accelerated_right = false, accelerated_left = false;
 
     public EntityPlayer(float x, float y) {
         super(new Vector2(x, y));
@@ -42,32 +45,36 @@ public class EntityPlayer extends LivingEntity {
 
     @Override
     public void update() {
-        if (angle > 360) {
-            angle = 120 * Utils.delta();
-        } else if (angle < - 360) {
-            angle = - 120 * Utils.delta();
+
+        if (direction == Direction.STRAIGHT) {
+            spriteRotation = 0f;
+        } else if (direction == Direction.RIGHT) {
+            if (spriteRotation < 25 * MathUtils.degreesToRadians) spriteRotation += (300 * MathUtils.degreesToRadians) * Utils.delta();
+            velocity.setAngle(-180f);
+            if (!accelerated_right) {
+                accelerate(100f);
+                accelerated_right = true;
+                accelerated_left = false;
+            }
+            if (velocity.x < 0) {
+                velocity.x -= velocity.x * 2;
+            }
+        } else if (direction == Direction.LEFT) {
+            if (spriteRotation > -25 * MathUtils.degreesToRadians) spriteRotation -= (300 * MathUtils.degreesToRadians) * Utils.delta();
+            velocity.setAngle(180f);
+            if (!accelerated_left) {
+                accelerate(100f);
+                accelerated_left = true;
+                accelerated_right = false;
+            }
+            if (velocity.x > 0) {
+                velocity.x -= velocity.x * 2;
+            }
         }
 
-          /*// Check for out of bounds
-          if ((getX() + 50 > Gdx.graphics.getWidth())) {
-               setX(Gdx.graphics.getWidth() - 51);
-               setSpeed(- 10f);
-          } else if ((getX()) < 0) {
-               setX(1);
-               setSpeed(10f);
-          } else if ((getY() + 50) > Gdx.graphics.getHeight()) {
-               setY(Gdx.graphics.getHeight() - 51);
-               setSpeed(- 10f);
-          } else if ((getY()) < 0) {
-               setY(1);
-               setSpeed(10f);
-          }*/
-
-
-    }
-
-    @Override
-    public void draw() {
+        System.out.println(getSpeed());
+        if (getSpeed() > 0) setSpeed(getSpeed() - 5f);
+        else setSpeed(getSpeed() + 5f);
 
         if (state == DrawState.IDLE) {
             currentTexture.setTexture(PLAYER_TEXTURE);
@@ -81,8 +88,11 @@ public class EntityPlayer extends LivingEntity {
 
         //sprite.setColor(GameManager.getCurrentColor());
         currentTexture.setPosition(getX(), getY());
-        currentTexture.setRotation((float) - angle * MathUtils.radiansToDegrees);
+        currentTexture.setRotation((float) - spriteRotation * MathUtils.radiansToDegrees);
+    }
 
+    @Override
+    public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
         currentTexture.draw(batch);
@@ -120,6 +130,22 @@ public class EntityPlayer extends LivingEntity {
         this.state = v;
     }
 
+    /**
+     * The direction of the player
+     * @return the direction
+     */
+    public Direction getDirection() {
+        return direction;
+    }
+
+    /**
+     * Changes the direction of the player
+     * @param v the direction to be used
+     */
+    public void setDirection(Direction v) {
+        this.direction = v;
+    }
+
     public boolean isFiring() {
         return Gdx.input.isKeyPressed(Input.Keys.SPACE);
     }
@@ -129,6 +155,12 @@ public class EntityPlayer extends LivingEntity {
         FIRING,
         MOVING,
         FIRING_MOVING,
+    }
+
+    public enum Direction {
+        STRAIGHT,
+        RIGHT,
+        LEFT
     }
 
 }

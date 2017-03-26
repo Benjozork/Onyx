@@ -1,11 +1,9 @@
 package me.benjozork.onyx.object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -20,7 +18,7 @@ public abstract class Drawable {
     protected float maxVelocity = 100f;
     protected float angle;
     protected Rectangle bounds;
-    private float speed;
+    private float speed, maxSpeed;
     private boolean boundsDebug = false;
 
     public Drawable(int x, int y) {
@@ -37,18 +35,18 @@ public abstract class Drawable {
      * @param dt The delta time
      */
     public void update(float dt) {
+        bounds.setPosition(position);
 
-        if (boundsDebug) {
-            GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
-            GameManager.getShapeRenderer().rect(bounds.x, bounds.y, bounds.width, bounds.height);
-            GameManager.getShapeRenderer().end();
+        if (speed > maxSpeed) speed = maxSpeed;
+        if (speed < -maxSpeed) speed = -maxSpeed;
+
+        if (angle != 0) {
+            velocity.x = (float) Math.sin(angle);
+            velocity.y = (float) Math.cos(angle);
         }
 
-        bounds.setPosition(position);
-        velocity.setAngle(angle);
-
-        //velocity.add(acceleration);
-        position.add(velocity.nor().scl(speed).scl(Utils.delta()));
+        position.x += velocity.x * Utils.delta() * speed;
+        position.y += velocity.y * Utils.delta() * speed;
     }
 
     public abstract void init();
@@ -153,7 +151,7 @@ public abstract class Drawable {
      */
     public void accelerate(float v) {
         speed += v;
-        if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(1, 1); // Prevent this from having no effect
+        if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(0, 1); // Prevent this from having no effect
     }
 
     /**
@@ -184,6 +182,14 @@ public abstract class Drawable {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public float getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(float maxSpeed) {
+        this.maxSpeed = maxSpeed;
     }
 
     /**

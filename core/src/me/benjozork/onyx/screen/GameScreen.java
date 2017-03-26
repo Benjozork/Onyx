@@ -63,10 +63,10 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // Setup player
-        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 20);
+        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
+        player.setMaxSpeed(1000f);
         registerEntity(player);
         this.player = player;
-        player.setSpeed(0f);
 
         // Setup cameras
         worldCam = GameManager.getWorldCamera();
@@ -95,8 +95,8 @@ public class GameScreen implements Screen {
     public void update(float delta) {
 
         // Update cameras
-        worldCam.position.x = player.getX() + 38;
-        worldCam.position.y = player.getY() + 55;
+        //worldCam.position.x = player.getX() + 38;
+        //worldCam.position.y = player.getY() + 55;
         worldCam.update();
 
         guiCam.update();
@@ -117,17 +117,18 @@ public class GameScreen implements Screen {
 
         // Update input
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.rotate(5);
+            player.setDirection(EntityPlayer.Direction.RIGHT);
+            player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.rotate(-5);
+            player.setDirection(EntityPlayer.Direction.LEFT);
+            player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.accelerate(10f);
-            System.out.println(player.getVelocity());
+            player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-10f);
+            player.accelerate(-100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("bullet.png");

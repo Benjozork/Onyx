@@ -40,7 +40,7 @@ public class OnyxGame extends Game {
         GameManager.setBatch(new SpriteBatch());
 
         // Setup Initial Screen
-        GameManager.setCurrentScreen(new MenuScreen());
+        GameManager.setCurrentScreen(new GameScreen());
         setScreen(GameManager.getCurrentScreen());
     }
 
