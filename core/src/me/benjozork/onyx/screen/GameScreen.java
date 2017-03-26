@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     private Sprite background;
     private Sprite lifeIcon;
 
+    // Crossfading
     private boolean isFading;
     private float deltaRed;
     private float deltaGreen;
@@ -52,6 +53,12 @@ public class GameScreen implements Screen {
     private float maxFadeTime = 1f / 2, fadeStep;
     private int fadeIndex;
     private Color[] fadeColors = {Color.BLUE, Color.RED, Color.GREEN};
+
+    // Camera zoom pulse
+    private boolean isZooming, zoomBack;
+    private float deltaZoom;
+    private float maxZoomTime = 0.1f / 3, zoomStep;
+    private float targetZoom = 0.8f;
 
     @Override
     public void show() {
@@ -76,9 +83,17 @@ public class GameScreen implements Screen {
         worldCam.position.y = player.getY() + 55;
         worldCam.update();
 
+        SpriteBatch batch = GameManager.getBatch();
+        OrthographicCamera guiCam = GameManager.getGuiCamera();
+        guiCam.update();
+
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             isFading = true;
+        } if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+            isZooming = true;
         }
+
 
         // Crossfade
         if (isFading) {
@@ -129,13 +144,32 @@ public class GameScreen implements Screen {
             }
         }
 
+        // Zoom pulse
+        if (isZooming) {
+            if (zoomBack) {
+                deltaZoom = -(targetZoom - worldCam.zoom);
+            } else {
+                deltaZoom = targetZoom - worldCam.zoom;
+            }
+
+            zoomStep = maxZoomTime / Utils.delta();
+
+            worldCam.zoom += (deltaZoom / zoomStep);
+            guiCam.zoom += (deltaZoom / zoomStep);
+
+            if (deltaZoom > -0.05f) {
+                zoomBack = true;
+            } if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
+                worldCam.zoom = 1f;
+                guiCam.zoom = 1f;
+                zoomBack = false;
+                isZooming = false;
+            }
+        }
+
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
         }
-
-        SpriteBatch batch = GameManager.getBatch();
-        OrthographicCamera guiCam = GameManager.getGuiCamera();
-        guiCam.update();
 
         // Draw background
         background.setColor(currentColor);
@@ -144,18 +178,20 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(guiCam.combined);
         batch.begin();
         background.draw(batch);
-        batch.end();
 
         // Draw life icons
         batch.enableBlending();
-        batch.setProjectionMatrix(worldCam.combined);
-        batch.begin();
+        batch.setProjectionMatrix(guiCam.combined);
         for (int i = 0; i < maxLife; i++) {
             lifeIcon.setColor(currentColor);
             lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
             lifeIcon.draw(batch);
         }
-        batch.end();
+
+        // Draw debug info
+        font.draw(batch, "test", 0, Gdx.graphics.getHeight() - 25);
+
+        batch.setProjectionMatrix(worldCam.combined);
 
         if (player.isFiring()) {
             player.setState(EntityPlayer.DrawState.FIRING);
@@ -226,6 +262,7 @@ public class GameScreen implements Screen {
         }
 
         registeredEntities.removeAll(toRemove);
+        batch.end();
     }
 
 
