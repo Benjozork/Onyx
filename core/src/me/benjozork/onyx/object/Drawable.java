@@ -45,7 +45,7 @@ public abstract class Drawable {
         }
 
         bounds.setPosition(position);
-        if (angle != 0) velocity.setAngle(angle);
+        velocity.setAngle(angle);
 
         //velocity.add(acceleration);
         position.add(velocity.nor().scl(speed).scl(Utils.delta()));
