@@ -20,6 +20,7 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UIDropdown extends UIElement {
 
+    // Unexpanded Dropdown textures
     private final Texture DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_0.png");
     private final NinePatch DROPDOWN = new NinePatch(DROPDOWN_TEXTURE, 6, 40, 6, 6);
     private final Texture HOVERED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_1.png");
@@ -27,29 +28,36 @@ public class UIDropdown extends UIElement {
     private final Texture CLICKED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_2.png");
     private final NinePatch CLICKED_DROPDOWN = new NinePatch(CLICKED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
 
-    // Textures
+    // Expanded Dropdown textures
     private final Texture EXPANDED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_3.png");
     private final NinePatch EXPANDED_DROPDOWN = new NinePatch(EXPANDED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
     private final Texture EXPANDED_HOVERED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_4.png");
     private final NinePatch EXPANDED_HOVERED_DROPDOWN = new NinePatch(EXPANDED_HOVERED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
     private final Texture EXPANDED_CLICKED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_5.png");
     private final NinePatch EXPANDED_CLICKED_DROPDOWN = new NinePatch(EXPANDED_CLICKED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
+
+    // Upper Dropdown menu textures
     private final Texture EXPANDED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_0.png");
     private final NinePatch EXPANDED_MENU_UPPER = new NinePatch(EXPANDED_MENU_UPPER_TEXTURE, 6, 6, 0, 6);
     private final Texture EXPANDED_HOVERED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_1.png");
     private final NinePatch EXPANDED_HOVERED_MENU_UPPER = new NinePatch(EXPANDED_HOVERED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
     private final Texture EXPANDED_CLICKED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_2.png");
     private final NinePatch EXPANDED_CLICKED_MENU_UPPER = new NinePatch(EXPANDED_CLICKED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
+
+    // Lower Dropdown menu textures
     private final Texture EXPANDED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_0.png");
     private final NinePatch EXPANDED_MENU_LOWER = new NinePatch(EXPANDED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
     private final Texture EXPANDED_HOVERED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_1.png");
     private final NinePatch EXPANDED_HOVERED_MENU_LOWER = new NinePatch(EXPANDED_HOVERED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
     private final Texture EXPANDED_CLICKED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_2.png");
     private final NinePatch EXPANDED_CLICKED_MENU_LOWER = new NinePatch(EXPANDED_CLICKED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
+
+    //fixme: replace all of this with a TextComponent that contains all this crap
     private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("ui/cc_red_alert_inet.ttf"));
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private BitmapFont font;
     private GlyphLayout layout = new GlyphLayout();
+
     private Vector2 dimension = new Vector2();
     private String text = new String();
     private NinePatch currentPatch = DROPDOWN;
@@ -205,7 +213,22 @@ public class UIDropdown extends UIElement {
 
     @Override
     public void dispose() {
+        // Dispose of textures
+         DROPDOWN_TEXTURE.dispose();
+         HOVERED_DROPDOWN_TEXTURE.dispose();
+         CLICKED_DROPDOWN_TEXTURE.dispose();
 
+         EXPANDED_DROPDOWN_TEXTURE.dispose();
+         EXPANDED_HOVERED_DROPDOWN_TEXTURE.dispose();
+         EXPANDED_CLICKED_DROPDOWN_TEXTURE.dispose();
+
+         EXPANDED_MENU_UPPER_TEXTURE.dispose();
+         EXPANDED_HOVERED_MENU_UPPER_TEXTURE.dispose();
+         EXPANDED_CLICKED_MENU_UPPER_TEXTURE.dispose();
+
+         EXPANDED_MENU_LOWER_TEXTURE.dispose();
+         EXPANDED_HOVERED_MENU_LOWER_TEXTURE.dispose();
+         EXPANDED_CLICKED_MENU_LOWER_TEXTURE.dispose();
     }
 
     public String getText() {
@@ -216,10 +239,18 @@ public class UIDropdown extends UIElement {
         text = v;
     }
 
+    /**
+     * The items contained in the UIDropdown
+     * @return the items
+     */
     public Array<String> getItems() {
         return items;
     }
 
+    /**
+     * Adds an item to the list of items
+     * @param s the item to add
+     */
     public void add(String... s) {
         for (String s1 : s) items.add(s1);
     }

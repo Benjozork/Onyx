@@ -17,10 +17,12 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UICheckbox extends UIElement {
 
+    // Checkbox textures
     private final Texture CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_0.png");
     private final Texture TICKED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_2.png");
     private final Texture HOVERED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_1.png");
     private final Texture HOVERED_TICKED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_3.png");
+
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private BitmapFont font;
@@ -92,7 +94,11 @@ public class UICheckbox extends UIElement {
 
     @Override
     public void dispose() {
-
+        // Dispose of textures
+        CHECKBOX_TEXTURE.dispose();
+        TICKED_CHECKBOX_TEXTURE.dispose();
+        HOVERED_CHECKBOX_TEXTURE.dispose();
+        HOVERED_TICKED_CHECKBOX_TEXTURE.dispose();
     }
 
     public String getText() {

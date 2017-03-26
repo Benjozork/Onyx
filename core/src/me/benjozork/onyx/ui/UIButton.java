@@ -18,12 +18,14 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UIButton extends UIElement {
 
+    // Button textures
     private final Texture BUTTON_TEXTURE = new Texture("ui/button/button_0.png");
     private final NinePatch BUTTON = new NinePatch(BUTTON_TEXTURE, 6, 6, 6, 6);
     private final Texture HOVERED_BUTTON_TEXTURE = new Texture("ui/button/button_1.png");
     private final NinePatch HOVERED_BUTTON = new NinePatch(HOVERED_BUTTON_TEXTURE, 6, 6, 6, 6);
     private final Texture CLICKED_BUTTON_TEXTURE = new Texture("ui/button/button_2.png");
     private final NinePatch CLICKED_BUTTON = new NinePatch(CLICKED_BUTTON_TEXTURE, 6, 6, 6, 6);
+
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private BitmapFont font;
@@ -88,7 +90,9 @@ public class UIButton extends UIElement {
 
     @Override
     public void dispose() {
-
+        BUTTON_TEXTURE.dispose();
+        HOVERED_BUTTON_TEXTURE.dispose();
+        CLICKED_BUTTON_TEXTURE.dispose();
     }
 
     public String getText() {
