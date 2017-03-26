@@ -11,37 +11,31 @@ public class TextComponent {
     private String fontPath;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
+    /**
+     * A TextComponent defines the text component of an UIElement. A certain font path is specified along with a string and a FreeTypeFontParameter.
+     * @param text the text to be displayed
+     * @param fontPath the font path to be used
+     * @param parameter the FreeTypeFontParameter to be used
+     */
     public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.text = text;
         this.fontPath = fontPath;
         this.parameter = parameter;
     }
 
-
-    /**
-     * The text to be displayed
-     */
     public String getText() {
         return text;
     }
 
-    /**
-     * Set the text to be displayed
-    */
     public void setText(String text) {
         this.text = text;
     }
 
-    /**
-     * The path of the font used to render the text
-     */
+
     public String getFontPath() {
         return fontPath;
     }
 
-    /**
-     * Set the path of the font used to render the text
-     */
     public void setFontPath(String fontPath) {
         this.fontPath = fontPath;
     }
@@ -54,7 +48,7 @@ public class TextComponent {
     }
 
     /**
-     * Set the FreeTypeFontParameter of the font used to render the text
+     * Sets the FreeTypeFontParameter of the font used to render the text
      */
     public void setParameter(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.parameter = parameter;
