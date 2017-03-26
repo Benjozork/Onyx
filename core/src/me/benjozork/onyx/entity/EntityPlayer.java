@@ -18,7 +18,7 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class EntityPlayer extends LivingEntity {
 
-
+    // Player textures
     private final Texture PLAYER_TEXTURE = new Texture("ship/ship.png");
     private final Texture FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_fire.png");
     private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_engine_fire.png");
@@ -104,10 +104,18 @@ public class EntityPlayer extends LivingEntity {
         super.move(vx, vy);
     }
 
+    /**
+     * The current DrawState
+     * @return the state
+     */
     public DrawState getState() {
         return state;
     }
 
+    /**
+     * Sets the current DrawState
+     * @param v the state to be used
+     */
     public void setState(DrawState v) {
         this.state = v;
     }

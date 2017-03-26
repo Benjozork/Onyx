@@ -44,6 +44,10 @@ public class RandomList<T> {
         return new RandomList<T>(items);
     }
 
+    /**
+     * Returns the next element randomly chosen
+     * @return the element
+     */
     public T next() {
         prevItem = items.get(currentIndex);
         int index = random.nextInt(items.size);
@@ -51,6 +55,11 @@ public class RandomList<T> {
         return items.get(index);
     }
 
+    /**
+     * Returns the next element randomly chosen
+     * @param ignorePrevItem whether the previously picked element should be ignored
+     * @return the element
+     */
     public T next(boolean ignorePrevItem) {
         int prev = currentIndex, index = 0;
         do {

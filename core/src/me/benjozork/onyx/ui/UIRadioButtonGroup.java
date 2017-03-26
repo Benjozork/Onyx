@@ -20,7 +20,7 @@ public class UIRadioButtonGroup extends UIElement {
     }
 
     /**
-     * The UIRadioButton that is currently selected
+     * The button that is currently selected
      * @return the button's index
      */
     public int getSelected() {
@@ -28,7 +28,7 @@ public class UIRadioButtonGroup extends UIElement {
     }
 
     /**
-     * Sets the UIRadioButton that is currently selected
+     * Sets the button that is currently selected
      * @param selected the button's index
      */
     public void setSelected(int selected) {

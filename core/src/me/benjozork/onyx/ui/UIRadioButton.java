@@ -89,7 +89,7 @@ public class UIRadioButton extends UIElement {
 
     /**
      * Sets whether the UIRadioButton is selected
-     * @param b if it is selected
+     * @param b whether it is selected
      */
     public void set(boolean b) {
         triggerEvent(ActionEvent.VALUE_CHANGED);
