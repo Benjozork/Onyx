@@ -32,7 +32,7 @@ public abstract class Drawable {
     }
 
     /**
-     * Internally upadte the Drawable
+     * Internally update the Drawable
      *
      * @param dt The delta time
      */
@@ -153,6 +153,7 @@ public abstract class Drawable {
      */
     public void accelerate(float v) {
         speed += v;
+        if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(1, 1); // Prevent this from having no effect
     }
 
     /**
