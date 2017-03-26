@@ -93,7 +93,8 @@ public class GameScreen implements Screen {
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            crossFadeBackgroundColor.resume();
+            if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
+            else crossFadeBackgroundColor.resume();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
             isZooming = true;
