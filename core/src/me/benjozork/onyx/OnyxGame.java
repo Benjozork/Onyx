@@ -73,5 +73,8 @@ public class OnyxGame extends Game {
         OrthographicCamera worldCamera = GameManager.getWorldCamera();
         worldCamera.viewportWidth = width;
         worldCamera.viewportHeight = height;
+        OrthographicCamera guiCamera = GameManager.getGuiCamera();
+        guiCamera.viewportWidth = width;
+        guiCamera.viewportHeight = height;
     }
 }
