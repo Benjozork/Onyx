@@ -57,9 +57,7 @@ public class EntityProjectile extends Entity {
                 }
             }*/
 
-        batch.begin();
         batch.draw(texture, getX(), getY(), 10, 10);
-        batch.end();
     }
 
     @Override
