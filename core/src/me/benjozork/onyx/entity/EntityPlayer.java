@@ -84,10 +84,8 @@ public class EntityPlayer extends LivingEntity {
         currentTexture.setRotation((float) - angle * MathUtils.radiansToDegrees);
 
         SpriteBatch batch = GameManager.getBatch();
-        batch.begin();
         //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
         currentTexture.draw(batch);
-        batch.end();
     }
 
     @Override
