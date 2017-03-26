@@ -179,8 +179,6 @@ public class GameScreen implements Screen {
 
     public void render(float delta) {
 
-        System.out.println(player.getX());
-
         // Update
         update(delta);
 
