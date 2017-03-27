@@ -19,7 +19,9 @@ public abstract class Drawable {
     protected float angle;
     protected Rectangle bounds;
     private float speed, maxSpeed;
+
     private boolean boundsDebug = false;
+    private boolean defaultMaxSpeed = true;
 
     public Drawable(int x, int y) {
         this.position = new Vector2(x, y);
@@ -35,6 +37,7 @@ public abstract class Drawable {
      * @param dt The delta time
      */
     public void update(float dt) {
+        if (defaultMaxSpeed) maxSpeed = speed + 1f;
         bounds.setPosition(position);
 
         if (speed > maxSpeed) speed = maxSpeed;
@@ -45,8 +48,7 @@ public abstract class Drawable {
             velocity.y = (float) Math.cos(angle);
         }
 
-        position.x += velocity.x * Utils.delta() * speed;
-        position.y += velocity.y * Utils.delta() * speed;
+        position.add(velocity.nor().scl(dt).scl(speed));
     }
 
     public abstract void init();
@@ -190,6 +192,7 @@ public abstract class Drawable {
 
     public void setMaxSpeed(float maxSpeed) {
         this.maxSpeed = maxSpeed;
+        defaultMaxSpeed = false;
     }
 
     /**
