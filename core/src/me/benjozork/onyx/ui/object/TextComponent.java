@@ -82,6 +82,7 @@ public class TextComponent {
 
     public void dispose() {
         if (generatedFont != null) generatedFont.dispose();
+        generator.dispose();
     }
 
 }
