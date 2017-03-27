@@ -62,7 +62,7 @@ public class EntityProjectile extends Entity {
 
     @Override
     public void dispose() {
-
+        texture.dispose();
     }
 
     public float getDamage() {

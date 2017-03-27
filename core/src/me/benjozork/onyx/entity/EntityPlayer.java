@@ -99,7 +99,10 @@ public class EntityPlayer extends LivingEntity {
 
     @Override
     public void dispose() {
-
+        PLAYER_TEXTURE.dispose();
+        FIRING_PLAYER_TEXTURE.dispose();
+        MOVING_FIRING_PLAYER_TEXTURE.dispose();
+        MOVING_PLAYER_TEXTURE.dispose();
     }
 
     @Override

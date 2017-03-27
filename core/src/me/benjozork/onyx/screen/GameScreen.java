@@ -252,7 +252,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        for (Entity e : registeredEntities) {
+            e.dispose();
+        }
     }
 
     public void toggleDebug() {
