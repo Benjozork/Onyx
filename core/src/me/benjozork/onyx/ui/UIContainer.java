@@ -28,7 +28,6 @@ public class UIContainer extends Drawable {
     @Override
     public void init() {
         for (UIElement element : elements) {
-            System.out.println(element);
             element.init();
         }
     }
