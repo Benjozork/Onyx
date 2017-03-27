@@ -25,7 +25,7 @@ public class CycleList<T> {
         }
     }
 
-    public static <T> CycleList<T> of(T... items) throws IllegalArgumentException {
+    public static <T> CycleList<T> of(T... items) {
         if (items == null || items.length == 0) {
             throw new IllegalArgumentException("Cycle requires at least one item!");
         }
