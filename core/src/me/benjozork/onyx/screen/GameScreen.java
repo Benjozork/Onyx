@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
@@ -208,7 +208,7 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(worldCam.combined);
 
         // Set title
-        Gdx.graphics.setTitle("Onyx 0.0.1 | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
+        Gdx.graphics.setTitle("Onyx " + OnyxGame.VERSION + " | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
 
         // Update then draw entities
         for (Entity e : registeredEntities) {
