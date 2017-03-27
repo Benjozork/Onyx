@@ -1,5 +1,8 @@
 package me.benjozork.onyx.ui.object;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
@@ -9,39 +12,48 @@ public class TextComponent {
 
     private String text;
     private String fontPath;
+    private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private GlyphLayout layout;
 
+    private BitmapFont generatedFont;
+
+    /**
+     * A TextComponent defines a text that is drawn on the screen. A certain font path is specified along with a string and a FreeTypeFontParameter.
+     * @param text the text to be displayed
+     * @param fontPath the font path to be used
+     * @param parameter the FreeTypeFontParameter to be used
+     */
     public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.text = text;
         this.fontPath = fontPath;
+        this.generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
         this.parameter = parameter;
+        this.layout = new GlyphLayout(new FreeTypeFontGenerator(Gdx.files.internal(fontPath)).generateFont(parameter), text);
     }
 
+    public BitmapFont generateFont() {
+        generatedFont = generator.generateFont(parameter);
+        return generatedFont;
+    }
 
-    /**
-     * The text to be displayed
-     */
+    public BitmapFont getFont() {
+        return generatedFont;
+    }
+
     public String getText() {
         return text;
     }
 
-    /**
-     * Set the text to be displayed
-    */
     public void setText(String text) {
         this.text = text;
     }
 
-    /**
-     * The path of the font used to render the text
-     */
+
     public String getFontPath() {
         return fontPath;
     }
 
-    /**
-     * Set the path of the font used to render the text
-     */
     public void setFontPath(String fontPath) {
         this.fontPath = fontPath;
     }
@@ -54,10 +66,23 @@ public class TextComponent {
     }
 
     /**
-     * Set the FreeTypeFontParameter of the font used to render the text
+     * Sets the FreeTypeFontParameter of the font used to render the text
      */
     public void setParameter(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.parameter = parameter;
+    }
+
+    /**
+     * The GlyphLayout used
+     * @return the layout
+     */
+    public GlyphLayout getLayout() {
+        return layout;
+    }
+
+    public void dispose() {
+        if (generatedFont != null) generatedFont.dispose();
+        generator.dispose();
     }
 
 }

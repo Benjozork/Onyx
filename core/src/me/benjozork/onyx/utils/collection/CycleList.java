@@ -1,10 +1,11 @@
-package me.benjozork.onyx.utils;
+package me.benjozork.onyx.utils.collection;
 
 import com.badlogic.gdx.utils.Array;
 
 /**
  * A circular list, meaning calling next() when at the last element will wrap back
  * to the first element of the list, ad infinitum.
+ * @author angelickite
  * @param <T> the type of the items in the list
  */
 public class CycleList<T> {

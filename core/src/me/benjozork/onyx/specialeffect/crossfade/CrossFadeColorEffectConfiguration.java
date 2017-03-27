@@ -39,7 +39,7 @@ public class CrossFadeColorEffectConfiguration {
 
     /**
      * How much the delta between the source colors rgb and target colors rgb are scaled
-     * for the crossFadeDeltaTimeStepRequirement during the fade in step of the cross fade.
+     * for the crossFadeDeltaTimeStepRequirement during the fade out step of the cross fade.
      * A value of 1 means the deltas will be considered at their original scale of 0-255.
      */
     public float fadeOutDeltaMultiplier = 1;

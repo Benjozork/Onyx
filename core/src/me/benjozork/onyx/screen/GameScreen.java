@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
@@ -44,8 +44,12 @@ public class GameScreen implements Screen {
     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
     private List<Entity> toRemove = new ArrayList<Entity>();
 
+    private OrthographicCamera worldCam, guiCam;
+
     private Sprite background;
     private Sprite lifeIcon;
+
+    private SpriteBatch batch;
 
     // Crossfading
     private CrossFadeColorEffect crossFadeBackgroundColor;
@@ -58,16 +62,24 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 20);
+        // Setup player
+        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
+        player.setMaxSpeed(1000f);
         registerEntity(player);
         this.player = player;
-        player.setSpeed(0f);
 
+        // Setup cameras
+        worldCam = GameManager.getWorldCamera();
+        guiCam = GameManager.getGuiCamera();
+        batch = GameManager.getBatch();
+
+        // Setup background
         background = new Sprite(new Texture("hud/background_base.png"));
         background.setPosition(0, 0);
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        // Setup life icons
         lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
         lifeIcon.setScale(0.4f, 0.4f);
 
@@ -80,77 +92,16 @@ public class GameScreen implements Screen {
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
     }
 
-    @Override
-    public void render(float delta) {
-        OrthographicCamera worldCam = GameManager.getWorldCamera();
-        worldCam.position.x = player.getX() + 38;
-        worldCam.position.y = player.getY() + 55;
+    public void update(float delta) {
+
+        // Update cameras
+        //worldCam.position.x = player.getX() + 38;
+        //worldCam.position.y = player.getY() + 55;
         worldCam.update();
 
-        SpriteBatch batch = GameManager.getBatch();
-        OrthographicCamera guiCam = GameManager.getGuiCamera();
         guiCam.update();
 
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            crossFadeBackgroundColor.resume();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-            isZooming = true;
-        }
-
-        crossFadeBackgroundColor.update();
-
-        // Zoom pulse
-        if (isZooming) {
-            if (zoomBack) {
-                deltaZoom = -(targetZoom - worldCam.zoom);
-            } else {
-                deltaZoom = targetZoom - worldCam.zoom;
-            }
-
-            zoomStep = maxZoomTime / Utils.delta();
-
-            worldCam.zoom += (deltaZoom / zoomStep);
-            guiCam.zoom += (deltaZoom / zoomStep);
-
-            if (deltaZoom > -0.05f) {
-                zoomBack = true;
-            }
-            if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
-                worldCam.zoom = 1f;
-                guiCam.zoom = 1f;
-                zoomBack = false;
-                isZooming = false;
-            }
-        }
-
-        if (delta > maxFrameTime) {
-            maxFrameTime = delta;
-        }
-
-        // Draw background
-        background.setColor(backgroundColor);
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.disableBlending();
-        batch.setProjectionMatrix(guiCam.combined);
-        batch.begin();
-        background.draw(batch);
-
-        // Draw life icons
-        batch.enableBlending();
-        batch.setProjectionMatrix(guiCam.combined);
-        for (int i = 0; i < maxLife; i++) {
-            lifeIcon.setColor(backgroundColor);
-            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
-            lifeIcon.draw(batch);
-        }
-
-        // Draw debug info
-        font.draw(batch, "test", 0, Gdx.graphics.getHeight() - 25);
-
-        batch.setProjectionMatrix(worldCam.combined);
-
+        // Update DrawState of player
         if (player.isFiring()) {
             player.setState(EntityPlayer.DrawState.FIRING);
         }
@@ -164,18 +115,20 @@ public class GameScreen implements Screen {
             player.setState(EntityPlayer.DrawState.IDLE);
         }
 
-        // Get player/enemy and modify player, depending on current inputs
+        // Update input
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.rotate(5);
+            player.setDirection(EntityPlayer.Direction.RIGHT);
+            player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.rotate(-5);
+            player.setDirection(EntityPlayer.Direction.LEFT);
+            player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.accelerate(10f);
+            player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-10f);
+            player.accelerate(-100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("bullet.png");
@@ -183,32 +136,84 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             toggleDebug();
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
+            else crossFadeBackgroundColor.resume();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+            isZooming = true;
+        }
 
-        // Manage collidingWithPlayer list
-        for (Iterator<Entity> it = registeredEntities.iterator(); it.hasNext(); ) {
-            Entity e = it.next();
 
-            if (e instanceof EntityPlayer) break;
+        // Update crossfade
+        crossFadeBackgroundColor.update();
 
-            if (player.collidesWith(e.getBounds())) {
-                collidingWithPlayer.add(e);
+        // Update zoom
+        if (isZooming) {
+            if (zoomBack) {
+                deltaZoom = -(targetZoom - worldCam.zoom);
+            } else {
+                deltaZoom = targetZoom - worldCam.zoom;
             }
-            if (collidingWithPlayer.contains(e) && !player.collidesWith(e.getBounds())) {
-                collidingWithPlayer.remove(e);
-            }
 
-            if (collidingWithPlayer.contains(e) && collidingWithPlayer.size() > 1) {
-                collidingWithPlayer.remove(e);
+            zoomStep = maxZoomTime / Utils.delta();
+
+            worldCam.zoom += (deltaZoom / zoomStep);
+            guiCam.zoom += (deltaZoom / zoomStep); // Make it possible to only zoom background. Sprite#scale() ?
+
+            if (deltaZoom > -0.05f) {
+                zoomBack = true;
+            }
+            if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
+                worldCam.zoom = 1f;
+                guiCam.zoom = 1f;
+                zoomBack = false;
+                isZooming = false;
             }
         }
 
-        //batch.draw(image, x, y);
-        Gdx.graphics.setTitle("Onyx 0.0.1 | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
+        // Update maxFrametime
+        if (delta > maxFrameTime) {
+            maxFrameTime = delta;
+        }
+    }
 
-        // Update then draw entities and apply deltas
+    public void render(float delta) {
 
+        // Update
+        update(delta);
+
+        // Begin batching
+        batch.begin();
+
+        // Draw background
+        background.setColor(backgroundColor);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.disableBlending();
+        batch.setProjectionMatrix(guiCam.combined);
+        background.draw(batch);
+
+        // Draw life icons
+        batch.enableBlending();
+        batch.setProjectionMatrix(guiCam.combined);
+        for (int i = 0; i < maxLife; i++) {
+            lifeIcon.setColor(backgroundColor);
+            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
+            lifeIcon.draw(batch);
+        }
+
+        // Draw debug info
+        if(debugEnabled)
+            font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
+
+        batch.setProjectionMatrix(worldCam.combined);
+
+        // Set title
+        Gdx.graphics.setTitle("Onyx " + OnyxGame.VERSION + " | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
+
+        // Update then draw entities
         for (Entity e : registeredEntities) {
-            e.update(delta);
+            e.update(delta); // This call updates the Drawable class internally
         }
 
         for (Entity e : registeredEntities) {
@@ -219,6 +224,7 @@ public class GameScreen implements Screen {
             e.draw();
         }
 
+        // Remove entities that need to be
         registeredEntities.removeAll(toRemove);
         batch.end();
     }
@@ -246,7 +252,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        for (Entity e : registeredEntities) {
+            e.dispose();
+        }
     }
 
     public void toggleDebug() {

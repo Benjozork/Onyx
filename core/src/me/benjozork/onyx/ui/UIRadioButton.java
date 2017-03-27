@@ -17,10 +17,12 @@ import me.benjozork.onyx.ui.object.TextComponent;
  */
 public class UIRadioButton extends UIElement {
 
+    // RadioButton textures
     private final Texture RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_0.png");
     private final Texture TICKED_RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_2.png");
     private final Texture HOVERED_RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_1.png");
     private final Texture HOVERED_TICKED_RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_3.png");
+
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private BitmapFont font;
@@ -67,10 +69,8 @@ public class UIRadioButton extends UIElement {
     public void draw() {
         layout.setText(font, text);
 
-        GameManager.getBatch().begin();
         GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
         font.draw(GameManager.getBatch(), text, (getX() + getWidth() + 50) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
-        GameManager.getBatch().end();
     }
 
     @Override
@@ -81,12 +81,15 @@ public class UIRadioButton extends UIElement {
 
     @Override
     public void dispose() {
-
+        RADIOBUTTON_TEXTURE.dispose();
+        TICKED_RADIOBUTTON_TEXTURE.dispose();
+        HOVERED_RADIOBUTTON_TEXTURE.dispose();
+        HOVERED_TICKED_RADIOBUTTON_TEXTURE.dispose();
     }
 
     /**
-     * Sets wheter the UIRadioButton is selected
-     * @param b if it is selected
+     * Sets whether the UIRadioButton is selected
+     * @param b whether it is selected
      */
     public void set(boolean b) {
         triggerEvent(ActionEvent.VALUE_CHANGED);

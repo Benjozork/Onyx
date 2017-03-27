@@ -45,9 +45,7 @@ public class UILabel extends UIElement {
 
     @Override
     public void draw() {
-        GameManager.getBatch().begin();
         font.draw(GameManager.getBatch(), text, getX(), getY());
-        GameManager.getBatch().end();
     }
 
     @Override

@@ -28,7 +28,6 @@ public class UIContainer extends Drawable {
     @Override
     public void init() {
         for (UIElement element : elements) {
-            System.out.println(element);
             element.init();
         }
     }
@@ -49,7 +48,9 @@ public class UIContainer extends Drawable {
 
     @Override
     public void dispose() {
-
+        for (UIElement element : elements) {
+            element.dispose();
+        }
     }
 
     public boolean click(Vector2 localPosition) {

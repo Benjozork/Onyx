@@ -37,7 +37,6 @@ public class EntityProjectile extends Entity {
         // get mouse point, unproject it, and set velocity accordingly
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
         velocity.set(mouse.sub(getX(), getY()));
-        angle = velocity.angle();
     }
 
     @Override
@@ -62,7 +61,7 @@ public class EntityProjectile extends Entity {
 
     @Override
     public void dispose() {
-
+        texture.dispose();
     }
 
     public float getDamage() {

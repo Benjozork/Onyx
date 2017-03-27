@@ -14,9 +14,11 @@ import me.benjozork.onyx.screen.GameScreen;
 
 public class OnyxGame extends Game {
 
+    public static final String VERSION = "0.2.0";
+
     @Override
     public void create() {
-        Gdx.app.log("[onyx/info] ", "Onyx 0.1.0 starting");
+        Gdx.app.log("[onyx/info] ", "Onyx " + VERSION + " starting");
         Gdx.app.log("[onyx/debug] ", "Current libGDX version is " + Version.VERSION);
         Gdx.app.log("[onyx/debug] ", "Current backend is " + Gdx.app.getType() + "/" + System.getProperty("os.name"));
         Gdx.app.log("[onyx/debug] ", "Current JRE version is " + System.getProperty("java.version"));
@@ -40,7 +42,6 @@ public class OnyxGame extends Game {
 
         // Setup Initial Screen
         GameManager.setCurrentScreen(new GameScreen());
-        setScreen(GameManager.getCurrentScreen());
     }
 
     @Override
@@ -53,11 +54,17 @@ public class OnyxGame extends Game {
         GameManager.getShapeRenderer().dispose();
     }
 
-    @Override
-    public void render() {
+    public void update() {
         // Update cameras
         OrthographicCamera worldCamera = GameManager.getWorldCamera();
         worldCamera.update();
+
+        if (GameManager.getCurrentScreen() != getScreen()) setScreen(GameManager.getCurrentScreen());
+    }
+
+    @Override
+    public void render() {
+        update();
 
         // Clear screen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
