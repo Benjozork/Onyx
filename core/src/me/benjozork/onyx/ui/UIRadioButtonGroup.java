@@ -55,15 +55,13 @@ public class UIRadioButtonGroup extends UIElement {
     /**
      * Selects a button from the list
      * @param b the button
-     * @throws IllegalArgumentException
      */
-    public void select(UIRadioButton b) throws IllegalArgumentException {
+    public void select(UIRadioButton b) {
         triggerEvent(ActionEvent.VALUE_CHANGED);
         selected = buttons.indexOf(b, true);
         b.set(true);
         if (selected == - 1) {
             selected = 0;
-            throw new IllegalArgumentException();
         }
         for (UIRadioButton button : buttons) {
             if (buttons.indexOf(button, true) != selected) {
