@@ -32,7 +32,7 @@ public class TextComponent {
         this.layout = new GlyphLayout(new FreeTypeFontGenerator(Gdx.files.internal(fontPath)).generateFont(parameter), text);
     }
 
-    public BitmapFont regenerateFont() {
+    public BitmapFont generateFont() {
         generatedFont = generator.generateFont(parameter);
         return generatedFont;
     }
@@ -78,6 +78,10 @@ public class TextComponent {
      */
     public GlyphLayout getLayout() {
         return layout;
+    }
+
+    public void dispose() {
+        if (generatedFont != null) generatedFont.dispose();
     }
 
 }
