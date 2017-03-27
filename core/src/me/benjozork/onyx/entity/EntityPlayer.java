@@ -72,7 +72,6 @@ public class EntityPlayer extends LivingEntity {
             }
         }
 
-        System.out.println(getSpeed());
         if (getSpeed() > 0) setSpeed(getSpeed() - 5f);
         else setSpeed(getSpeed() + 5f);
 

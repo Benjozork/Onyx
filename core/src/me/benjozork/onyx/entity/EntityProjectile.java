@@ -3,6 +3,7 @@ package me.benjozork.onyx.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -37,7 +38,6 @@ public class EntityProjectile extends Entity {
         // get mouse point, unproject it, and set velocity accordingly
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
         velocity.set(mouse.sub(getX(), getY()));
-        angle = velocity.angle();
     }
 
     @Override
