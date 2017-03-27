@@ -42,7 +42,6 @@ public class OnyxGame extends Game {
 
         // Setup Initial Screen
         GameManager.setCurrentScreen(new GameScreen());
-        setScreen(GameManager.getCurrentScreen());
     }
 
     @Override
@@ -55,11 +54,17 @@ public class OnyxGame extends Game {
         GameManager.getShapeRenderer().dispose();
     }
 
-    @Override
-    public void render() {
+    public void update() {
         // Update cameras
         OrthographicCamera worldCamera = GameManager.getWorldCamera();
         worldCamera.update();
+
+        if (GameManager.getCurrentScreen() != getScreen()) setScreen(GameManager.getCurrentScreen());
+    }
+
+    @Override
+    public void render() {
+        update();
 
         // Clear screen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
