@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Benjozork
@@ -16,6 +19,26 @@ public class Console {
 
     private static String lines = "";
     private static GlyphLayout layout = new GlyphLayout();
+    private static Rectangle textBox = new Rectangle();
+
+    private static boolean isTextBoxFocused = false;
+
+    public static void init() {
+        textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
+    }
+
+    public static void update() {
+        if (Gdx.input.justTouched()) {
+            if (textBox.contains(Utils.unprojectGui(Gdx.input.getX(), Gdx.input.getY()))) {
+                isTextBoxFocused = true;
+                Logger.log("box");
+            }
+        }
+
+        if (isTextBoxFocused) {
+
+        }
+    }
 
     /**
      * Prints a string to the console on a new line
@@ -49,14 +72,17 @@ public class Console {
         GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
         GameManager.getShapeRenderer().setColor(0.1f, 0.1f, 0.1f, 0.6f);
         GameManager.getShapeRenderer().rect(0, Gdx.graphics.getHeight() - 600, 600, 600);
+        GameManager.getShapeRenderer().setColor(0.1f, 0.1f, 0.1f, 0.6f);
+        GameManager.getShapeRenderer().rect(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         GameManager.getShapeRenderer().end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
         batch.begin();
+        batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
 
         if (! lines.equals("")) {
             layout.setText(font, lines);
             font.getData().markupEnabled = true;
-            font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 20);
+            font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 45);
         }
     }
 

@@ -71,6 +71,8 @@ public class GameScreen implements Screen {
         registerEntity(player);
         this.player = player;
 
+        Console.init();
+
         // Setup cameras
         worldCam = GameManager.getWorldCamera();
         guiCam = GameManager.getGuiCamera();
@@ -147,6 +149,7 @@ public class GameScreen implements Screen {
             isZooming = true;
         }
 
+        Console.update();
 
         // Update crossfade
         crossFadeBackgroundColor.update();
@@ -209,7 +212,7 @@ public class GameScreen implements Screen {
         if(debugEnabled)
             font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
 
-        Console.draw(batch); // For some unknown reason this needs to be called last
+        if (debugEnabled) Console.draw(batch); // For some unknown reason this needs to be called last
 
         batch.setProjectionMatrix(worldCam.combined);
 
