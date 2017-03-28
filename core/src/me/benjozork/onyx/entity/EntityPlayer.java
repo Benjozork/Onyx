@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -40,7 +40,7 @@ public class EntityPlayer extends LivingEntity {
     @Override
     public void init() {
         // Initialize hitbox
-        bounds = new Rectangle(getX(), getY(), 50, 50);
+        bounds = PolygonHelper.getPolygon(getX(), getY(), 50, 50);
     }
 
     @Override

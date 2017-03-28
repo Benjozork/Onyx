@@ -3,10 +3,10 @@ package me.benjozork.onyx.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -32,7 +32,7 @@ public class EntityProjectile extends Entity {
     public void init() {
         batch = GameManager.getBatch();
         // initialize hitbox
-        setBounds(new Rectangle(getX(), getY(), 15, 25));
+        bounds = PolygonHelper.getPolygon(getX(), getY(), 15, 25);
 
         // get mouse point, unproject it, and set velocity accordingly
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());

@@ -1,7 +1,8 @@
 package me.benjozork.onyx.object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.utils.Utils;
@@ -17,11 +18,13 @@ public abstract class Drawable {
 
     protected float maxVelocity = 100f;
     protected float angle;
-    protected Rectangle bounds;
+    protected Polygon bounds;
     private float speed, maxSpeed;
 
     private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
+
+    private Polygon cache;
 
     public Drawable(int x, int y) {
         this.position = new Vector2(x, y);
@@ -38,7 +41,7 @@ public abstract class Drawable {
      */
     public void update(float dt) {
         if (defaultMaxSpeed) maxSpeed = speed + 1f;
-        bounds.setPosition(position);
+        bounds.setPosition(position.x,position.y);
 
         if (speed > maxSpeed) speed = maxSpeed;
         if (speed < -maxSpeed) speed = -maxSpeed;
@@ -66,8 +69,8 @@ public abstract class Drawable {
      * @param otherBounds The rectangle used to check
      * @return If the Drawable collides with otherBounds
      */
-    public boolean collidesWith(Rectangle otherBounds) {
-        return bounds.overlaps(otherBounds);
+    public boolean collidesWith(Polygon otherBounds) {
+        return Intersector.intersectPolygons(bounds,otherBounds,cache);
     }
 
     /**
@@ -81,7 +84,7 @@ public abstract class Drawable {
 
     public void setPosition(Vector2 position) {
         this.position = position;
-        this.bounds.setPosition(position);
+        this.bounds.setPosition(position.x,position.y);
     }
 
     /**
@@ -95,7 +98,7 @@ public abstract class Drawable {
 
     public void setX(float v) {
         position.x = v;
-        bounds.x = v;
+        bounds.setPosition(position.x,position.y);
     }
 
     /**
@@ -109,15 +112,14 @@ public abstract class Drawable {
 
     public void setY(float v) {
         position.y = v;
-        bounds.y = v;
+        bounds.setPosition(position.x,position.y);
     }
 
     public void move(float dx, float dy) {
         // here, we move the position and the bounding box
         position.x += dx * Utils.delta();
-        bounds.x += dx * Utils.delta();
         position.y += dy * Utils.delta();
-        bounds.y += dy * Utils.delta();
+        bounds.setPosition(position.x,position.y);
     }
 
     /**
@@ -202,13 +204,13 @@ public abstract class Drawable {
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-
-        if (mouse.x > getBounds().getX()
-                && mouse.x < (getBounds().getX() + getBounds().getWidth())
-                && mouse.y > getBounds().getY()
-                && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
-            return true;
-        } else return false;
+        return Intersector.isPointInPolygon(bounds.getVertices(),0,bounds.getVertices().length-1,mouse.x,mouse.y);
+//        if (mouse.x > getBounds().getX()
+//                && mouse.x < (getBounds().getX() + getBounds().getWidth())
+//                && mouse.y > getBounds().getY()
+//                && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
+//            return true;
+//        } else return false;
     }
 
     /**
@@ -216,11 +218,11 @@ public abstract class Drawable {
      *
      * @return The bounding box
      */
-    public Rectangle getBounds() {
+    public Polygon getBounds() {
         return bounds;
     }
 
-    public void setBounds(Rectangle bounds) {
+    public void setBounds(Polygon bounds) {
         this.bounds = bounds;
     }
 

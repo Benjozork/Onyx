@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +18,10 @@ import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.console.Console;
-import me.benjozork.onyx.utils.Logger;
-import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
+import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Created by Benjozork on 2017-03-19.
