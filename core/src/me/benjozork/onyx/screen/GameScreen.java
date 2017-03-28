@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.console.Console;
+import me.benjozork.onyx.utils.Logger;
 import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
@@ -206,6 +209,8 @@ public class GameScreen implements Screen {
         if(debugEnabled)
             font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
 
+        Console.draw(batch); // For some unknown reason this needs to be called last
+
         batch.setProjectionMatrix(worldCam.combined);
 
         // Set title
@@ -226,6 +231,7 @@ public class GameScreen implements Screen {
 
         // Remove entities that need to be
         registeredEntities.removeAll(toRemove);
+
         batch.end();
     }
 
@@ -259,6 +265,8 @@ public class GameScreen implements Screen {
 
     public void toggleDebug() {
         debugEnabled = !debugEnabled;
+        if (debugEnabled) Logger.log("Debug mode  [#00FF00]enabled");
+        else Logger.log("Debug mode  [#FF0000]disabled");
     }
 
     public void registerEntity(Entity e) {
