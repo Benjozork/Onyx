@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
 
@@ -39,7 +39,7 @@ public class UICheckbox extends UIElement {
 
     public UICheckbox(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds = new Rectangle(getX(), getY(), width, height);
+        bounds= PolygonHelper.getPolygon(x,y,width,height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -55,8 +55,10 @@ public class UICheckbox extends UIElement {
     @Override
     public void update() {
         layout.setText(font, text);
-        bounds.width = getWidth() + layout.width + 10;
-        bounds.height = getHeight();
+//        bounds.width = getWidth() + layout.width + 10;
+//        bounds.height = getHeight();
+        PolygonHelper.setDimensions(bounds, getWidth() + layout.width + 10, getHeight());
+
 
         if (hovering()) {
             currentTexture = (checked ? HOVERED_TICKED_CHECKBOX_TEXTURE : HOVERED_CHECKBOX_TEXTURE);

@@ -3,6 +3,7 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.ui.object.Action;
 import me.benjozork.onyx.ui.object.ActionEvent;
@@ -110,7 +111,7 @@ public abstract class UIElement extends Drawable {
 
     public void setWidth(float v) {
         dimensions.x = v;
-        bounds.width = v;
+        PolygonHelper.setWidth(bounds,v);
     }
 
     public float getHeight() {
@@ -119,21 +120,19 @@ public abstract class UIElement extends Drawable {
 
     public void setHeight(float v) {
         dimensions.y = v;
-        bounds.height = v;
+        PolygonHelper.setHeight(bounds,v);
     }
 
     public void resize(float dx, float dy) {
         this.dimensions.x += dx;
-        this.bounds.width += dx;
         this.dimensions.y += dy;
-        this.bounds.height += dy;
+        PolygonHelper.setDimensions(bounds,dimensions.x,dimensions.y);
     }
 
     public void setDimensions(float w, float h) {
         this.dimensions.x = w;
-        this.bounds.width = w;
         this.dimensions.y = h;
-        this.bounds.height = h;
+        PolygonHelper.setDimensions(bounds,w,h);
     }
 
 }

@@ -6,14 +6,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.utils.Utils;
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Created by Benjozork on 2017-03-19.
@@ -71,7 +71,7 @@ public class UIDropdown extends UIElement {
 
     public UIDropdown(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds = new Rectangle(getX(), getY(), width, height);
+        bounds= PolygonHelper.getPolygon(x,y,width,height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -87,13 +87,14 @@ public class UIDropdown extends UIElement {
     @Override
     public void update() {
         layout.setText(font, text);
-        bounds.width = getWidth();
+        PolygonHelper.setWidth(bounds,getWidth());
         if (expanded) {
-            bounds.height = ((items.size + 1) * getHeight()) - 6;
-            bounds.y = getY() - (items.size * getHeight()) + 6;
+            PolygonHelper.setHeight(bounds,((items.size + 1) * getHeight()) - 6);
+            PolygonHelper.setY(bounds,  getY() - (items.size * getHeight()) + 6);
         } else {
-            bounds.height = getHeight();
-            bounds.y = getY();
+            //Looks redundant
+//            bounds.height = getHeight();
+//            bounds.y = getY();
         }
 
 
