@@ -12,8 +12,10 @@ public class TextComponent {
 
     private String text;
     private String fontPath;
+
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+
     private GlyphLayout layout;
 
     private BitmapFont generatedFont;

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import me.benjozork.onyx.utils.Logger;
+
 /**
  * Created by Benjozork on 2017-03-19.
  */
@@ -68,7 +70,7 @@ public class GameManager {
     }
 
     public static void setCurrentScreen(Screen currentScreen) {
-        Gdx.app.log("[onyx/gm] ", "Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
+        Logger.log("Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
         GameManager.currentScreen = currentScreen;
     }
 

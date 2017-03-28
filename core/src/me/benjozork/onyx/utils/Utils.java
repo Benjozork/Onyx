@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Calendar;
+
 import me.benjozork.onyx.internal.GameManager;
 
 
@@ -149,5 +151,13 @@ public class Utils {
             ret.add(s);
         }
         return ret;
+    }
+
+    /**
+     * This method returns the current time (H:M:S)
+     * @return the time
+     */
+    public static String time() {
+        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND);
     }
 }
