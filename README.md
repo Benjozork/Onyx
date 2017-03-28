@@ -9,6 +9,7 @@ A small (or big ?) project of mine
 **Benjozork**: Developer  
 **angelickite**: Developer  
 **sozemego**: Developer  
-**m1sterlurk**: SFX/music 
+**RishiRaj22**: Developer  
+**m1sterlurk**: SFX/music  
 
 **We are actively looking for graphics/sound artists and developers ! Hit us up on [Discord](https://discord.gg/gqhcbRP) for more information !**
