@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.screen.MenuScreen;
@@ -45,17 +43,6 @@ public class OnyxGame extends Game {
 
         // Setup Initial Screen
         GameManager.setCurrentScreen(new MenuScreen());
-
-        //test
-        JsonReader reader=new JsonReader();
-        JsonValue base=reader.parse(Gdx.files.internal("test.json"));
-        JsonValue a,b,c,d;
-        System.out.println(base+"\n************");
-        a=base.get("rigidBodies");
-        System.out.println(a+"\n************");
-        b=a.get(0);
-        System.out.println(b+"\n************");
-
     }
 
     @Override
