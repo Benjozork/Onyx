@@ -10,7 +10,7 @@ import me.benjozork.onyx.internal.console.Console;
 public class Logger {
 
     public static void log(Object x) {
-        Gdx.app.log("[" + Utils.time() + "]  ", x.toString());
+        Gdx.app.log("[" + Utils.time() + "] ", x.toString());
         Console.println("[" + Utils.time() + "]  " + x.toString());
         // Do file handle....
     }

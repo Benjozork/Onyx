@@ -71,7 +71,7 @@ public class UIDropdown extends UIElement {
 
     public UIDropdown(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds= PolygonHelper.getPolygon(x,y,width,height);
+        bounds = PolygonHelper.getPolygon(x,y,width,height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -97,7 +97,6 @@ public class UIDropdown extends UIElement {
 //            bounds.y = getY();
         }
 
-
         if (colorTimer <= maxColorTimer && colorTimer > 0) {
             colorTimer += Utils.delta();
         } else {
@@ -109,7 +108,6 @@ public class UIDropdown extends UIElement {
         }
 
         if (hovering()) {
-            // Do element highlighting
             currentPatch = expanded ? EXPANDED_HOVERED_DROPDOWN : HOVERED_DROPDOWN;
         }
     }

@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal.console;
+package me.benjozork.onyx.internal;
 
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
