@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import me.benjozork.onyx.entity.EntityPlayer;
+import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.utils.Logger;
 
 /**
@@ -28,6 +30,8 @@ public class GameManager {
     private static ShapeRenderer renderer;
 
     private static SpriteBatch batch;
+
+    private static EntityPlayer player;
 
     /**
      * The camera instance that is used when rendering world objects
@@ -108,5 +112,28 @@ public class GameManager {
      */
     public static void setBatch(SpriteBatch batch) {
         GameManager.batch = batch;
+    }
+
+    public static void setIsRendering(boolean v) {
+        if (v) if (! batch.isDrawing()) batch.begin();
+        if (! v) if (batch.isDrawing()) batch.end();
+    }
+
+    /**
+     * The player entity used for GameScreen logic
+     * @throws IllegalStateException
+     * @return the player
+     */
+    public static EntityPlayer getPlayer() {
+        if (currentScreen instanceof GameScreen) return player;
+        else throw new IllegalStateException("player does not exist in this screen");
+    }
+
+    /**
+     * Sets the player instance
+     * @param player the player instance to be used
+     */
+    public static void setPlayer(EntityPlayer player) {
+        GameManager.player = player;
     }
 }
