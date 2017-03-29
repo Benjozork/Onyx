@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.console.Console;
+import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Logger;
 import me.benjozork.onyx.utils.Utils;
@@ -27,9 +28,6 @@ public class OnyxGame extends Game {
         Logger.log("[#FF00FF]Current libGDX version is " + Version.VERSION);
         Logger.log("[#FF00FF]Current backend is " + Gdx.app.getType() + "/" + System.getProperty("os.name"));
         Logger.log("[#FF00FF]Current JRE version is " + System.getProperty("java.version"));
-
-        // Init console
-        Console.init();
 
         // Setup cameras
         OrthographicCamera worldCam = new OrthographicCamera();
@@ -48,8 +46,11 @@ public class OnyxGame extends Game {
         GameManager.setRenderer(new ShapeRenderer());
         GameManager.setBatch(new SpriteBatch());
 
+        // Init console
+        Console.init();
+
         // Setup Initial Screen
-        GameManager.setCurrentScreen(new MenuScreen());
+        GameManager.setCurrentScreen(new GameScreen());
     }
 
     @Override
