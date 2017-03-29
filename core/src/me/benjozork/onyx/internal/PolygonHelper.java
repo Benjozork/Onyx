@@ -20,8 +20,13 @@ public class PolygonHelper {
      * @return
      */
     public static Polygon getPolygon(float x, float y, float width, float height) {
-        float vals[] = {x, y, x + width, y, x + width, y + height, x, y + height};
-        return new Polygon(vals);
+        float vals[] = {0, 0, width, 0, width, height, 0, height};
+        Polygon p = new Polygon();
+        p.setOrigin(width/2,height/2);
+        p.setScale(1,1);
+        p.setVertices(vals);
+        p.setPosition(x,y);
+        return p;
     }
 
     /**
@@ -53,7 +58,6 @@ public class PolygonHelper {
     public static void setY(Polygon p, float y)
     {
         p.setPosition(p.getX(),y);
-
     }
     /**
      * Used to set the width of a rectangular polygon

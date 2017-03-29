@@ -92,7 +92,7 @@ public class UIDropdown extends UIElement {
             PolygonHelper.setHeight(bounds,((items.size + 1) * getHeight()) - 6);
             PolygonHelper.setY(bounds,  getY() - (items.size * getHeight()) + 6);
         } else {
-            //Looks redundant
+//            Looks redundant
 //            bounds.height = getHeight();
 //            bounds.y = getY();
         }
