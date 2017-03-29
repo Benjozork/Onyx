@@ -55,8 +55,7 @@ public class PolygonHelper {
      * @param p polygon whose y co-ordinate is to be set
      * @param y new value for y co-ordinate of polygon
      */
-    public static void setY(Polygon p, float y)
-    {
+    public static void setY(Polygon p, float y) {
         p.setPosition(p.getX(),y);
     }
     /**
@@ -64,8 +63,7 @@ public class PolygonHelper {
      * @param p polygon whose width is to be set
      * @param width new width for the polygon
      */
-    public static void setWidth(Polygon p,float width)
-    {
+    public static void setWidth(Polygon p,float width) {
         float vals[] = p.getVertices();
         vals[2] = vals[0] + width;
         vals[4] = vals[0] + width;
@@ -77,8 +75,7 @@ public class PolygonHelper {
      * @param p polygon whose width is to be set
      * @param height new height for the polygonial
      */
-    public static void setHeight(Polygon p, float height)
-    {
+    public static void setHeight(Polygon p, float height) {
         float vals[] = p.getVertices();
         vals[5] = vals[1] + height;
         vals[7] = vals[1] + height;
@@ -91,8 +88,7 @@ public class PolygonHelper {
      * @param width new width for the polygonial
      * @param height new height for the polygonial
      */
-    public static void setDimensions(Polygon p, float width, float height)
-    {
+    public static void setDimensions(Polygon p, float width, float height) {
         float vals[] = p.getVertices();
         vals[5] = vals[1] + height;
         vals[7] = vals[1] + height;

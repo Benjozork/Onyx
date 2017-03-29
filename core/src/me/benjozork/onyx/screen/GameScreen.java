@@ -70,8 +70,6 @@ public class GameScreen implements Screen {
         registerEntity(player);
         this.player = player;
 
-        Console.init();
-
         // Setup cameras
         worldCam = GameManager.getWorldCamera();
         guiCam = GameManager.getGuiCamera();
@@ -137,9 +135,6 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("bullet.png");
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            toggleDebug();
-        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
             else crossFadeBackgroundColor.resume();
@@ -147,8 +142,6 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
             isZooming = true;
         }
-
-        Console.update();
 
         // Update crossfade
         crossFadeBackgroundColor.update();
@@ -189,8 +182,7 @@ public class GameScreen implements Screen {
         update(delta);
 
         // Begin batching
-        batch.begin();
-
+        if (! batch.isDrawing()) batch.begin();
         // Draw background
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -200,7 +192,6 @@ public class GameScreen implements Screen {
 
         // Draw life icons
         batch.enableBlending();
-        batch.setProjectionMatrix(guiCam.combined);
         for (int i = 0; i < maxLife; i++) {
             lifeIcon.setColor(backgroundColor);
             lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
@@ -211,9 +202,7 @@ public class GameScreen implements Screen {
         if(debugEnabled)
             font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
 
-        if (debugEnabled) Console.draw(batch); // For some unknown reason this needs to be called last
-
-        batch.setProjectionMatrix(worldCam.combined);
+       batch.setProjectionMatrix(worldCam.combined);
 
         // Set title
         Gdx.graphics.setTitle("Onyx " + OnyxGame.VERSION + " | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");

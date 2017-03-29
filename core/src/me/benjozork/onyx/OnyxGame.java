@@ -2,6 +2,7 @@ package me.benjozork.onyx;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Logger;
 import me.benjozork.onyx.utils.Utils;
@@ -17,12 +19,17 @@ public class OnyxGame extends Game {
 
     public static final String VERSION = "0.2.0";
 
+    private static boolean debug = false;
+
     @Override
     public void create() {
         Logger.log("Onyx " + VERSION + " starting");
         Logger.log("[#FF00FF]Current libGDX version is " + Version.VERSION);
         Logger.log("[#FF00FF]Current backend is " + Gdx.app.getType() + "/" + System.getProperty("os.name"));
         Logger.log("[#FF00FF]Current JRE version is " + System.getProperty("java.version"));
+
+        // Init console
+        Console.init();
 
         // Setup cameras
         OrthographicCamera worldCam = new OrthographicCamera();
@@ -56,6 +63,13 @@ public class OnyxGame extends Game {
     }
 
     public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            toggleDebug();
+        }
+
+        // Update console
+        Console.update();
+
         // Update cameras
         OrthographicCamera worldCamera = GameManager.getWorldCamera();
         worldCamera.update();
@@ -73,6 +87,8 @@ public class OnyxGame extends Game {
 
         // Render frame
         getScreen().render(Utils.delta());
+        // Draw console
+        if (debug) Console.draw(GameManager.getBatch());
     }
 
     @Override
@@ -85,4 +101,9 @@ public class OnyxGame extends Game {
         guiCamera.viewportWidth = width;
         guiCamera.viewportHeight = height;
     }
+
+    private static void toggleDebug() {
+        debug = !debug;
+    }
+
 }

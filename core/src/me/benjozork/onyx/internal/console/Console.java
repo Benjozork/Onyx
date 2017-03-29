@@ -42,7 +42,7 @@ public class Console {
 
     /**
      * Prints a string to the console on a new line
-     * @param x the object to print
+     * @param x the object to pdrint
      */
     public static void println(Object x) {
         newLine();
@@ -65,7 +65,15 @@ public class Console {
         BitmapFont font = new BitmapFont(); // Unoptimmized
         ShapeRenderer shapeRenderer = GameManager.getShapeRenderer(); // Unoptimized
 
-        batch.end(); // This is NECESSARY so no OpenGL conflicts happen
+        /*
+        This code contains a lot of SpriteBatch#begin()/end().
+        This is NECESSARY so no OpenGL conflicts happen.
+        Please do not remove those lines.
+        Thanks,
+                    - Ben
+         */
+
+        if (batch.isDrawing()) batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         GameManager.getShapeRenderer().setProjectionMatrix(GameManager.getGuiCamera().combined);
@@ -76,13 +84,15 @@ public class Console {
         GameManager.getShapeRenderer().rect(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         GameManager.getShapeRenderer().end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
-        batch.begin();
         batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
 
         if (! lines.equals("")) {
             layout.setText(font, lines);
             font.getData().markupEnabled = true;
+            if (batch.isDrawing()) batch.end();
+            if (! batch.isDrawing()) batch.begin();
             font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 45);
+            if (batch.isDrawing()) batch.end();
         }
     }
 
