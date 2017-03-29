@@ -15,6 +15,7 @@ import java.util.List;
 
 import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
+import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.console.Console;
@@ -66,9 +67,12 @@ public class GameScreen implements Screen {
     public void show() {
         // Setup player
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
+        EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
         registerEntity(player);
+        registerEntity(enemy);
         this.player = player;
+        GameManager.setPlayer(player);
 
         // Setup cameras
         worldCam = GameManager.getWorldCamera();
@@ -121,10 +125,14 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(EntityPlayer.Direction.RIGHT);
             player.accelerate(100f);
+        } else {
+            player.setDirection(EntityPlayer.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.setDirection(EntityPlayer.Direction.LEFT);
             player.accelerate(100f);
+        } else if (! Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.setDirection(EntityPlayer.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(100f);
