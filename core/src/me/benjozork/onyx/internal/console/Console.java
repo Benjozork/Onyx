@@ -17,14 +17,18 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class Console {
 
-    private static String lines = "";
+    private static String lines = "", prevLines = "";
     private static GlyphLayout layout = new GlyphLayout();
+    private static BitmapFont font;
+    private static ShapeRenderer renderer;
     private static Rectangle textBox = new Rectangle();
 
     private static boolean isTextBoxFocused = false;
 
     public static void init() {
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
+        font = new BitmapFont();
+        renderer = GameManager.getShapeRenderer();
     }
 
     public static void update() {
@@ -62,9 +66,6 @@ public class Console {
     }
 
     public static void draw(SpriteBatch batch) {
-        BitmapFont font = new BitmapFont(); // Unoptimmized
-        ShapeRenderer shapeRenderer = GameManager.getShapeRenderer(); // Unoptimized
-
         /*
         This code contains a lot of SpriteBatch#begin()/end().
         This is NECESSARY so no OpenGL conflicts happen.
@@ -76,18 +77,19 @@ public class Console {
         if (batch.isDrawing()) batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        GameManager.getShapeRenderer().setProjectionMatrix(GameManager.getGuiCamera().combined);
-        GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
-        GameManager.getShapeRenderer().setColor(0.1f, 0.1f, 0.1f, 0.6f);
-        GameManager.getShapeRenderer().rect(0, Gdx.graphics.getHeight() - 600, 600, 600);
-        GameManager.getShapeRenderer().setColor(0.1f, 0.1f, 0.1f, 0.6f);
-        GameManager.getShapeRenderer().rect(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
-        GameManager.getShapeRenderer().end();
+        renderer.setProjectionMatrix(GameManager.getGuiCamera().combined);
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(0.1f, 0.1f, 0.1f, 0.6f);
+        renderer.rect(0, Gdx.graphics.getHeight() - 600, 600, 600);
+        renderer.setColor(0.1f, 0.1f, 0.1f, 0.6f);
+        renderer.rect(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
+        renderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
         batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
 
         if (! lines.equals("")) {
-            layout.setText(font, lines);
+            if (! prevLines.equals(lines)) layout.setText(font, lines);
+            prevLines = lines;
             font.getData().markupEnabled = true;
             if (batch.isDrawing()) batch.end();
             if (! batch.isDrawing()) batch.begin();
