@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.utils.Logger;
 import me.benjozork.onyx.utils.Utils;
 
@@ -87,12 +88,42 @@ public class Console {
         Gdx.gl.glDisable(GL20.GL_BLEND);
         batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
 
+        if (batch.isDrawing()) batch.end();
+        if (! batch.isDrawing()) batch.begin();
+        font.getData().markupEnabled = true;
+
+        // Draw debug info
+        if (GameManager.getCurrentScreen() instanceof GameScreen) {
+            font.draw (
+                batch,
+                    "[#FF00FF]"
+                    + Gdx.graphics.getFramesPerSecond()
+                    + "  []fps,  [#FF00FF]"
+                    + ((GameScreen) GameManager.getCurrentScreen()).getRegisteredEntities().size()
+                    + "  []entities",
+                20, Gdx.graphics.getHeight() - 10
+            );
+            font.draw (
+                batch,
+                    "current screen:  [#FF00FF]"
+                    + GameManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                    +  "[]",
+                20, Gdx.graphics.getHeight() - 30
+            );
+        }
+        else {
+            font.draw (
+                    batch,
+                    Gdx.graphics.getFramesPerSecond()
+                            + " fps ",
+                    20, Gdx.graphics.getHeight() - 10
+            );
+        }
+
+
         if (! lines.equals("")) {
             if (! prevLines.equals(lines)) layout.setText(font, lines);
             prevLines = lines;
-            font.getData().markupEnabled = true;
-            if (batch.isDrawing()) batch.end();
-            if (! batch.isDrawing()) batch.begin();
             font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 45);
             if (batch.isDrawing()) batch.end();
         }

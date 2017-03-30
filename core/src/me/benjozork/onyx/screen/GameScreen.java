@@ -206,10 +206,6 @@ public class GameScreen implements Screen {
             lifeIcon.draw(batch);
         }
 
-        // Draw debug info
-        if(debugEnabled)
-            font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
-
        batch.setProjectionMatrix(worldCam.combined);
 
         // Set title
