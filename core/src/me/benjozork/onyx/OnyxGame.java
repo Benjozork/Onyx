@@ -50,7 +50,7 @@ public class OnyxGame extends Game {
         Console.init();
 
         // Setup Initial Screen
-        GameManager.setCurrentScreen(new GameScreen());
+        GameManager.setCurrentScreen(new MenuScreen());
     }
 
     @Override

@@ -13,7 +13,7 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class EntityEnemy extends LivingEntity {
 
-    ShapeRenderer renderer;
+    private ShapeRenderer renderer;
 
     public EntityEnemy(float x, float y) {
         super(new Vector2(x, y));
