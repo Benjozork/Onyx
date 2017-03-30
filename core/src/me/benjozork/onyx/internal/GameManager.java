@@ -1,6 +1,5 @@
 package me.benjozork.onyx.internal;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.screen.GameScreen;
-import me.benjozork.onyx.utils.Logger;
 
 /**
  * Created by Benjozork on 2017-03-19.

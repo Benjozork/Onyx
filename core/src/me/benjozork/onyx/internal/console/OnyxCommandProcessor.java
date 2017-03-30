@@ -3,7 +3,7 @@ package me.benjozork.onyx.internal.console;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.MenuScreen;
-import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.internal.Logger;
 
 /**
  * @author Benjozork

@@ -11,14 +11,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.console.Console;
-import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.MenuScreen;
-import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 public class OnyxGame extends Game {
 
-    public static final String VERSION = "0.2.0";
+    public static final String VERSION = "0.3.0-alpha";
 
     private static boolean debug = false;
 
@@ -61,6 +60,7 @@ public class OnyxGame extends Game {
         // Dispose graphics resources
         GameManager.getBatch().dispose();
         GameManager.getShapeRenderer().dispose();
+        GameManager.getPlayer().dispose();
     }
 
     public void update() {

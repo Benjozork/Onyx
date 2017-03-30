@@ -18,10 +18,9 @@ import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
-import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**

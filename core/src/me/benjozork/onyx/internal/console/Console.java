@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.screen.GameScreen;
-import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -67,6 +67,7 @@ public class Console {
     }
 
     public static void draw(SpriteBatch batch) {
+
         /*
         This code contains a lot of SpriteBatch#begin()/end().
         This is NECESSARY so no OpenGL conflicts happen.
@@ -75,7 +76,7 @@ public class Console {
                     - Ben
          */
 
-        if (batch.isDrawing()) batch.end();
+        GameManager.setIsRendering(false);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         renderer.setProjectionMatrix(GameManager.getGuiCamera().combined);
@@ -88,12 +89,15 @@ public class Console {
         Gdx.gl.glDisable(GL20.GL_BLEND);
         batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
 
-        if (batch.isDrawing()) batch.end();
-        if (! batch.isDrawing()) batch.begin();
+        GameManager.setIsRendering(true);
         font.getData().markupEnabled = true;
 
         // Draw debug info
+
         if (GameManager.getCurrentScreen() instanceof GameScreen) {
+
+            // Draw FPS and entity count
+
             font.draw (
                 batch,
                     "[#FF00FF]"
@@ -103,6 +107,9 @@ public class Console {
                     + "  []entities",
                 20, Gdx.graphics.getHeight() - 10
             );
+
+            // Draw current screen
+
             font.draw (
                 batch,
                     "current screen:  [#FF00FF]"
@@ -112,14 +119,26 @@ public class Console {
             );
         }
         else {
+
+            // Draw FPS
+
+            font.draw (
+                batch,
+                    Gdx.graphics.getFramesPerSecond()
+                   + " fps ",
+                20, Gdx.graphics.getHeight() - 10
+            );
+
+            // Draw current screen
+
             font.draw (
                     batch,
-                    Gdx.graphics.getFramesPerSecond()
-                            + " fps ",
-                    20, Gdx.graphics.getHeight() - 10
+                    "current screen:  [#FF00FF]"
+                            + GameManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                            +  "[]",
+                    20, Gdx.graphics.getHeight() - 30
             );
         }
-
 
         if (! lines.equals("")) {
             if (! prevLines.equals(lines)) layout.setText(font, lines);
@@ -127,6 +146,7 @@ public class Console {
             font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 45);
             if (batch.isDrawing()) batch.end();
         }
+
     }
 
 }
