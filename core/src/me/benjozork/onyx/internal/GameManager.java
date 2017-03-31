@@ -9,7 +9,8 @@ import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.screen.GameScreen;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Manages {@link SpriteBatch}es, {@link OrthographicCamera}s and {@link ShapeRenderer}s
+ * @author Benjozork
  */
 public class GameManager {
 
@@ -22,8 +23,6 @@ public class GameManager {
      * The camera instance that is used when rendering gui objects
      */
     private static OrthographicCamera guiCamera;
-
-    private static Screen currentScreen;
 
     private static ShapeRenderer renderer;
 
@@ -65,15 +64,6 @@ public class GameManager {
      */
     public static void setGuiCamera(OrthographicCamera guiCamera) {
         GameManager.guiCamera = guiCamera;
-    }
-
-    public static Screen getCurrentScreen() {
-        return currentScreen;
-    }
-
-    public static void setCurrentScreen(Screen currentScreen) {
-        Logger.log("Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
-        GameManager.currentScreen = currentScreen;
     }
 
     /**
@@ -123,7 +113,7 @@ public class GameManager {
      * @return the player
      */
     public static EntityPlayer getPlayer() {
-        if (currentScreen instanceof GameScreen) return player;
+        if (ScreenManager.getCurrentScreen() instanceof GameScreen) return player;
         else throw new IllegalStateException("player does not exist in this screen");
     }
 
