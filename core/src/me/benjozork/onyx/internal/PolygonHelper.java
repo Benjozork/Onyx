@@ -1,5 +1,6 @@
 package me.benjozork.onyx.internal;
 
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -9,6 +10,9 @@ import com.badlogic.gdx.math.Rectangle;
  */
 
 public class PolygonHelper {
+    private static Polygon p1 = new Polygon();
+    private static Polygon p2 = new Polygon();
+    private static Polygon p3 = new Polygon();
     /**
      * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
      * This method is used to create a new rectangular polygon
@@ -95,5 +99,12 @@ public class PolygonHelper {
         vals[2] = vals[0] + width;
         vals[4] = vals[0] + width;
         p.setVertices(vals);
+    }
+    public static boolean polygonCollide(Polygon pol1, Polygon pol2) {
+        p1.setVertices(pol1.getTransformedVertices());
+        p2.setVertices(pol2.getTransformedVertices());
+
+        return Intersector.intersectPolygons(p1,p2,p3);
+
     }
 }

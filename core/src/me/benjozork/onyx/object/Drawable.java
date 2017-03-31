@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -70,7 +71,7 @@ public abstract class Drawable {
      * @return If the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
-        return Intersector.intersectPolygons(bounds,otherBounds,cache);
+        return PolygonHelper.polygonCollide(bounds,otherBounds);
     }
 
     /**
@@ -204,7 +205,7 @@ public abstract class Drawable {
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-        return Intersector.isPointInPolygon(bounds.getTransformedVertices(), 0, bounds.getVertices().length -1, mouse.x, mouse.y);
+        return Intersector.isPointInPolygon(bounds.getTransformedVertices(), 0, bounds.getTransformedVertices().length -1, mouse.x, mouse.y);
 //        if (mouse.x > getBounds().getX()
 //                && mouse.x < (getBounds().getX() + getBounds().getWidth())
 //                && mouse.y > getBounds().getY()
