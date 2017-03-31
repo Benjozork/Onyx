@@ -2,8 +2,7 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.GameConfiguration;
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
@@ -12,8 +11,8 @@ import me.benjozork.onyx.screen.GameScreen;
  */
 public abstract class LivingEntity extends Entity {
 
-    private float health = GameConfiguration.DEFAULT_HEALTH;
-    private int ammo = GameConfiguration.DEFAULT_AMMO;
+    // private float health = SettingsManager.DEFAULT_HEALTH;
+    // private int ammo = SettingsManager.DEFAULT_AMMO;
 
     private float maxTime = 0.1f;
     private float timer = 0f;
@@ -26,6 +25,7 @@ public abstract class LivingEntity extends Entity {
         super(pos);
     }
 
+    /*
     public float getHealth() {
         return health;
     }
@@ -41,6 +41,7 @@ public abstract class LivingEntity extends Entity {
         }
         health -= v;
     }
+    */
 
     public void fireProjectile(String path) {
         timer += Utils.delta();
@@ -48,7 +49,7 @@ public abstract class LivingEntity extends Entity {
             EntityProjectile projectile = new EntityProjectile(getX(), getY());
             projectile.setTexturePath(path);
             projectile.setSpeed(1550f);
-            ((GameScreen) GameManager.getCurrentScreen()).registerEntity(projectile);
+            ((GameScreen) ScreenManager.getCurrentScreen()).registerEntity(projectile);
 
             //if (ammo < 0) return;
             //ammo -= 1;
@@ -57,6 +58,7 @@ public abstract class LivingEntity extends Entity {
         }
     }
 
+    /*
     public int getAmmo() {
         return ammo;
     }
@@ -64,4 +66,5 @@ public abstract class LivingEntity extends Entity {
     public void setAmmo(int ammo) {
         this.ammo = ammo;
     }
+    */
 }
