@@ -121,17 +121,16 @@ public class GameScreen implements Screen {
         }
 
         // Update input
+        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.setDirection(EntityPlayer.Direction.STRAIGHT);
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(EntityPlayer.Direction.RIGHT);
             player.accelerate(100f);
-        } else {
-            player.setDirection(EntityPlayer.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.setDirection(EntityPlayer.Direction.LEFT);
             player.accelerate(100f);
-        } else if (! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(100f);
@@ -252,6 +251,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        GameManager.setPlayer(null);
         for (Entity e : registeredEntities) {
             e.dispose();
         }

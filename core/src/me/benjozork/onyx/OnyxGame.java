@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
+import me.benjozork.onyx.internal.console.ConsoleCommand;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
@@ -49,22 +51,29 @@ public class OnyxGame extends Game {
         Console.init();
 
         // Setup Initial Screen
-        GameManager.setCurrentScreen(new MenuScreen());
+        ScreenManager.setCurrentScreen(new MenuScreen());
+
+
     }
 
     @Override
     public void dispose() {
         // Dispose active screen
-        GameManager.getCurrentScreen().dispose();
+        ScreenManager.getCurrentScreen().dispose();
 
         // Dispose graphics resources
         GameManager.getBatch().dispose();
         GameManager.getShapeRenderer().dispose();
-        GameManager.getPlayer().dispose();
+        try { // fixme
+            GameManager.getPlayer().dispose();
+        } catch (IllegalStateException ignored) {
+        } catch (NullPointerException ignored) {}
+
     }
 
     public void update() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            Console.dispatchCommand(new ConsoleCommand("screen"));
             toggleDebug();
         }
 
@@ -75,7 +84,7 @@ public class OnyxGame extends Game {
         OrthographicCamera worldCamera = GameManager.getWorldCamera();
         worldCamera.update();
 
-        if (GameManager.getCurrentScreen() != getScreen()) setScreen(GameManager.getCurrentScreen());
+        if (ScreenManager.getCurrentScreen() != getScreen()) setScreen(ScreenManager.getCurrentScreen());
     }
 
     @Override

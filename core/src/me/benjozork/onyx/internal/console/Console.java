@@ -7,13 +7,18 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.HashMap;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * Manages the debugging console and the command processing
  * @author Benjozork
  */
 public class Console {
@@ -24,12 +29,20 @@ public class Console {
     private static ShapeRenderer renderer;
     private static Rectangle textBox = new Rectangle();
 
+    private static HashMap<CommandProcessor, Array<String>> cmdProcessorList = new HashMap<CommandProcessor, Array<String>>();
+    private static Array<String> cmdBuffer = new Array<String>();
+
     private static boolean isTextBoxFocused = false;
 
     public static void init() {
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         font = new BitmapFont();
         renderer = GameManager.getShapeRenderer();
+
+        OnyxCommandProcessor ocpInstance = new OnyxCommandProcessor();
+        Array<String> ocpCommands = new Array<String>();
+        ocpCommands.add("screen");
+        cmdProcessorList.put(ocpInstance, ocpCommands);
     }
 
     public static void update() {
@@ -94,7 +107,7 @@ public class Console {
 
         // Draw debug info
 
-        if (GameManager.getCurrentScreen() instanceof GameScreen) {
+        if (ScreenManager.getCurrentScreen() instanceof GameScreen) {
 
             // Draw FPS and entity count
 
@@ -103,7 +116,7 @@ public class Console {
                     "[#FF00FF]"
                     + Gdx.graphics.getFramesPerSecond()
                     + "  []fps,  [#FF00FF]"
-                    + ((GameScreen) GameManager.getCurrentScreen()).getRegisteredEntities().size()
+                    + ((GameScreen) ScreenManager.getCurrentScreen()).getRegisteredEntities().size()
                     + "  []entities",
                 20, Gdx.graphics.getHeight() - 10
             );
@@ -113,7 +126,7 @@ public class Console {
             font.draw (
                 batch,
                     "current screen:  [#FF00FF]"
-                    + GameManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                    + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
                     +  "[]",
                 20, Gdx.graphics.getHeight() - 30
             );
@@ -134,7 +147,7 @@ public class Console {
             font.draw (
                     batch,
                     "current screen:  [#FF00FF]"
-                            + GameManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                            + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
                             +  "[]",
                     20, Gdx.graphics.getHeight() - 30
             );
@@ -147,6 +160,18 @@ public class Console {
             if (batch.isDrawing()) batch.end();
         }
 
+    }
+
+    public static void registerCommands(CommandProcessor commandProcessor, String... cmds) {
+        cmdProcessorList.put(commandProcessor, Array.with(cmds));
+    }
+
+    public static void dispatchCommand(ConsoleCommand cmd) {
+        for (CommandProcessor cp : cmdProcessorList.keySet()) {
+            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), true)) {
+                cp.onCommand(cmd);
+            }
+        }
     }
 
 }

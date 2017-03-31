@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.ui.UIButton;
 import me.benjozork.onyx.ui.UICheckbox;
 import me.benjozork.onyx.ui.UIDropdown;
@@ -55,7 +56,7 @@ public class MenuScreen implements Screen {
         button.addAction("action", new Runnable() {
             @Override
             public void run() {
-                System.out.println("click");
+                ScreenManager.setCurrentScreen(new GameScreen());
             }
         }, ActionEvent.CLICKED);
 
