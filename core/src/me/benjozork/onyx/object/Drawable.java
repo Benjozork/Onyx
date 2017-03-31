@@ -8,7 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-16.
+ * Describes an object that is to be drawn on the screen
+ * @author Benjozork
  */
 public abstract class Drawable {
 
@@ -64,9 +65,9 @@ public abstract class Drawable {
     public abstract void draw();
 
     /**
-     * Check if the Drawable collides with a rectangle
+     * Check if the Drawable collides with a polygon
      *
-     * @param otherBounds The rectangle used to check
+     * @param otherBounds The polygon used to check
      * @return If the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {

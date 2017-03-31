@@ -9,7 +9,7 @@ import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-04.
+ * @author Benjozork
  */
 public class EntityEnemy extends LivingEntity {
 
@@ -38,6 +38,7 @@ public class EntityEnemy extends LivingEntity {
     @Override
     public void draw() {
         GameManager.setIsRendering(false);
+        renderer.setProjectionMatrix(GameManager.getWorldCamera().combined);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.WHITE);
         renderer.rect(getX(), getY(), 50, 50);

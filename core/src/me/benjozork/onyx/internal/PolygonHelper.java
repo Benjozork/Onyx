@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 /**
  * Used to convert rectangles to polygons and perform operations of rectangle on the polygon
  * Created by Raj on 28-03-2017.
+ * @author @fixme add your name here
  */
 
 public class PolygonHelper {

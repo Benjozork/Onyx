@@ -6,6 +6,7 @@ import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * Provides logging utilities
  * @author Benjozork
  */
 public class Logger {
