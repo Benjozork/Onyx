@@ -1,15 +1,16 @@
 package me.benjozork.onyx.internal;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.entity.EntityPlayer;
+import me.benjozork.onyx.screen.GameScreen;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Manages {@link SpriteBatch}es, {@link OrthographicCamera}s and {@link ShapeRenderer}s
+ * @author Benjozork
  */
 public class GameManager {
 
@@ -23,11 +24,11 @@ public class GameManager {
      */
     private static OrthographicCamera guiCamera;
 
-    private static Screen currentScreen;
-
     private static ShapeRenderer renderer;
 
     private static SpriteBatch batch;
+
+    private static EntityPlayer player;
 
     /**
      * The camera instance that is used when rendering world objects
@@ -65,15 +66,6 @@ public class GameManager {
         GameManager.guiCamera = guiCamera;
     }
 
-    public static Screen getCurrentScreen() {
-        return currentScreen;
-    }
-
-    public static void setCurrentScreen(Screen currentScreen) {
-        Logger.log("Changed screen to " + currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", ""));
-        GameManager.currentScreen = currentScreen;
-    }
-
     /**
      * The ShapeRenderer
      *
@@ -108,5 +100,28 @@ public class GameManager {
      */
     public static void setBatch(SpriteBatch batch) {
         GameManager.batch = batch;
+    }
+
+    public static void setIsRendering(boolean v) {
+        if (v) if (! batch.isDrawing()) batch.begin();
+        if (! v) if (batch.isDrawing()) batch.end();
+    }
+
+    /**
+     * The player entity used for GameScreen logic
+     * @throws IllegalStateException
+     * @return the player
+     */
+    public static EntityPlayer getPlayer() {
+        if (ScreenManager.getCurrentScreen() instanceof GameScreen) return player;
+        else throw new IllegalStateException("player does not exist in this screen");
+    }
+
+    /**
+     * Sets the player instance
+     * @param player the player instance to be used
+     */
+    public static void setPlayer(EntityPlayer player) {
+        GameManager.player = player;
     }
 }

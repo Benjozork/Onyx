@@ -15,12 +15,12 @@ import java.util.List;
 
 import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
+import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
-import me.benjozork.onyx.utils.Logger;
+import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -66,9 +66,12 @@ public class GameScreen implements Screen {
     public void show() {
         // Setup player
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
+        EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
         registerEntity(player);
+        registerEntity(enemy);
         this.player = player;
+        GameManager.setPlayer(player);
 
         // Setup cameras
         worldCam = GameManager.getWorldCamera();
@@ -118,6 +121,9 @@ public class GameScreen implements Screen {
         }
 
         // Update input
+        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.setDirection(EntityPlayer.Direction.STRAIGHT);
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(EntityPlayer.Direction.RIGHT);
             player.accelerate(100f);
@@ -198,10 +204,6 @@ public class GameScreen implements Screen {
             lifeIcon.draw(batch);
         }
 
-        // Draw debug info
-        if(debugEnabled)
-            font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
-
        batch.setProjectionMatrix(worldCam.combined);
 
         // Set title
@@ -249,6 +251,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        GameManager.setPlayer(null);
         for (Entity e : registeredEntities) {
             e.dispose();
         }

@@ -13,7 +13,8 @@ import me.benjozork.onyx.internal.GameManager;
 
 
 /**
- * Created by Benjozork on 2017-03-04.
+ * This class provide a few useful utilities to ease development.
+ * @author Benjozork
  */
 public class Utils {
 

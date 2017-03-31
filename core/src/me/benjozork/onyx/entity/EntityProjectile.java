@@ -10,9 +10,8 @@ import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-04.
+ * @author Benjozork
  */
-
 public class EntityProjectile extends Entity {
 
     private SpriteBatch batch;
