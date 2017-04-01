@@ -3,7 +3,8 @@ package me.benjozork.onyx.ui.object;
 import me.benjozork.onyx.ui.UIElement;
 
 /**
- * Created by Benjozork on 2017-03-20.
+ * Defines a code that is to be run by an {@link UIElement} when a specified {@link ActionEvent} takes place relative to the element.
+ * @author Benjozork
  */
 public class Action {
 
@@ -14,7 +15,6 @@ public class Action {
     private UIElement parent;
 
     /**
-     * An Action defines a code that is to be run by an UIElement when a specified ActionEvent takes place relative to the element.
      * @param parent the UIElement to which the Action is assigned.
      * @param identifier the identifier of the Action
      * @param action the code to be run when the event is triggered
