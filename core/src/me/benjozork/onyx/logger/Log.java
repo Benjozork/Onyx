@@ -3,6 +3,8 @@ package me.benjozork.onyx.logger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import me.benjozork.onyx.internal.console.Console;
+
 /**
  * Single thread use only.
  */
@@ -16,33 +18,35 @@ public class Log {
     private final String tag;
 
     private Log(String tag) {
-	this.tag = tag;
+        this.tag = tag;
     }
 
     public static Log create(String tag) {
-	return new Log(tag);
+		return new Log(tag);
     }
 
     public void print(String message, Object... args) {
-	boolean isNewLog = latestPrintLog == null || latestPrintLog != this;
-	if (isNewLog) {
-	    printNewline();
-	    printInfo();
-	}
+        boolean isNewLog = latestPrintLog == null || latestPrintLog != this;
+        if (isNewLog) {
+            printNewline();
+            printInfo();
+        }
 
-	latestPrintLog = this;
+        latestPrintLog = this;
 
-	printMessage(message, args);
-	printNewline();
+        printMessage(message, args);
+        printNewline();
     }
 
     private void printInfo() {
-	String date = sdf.format(new Date());
-	System.out.printf("[%s] (%s)\n", tag, date);
+		String date = sdf.format(new Date());
+		System.out.printf("[%s] (%s)\n", tag, date);
+		Console.println(String.format("\n[%s] (%s)", tag, date));
     }
 
     private void printMessage(String message, Object... args) {
-	System.out.printf("-> %s", String.format(message, args));
+		System.out.printf("-> %s\n", String.format(message, args));
+		Console.println("-> " + String.format(message, args));
     }
 
     private void printNewline() {
