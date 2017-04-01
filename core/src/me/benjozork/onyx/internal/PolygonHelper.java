@@ -7,10 +7,8 @@ import com.badlogic.gdx.utils.JsonValue;
 
 /**
  * Used to convert rectangles to polygons and perform operations of rectangle on the polygon
- * Created by Raj on 28-03-2017.
- * @author @fixme add your name here
+ * @author RishiRaj22
  */
-
 public class PolygonHelper {
 
     private static Polygon p1 = new Polygon();
@@ -21,7 +19,7 @@ public class PolygonHelper {
      * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
      * This method is used to create a new rectangular polygon
      * @param rectangle The rectangle to be converted to polygon
-     * @return
+     * @return the created polygon
      */
     public static Polygon getPolygon(Rectangle rectangle) {
         return getPolygon(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
@@ -34,7 +32,7 @@ public class PolygonHelper {
      * @param y      the y coordinate of the polygon
      * @param width  the width of the polygon
      * @param height the height of the polygon
-     * @return
+     * @return the created polygon
      */
     public static Polygon getPolygon(float x, float y, float width, float height) {
         float vals[] = {0, 0, width, 0, width, height, 0, height};
@@ -91,8 +89,8 @@ public class PolygonHelper {
     /**
      * Used to set the dimensions of the rectangular polygon
      * @param p      polygon whose dimensions are to be set
-     * @param width  new width for the polygonial
-     * @param height new height for the polygonial
+     * @param width  the width to be used
+     * @param height the height to be used
      */
     public static void setDimensions(Polygon p, float width, float height) {
         float vals[] = p.getVertices();
@@ -107,9 +105,9 @@ public class PolygonHelper {
      * Check the collsion of two polygons.
      * Use this method instead of intersector as this uses the transformed vertices
      * of the polygon to check for collision instead of directly using these vertices.
-     * @param pol1 First polygon to check for collsion
-     * @param pol2 Second polygon to check for collison
-     * @return
+     * @param pol1 first polygon used in the check
+     * @param pol2 second polygon used in the check
+     * @return whether the two collide
      */
     public static boolean polygonCollide(Polygon pol1, Polygon pol2) {
         p1.setVertices(pol1.getTransformedVertices());
