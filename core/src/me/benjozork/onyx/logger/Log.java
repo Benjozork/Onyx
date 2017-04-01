@@ -35,7 +35,6 @@ public class Log {
         latestPrintLog = this;
 
         printMessage(message, args);
-        printNewline();
     }
 
     private void printInfo() {
