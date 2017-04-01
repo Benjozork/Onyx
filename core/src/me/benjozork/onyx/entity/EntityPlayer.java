@@ -47,13 +47,16 @@ public class EntityPlayer extends LivingEntity {
     public void update() {
 
         if (direction == Direction.STRAIGHT) {
-            if (spriteRotation < 0.1 && spriteRotation > -0.1) spriteRotation = 0f;
-            if (spriteRotation < 0 * MathUtils.degreesToRadians) spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
-            else if (spriteRotation > 0 * MathUtils.degreesToRadians) spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
+            if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
+            if (spriteRotation < 0 * MathUtils.degreesToRadians)
+                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+            else if (spriteRotation > 0 * MathUtils.degreesToRadians)
+                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
         } else if (direction == Direction.RIGHT) {
-            if (spriteRotation < 25 * MathUtils.degreesToRadians) spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.setAngle(-180f);
-            if (!accelerated_right) {
+            if (spriteRotation < 25 * MathUtils.degreesToRadians)
+                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+            velocity.setAngle(- 180f);
+            if (! accelerated_right) {
                 accelerate(5f);
                 accelerated_right = true;
                 accelerated_left = false;
@@ -62,9 +65,10 @@ public class EntityPlayer extends LivingEntity {
                 velocity.x -= velocity.x * 2;
             }
         } else if (direction == Direction.LEFT) {
-            if (spriteRotation > -25 * MathUtils.degreesToRadians) spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
+            if (spriteRotation > - 25 * MathUtils.degreesToRadians)
+                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
-            if (!accelerated_left) {
+            if (! accelerated_left) {
                 accelerate(5f);
                 accelerated_left = true;
                 accelerated_right = false;

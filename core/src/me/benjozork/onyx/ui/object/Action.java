@@ -15,10 +15,10 @@ public class Action {
     private UIElement parent;
 
     /**
-     * @param parent the UIElement to which the Action is assigned.
+     * @param parent     the UIElement to which the Action is assigned.
      * @param identifier the identifier of the Action
-     * @param action the code to be run when the event is triggered
-     * @param event the ActionEvent to which the Action listens to
+     * @param action     the code to be run when the event is triggered
+     * @param event      the ActionEvent to which the Action listens to
      */
     public Action(UIElement parent, String identifier, Runnable action, ActionEvent event) {
         this.parent = parent;

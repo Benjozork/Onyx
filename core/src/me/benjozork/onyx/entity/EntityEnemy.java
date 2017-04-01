@@ -24,13 +24,14 @@ public class EntityEnemy extends LivingEntity {
         // Get the ShapeRenderer
         renderer = GameManager.getShapeRenderer();
         // Initialize hitbox
-        bounds = PolygonHelper.getPolygon(getX(),getY(),50,50);
+        bounds = PolygonHelper.getPolygon(getX(), getY(), 50, 50);
     }
 
     @Override
     public void update() {
         // The simplest AI ever written
-        if (getX() - GameManager.getPlayer().getX() < 400f * Utils.delta() && getX() - GameManager.getPlayer().getX() > -400f * Utils.delta()) position.x = GameManager.getPlayer().getX();
+        if (getX() - GameManager.getPlayer().getX() < 400f * Utils.delta() && getX() - GameManager.getPlayer().getX() > - 400f * Utils.delta())
+            position.x = GameManager.getPlayer().getX();
         if (getX() < GameManager.getPlayer().getX()) position.x += 400f * Utils.delta();
         else if (getX() > GameManager.getPlayer().getX()) position.x -= 400f * Utils.delta();
     }

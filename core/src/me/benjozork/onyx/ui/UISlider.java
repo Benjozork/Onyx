@@ -41,7 +41,7 @@ public class UISlider extends UIElement {
 
     @Override
     public void init() {
-        bounds= PolygonHelper.getPolygon(getX(),getY(),getWidth(),getHeight());
+        bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
         font = generator.generateFont(parameter);
     }
 

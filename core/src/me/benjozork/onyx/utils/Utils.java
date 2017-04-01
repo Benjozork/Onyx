@@ -47,7 +47,6 @@ public class Utils {
     /**
      * Translate a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
-     *
      * @param vec the position of the point
      * @return the point position in world coordinates.
      */
@@ -58,7 +57,6 @@ public class Utils {
     /**
      * Translate a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
-     *
      * @param x the x position of the point
      * @param y the y position of the point
      * @return the point position in world coordinates.
@@ -74,7 +72,6 @@ public class Utils {
     /**
      * Translate a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
-     *
      * @param vec the position of the point
      * @return the point position in world coordinates.
      */
@@ -85,7 +82,6 @@ public class Utils {
     /**
      * Translate a point from screen coordinates to gui coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
-     *
      * @param x the x position of the point
      * @param y the y position of the point
      * @return the point position in world coordinates.
@@ -129,6 +125,14 @@ public class Utils {
     }
 
     /**
+     * This method returns the current time (H:M:S)
+     * @return the time
+     */
+    public static String time() {
+        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND);
+    }
+
+    /**
      * This method formats a String list with commas and endpoints.
      * @param strings the strings to format
      * @return the formatted list
@@ -153,14 +157,6 @@ public class Utils {
             ret.add(s);
         }
         return ret;
-    }
-
-    /**
-     * This method returns the current time (H:M:S)
-     * @return the time
-     */
-    public static String time() {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND);
     }
 }
 

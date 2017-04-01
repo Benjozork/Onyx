@@ -97,89 +97,9 @@ public class GameScreen implements Screen {
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
     }
 
-    public void update(float delta) {
-
-        // Update cameras
-        //worldCam.position.x = player.getX() + 38;
-        //worldCam.position.y = player.getY() + 55;
-        worldCam.update();
-
-        guiCam.update();
-
-        // Update DrawState of player
-        if (player.isFiring()) {
-            player.setState(EntityPlayer.DrawState.FIRING);
-        }
-        if (player.getSpeed() != 0) {
-            player.setState(EntityPlayer.DrawState.MOVING);
-            if (player.isFiring()) {
-                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
-            }
-        }
-        if (!player.isFiring() && player.getSpeed() == 0f) {
-            player.setState(EntityPlayer.DrawState.IDLE);
-        }
-
-        // Update input
-        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.STRAIGHT);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.RIGHT);
-            player.accelerate(100f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.setDirection(EntityPlayer.Direction.LEFT);
-            player.accelerate(100f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.accelerate(100f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-100f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player.fireProjectile("bullet.png");
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
-            else crossFadeBackgroundColor.resume();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-            isZooming = true;
-        }
-
-        // Update crossfade
-        crossFadeBackgroundColor.update();
-
-        // Update zoom
-        if (isZooming) {
-            if (zoomBack) {
-                deltaZoom = -(targetZoom - worldCam.zoom);
-            } else {
-                deltaZoom = targetZoom - worldCam.zoom;
-            }
-
-            zoomStep = maxZoomTime / Utils.delta();
-
-            worldCam.zoom += (deltaZoom / zoomStep);
-            guiCam.zoom += (deltaZoom / zoomStep); // Make it possible to only zoom background. Sprite#scale() ?
-
-            if (deltaZoom > -0.05f) {
-                zoomBack = true;
-            }
-            if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
-                worldCam.zoom = 1f;
-                guiCam.zoom = 1f;
-                zoomBack = false;
-                isZooming = false;
-            }
-        }
-
-        // Update maxFrametime
-        if (delta > maxFrameTime) {
-            maxFrameTime = delta;
-        }
+    public void registerEntity(Entity e) {
+        registeredEntities.add(e);
+        e.init();
     }
 
     public void render(float delta) {
@@ -204,7 +124,7 @@ public class GameScreen implements Screen {
             lifeIcon.draw(batch);
         }
 
-       batch.setProjectionMatrix(worldCam.combined);
+        batch.setProjectionMatrix(worldCam.combined);
 
         // Update then draw entities
         for (Entity e : registeredEntities) {
@@ -225,6 +145,90 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
+    public void update(float delta) {
+
+        // Update cameras
+        //worldCam.position.x = player.getX() + 38;
+        //worldCam.position.y = player.getY() + 55;
+        worldCam.update();
+
+        guiCam.update();
+
+        // Update DrawState of player
+        if (player.isFiring()) {
+            player.setState(EntityPlayer.DrawState.FIRING);
+        }
+        if (player.getSpeed() != 0) {
+            player.setState(EntityPlayer.DrawState.MOVING);
+            if (player.isFiring()) {
+                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
+            }
+        }
+        if (! player.isFiring() && player.getSpeed() == 0f) {
+            player.setState(EntityPlayer.DrawState.IDLE);
+        }
+
+        // Update input
+        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.setDirection(EntityPlayer.Direction.STRAIGHT);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.setDirection(EntityPlayer.Direction.RIGHT);
+            player.accelerate(100f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.setDirection(EntityPlayer.Direction.LEFT);
+            player.accelerate(100f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.accelerate(100f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.accelerate(- 100f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            player.fireProjectile("bullet.png");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
+            else crossFadeBackgroundColor.resume();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+            isZooming = true;
+        }
+
+        // Update crossfade
+        crossFadeBackgroundColor.update();
+
+        // Update zoom
+        if (isZooming) {
+            if (zoomBack) {
+                deltaZoom = - (targetZoom - worldCam.zoom);
+            } else {
+                deltaZoom = targetZoom - worldCam.zoom;
+            }
+
+            zoomStep = maxZoomTime / Utils.delta();
+
+            worldCam.zoom += (deltaZoom / zoomStep);
+            guiCam.zoom += (deltaZoom / zoomStep); // Make it possible to only zoom background. Sprite#scale() ?
+
+            if (deltaZoom > - 0.05f) {
+                zoomBack = true;
+            }
+            if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
+                worldCam.zoom = 1f;
+                guiCam.zoom = 1f;
+                zoomBack = false;
+                isZooming = false;
+            }
+        }
+
+        // Update maxFrametime
+        if (delta > maxFrameTime) {
+            maxFrameTime = delta;
+        }
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -255,14 +259,9 @@ public class GameScreen implements Screen {
     }
 
     public void toggleDebug() {
-        debugEnabled = !debugEnabled;
+        debugEnabled = ! debugEnabled;
         if (debugEnabled) Logger.log("Debug mode  [#00FF00]enabled");
         else Logger.log("Debug mode  [#FF0000]disabled");
-    }
-
-    public void registerEntity(Entity e) {
-        registeredEntities.add(e);
-        e.init();
     }
 
     public List<Entity> getRegisteredEntities() {

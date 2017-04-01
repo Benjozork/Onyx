@@ -71,7 +71,7 @@ public class UIDropdown extends UIElement {
 
     public UIDropdown(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds = PolygonHelper.getPolygon(x,y,width,height);
+        bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -87,10 +87,10 @@ public class UIDropdown extends UIElement {
     @Override
     public void update() {
         layout.setText(font, text);
-        PolygonHelper.setWidth(bounds,getWidth());
+        PolygonHelper.setWidth(bounds, getWidth());
         if (expanded) {
-            PolygonHelper.setHeight(bounds,((items.size + 1) * getHeight()) - 6);
-            PolygonHelper.setY(bounds,  getY() - (items.size * getHeight()) + 6);
+            PolygonHelper.setHeight(bounds, ((items.size + 1) * getHeight()) - 6);
+            PolygonHelper.setY(bounds, getY() - (items.size * getHeight()) + 6);
         } else {
             PolygonHelper.setY(bounds, getY());
             PolygonHelper.setHeight(bounds, getHeight());
@@ -212,21 +212,21 @@ public class UIDropdown extends UIElement {
     @Override
     public void dispose() {
         // Dispose of textures
-         DROPDOWN_TEXTURE.dispose();
-         HOVERED_DROPDOWN_TEXTURE.dispose();
-         CLICKED_DROPDOWN_TEXTURE.dispose();
+        DROPDOWN_TEXTURE.dispose();
+        HOVERED_DROPDOWN_TEXTURE.dispose();
+        CLICKED_DROPDOWN_TEXTURE.dispose();
 
-         EXPANDED_DROPDOWN_TEXTURE.dispose();
-         EXPANDED_HOVERED_DROPDOWN_TEXTURE.dispose();
-         EXPANDED_CLICKED_DROPDOWN_TEXTURE.dispose();
+        EXPANDED_DROPDOWN_TEXTURE.dispose();
+        EXPANDED_HOVERED_DROPDOWN_TEXTURE.dispose();
+        EXPANDED_CLICKED_DROPDOWN_TEXTURE.dispose();
 
-         EXPANDED_MENU_UPPER_TEXTURE.dispose();
-         EXPANDED_HOVERED_MENU_UPPER_TEXTURE.dispose();
-         EXPANDED_CLICKED_MENU_UPPER_TEXTURE.dispose();
+        EXPANDED_MENU_UPPER_TEXTURE.dispose();
+        EXPANDED_HOVERED_MENU_UPPER_TEXTURE.dispose();
+        EXPANDED_CLICKED_MENU_UPPER_TEXTURE.dispose();
 
-         EXPANDED_MENU_LOWER_TEXTURE.dispose();
-         EXPANDED_HOVERED_MENU_LOWER_TEXTURE.dispose();
-         EXPANDED_CLICKED_MENU_LOWER_TEXTURE.dispose();
+        EXPANDED_MENU_LOWER_TEXTURE.dispose();
+        EXPANDED_HOVERED_MENU_LOWER_TEXTURE.dispose();
+        EXPANDED_CLICKED_MENU_LOWER_TEXTURE.dispose();
     }
 
     public String getText() {

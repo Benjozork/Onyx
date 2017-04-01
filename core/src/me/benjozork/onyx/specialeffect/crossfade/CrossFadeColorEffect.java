@@ -22,7 +22,7 @@ public class CrossFadeColorEffect {
     private float fadeOutDeltaMultiplier;
 
     /**
-     * @param source the color to be manipulated
+     * @param source        the color to be manipulated
      * @param configuration the configuration which drives the effect
      */
     public CrossFadeColorEffect(Color source, CrossFadeColorEffectConfiguration configuration) {
@@ -47,7 +47,7 @@ public class CrossFadeColorEffect {
     }
 
     public void update() {
-        if (!isActive) return;
+        if (! isActive) return;
 
         Color target = cycle.current();
 

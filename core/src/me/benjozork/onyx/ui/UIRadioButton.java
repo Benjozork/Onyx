@@ -37,7 +37,7 @@ public class UIRadioButton extends UIElement {
 
     public UIRadioButton(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds= PolygonHelper.getPolygon(x,y,width,height);
+        bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -53,7 +53,7 @@ public class UIRadioButton extends UIElement {
     @Override
     public void update() {
         layout.setText(font, text);
-        PolygonHelper.setDimensions(bounds,getWidth() + layout.width + 10,getHeight());
+        PolygonHelper.setDimensions(bounds, getWidth() + layout.width + 10, getHeight());
 
         currentTexture = selected ? (hovering() ? HOVERED_TICKED_RADIOBUTTON_TEXTURE : TICKED_RADIOBUTTON_TEXTURE) : (hovering() ? HOVERED_RADIOBUTTON_TEXTURE : RADIOBUTTON_TEXTURE);
 

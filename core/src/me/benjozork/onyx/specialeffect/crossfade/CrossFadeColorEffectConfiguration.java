@@ -26,7 +26,7 @@ public class CrossFadeColorEffectConfiguration {
      * The delta range is 0(inc) to 255(inc), therefore valid ranges for this variable are
      * in the range of 0(inc) to 255*3(inc) = 0(inc) to 765(inc). A value of 765 would mean only
      * a transition from white(255,255,25) to black(0,0,0) or vice-versa is possible.
-     *
+     * <p>
      * The above assumes fadeInDeltaMultiplier and fadeOutDeltaMultiplier values of 1. If those
      * values are not both 1 then the ranges of this variables have to be considered scaled
      * appropriately!

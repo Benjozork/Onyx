@@ -13,8 +13,8 @@ public class DisplayConfig {
 
     @Override
     public String toString() {
-	return "DisplayConfig [title=" + title + ", vsync=" + vsync + ", fullscreen=" + fullscreen + ", foregroundFps="
-		+ foregroundFps + ", backgroundFps=" + backgroundFps + ", windowBounds=" + windowBounds + "]";
+        return "DisplayConfig [title=" + title + ", vsync=" + vsync + ", fullscreen=" + fullscreen + ", foregroundFps="
+                + foregroundFps + ", backgroundFps=" + backgroundFps + ", windowBounds=" + windowBounds + "]";
     }
 
 }

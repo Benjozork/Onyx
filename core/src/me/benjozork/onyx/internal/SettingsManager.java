@@ -8,9 +8,8 @@ import java.io.File;
  */
 public class SettingsManager {
 
-    private static File settingsFile;
-
     private static final String SETTINGS_FILE_PATH = "config/settings.json";
+    private static File settingsFile;
 
     public void init() {
         settingsFile = new File(SETTINGS_FILE_PATH);

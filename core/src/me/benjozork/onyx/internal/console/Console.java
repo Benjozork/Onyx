@@ -67,16 +67,16 @@ public class Console {
         lines += x.toString();
     }
 
+    private static void newLine() {
+        lines += "[]\n"; // Resets markup and breaks lines
+    }
+
     /**
      * Prints a string to the console
      * @param x the object to print
      */
     public static void print(Object x) {
         lines += x.toString();
-    }
-
-    private static void newLine() {
-        lines += "[]\n"; // Resets markup and breaks lines
     }
 
     public static void draw(SpriteBatch batch) {
@@ -112,44 +112,43 @@ public class Console {
 
             // Draw FPS and entity count
 
-            font.draw (
-                batch,
+            font.draw(
+                    batch,
                     "[#FF00FF]"
-                    + Gdx.graphics.getFramesPerSecond()
-                    + "  []fps,  [#FF00FF]"
-                    + ((GameScreen) ScreenManager.getCurrentScreen()).getRegisteredEntities().size()
-                    + "  []entities",
-                20, Gdx.graphics.getHeight() - 10
+                            + Gdx.graphics.getFramesPerSecond()
+                            + "  []fps,  [#FF00FF]"
+                            + ((GameScreen) ScreenManager.getCurrentScreen()).getRegisteredEntities().size()
+                            + "  []entities",
+                    20, Gdx.graphics.getHeight() - 10
             );
 
             // Draw current screen
 
-            font.draw (
-                batch,
-                    "current screen:  [#FF00FF]"
-                    + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
-                    +  "[]",
-                20, Gdx.graphics.getHeight() - 30
-            );
-        }
-        else {
-
-            // Draw FPS
-
-            font.draw (
-                batch,
-                    Gdx.graphics.getFramesPerSecond()
-                   + " fps ",
-                20, Gdx.graphics.getHeight() - 10
-            );
-
-            // Draw current screen
-
-            font.draw (
+            font.draw(
                     batch,
                     "current screen:  [#FF00FF]"
                             + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
-                            +  "[]",
+                            + "[]",
+                    20, Gdx.graphics.getHeight() - 30
+            );
+        } else {
+
+            // Draw FPS
+
+            font.draw(
+                    batch,
+                    Gdx.graphics.getFramesPerSecond()
+                            + " fps ",
+                    20, Gdx.graphics.getHeight() - 10
+            );
+
+            // Draw current screen
+
+            font.draw(
+                    batch,
+                    "current screen:  [#FF00FF]"
+                            + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                            + "[]",
                     20, Gdx.graphics.getHeight() - 30
             );
         }

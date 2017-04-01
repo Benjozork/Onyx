@@ -31,7 +31,6 @@ public class GameManager {
 
     /**
      * The camera instance that is used when rendering world objects
-     *
      * @return the world camera
      */
     public static OrthographicCamera getWorldCamera() {
@@ -40,7 +39,6 @@ public class GameManager {
 
     /**
      * Set the camera instance to be used when rendering world objects
-     *
      * @param worldCamera the camera instance to be used
      */
     public static void setWorldCamera(OrthographicCamera worldCamera) {
@@ -49,7 +47,6 @@ public class GameManager {
 
     /**
      * The camera instance that is used when rendering gui objects
-     *
      * @return the gui camera
      */
     public static OrthographicCamera getGuiCamera() {
@@ -58,7 +55,6 @@ public class GameManager {
 
     /**
      * Set the camera instance to be used when rendering gui objects
-     *
      * @param guiCamera the camera instance to be used
      */
     public static void setGuiCamera(OrthographicCamera guiCamera) {
@@ -67,7 +63,6 @@ public class GameManager {
 
     /**
      * The ShapeRenderer
-     *
      * @return the ShapeRenderer
      */
     public static ShapeRenderer getShapeRenderer() {
@@ -76,7 +71,6 @@ public class GameManager {
 
     /**
      * Set the ShapeRenderer
-     *
      * @param renderer the ShapeRenderer to be used
      */
     public static void setRenderer(ShapeRenderer renderer) {
@@ -85,7 +79,6 @@ public class GameManager {
 
     /**
      * The SpriteBatch
-     *
      * @return the SpriteBatch
      */
     public static SpriteBatch getBatch() {
@@ -94,7 +87,6 @@ public class GameManager {
 
     /**
      * Set the SpriteBatch
-     *
      * @param batch the SpriteBatch to be used
      */
     public static void setBatch(SpriteBatch batch) {
@@ -108,8 +100,8 @@ public class GameManager {
 
     /**
      * The player entity used for GameScreen logic
-     * @throws IllegalStateException
      * @return the player
+     * @throws IllegalStateException
      */
     public static EntityPlayer getPlayer() {
         if (ScreenManager.getCurrentScreen() instanceof GameScreen) return player;

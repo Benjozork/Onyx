@@ -22,8 +22,8 @@ public class TextComponent {
     private BitmapFont generatedFont;
 
     /**
-     * @param text the text to be displayed
-     * @param fontPath the font path to be used
+     * @param text      the text to be displayed
+     * @param fontPath  the font path to be used
      * @param parameter the {@link FreeTypeFontGenerator.FreeTypeFontParameter} to be used
      */
     public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {

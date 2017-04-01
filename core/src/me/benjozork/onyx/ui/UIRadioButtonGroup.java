@@ -72,7 +72,7 @@ public class UIRadioButtonGroup extends UIElement {
 
     @Override
     public void init() {
-        bounds= PolygonHelper.getPolygon(0,0,0,0);
+        bounds = PolygonHelper.getPolygon(0, 0, 0, 0);
         selected = buttons.size - 1;
     }
 

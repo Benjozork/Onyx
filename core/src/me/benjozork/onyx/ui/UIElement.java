@@ -99,8 +99,8 @@ public abstract class UIElement extends Drawable {
     /**
      * Adds a new action to the element
      * @param identifier the action's identifier
-     * @param action the code to execute
-     * @param event the event to listen to
+     * @param action     the code to execute
+     * @param event      the event to listen to
      */
     public void addAction(String identifier, Runnable action, ActionEvent event) {
         actions.add(new Action(this, identifier, action, event));
@@ -112,7 +112,7 @@ public abstract class UIElement extends Drawable {
 
     public void setWidth(float v) {
         dimensions.x = v;
-        PolygonHelper.setWidth(bounds,v);
+        PolygonHelper.setWidth(bounds, v);
     }
 
     public float getHeight() {
@@ -121,19 +121,19 @@ public abstract class UIElement extends Drawable {
 
     public void setHeight(float v) {
         dimensions.y = v;
-        PolygonHelper.setHeight(bounds,v);
+        PolygonHelper.setHeight(bounds, v);
     }
 
     public void resize(float dx, float dy) {
         this.dimensions.x += dx;
         this.dimensions.y += dy;
-        PolygonHelper.setDimensions(bounds,dimensions.x,dimensions.y);
+        PolygonHelper.setDimensions(bounds, dimensions.x, dimensions.y);
     }
 
     public void setDimensions(float w, float h) {
         this.dimensions.x = w;
         this.dimensions.y = h;
-        PolygonHelper.setDimensions(bounds,w,h);
+        PolygonHelper.setDimensions(bounds, w, h);
     }
 
 }

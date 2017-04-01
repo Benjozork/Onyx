@@ -38,7 +38,7 @@ public class UIButton extends UIElement {
 
     public UIButton(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds= PolygonHelper.getPolygon(x,y,width,height);
+        bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();

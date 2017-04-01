@@ -22,7 +22,7 @@ public class Log {
     }
 
     public static Log create(String tag) {
-		return new Log(tag);
+        return new Log(tag);
     }
 
     public void print(String message, Object... args) {
@@ -37,19 +37,19 @@ public class Log {
         printMessage(message, args);
     }
 
+    private void printNewline() {
+        System.out.println();
+    }
+
     private void printInfo() {
-		String date = sdf.format(new Date());
-		System.out.printf("[%s] (%s)\n", tag, date);
-		Console.println(String.format("\n[%s] (%s)", tag, date));
+        String date = sdf.format(new Date());
+        System.out.printf("[%s] (%s)\n", tag, date);
+        Console.println(String.format("\n[%s] (%s)", tag, date));
     }
 
     private void printMessage(String message, Object... args) {
-		System.out.printf("-> %s\n", String.format(message, args));
-		Console.println("-> " + String.format(message, args));
-    }
-
-    private void printNewline() {
-	System.out.println();
+        System.out.printf("-> %s\n", String.format(message, args));
+        Console.println("-> " + String.format(message, args));
     }
 
 }
