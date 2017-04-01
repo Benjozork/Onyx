@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
             player.accelerate(- 100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player.fireProjectile("bullet.png");
+            player.fireProjectile("entity/player/bullet.png");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();

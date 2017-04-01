@@ -19,10 +19,10 @@ import me.benjozork.onyx.utils.Utils;
 public class EntityPlayer extends LivingEntity {
 
     // Player textures
-    private final Texture PLAYER_TEXTURE = new Texture("ship/ship.png");
-    private final Texture FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_fire.png");
-    private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_engine_fire.png");
-    private final Texture MOVING_PLAYER_TEXTURE = new Texture("ship/ship_engine_fire.png");
+    private final Texture PLAYER_TEXTURE = new Texture("entity/player/texture_0.png");
+    private final Texture FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_2.png");
+    private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_3.png");
+    private final Texture MOVING_PLAYER_TEXTURE = new Texture("entity/player/texture_1.png");
 
     Sprite currentTexture = new Sprite(PLAYER_TEXTURE);
 
