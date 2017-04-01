@@ -56,7 +56,7 @@ public class UIButton extends UIElement {
         layout.setText(font, text);
 //        bounds.width = getWidth() + layout.width + 10;
 //        bounds.height = getHeight();
-        PolygonHelper.setDimensions(bounds, getWidth() + layout.width + 10, getHeight());
+        PolygonHelper.setDimensions(bounds, getWidth(), getHeight());
 
         if (colorTimer >= 0) {
             if (colorTimer <= maxColorTimer) {
