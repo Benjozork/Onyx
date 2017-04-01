@@ -33,7 +33,6 @@ public class Log {
 	latestPrintLog = this;
 
 	printMessage(message, args);
-	printNewline();
     }
 
     private void printInfo() {
@@ -42,7 +41,7 @@ public class Log {
     }
 
     private void printMessage(String message, Object... args) {
-	System.out.printf("-> %s", String.format(message, args));
+	System.out.printf("-> %s\n", String.format(message, args));
     }
 
     private void printNewline() {
