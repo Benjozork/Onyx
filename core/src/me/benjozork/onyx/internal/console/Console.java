@@ -14,7 +14,6 @@ import java.util.HashMap;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
-import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -49,7 +48,6 @@ public class Console {
         if (Gdx.input.justTouched()) {
             if (textBox.contains(Utils.unprojectGui(Gdx.input.getX(), Gdx.input.getY()))) {
                 isTextBoxFocused = true;
-                Logger.log("box");
             }
         }
 
