@@ -48,6 +48,7 @@ public class MenuScreen implements Screen {
         uiScreen = new UIScreen(new Vector2(0, 0));
 
         // Init parameter
+
         currentParameter.size = 35;
         currentParameter.color = Color.WHITE;
 
