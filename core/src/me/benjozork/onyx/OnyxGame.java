@@ -31,12 +31,10 @@ public class OnyxGame extends Game {
     public void create() {
 	projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
 
-	log.begin();
 	log.print("Onyx %s starting", projectConfig.version);
 	log.print("Current libGDX version is %s", Version.VERSION);
 	log.print("Current backend is %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
 	log.print("Current JRE version is %s", System.getProperty("java.version"));
-	log.end();
 
 	// Setup cameras
 	OrthographicCamera worldCam = new OrthographicCamera();

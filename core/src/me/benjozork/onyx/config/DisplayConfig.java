@@ -4,15 +4,17 @@ import me.benjozork.onyx.utils.Bounds;
 
 public class DisplayConfig {
 
-	public String title;
-	public boolean vsync;
-	public boolean fullscreen;
-	public int foregroundFps;
-	public int backgroundFps;
-	public Bounds windowBounds;
+    public String title;
+    public boolean vsync;
+    public boolean fullscreen;
+    public int foregroundFps;
+    public int backgroundFps;
+    public Bounds windowBounds;
 
-	@Override public String toString() {
-		return "DisplayConfig [title=" + title + ", vsync=" + vsync + ", fullscreen=" + fullscreen + ", foregroundFps=" + foregroundFps + ", backgroundFps=" + backgroundFps + ", windowBounds=" + windowBounds + "]";
-	}
+    @Override
+    public String toString() {
+	return "DisplayConfig [title=" + title + ", vsync=" + vsync + ", fullscreen=" + fullscreen + ", foregroundFps="
+		+ foregroundFps + ", backgroundFps=" + backgroundFps + ", windowBounds=" + windowBounds + "]";
+    }
 
 }
