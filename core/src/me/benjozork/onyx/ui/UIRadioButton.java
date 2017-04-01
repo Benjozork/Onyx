@@ -13,7 +13,7 @@ import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * Created by Benjozork on 2017-03-24.
+ * @author Benjozork
  */
 public class UIRadioButton extends UIElement {
 

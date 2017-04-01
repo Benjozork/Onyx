@@ -16,7 +16,7 @@ import me.benjozork.onyx.ui.object.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * @author Benjozork
  */
 public class UIDropdown extends UIElement {
 

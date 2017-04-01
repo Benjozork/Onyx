@@ -13,8 +13,9 @@ import me.benjozork.onyx.internal.GameManager;
 
 
 /**
- * This class provide a few useful utilities to ease development.
+ * Provides a few useful utilities to ease development
  * @author Benjozork
+ * @author angelickite
  */
 public class Utils {
 

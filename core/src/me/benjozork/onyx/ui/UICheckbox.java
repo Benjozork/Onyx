@@ -13,7 +13,7 @@ import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * @author Benjozork
  */
 public class UICheckbox extends UIElement {
 

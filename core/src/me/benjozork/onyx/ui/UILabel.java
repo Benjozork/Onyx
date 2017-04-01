@@ -11,7 +11,7 @@ import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * @author Benjozork
  */
 public class UILabel extends UIElement {
 

@@ -3,6 +3,9 @@ package me.benjozork.onyx.specialeffect.crossfade;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * @author angelickite
+ */
 public class CrossFadeColorEffectConfiguration {
 
     /**

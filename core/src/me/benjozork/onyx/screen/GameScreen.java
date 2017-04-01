@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
@@ -24,7 +23,8 @@ import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Manages the logic when a level is being played
+ * @author Benjozork
  */
 public class GameScreen implements Screen {
 

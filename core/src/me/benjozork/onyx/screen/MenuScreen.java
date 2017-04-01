@@ -21,7 +21,8 @@ import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Manages the logic when the game's various menus are being navigated through
+ * @author Benjozork
  */
 public class MenuScreen implements Screen {
 
@@ -102,7 +103,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
 
         // Begin batching
-        GameManager.getBatch().begin();
+        GameManager.setIsRendering(true);
 
         // Draw background
         background.setColor(Color.GRAY);

@@ -9,7 +9,8 @@ import me.benjozork.onyx.ui.object.Action;
 import me.benjozork.onyx.ui.object.ActionEvent;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Allows the user to interact with the UI
+ * @author Benjozork
  */
 public abstract class UIElement extends Drawable {
 

@@ -8,7 +8,7 @@ import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
 
 /**
- * Created by Benjozork on 2017-03-24.
+ * @author Benjozork
  */
 public class UIRadioButtonGroup extends UIElement {
 
