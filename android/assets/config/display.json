@@ -1,8 +1,8 @@
 {
-	"title": "640x360 windowed vsyncdisabled 60fps",
+	"title": "1920x1200 fullscreen vsyncdisabled 60fps",
 	"vsync": false,
-	"fullscreen": false,
+	"fullscreen": true,
 	"backgroundFps": 60,
 	"foregroundFps": 60,
-	"windowBounds": { "width": 640, "height": 360 }
+	"windowBounds": { "width": 1920, "height": 1200 }
 }

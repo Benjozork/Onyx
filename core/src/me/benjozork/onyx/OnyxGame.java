@@ -20,8 +20,10 @@ import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * The main Onyx class
  * @author Benjozork
  * @author angelickite
+ * @author RishiRaj22
  */
 public class OnyxGame extends Game {
 
