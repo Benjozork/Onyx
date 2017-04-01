@@ -1,7 +1,0 @@
-{
-	"vsync: ": false,
-	"fullscreen": false,
-	"bg_fps": "60",
-	"fg_fps": "60",
-	"title": "windowed vsyncdisabled 60fps",
-}

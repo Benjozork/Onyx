@@ -206,9 +206,6 @@ public class GameScreen implements Screen {
 
        batch.setProjectionMatrix(worldCam.combined);
 
-        // Set title
-        Gdx.graphics.setTitle("Onyx " + OnyxGame.VERSION + " | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
-
         // Update then draw entities
         for (Entity e : registeredEntities) {
             e.update(delta); // This call updates the Drawable class internally

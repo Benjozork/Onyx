@@ -2,37 +2,41 @@ package me.benjozork.onyx.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import com.badlogic.gdx.backends.lwjgl.LwjglFiles;
 
 import me.benjozork.onyx.OnyxGame;
+import me.benjozork.onyx.config.Configs;
+import me.benjozork.onyx.config.DisplayConfig;
+import me.benjozork.onyx.config.ProjectConfig;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		config.title = "Onyx v0.0.1 ";
-		try {
-			JsonReader reader = new JsonReader();
-			JsonValue configs = reader.parse(new FileInputStream("config.json"));
-			config.title += configs.getString("title","");
-			config.width = configs.getInt("width",(int)dimension.getWidth());
-			config.height = configs.getInt("height",(int)dimension.getHeight());
-			config.fullscreen = configs.getBoolean("fullscreen",false);
-			config.vSyncEnabled = configs.getBoolean("vsync",false);
-			config.backgroundFPS = configs.getInt("bg_fps",60);
-			config.foregroundFPS = configs.getInt("fg_fps",60);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		new LwjglApplication(new OnyxGame(), config);
-	}
+    public static void main(String[] arg) {
+	LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+	// Since Gdx.files is only set up once we launch an application and we
+	// therefore cant use that we need to provide Configs with a Files instance for
+	// loading our configurations.
+	Configs.setFiles(new LwjglFiles());
+
+	setupDisplay(config);
+
+	new LwjglApplication(new OnyxGame(), config);
+    }
+
+    private static void setupDisplay(LwjglApplicationConfiguration config) {
+	DisplayConfig displayConfig = Configs.loadRequireWithFallback("mod/display.json", "config/display.json",
+		DisplayConfig.class);
+
+	config.title = displayConfig.title;
+	config.width = displayConfig.windowBounds.width;
+	config.height = displayConfig.windowBounds.height;
+	config.fullscreen = displayConfig.fullscreen;
+	config.vSyncEnabled = displayConfig.vsync;
+	config.backgroundFPS = displayConfig.backgroundFps;
+	config.foregroundFPS = displayConfig.foregroundFps;
+
+	// prepend current version to title
+	ProjectConfig projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+	config.title = "[" + projectConfig.version + "] " + config.title;
+    }
 }

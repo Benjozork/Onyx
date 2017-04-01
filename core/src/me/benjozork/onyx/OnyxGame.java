@@ -9,111 +9,121 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import me.benjozork.onyx.config.Configs;
+import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.internal.console.ConsoleCommand;
+import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.screen.MenuScreen;
-import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 public class OnyxGame extends Game {
 
-    public static final String VERSION = "0.3.0-alpha";
+    private static final Log log = Log.create("Onyx");
 
     private static boolean debug = false;
 
+    public static ProjectConfig projectConfig;
+
     @Override
     public void create() {
-        Logger.log("Onyx " + VERSION + " starting");
-        Logger.log("[#FF00FF]Current libGDX version is " + Version.VERSION);
-        Logger.log("[#FF00FF]Current backend is " + Gdx.app.getType() + "/" + System.getProperty("os.name"));
-        Logger.log("[#FF00FF]Current JRE version is " + System.getProperty("java.version"));
+	projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
 
-        // Setup cameras
-        OrthographicCamera worldCam = new OrthographicCamera();
-        worldCam.setToOrtho(false);
-        worldCam.viewportWidth = Gdx.graphics.getWidth();
-        worldCam.viewportHeight = Gdx.graphics.getHeight();
+	log.begin();
+	log.print("Onyx %s starting", projectConfig.version);
+	log.print("Current libGDX version is %s", Version.VERSION);
+	log.print("Current backend is %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
+	log.print("Current JRE version is %s", System.getProperty("java.version"));
+	log.end();
 
-        OrthographicCamera guiCam = new OrthographicCamera();
-        guiCam.setToOrtho(false);
-        guiCam.viewportWidth = Gdx.graphics.getWidth();
-        guiCam.viewportHeight = Gdx.graphics.getHeight();
+	// Setup cameras
+	OrthographicCamera worldCam = new OrthographicCamera();
+	worldCam.setToOrtho(false);
+	worldCam.viewportWidth = Gdx.graphics.getWidth();
+	worldCam.viewportHeight = Gdx.graphics.getHeight();
 
-        // Setup GameManager
-        GameManager.setWorldCamera(worldCam);
-        GameManager.setGuiCamera(guiCam);
-        GameManager.setRenderer(new ShapeRenderer());
-        GameManager.setBatch(new SpriteBatch());
+	OrthographicCamera guiCam = new OrthographicCamera();
+	guiCam.setToOrtho(false);
+	guiCam.viewportWidth = Gdx.graphics.getWidth();
+	guiCam.viewportHeight = Gdx.graphics.getHeight();
 
-        // Init console
-        Console.init();
+	// Setup GameManager
+	GameManager.setWorldCamera(worldCam);
+	GameManager.setGuiCamera(guiCam);
+	GameManager.setRenderer(new ShapeRenderer());
+	GameManager.setBatch(new SpriteBatch());
 
-        // Setup Initial Screen
-        ScreenManager.setCurrentScreen(new MenuScreen());
+	// Init console
+	Console.init();
 
+	// Setup Initial Screen
+	ScreenManager.setCurrentScreen(new MenuScreen());
 
     }
 
     @Override
     public void dispose() {
-        // Dispose active screen
-        ScreenManager.getCurrentScreen().dispose();
+	// Dispose active screen
+	ScreenManager.getCurrentScreen().dispose();
 
-        // Dispose graphics resources
-        GameManager.getBatch().dispose();
-        GameManager.getShapeRenderer().dispose();
-        try { // fixme
-            GameManager.getPlayer().dispose();
-        } catch (IllegalStateException ignored) {
-        } catch (NullPointerException ignored) {}
+	// Dispose graphics resources
+	GameManager.getBatch().dispose();
+	GameManager.getShapeRenderer().dispose();
+	try { // fixme
+	    GameManager.getPlayer().dispose();
+	} catch (IllegalStateException ignored) {
+	} catch (NullPointerException ignored) {
+	}
 
     }
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            Console.dispatchCommand(new ConsoleCommand("screen"));
-            toggleDebug();
-        }
+	if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+	    Console.dispatchCommand(new ConsoleCommand("screen"));
+	    toggleDebug();
+	}
 
-        // Update console
-        Console.update();
+	// Update console
+	Console.update();
 
-        // Update cameras
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.update();
+	// Update cameras
+	OrthographicCamera worldCamera = GameManager.getWorldCamera();
+	worldCamera.update();
 
-        if (ScreenManager.getCurrentScreen() != getScreen()) setScreen(ScreenManager.getCurrentScreen());
+	if (ScreenManager.getCurrentScreen() != getScreen())
+	    setScreen(ScreenManager.getCurrentScreen());
     }
 
     @Override
     public void render() {
-        update();
+	update();
 
-        // Clear screen
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	// Clear screen
+	Gdx.gl.glClearColor(1f, 1f, 1f, 1);
+	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Render frame
-        getScreen().render(Utils.delta());
-        // Draw console
-        if (debug) Console.draw(GameManager.getBatch());
+	// Render frame
+	getScreen().render(Utils.delta());
+	// Draw console
+	if (debug)
+	    Console.draw(GameManager.getBatch());
     }
 
     @Override
     public void resize(int width, int height) {
-        // Update cameras
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.viewportWidth = width;
-        worldCamera.viewportHeight = height;
-        OrthographicCamera guiCamera = GameManager.getGuiCamera();
-        guiCamera.viewportWidth = width;
-        guiCamera.viewportHeight = height;
+	// Update cameras
+	OrthographicCamera worldCamera = GameManager.getWorldCamera();
+	worldCamera.viewportWidth = width;
+	worldCamera.viewportHeight = height;
+	OrthographicCamera guiCamera = GameManager.getGuiCamera();
+	guiCamera.viewportWidth = width;
+	guiCamera.viewportHeight = height;
     }
 
     private static void toggleDebug() {
-        debug = !debug;
+	debug = !debug;
     }
 
 }
