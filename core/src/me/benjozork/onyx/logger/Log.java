@@ -7,6 +7,7 @@ import me.benjozork.onyx.internal.console.Console;
 
 /**
  * Single thread use only.
+ * @author angelickite
  */
 public class Log {
 
@@ -21,10 +22,20 @@ public class Log {
         this.tag = tag;
     }
 
+    /**
+     * Creates a new logger with the supplied tag
+     * @param tag the tag to be used
+     * @return the logger
+     */
     public static Log create(String tag) {
         return new Log(tag);
     }
 
+    /**
+     * Prints a formatted string
+     * @param message the message to be printed
+     * @param args the objects to format the message with
+     */
     public void print(String message, Object... args) {
         boolean isNewLog = latestPrintLog == null || latestPrintLog != this;
         if (isNewLog) {
