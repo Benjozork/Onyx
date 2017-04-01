@@ -206,7 +206,7 @@ public abstract class Drawable {
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-        return Intersector.isPointInPolygon(bounds.getTransformedVertices(), 0, bounds.getTransformedVertices().length -1, mouse.x, mouse.y);
+        return getBounds().contains(mouse);
 //        if (mouse.x > getBounds().getX()
 //                && mouse.x < (getBounds().getX() + getBounds().getWidth())
 //                && mouse.y > getBounds().getY()

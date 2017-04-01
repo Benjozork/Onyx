@@ -132,7 +132,7 @@ public class UIDropdown extends UIElement {
                             getX(),
                             getY() - getHeight() * (i + 1),
                             getWidth(),
-                            getHeight()
+                            getHeight() + 6
                     );
                 }
             }
