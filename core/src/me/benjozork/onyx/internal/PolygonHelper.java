@@ -3,6 +3,7 @@ package me.benjozork.onyx.internal;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.JsonValue;
 
 /**
  * Used to convert rectangles to polygons and perform operations of rectangle on the polygon
@@ -101,11 +102,43 @@ public class PolygonHelper {
         vals[4] = vals[0] + width;
         p.setVertices(vals);
     }
+
+    /**
+     * Check the collsion of two polygons.
+     * Use this method instead of intersector as this uses the transformed vertices
+     * of the polygon to check for collision instead of directly using these vertices.
+     * @param pol1 First polygon to check for collsion
+     * @param pol2 Second polygon to check for collison
+     * @return
+     */
     public static boolean polygonCollide(Polygon pol1, Polygon pol2) {
         p1.setVertices(pol1.getTransformedVertices());
         p2.setVertices(pol2.getTransformedVertices());
 
         return Intersector.intersectPolygons(p1,p2,p3);
 
+    }
+
+    /**
+     * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
+     * Get a polygon from a JSON Value(JSON array of JSON objects having x,y co-ordinates)
+     * @param value Array denoting the pol
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Polygon loadPolygon(JsonValue value, float width, float height) {
+        JsonValue.JsonIterator iter = value.iterator();
+        int len = 0, i = 0;
+        for (JsonValue val : iter) {
+            len+=2;
+        }
+        float[] vertices = new float[len];
+        for (JsonValue val : iter) {
+            vertices[i] = val.getFloat("x") * width;
+            vertices[i+1] = val.getFloat("y") * height;
+            i+=2;
+        }
+        return new Polygon(vertices);
     }
 }
