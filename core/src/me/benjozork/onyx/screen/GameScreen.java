@@ -19,7 +19,6 @@ import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
-import me.benjozork.onyx.internal.Logger;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -100,49 +99,6 @@ public class GameScreen implements Screen {
     public void registerEntity(Entity e) {
         registeredEntities.add(e);
         e.init();
-    }
-
-    public void render(float delta) {
-
-        // Update
-        update(delta);
-
-        // Begin batching
-        if (! batch.isDrawing()) batch.begin();
-        // Draw background
-        background.setColor(backgroundColor);
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.disableBlending();
-        batch.setProjectionMatrix(guiCam.combined);
-        background.draw(batch);
-
-        // Draw life icons
-        batch.enableBlending();
-        for (int i = 0; i < maxLife; i++) {
-            lifeIcon.setColor(backgroundColor);
-            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
-            lifeIcon.draw(batch);
-        }
-
-        batch.setProjectionMatrix(worldCam.combined);
-
-        // Update then draw entities
-        for (Entity e : registeredEntities) {
-            e.update(delta); // This call updates the Drawable class internally
-        }
-
-        for (Entity e : registeredEntities) {
-            e.update();
-        }
-
-        for (Entity e : registeredEntities) {
-            e.draw();
-        }
-
-        // Remove entities that need to be
-        registeredEntities.removeAll(toRemove);
-
-        batch.end();
     }
 
     public void update(float delta) {
@@ -230,6 +186,49 @@ public class GameScreen implements Screen {
         }
     }
 
+    public void render(float delta) {
+
+        // Update
+        update(delta);
+
+        // Begin batching
+        if (! batch.isDrawing()) batch.begin();
+        // Draw background
+        background.setColor(backgroundColor);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.disableBlending();
+        batch.setProjectionMatrix(guiCam.combined);
+        background.draw(batch);
+
+        // Draw life icons
+        batch.enableBlending();
+        for (int i = 0; i < maxLife; i++) {
+            lifeIcon.setColor(backgroundColor);
+            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
+            lifeIcon.draw(batch);
+        }
+
+        batch.setProjectionMatrix(worldCam.combined);
+
+        // Update then draw entities
+        for (Entity e : registeredEntities) {
+            e.update(delta); // This call updates the Drawable class internally
+        }
+
+        for (Entity e : registeredEntities) {
+            e.update();
+        }
+
+        for (Entity e : registeredEntities) {
+            e.draw();
+        }
+
+        // Remove entities that need to be
+        registeredEntities.removeAll(toRemove);
+
+        batch.end();
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -256,12 +255,6 @@ public class GameScreen implements Screen {
         for (Entity e : registeredEntities) {
             e.dispose();
         }
-    }
-
-    public void toggleDebug() {
-        debugEnabled = ! debugEnabled;
-        if (debugEnabled) Logger.log("Debug mode  [#00FF00]enabled");
-        else Logger.log("Debug mode  [#FF0000]disabled");
     }
 
     public List<Entity> getRegisteredEntities() {
