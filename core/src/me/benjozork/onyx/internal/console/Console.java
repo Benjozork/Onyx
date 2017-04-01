@@ -103,6 +103,7 @@ public class Console {
         batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
 
         GameManager.setIsRendering(true);
+        batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
         font.getData().markupEnabled = true;
 
         // Draw debug info
@@ -157,8 +158,9 @@ public class Console {
             if (! prevLines.equals(lines)) layout.setText(font, lines);
             prevLines = lines;
             font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 45);
-            if (batch.isDrawing()) batch.end();
         }
+
+        GameManager.setIsRendering(false);
 
     }
 
