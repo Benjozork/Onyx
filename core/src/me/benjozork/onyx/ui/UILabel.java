@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * @author Benjozork
+ * Created by Benjozork on 2017-03-19.
  */
 public class UILabel extends UIElement {
 
@@ -32,14 +32,15 @@ public class UILabel extends UIElement {
 
     @Override
     public void init() {
-        bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
+        bounds = new Rectangle(getX(), getY(), 0, 0);
         font = generator.generateFont(parameter);
     }
 
     @Override
     public void update() {
         layout.setText(font, text);
-        PolygonHelper.setDimensions(bounds, layout.width, layout.height);
+        bounds.width = layout.width;
+        bounds.height = layout.height;
     }
 
     @Override

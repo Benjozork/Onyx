@@ -3,7 +3,7 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * @author Benjozork
+ * Created by Benjozork on 2017-03-19.
  */
 public class UIScreen extends UIContainer {
 

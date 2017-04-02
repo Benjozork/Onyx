@@ -1,14 +1,14 @@
 package me.benjozork.onyx.ui;
 
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
 
 /**
- * @author Benjozork
+ * Created by Benjozork on 2017-03-24.
  */
 public class UIRadioButtonGroup extends UIElement {
 
@@ -55,13 +55,15 @@ public class UIRadioButtonGroup extends UIElement {
     /**
      * Selects a button from the list
      * @param b the button
+     * @throws IllegalArgumentException
      */
-    public void select(UIRadioButton b) {
+    public void select(UIRadioButton b) throws IllegalArgumentException {
         triggerEvent(ActionEvent.VALUE_CHANGED);
         selected = buttons.indexOf(b, true);
         b.set(true);
         if (selected == - 1) {
             selected = 0;
+            throw new IllegalArgumentException();
         }
         for (UIRadioButton button : buttons) {
             if (buttons.indexOf(button, true) != selected) {
@@ -72,7 +74,7 @@ public class UIRadioButtonGroup extends UIElement {
 
     @Override
     public void init() {
-        bounds = PolygonHelper.getPolygon(0, 0, 0, 0);
+        setBounds(new Rectangle(0, 0, 0, 0));
         selected = buttons.size - 1;
     }
 

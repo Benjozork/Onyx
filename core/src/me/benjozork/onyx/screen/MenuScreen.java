@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.ui.UIButton;
 import me.benjozork.onyx.ui.UICheckbox;
 import me.benjozork.onyx.ui.UIDropdown;
@@ -21,8 +20,7 @@ import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * Manages the logic when the game's various menus are being navigated through
- * @author Benjozork
+ * Created by Benjozork on 2017-03-19.
  */
 public class MenuScreen implements Screen {
 
@@ -48,7 +46,6 @@ public class MenuScreen implements Screen {
         uiScreen = new UIScreen(new Vector2(0, 0));
 
         // Init parameter
-
         currentParameter.size = 35;
         currentParameter.color = Color.WHITE;
 
@@ -58,7 +55,7 @@ public class MenuScreen implements Screen {
         button.addAction("action", new Runnable() {
             @Override
             public void run() {
-                ScreenManager.setCurrentScreen(new GameScreen());
+                System.out.println("click");
             }
         }, ActionEvent.CLICKED);
 
@@ -104,7 +101,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
 
         // Begin batching
-        GameManager.setIsRendering(true);
+        GameManager.getBatch().begin();
 
         // Draw background
         background.setColor(Color.GRAY);

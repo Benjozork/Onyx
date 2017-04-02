@@ -6,17 +6,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.TextComponent;
-import me.benjozork.onyx.utils.Utils;
 
 /**
- * @author Benjozork
+ * Created by Benjozork on 2017-03-19.
  */
 public class UIDropdown extends UIElement {
 
@@ -71,7 +71,7 @@ public class UIDropdown extends UIElement {
 
     public UIDropdown(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds = PolygonHelper.getPolygon(x, y, width, height);
+        bounds = new Rectangle(getX(), getY(), width, height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -87,14 +87,15 @@ public class UIDropdown extends UIElement {
     @Override
     public void update() {
         layout.setText(font, text);
-        PolygonHelper.setWidth(bounds, getWidth());
+        bounds.width = getWidth();
         if (expanded) {
-            PolygonHelper.setHeight(bounds, ((items.size + 1) * getHeight()) - 6);
-            PolygonHelper.setY(bounds, getY() - (items.size * getHeight()) + 6);
+            bounds.height = ((items.size + 1) * getHeight()) - 6;
+            bounds.y = getY() - (items.size * getHeight()) + 6;
         } else {
-            PolygonHelper.setY(bounds, getY());
-            PolygonHelper.setHeight(bounds, getHeight());
+            bounds.height = getHeight();
+            bounds.y = getY();
         }
+
 
         if (colorTimer <= maxColorTimer && colorTimer > 0) {
             colorTimer += Utils.delta();
@@ -107,6 +108,7 @@ public class UIDropdown extends UIElement {
         }
 
         if (hovering()) {
+            // Do element highlighting
             currentPatch = expanded ? EXPANDED_HOVERED_DROPDOWN : HOVERED_DROPDOWN;
         }
     }
@@ -132,7 +134,7 @@ public class UIDropdown extends UIElement {
                             getX(),
                             getY() - getHeight() * (i + 1),
                             getWidth(),
-                            getHeight() + 6
+                            getHeight()
                     );
                 }
             }
@@ -212,21 +214,21 @@ public class UIDropdown extends UIElement {
     @Override
     public void dispose() {
         // Dispose of textures
-        DROPDOWN_TEXTURE.dispose();
-        HOVERED_DROPDOWN_TEXTURE.dispose();
-        CLICKED_DROPDOWN_TEXTURE.dispose();
+         DROPDOWN_TEXTURE.dispose();
+         HOVERED_DROPDOWN_TEXTURE.dispose();
+         CLICKED_DROPDOWN_TEXTURE.dispose();
 
-        EXPANDED_DROPDOWN_TEXTURE.dispose();
-        EXPANDED_HOVERED_DROPDOWN_TEXTURE.dispose();
-        EXPANDED_CLICKED_DROPDOWN_TEXTURE.dispose();
+         EXPANDED_DROPDOWN_TEXTURE.dispose();
+         EXPANDED_HOVERED_DROPDOWN_TEXTURE.dispose();
+         EXPANDED_CLICKED_DROPDOWN_TEXTURE.dispose();
 
-        EXPANDED_MENU_UPPER_TEXTURE.dispose();
-        EXPANDED_HOVERED_MENU_UPPER_TEXTURE.dispose();
-        EXPANDED_CLICKED_MENU_UPPER_TEXTURE.dispose();
+         EXPANDED_MENU_UPPER_TEXTURE.dispose();
+         EXPANDED_HOVERED_MENU_UPPER_TEXTURE.dispose();
+         EXPANDED_CLICKED_MENU_UPPER_TEXTURE.dispose();
 
-        EXPANDED_MENU_LOWER_TEXTURE.dispose();
-        EXPANDED_HOVERED_MENU_LOWER_TEXTURE.dispose();
-        EXPANDED_CLICKED_MENU_LOWER_TEXTURE.dispose();
+         EXPANDED_MENU_LOWER_TEXTURE.dispose();
+         EXPANDED_HOVERED_MENU_LOWER_TEXTURE.dispose();
+         EXPANDED_CLICKED_MENU_LOWER_TEXTURE.dispose();
     }
 
     public String getText() {

@@ -3,8 +3,7 @@ package me.benjozork.onyx.ui.object;
 import me.benjozork.onyx.ui.UIElement;
 
 /**
- * Defines a code that is to be run by an {@link UIElement} when a specified {@link ActionEvent} takes place relative to the element.
- * @author Benjozork
+ * Created by Benjozork on 2017-03-20.
  */
 public class Action {
 
@@ -15,10 +14,11 @@ public class Action {
     private UIElement parent;
 
     /**
-     * @param parent     the UIElement to which the Action is assigned.
+     * An Action defines a code that is to be run by an UIElement when a specified ActionEvent takes place relative to the element.
+     * @param parent the UIElement to which the Action is assigned.
      * @param identifier the identifier of the Action
-     * @param action     the code to be run when the event is triggered
-     * @param event      the ActionEvent to which the Action listens to
+     * @param action the code to be run when the event is triggered
+     * @param event the ActionEvent to which the Action listens to
      */
     public Action(UIElement parent, String identifier, Runnable action, ActionEvent event) {
         this.parent = parent;
