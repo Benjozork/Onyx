@@ -1,5 +1,6 @@
 package me.benjozork.onyx;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Logger;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
@@ -19,6 +21,8 @@ import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Utils;
 
+import static com.badlogic.gdx.Gdx.app;
+
 /**
  * The main Onyx class
  * @author Benjozork
@@ -26,6 +30,8 @@ import me.benjozork.onyx.utils.Utils;
  * @author RishiRaj22
  */
 public class OnyxGame extends Game {
+    //TODO by Jay
+    private static final Logger logger = new Logger(OnyxGame.class.getName(), Logger.DEBUG);
 
     private static final Log log = Log.create("Onyx");
     public static ProjectConfig projectConfig;
@@ -33,11 +39,14 @@ public class OnyxGame extends Game {
 
     @Override
     public void create() {
+        //TODO by jay
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
         projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
 
         log.print("Onyx %s starting", projectConfig.version);
         log.print("Current libGDX version is %s", Version.VERSION);
-        log.print("Current backend is %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
+        log.print("Current backend is %s/%s", app.getType(), System.getProperty("os.name"));
         log.print("Current JRE version is %s", System.getProperty("java.version"));
 
         // Setup cameras
@@ -99,6 +108,12 @@ public class OnyxGame extends Game {
     public void update() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             Console.dispatchCommand(new ConsoleCommand("screen"));
+            toggleDebug();
+        }
+
+        //TODO by Jay
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
+            Console.dispatchCommand(new ConsoleCommand("screen2"));
             toggleDebug();
         }
 

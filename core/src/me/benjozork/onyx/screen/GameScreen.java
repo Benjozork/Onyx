@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.benjozork.onyx.config.debug.DebugCameraController;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
@@ -61,6 +62,8 @@ public class GameScreen implements Screen {
     private float maxZoomTime = 0.1f / 3, zoomStep;
     private float targetZoom = 0.8f;
 
+    private DebugCameraController debugCameraController;
+
     @Override
     public void show() {
         // Setup player
@@ -95,6 +98,10 @@ public class GameScreen implements Screen {
         crossFadeConfig.crossFadeDeltaTimeStepRequirement = 32f;
         crossFadeConfig.fadeOutDeltaMultiplier = 3f;
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
+
+        //TODO: Debug Camera by Jay
+        debugCameraController = new DebugCameraController();
+        debugCameraController.setStartPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
     }
 
     public void registerEntity(Entity e) {
@@ -103,6 +110,10 @@ public class GameScreen implements Screen {
     }
 
     public void update(float delta) {
+
+        //debug camera
+        debugCameraController.handleInputDebug(delta);
+        debugCameraController.applyTo(worldCam);
 
         // Update cameras
         //worldCam.position.x = player.getX() + 38;
@@ -156,6 +167,7 @@ public class GameScreen implements Screen {
 
         // Update crossfade
         crossFadeBackgroundColor.update();
+
 
         // Update zoom
         if (isZooming) {

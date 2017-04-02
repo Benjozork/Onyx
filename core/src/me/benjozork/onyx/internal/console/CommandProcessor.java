@@ -8,4 +8,6 @@ public interface CommandProcessor {
 
     void onCommand(ConsoleCommand c);
 
+
+
 }
