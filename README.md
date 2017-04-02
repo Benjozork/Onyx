@@ -7,8 +7,6 @@ A small (or big ?) project of mine
 
 ## Contributors
 **Benjozork**: Developer  
-**angelickite**: Developer  
-**sozemego**: Developer  
 **RishiRaj22**: Developer  
 **m1sterlurk**: SFX  
 **jim**: SFX
