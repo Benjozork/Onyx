@@ -14,7 +14,7 @@ import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-04.
+ * @author Benjozork
  */
 public class EntityPlayer extends LivingEntity {
 
@@ -40,7 +40,7 @@ public class EntityPlayer extends LivingEntity {
     @Override
     public void init() {
         // Initialize hitbox
-        bounds = PolygonHelper.getPolygon(getX(), getY(), 50, 50);
+        bounds = PolygonHelper.getPolygon(getX(), getY(), PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
     }
 
     @Override

@@ -1,11 +1,15 @@
 package me.benjozork.onyx.internal;
 
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.JsonValue;
 
+import me.benjozork.onyx.logger.Log;
+
 /**
  * Used to convert rectangles to polygons and perform operations of rectangle on the polygon
+ *
  * @author RishiRaj22
  */
 public class PolygonHelper {
@@ -14,9 +18,14 @@ public class PolygonHelper {
     private static Polygon p2 = new Polygon();
     private static Polygon p3 = new Polygon();
 
+    private static final Log log = Log.create("PolygonHelper");
+    private static boolean debug = false;
+
+
     /**
      * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
      * This method is used to create a new rectangular polygon
+     *
      * @param rectangle The rectangle to be converted to polygon
      * @return the created polygon
      */
@@ -27,6 +36,7 @@ public class PolygonHelper {
     /**
      * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
      * This method is used to create a new rectangular polygon
+     *
      * @param x      the x coordinate of the polygon
      * @param y      the y coordinate of the polygon
      * @param width  the width of the polygon
@@ -45,6 +55,7 @@ public class PolygonHelper {
 
     /**
      * Used to set the x co-ordinate of polygon
+     *
      * @param p polygon whose x co-ordinate is to be set
      * @param x new value for x co-ordinate of polygon
      */
@@ -54,6 +65,7 @@ public class PolygonHelper {
 
     /**
      * Used to set the y co-ordinate of polygon
+     *
      * @param p polygon whose y co-ordinate is to be set
      * @param y new value for y co-ordinate of polygon
      */
@@ -63,6 +75,7 @@ public class PolygonHelper {
 
     /**
      * Used to set the width of a rectangular polygon
+     *
      * @param p     polygon whose width is to be set
      * @param width new width for the polygon
      */
@@ -75,6 +88,7 @@ public class PolygonHelper {
 
     /**
      * Used to set the height of a rectangular polygon
+     *
      * @param p      polygon whose width is to be set
      * @param height new height for the polygonial
      */
@@ -87,6 +101,7 @@ public class PolygonHelper {
 
     /**
      * Used to set the dimensions of the rectangular polygon
+     *
      * @param p      polygon whose dimensions are to be set
      * @param width  the width to be used
      * @param height the height to be used
@@ -104,6 +119,7 @@ public class PolygonHelper {
     /**
      * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
      * Get a polygon from a JSON Value(JSON array of JSON objects having x,y co-ordinates)
+     *
      * @param value  Array denoting the pol
      * @param width
      * @param height
@@ -122,5 +138,77 @@ public class PolygonHelper {
             i += 2;
         }
         return new Polygon(vertices);
+    }
+
+    /**
+     * Checks whether two polygons collide
+     *
+     * @param p1 the first polygon
+     * @param p2 the second polygon
+     * @return the result
+     */
+    public static boolean collidePolygon(Polygon p1, Polygon p2) {
+        float[] v1 = p1.getTransformedVertices();
+        float[] v2 = p2.getTransformedVertices();
+        float t1, t2, t3, t4;
+        float s1, s2, s3, s4;
+        int i, j;
+        for (i = 0; i < v1.length - 3; i += 2) {
+            t1 = v1[i];
+            t2 = v1[i + 1];
+            t3 = v1[i + 2];
+            t4 = v1[i + 3];
+            for (j = 0; j < v2.length - 3; j += 2) {
+                s1 = v2[j];
+                s2 = v2[j + 1];
+                s3 = v2[j + 2];
+                s4 = v2[j + 3];
+                if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
+                    if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
+                    return true;
+                }
+            }
+            s1 = v2[v2.length - 2];
+            s2 = v2[v2.length - 1];
+            s3 = v2[0];
+            s4 = v2[1];
+            if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
+                if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
+                return true;
+            }
+        }
+        // ************ LAST CASE ********************
+        t1 = v1[v1.length - 2];
+        t2 = v1[v1.length - 1];
+        t3 = v1[0];
+        t4 = v1[1];
+        for (j = 0; j < v2.length - 3; j += 2) {
+            s1 = v2[j];
+            s2 = v2[j + 1];
+            s3 = v2[j + 2];
+            s4 = v2[j + 3];
+            if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
+                if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
+                return true;
+            }
+        }
+        s1 = v2[v2.length - 2];
+        s2 = v2[v2.length - 1];
+        s3 = v2[0];
+        s4 = v2[1];
+        if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
+            if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean collisionAtPoints(float f1, float f2, float f3, float f4
+            , float f5, float f6, float f7, float f8) {
+        return Intersector.intersectSegments(f1, f2, f3, f4, f5, f6, f7, f8, null);
+    }
+
+    private static boolean toggleDebug() {
+        return debug = ! debug;
     }
 }

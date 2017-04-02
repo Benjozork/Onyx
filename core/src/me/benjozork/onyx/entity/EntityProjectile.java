@@ -33,7 +33,7 @@ public class EntityProjectile extends Entity {
     public void init() {
         batch = GameManager.getBatch();
         // initialize hitbox
-        bounds = PolygonHelper.getPolygon(getX(), getY(), 64, 64);
+        bounds = PolygonHelper.getPolygon(getX(), getY(), 10, 10);
 
         // get mouse point, unproject it, and set velocity accordingly
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
@@ -44,8 +44,8 @@ public class EntityProjectile extends Entity {
     public void update() {
         GameScreen gameScreen  = (GameScreen) ScreenManager.getCurrentScreen();
         if (this.collidesWith(gameScreen.getEnemy().getBounds())) {
-            System.out.println("test");
             gameScreen.getEnemy().damage(10f);
+            this.dispose();
         }
     }
 
@@ -67,6 +67,7 @@ public class EntityProjectile extends Entity {
     @Override
     public void dispose() {
         texture.dispose();
+        ((GameScreen) ScreenManager.getCurrentScreen()).removeEntity(this);
     }
 
     public float getDamage() {

@@ -7,7 +7,7 @@ import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
 /**
- * Created by Benjozork on 2017-03-04.
+ * @author Benjozork
  */
 public abstract class LivingEntity extends Entity {
 
