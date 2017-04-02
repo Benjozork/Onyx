@@ -13,18 +13,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.benjozork.onyx.config.debug.DebugCameraController;
+import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
-import me.benjozork.onyx.utils.Utils;
 
 /**
- * Manages the logic when a level is being played
- * @author Benjozork
+ * Created by Benjozork on 2017-03-19.
  */
 public class GameScreen implements Screen {
 
@@ -34,13 +32,13 @@ public class GameScreen implements Screen {
     private int lifeCount = 0, maxLife = 3;
     private float maxFrameTime;
 
+    private boolean debugEnabled = false;
 
     private BitmapFont font = new BitmapFont();
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
     private EntityPlayer player;
-    private EntityEnemy enemy;
 
     private List<Entity> registeredEntities = new ArrayList<Entity>();
     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
@@ -62,19 +60,13 @@ public class GameScreen implements Screen {
     private float maxZoomTime = 0.1f / 3, zoomStep;
     private float targetZoom = 0.8f;
 
-    private DebugCameraController debugCameraController;
-
     @Override
     public void show() {
         // Setup player
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
-        EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
         registerEntity(player);
-        registerEntity(enemy);
         this.player = player;
-        this.enemy = enemy;
-        GameManager.setPlayer(player);
 
         // Setup cameras
         worldCam = GameManager.getWorldCamera();
@@ -98,22 +90,9 @@ public class GameScreen implements Screen {
         crossFadeConfig.crossFadeDeltaTimeStepRequirement = 32f;
         crossFadeConfig.fadeOutDeltaMultiplier = 3f;
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
-
-        //TODO: Debug Camera by Jay
-        debugCameraController = new DebugCameraController();
-        debugCameraController.setStartPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-    }
-
-    public void registerEntity(Entity e) {
-        registeredEntities.add(e);
-        e.init();
     }
 
     public void update(float delta) {
-
-        //debug camera
-        debugCameraController.handleInputDebug(delta);
-        debugCameraController.applyTo(worldCam);
 
         // Update cameras
         //worldCam.position.x = player.getX() + 38;
@@ -132,14 +111,11 @@ public class GameScreen implements Screen {
                 player.setState(EntityPlayer.DrawState.FIRING_MOVING);
             }
         }
-        if (! player.isFiring() && player.getSpeed() == 0f) {
+        if (!player.isFiring() && player.getSpeed() == 0f) {
             player.setState(EntityPlayer.DrawState.IDLE);
         }
 
         // Update input
-        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.STRAIGHT);
-        }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(EntityPlayer.Direction.RIGHT);
             player.accelerate(100f);
@@ -152,10 +128,13 @@ public class GameScreen implements Screen {
             player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(- 100f);
+            player.accelerate(-100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player.fireProjectile("entity/player/bullet.png");
+            player.fireProjectile("bullet.png");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            toggleDebug();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
@@ -165,14 +144,14 @@ public class GameScreen implements Screen {
             isZooming = true;
         }
 
+
         // Update crossfade
         crossFadeBackgroundColor.update();
-
 
         // Update zoom
         if (isZooming) {
             if (zoomBack) {
-                deltaZoom = - (targetZoom - worldCam.zoom);
+                deltaZoom = -(targetZoom - worldCam.zoom);
             } else {
                 deltaZoom = targetZoom - worldCam.zoom;
             }
@@ -182,7 +161,7 @@ public class GameScreen implements Screen {
             worldCam.zoom += (deltaZoom / zoomStep);
             guiCam.zoom += (deltaZoom / zoomStep); // Make it possible to only zoom background. Sprite#scale() ?
 
-            if (deltaZoom > - 0.05f) {
+            if (deltaZoom > -0.05f) {
                 zoomBack = true;
             }
             if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
@@ -205,7 +184,8 @@ public class GameScreen implements Screen {
         update(delta);
 
         // Begin batching
-        if (! batch.isDrawing()) batch.begin();
+        batch.begin();
+
         // Draw background
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -215,13 +195,21 @@ public class GameScreen implements Screen {
 
         // Draw life icons
         batch.enableBlending();
+        batch.setProjectionMatrix(guiCam.combined);
         for (int i = 0; i < maxLife; i++) {
             lifeIcon.setColor(backgroundColor);
             lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
             lifeIcon.draw(batch);
         }
 
+        // Draw debug info
+        if(debugEnabled)
+            font.draw(batch, Gdx.graphics.getFramesPerSecond() + " fps "+registeredEntities.size() + " entities" ,0,Gdx.graphics.getHeight()-10);
+
         batch.setProjectionMatrix(worldCam.combined);
+
+        // Set title
+        Gdx.graphics.setTitle("Onyx " + OnyxGame.VERSION + " | " + Gdx.graphics.getFramesPerSecond() + " fps, " + registeredEntities.size() + " entities");
 
         // Update then draw entities
         for (Entity e : registeredEntities) {
@@ -238,26 +226,9 @@ public class GameScreen implements Screen {
 
         // Remove entities that need to be
         registeredEntities.removeAll(toRemove);
-
         batch.end();
-        //Collision detection test code
-//        Polygon p1 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
-//        Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
-//        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-//        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-//        GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-//        GameManager.getShapeRenderer().setColor(Color.GREEN);
-//        GameManager.getShapeRenderer().polygon(p1.getTransformedVertices());
-//        GameManager.getShapeRenderer().setColor(Color.BLUE);
-//        GameManager.getShapeRenderer().polygon(p2.getTransformedVertices());
-//        PolygonHelper.collidePolygon(p1,p2);
-//        GameManager.getShapeRenderer().end();
-//        try {
-//            Thread.sleep(2500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -281,10 +252,18 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        GameManager.setPlayer(null);
         for (Entity e : registeredEntities) {
             e.dispose();
         }
+    }
+
+    public void toggleDebug() {
+        debugEnabled = !debugEnabled;
+    }
+
+    public void registerEntity(Entity e) {
+        registeredEntities.add(e);
+        e.init();
     }
 
     public List<Entity> getRegisteredEntities() {
@@ -320,9 +299,4 @@ public class GameScreen implements Screen {
     public EntityPlayer getPlayer() {
         return player;
     }
-
-    public EntityEnemy getEnemy() {
-        return enemy;
-    }
-
 }

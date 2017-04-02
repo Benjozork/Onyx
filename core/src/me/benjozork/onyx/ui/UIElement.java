@@ -3,14 +3,12 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.ui.object.Action;
 import me.benjozork.onyx.ui.object.ActionEvent;
 
 /**
- * Allows the user to interact with the UI
- * @author Benjozork
+ * Created by Benjozork on 2017-03-19.
  */
 public abstract class UIElement extends Drawable {
 
@@ -99,8 +97,8 @@ public abstract class UIElement extends Drawable {
     /**
      * Adds a new action to the element
      * @param identifier the action's identifier
-     * @param action     the code to execute
-     * @param event      the event to listen to
+     * @param action the code to execute
+     * @param event the event to listen to
      */
     public void addAction(String identifier, Runnable action, ActionEvent event) {
         actions.add(new Action(this, identifier, action, event));
@@ -112,7 +110,7 @@ public abstract class UIElement extends Drawable {
 
     public void setWidth(float v) {
         dimensions.x = v;
-        PolygonHelper.setWidth(bounds, v);
+        bounds.width = v;
     }
 
     public float getHeight() {
@@ -121,19 +119,21 @@ public abstract class UIElement extends Drawable {
 
     public void setHeight(float v) {
         dimensions.y = v;
-        PolygonHelper.setHeight(bounds, v);
+        bounds.height = v;
     }
 
     public void resize(float dx, float dy) {
         this.dimensions.x += dx;
+        this.bounds.width += dx;
         this.dimensions.y += dy;
-        PolygonHelper.setDimensions(bounds, dimensions.x, dimensions.y);
+        this.bounds.height += dy;
     }
 
     public void setDimensions(float w, float h) {
         this.dimensions.x = w;
+        this.bounds.width = w;
         this.dimensions.y = h;
-        PolygonHelper.setDimensions(bounds, w, h);
+        this.bounds.height = h;
     }
 
 }

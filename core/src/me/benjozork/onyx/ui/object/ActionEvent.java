@@ -5,8 +5,7 @@ package me.benjozork.onyx.ui.object;
  */
 
 /**
- * Specifies what an {@link Action} should listen to
- * @author Benjozork
+ * An ActionEvent specifies what an Action should listen to.
  */
 public enum ActionEvent {
     CLICKED,

@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.TextComponent;
 
 /**
- * @author Benjozork
+ * Created by Benjozork on 2017-03-25.
  */
 public class UISlider extends UIElement {
 
@@ -41,7 +41,7 @@ public class UISlider extends UIElement {
 
     @Override
     public void init() {
-        bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
+        bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
         font = generator.generateFont(parameter);
     }
 
