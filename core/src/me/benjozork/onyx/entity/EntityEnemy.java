@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -29,8 +31,6 @@ public class EntityEnemy extends LivingEntity {
 
     @Override
     public void update() {
-        System.out.println(health);
-
         // The simplest AI ever written
         if (getX() - GameManager.getPlayer().getX() < 400f * Utils.delta() && getX() - GameManager.getPlayer().getX() > - 400f * Utils.delta())
             position.x = GameManager.getPlayer().getX();
@@ -42,16 +42,18 @@ public class EntityEnemy extends LivingEntity {
     public void draw() {
         GameManager.setIsRendering(false);
         renderer.setProjectionMatrix(GameManager.getWorldCamera().combined);
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.WHITE);
         renderer.rect(getX(), getY(), 50, 50);
+        renderer.setColor(Color.BLUE);
+        renderer.polygon(getBounds().getTransformedVertices());
         renderer.end();
         GameManager.setIsRendering(true);
     }
 
     @Override
     public void dispose() {
-
+        ((GameScreen) ScreenManager.getCurrentScreen()).removeEntity(this);
     }
 
 }

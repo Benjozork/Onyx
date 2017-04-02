@@ -18,6 +18,7 @@ public class PolygonHelper {
     private static Polygon p3 = new Polygon();
 
     private static final Log log = Log.create("PolygonHelper");
+    private static boolean debug = false;
 
 
     /**
@@ -129,8 +130,8 @@ public class PolygonHelper {
         }
         return new Polygon(vertices);
     }
-    public static boolean collidePolygon(Polygon p1, Polygon p2)
-    {
+
+    public static boolean collidePolygon(Polygon p1, Polygon p2) {
         float[] v1 = p1.getTransformedVertices();
         float[] v2 = p2.getTransformedVertices();
         float t1,t2,t3,t4;
@@ -149,7 +150,7 @@ public class PolygonHelper {
                 s3 = v2[j+2];
                 s4 = v2[j+3];
                 if(collisionAtPoints(t1,t2,t3,t4,s1,s2,s3,s4)) {
-                    log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
+                    if (debug) log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
                     return true;
                 }
             }
@@ -158,7 +159,7 @@ public class PolygonHelper {
             s3 = v2[0];
             s4 = v2[1];
             if(collisionAtPoints(t1,t2,t3,t4,s1,s2,s3,s4)) {
-                log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
+                if (debug) log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
                 return true;
             }
         }
@@ -174,7 +175,7 @@ public class PolygonHelper {
             s3 = v2[j+2];
             s4 = v2[j+3];
             if(collisionAtPoints(t1,t2,t3,t4,s1,s2,s3,s4)) {
-                log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
+                if (debug) log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
                 return true;
             }
         }
@@ -183,14 +184,18 @@ public class PolygonHelper {
         s3 = v2[0];
         s4 = v2[1];
         if(collisionAtPoints(t1,t2,t3,t4,s1,s2,s3,s4)) {
-            log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
+            if (debug) log.print("Collision at %d of p1 and %d of p2",i/2+1,j/2+1);
             return true;
         }
         return false;
     }
+
     private static boolean collisionAtPoints(float f1,float f2, float f3,float f4
-            ,float f5, float f6, float f7, float f8)
-    {
+                                            ,float f5, float f6, float f7, float f8) {
         return Intersector.intersectSegments(f1,f2,f3,f4,f5,f6,f7,f8,null);
+    }
+
+    private static boolean toggleDebug() {
+        return debug = ! debug;
     }
 }

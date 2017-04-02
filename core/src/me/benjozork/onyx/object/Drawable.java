@@ -66,7 +66,7 @@ public abstract class Drawable {
     /**
      * Check if the Drawable collides with a polygon
      * @param otherBounds The polygon used to check
-     * @return If the Drawable collides with otherBounds
+     * @return whether the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
         return PolygonHelper.collidePolygon(bounds,otherBounds);
