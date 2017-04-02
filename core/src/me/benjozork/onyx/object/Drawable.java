@@ -1,10 +1,10 @@
 package me.benjozork.onyx.object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -69,7 +69,7 @@ public abstract class Drawable {
      * @return If the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
-        return Intersector.intersectPolygons(bounds,otherBounds,cache);
+        return PolygonHelper.collidePolygon(bounds,otherBounds);
     }
 
     /**

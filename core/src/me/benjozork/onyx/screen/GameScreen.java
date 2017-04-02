@@ -228,6 +228,23 @@ public class GameScreen implements Screen {
         registeredEntities.removeAll(toRemove);
 
         batch.end();
+        //Collision detection test code
+//        Polygon p1 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
+//        Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
+//        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
+//        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
+//        GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
+//        GameManager.getShapeRenderer().setColor(Color.GREEN);
+//        GameManager.getShapeRenderer().polygon(p1.getTransformedVertices());
+//        GameManager.getShapeRenderer().setColor(Color.BLUE);
+//        GameManager.getShapeRenderer().polygon(p2.getTransformedVertices());
+//        PolygonHelper.collidePolygon(p1,p2);
+//        GameManager.getShapeRenderer().end();
+//        try {
+//            Thread.sleep(2500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

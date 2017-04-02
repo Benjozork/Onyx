@@ -44,7 +44,6 @@ public class EntityProjectile extends Entity {
     public void update() {
         GameScreen gameScreen  = (GameScreen) ScreenManager.getCurrentScreen();
         if (this.collidesWith(gameScreen.getEnemy().getBounds())) {
-            System.out.println("test");
             gameScreen.getEnemy().damage(10f);
         }
     }
