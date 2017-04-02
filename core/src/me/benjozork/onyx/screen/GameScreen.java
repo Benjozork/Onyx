@@ -33,13 +33,13 @@ public class GameScreen implements Screen {
     private int lifeCount = 0, maxLife = 3;
     private float maxFrameTime;
 
-    private boolean debugEnabled = false;
 
     private BitmapFont font = new BitmapFont();
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
     private EntityPlayer player;
+    private EntityEnemy enemy;
 
     private List<Entity> registeredEntities = new ArrayList<Entity>();
     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
@@ -70,6 +70,7 @@ public class GameScreen implements Screen {
         registerEntity(player);
         registerEntity(enemy);
         this.player = player;
+        this.enemy = enemy;
         GameManager.setPlayer(player);
 
         // Setup cameras
@@ -290,4 +291,9 @@ public class GameScreen implements Screen {
     public EntityPlayer getPlayer() {
         return player;
     }
+
+    public EntityEnemy getEnemy() {
+        return enemy;
+    }
+
 }

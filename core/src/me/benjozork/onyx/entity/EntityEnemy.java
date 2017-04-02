@@ -29,6 +29,8 @@ public class EntityEnemy extends LivingEntity {
 
     @Override
     public void update() {
+        System.out.println(health);
+
         // The simplest AI ever written
         if (getX() - GameManager.getPlayer().getX() < 400f * Utils.delta() && getX() - GameManager.getPlayer().getX() > - 400f * Utils.delta())
             position.x = GameManager.getPlayer().getX();

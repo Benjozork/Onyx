@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -31,7 +33,7 @@ public class EntityProjectile extends Entity {
     public void init() {
         batch = GameManager.getBatch();
         // initialize hitbox
-        bounds = PolygonHelper.getPolygon(getX(), getY(), 15, 25);
+        bounds = PolygonHelper.getPolygon(getX(), getY(), 64, 64);
 
         // get mouse point, unproject it, and set velocity accordingly
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
@@ -40,7 +42,11 @@ public class EntityProjectile extends Entity {
 
     @Override
     public void update() {
-
+        GameScreen gameScreen  = (GameScreen) ScreenManager.getCurrentScreen();
+        if (this.collidesWith(gameScreen.getEnemy().getBounds())) {
+            System.out.println("test");
+            gameScreen.getEnemy().damage(10f);
+        }
     }
 
     @Override

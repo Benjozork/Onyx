@@ -11,8 +11,7 @@ import me.benjozork.onyx.screen.GameScreen;
  */
 public abstract class LivingEntity extends Entity {
 
-    // private float health = SettingsManager.DEFAULT_HEALTH;
-    // private int ammo = SettingsManager.DEFAULT_AMMO;
+    protected float health = 100f;
 
     private float maxTime = 0.1f;
     private float timer = 0f;
@@ -24,24 +23,6 @@ public abstract class LivingEntity extends Entity {
     public LivingEntity(Vector2 pos) {
         super(pos);
     }
-
-    /*
-    public float getHealth() {
-        return health;
-    }
-
-    public void setHealth(float health) {
-        this.health = health;
-    }
-
-    public void damage(float v) {
-        if (health <= 0) {
-            this.dispose();
-            return;
-        }
-        health -= v;
-    }
-    */
 
     public void fireProjectile(String path) {
         timer += Utils.delta();
@@ -56,6 +37,11 @@ public abstract class LivingEntity extends Entity {
 
             timer = 0f;
         }
+    }
+
+    public void damage(float v) {
+        health -= v;
+        if (health < 0) this.dispose();
     }
 
     /*
