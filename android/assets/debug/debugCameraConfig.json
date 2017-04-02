@@ -1,7 +1,7 @@
 {
   "maxZoomIn": "0.20",
   "maxZoomOut": "5",
-  "moveSpeed": "500",
+  "moveSpeed": "600",
   "zoomSpeed": "2",
 
   //move keys
