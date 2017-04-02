@@ -11,7 +11,8 @@ import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.object.Drawable;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * Contains {@link UIElement}s
+ * @author Benjozork
  */
 public class UIContainer extends Drawable {
 

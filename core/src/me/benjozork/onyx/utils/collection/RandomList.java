@@ -6,8 +6,8 @@ import java.util.Random;
 
 /**
  * A list that will return a random item each time next() is called.
- * @author Benjozork
  * @param <T> the type of the items in the list
+ * @author Benjozork
  */
 public class RandomList<T> {
 

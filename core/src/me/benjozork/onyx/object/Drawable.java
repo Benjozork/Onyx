@@ -1,13 +1,15 @@
 package me.benjozork.onyx.object;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-16.
+ * Describes an object that is to be drawn on the screen
+ * @author Benjozork
  */
 public abstract class Drawable {
 
@@ -17,11 +19,13 @@ public abstract class Drawable {
 
     protected float maxVelocity = 100f;
     protected float angle;
-    protected Rectangle bounds;
+    protected Polygon bounds;
     private float speed, maxSpeed;
 
     private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
+
+    private Polygon cache;
 
     public Drawable(int x, int y) {
         this.position = new Vector2(x, y);
@@ -33,15 +37,14 @@ public abstract class Drawable {
 
     /**
      * Internally update the Drawable
-     *
      * @param dt The delta time
      */
     public void update(float dt) {
         if (defaultMaxSpeed) maxSpeed = speed + 1f;
-        bounds.setPosition(position);
+        bounds.setPosition(position.x, position.y);
 
         if (speed > maxSpeed) speed = maxSpeed;
-        if (speed < -maxSpeed) speed = -maxSpeed;
+        if (speed < - maxSpeed) speed = - maxSpeed;
 
         if (angle != 0) {
             velocity.x = (float) Math.sin(angle);
@@ -61,18 +64,16 @@ public abstract class Drawable {
     public abstract void draw();
 
     /**
-     * Check if the Drawable collides with a rectangle
-     *
-     * @param otherBounds The rectangle used to check
-     * @return If the Drawable collides with otherBounds
+     * Check if the Drawable collides with a polygon
+     * @param otherBounds The polygon used to check
+     * @return whether the Drawable collides with otherBounds
      */
-    public boolean collidesWith(Rectangle otherBounds) {
-        return bounds.overlaps(otherBounds);
+    public boolean collidesWith(Polygon otherBounds) {
+        return PolygonHelper.collidePolygon(bounds,otherBounds);
     }
 
     /**
      * The Drawable's position
-     *
      * @return The Drawable's position
      */
     public Vector2 getPosition() {
@@ -81,12 +82,11 @@ public abstract class Drawable {
 
     public void setPosition(Vector2 position) {
         this.position = position;
-        this.bounds.setPosition(position);
+        this.bounds.setPosition(position.x, position.y);
     }
 
     /**
      * The X coordinate value
-     *
      * @return The X coordinate value
      */
     public float getX() {
@@ -95,12 +95,11 @@ public abstract class Drawable {
 
     public void setX(float v) {
         position.x = v;
-        bounds.x = v;
+        bounds.setPosition(position.x, position.y);
     }
 
     /**
      * The Y coordinate value
-     *
      * @return The Y coordinate value
      */
     public float getY() {
@@ -109,20 +108,18 @@ public abstract class Drawable {
 
     public void setY(float v) {
         position.y = v;
-        bounds.y = v;
+        bounds.setPosition(position.x, position.y);
     }
 
     public void move(float dx, float dy) {
         // here, we move the position and the bounding box
         position.x += dx * Utils.delta();
-        bounds.x += dx * Utils.delta();
         position.y += dy * Utils.delta();
-        bounds.y += dy * Utils.delta();
+        bounds.setPosition(position.x, position.y);
     }
 
     /**
      * The velocity
-     *
      * @return The velocity
      */
     public Vector2 getVelocity() {
@@ -135,7 +132,6 @@ public abstract class Drawable {
 
     /**
      * The acceleration
-     *
      * @return The acceleration
      */
     public Vector2 getAcceleration() {
@@ -148,7 +144,6 @@ public abstract class Drawable {
 
     /**
      * Change the speed
-     *
      * @param v The speed offset
      */
     public void accelerate(float v) {
@@ -158,7 +153,6 @@ public abstract class Drawable {
 
     /**
      * The max velocity
-     *
      * @return The max velocity
      */
     public float getMaxVelocity() {
@@ -175,7 +169,6 @@ public abstract class Drawable {
 
     /**
      * The speed
-     *
      * @return The speed
      */
     public float getSpeed() {
@@ -197,30 +190,28 @@ public abstract class Drawable {
 
     /**
      * Check if the mouse hovers above the hitbox
-     *
      * @return result
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-
-        if (mouse.x > getBounds().getX()
-                && mouse.x < (getBounds().getX() + getBounds().getWidth())
-                && mouse.y > getBounds().getY()
-                && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
-            return true;
-        } else return false;
+        return getBounds().contains(mouse);
+//        if (mouse.x > getBounds().getX()
+//                && mouse.x < (getBounds().getX() + getBounds().getWidth())
+//                && mouse.y > getBounds().getY()
+//                && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
+//            return true;
+//        } else return false;
     }
 
     /**
      * The bounding box
-     *
      * @return The bounding box
      */
-    public Rectangle getBounds() {
+    public Polygon getBounds() {
         return bounds;
     }
 
-    public void setBounds(Rectangle bounds) {
+    public void setBounds(Polygon bounds) {
         this.bounds = bounds;
     }
 
