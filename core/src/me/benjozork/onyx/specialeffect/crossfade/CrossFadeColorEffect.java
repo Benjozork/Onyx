@@ -5,6 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.utils.collection.CycleList;
 
+/**
+ * A CrossFadeColorEffect allows transforming a source color according to the provided
+ * configuration. The provided color instance 'source' will be manipulated when update() is called!
+ * @author angelickite
+ */
 public class CrossFadeColorEffect {
 
     private final Color source;
@@ -17,9 +22,7 @@ public class CrossFadeColorEffect {
     private float fadeOutDeltaMultiplier;
 
     /**
-     * A CrossFadeColorEffect allows transforming a source color according to the provided
-     * configuration. The provided color instance 'source' will be manipulated when update() is called!
-     * @param source the color to be manipulated
+     * @param source        the color to be manipulated
      * @param configuration the configuration which drives the effect
      */
     public CrossFadeColorEffect(Color source, CrossFadeColorEffectConfiguration configuration) {
@@ -44,7 +47,7 @@ public class CrossFadeColorEffect {
     }
 
     public void update() {
-        if (!isActive) return;
+        if (! isActive) return;
 
         Color target = cycle.current();
 

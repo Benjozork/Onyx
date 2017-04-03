@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.object.Drawable;
 
 /**
- * Created by Benjozork on 2017-03-03.
+ * @author Benjozork
  */
 public abstract class Entity extends Drawable {
 

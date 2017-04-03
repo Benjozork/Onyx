@@ -6,23 +6,25 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
- * Created by Benjozork on 2017-03-25.
+ * Defines a text that is drawn on the screen. A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.
+ * @author Benjozork
  */
 public class TextComponent {
 
     private String text;
     private String fontPath;
+
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+
     private GlyphLayout layout;
 
     private BitmapFont generatedFont;
 
     /**
-     * A TextComponent defines a text that is drawn on the screen. A certain font path is specified along with a string and a FreeTypeFontParameter.
-     * @param text the text to be displayed
-     * @param fontPath the font path to be used
-     * @param parameter the FreeTypeFontParameter to be used
+     * @param text      the text to be displayed
+     * @param fontPath  the font path to be used
+     * @param parameter the {@link FreeTypeFontGenerator.FreeTypeFontParameter} to be used
      */
     public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.text = text;

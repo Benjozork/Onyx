@@ -1,27 +1,53 @@
 package me.benjozork.onyx;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Logger;
 
+import me.benjozork.onyx.config.Configs;
+import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.internal.console.Console;
+import me.benjozork.onyx.internal.console.ConsoleCommand;
+import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Utils;
-import me.benjozork.onyx.screen.GameScreen;
 
+import static com.badlogic.gdx.Gdx.app;
+
+/**
+ * The main Onyx class
+ * @author Benjozork
+ * @author angelickite
+ * @author RishiRaj22
+ */
 public class OnyxGame extends Game {
+    //TODO by Jay
+    private static final Logger logger = new Logger(OnyxGame.class.getName(), Logger.DEBUG);
 
-    public static final String VERSION = "0.2.0";
+    private static final Log log = Log.create("Onyx");
+    public static ProjectConfig projectConfig;
+    private static boolean debug = false;
 
     @Override
     public void create() {
-        Gdx.app.log("[onyx/info] ", "Onyx " + VERSION + " starting");
-        Gdx.app.log("[onyx/debug] ", "Current libGDX version is " + Version.VERSION);
-        Gdx.app.log("[onyx/debug] ", "Current backend is " + Gdx.app.getType() + "/" + System.getProperty("os.name"));
-        Gdx.app.log("[onyx/debug] ", "Current JRE version is " + System.getProperty("java.version"));
+        //TODO by jay
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
+        projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+
+        log.print("Onyx %s starting", projectConfig.version);
+        log.print("Current libGDX version is %s", Version.VERSION);
+        log.print("Current backend is %s/%s", app.getType(), System.getProperty("os.name"));
+        log.print("Current JRE version is %s", System.getProperty("java.version"));
 
         // Setup cameras
         OrthographicCamera worldCam = new OrthographicCamera();
@@ -40,26 +66,28 @@ public class OnyxGame extends Game {
         GameManager.setRenderer(new ShapeRenderer());
         GameManager.setBatch(new SpriteBatch());
 
+        // Init console
+        Console.init();
+
         // Setup Initial Screen
-        GameManager.setCurrentScreen(new GameScreen());
+        ScreenManager.setCurrentScreen(new MenuScreen());
+
     }
 
     @Override
     public void dispose() {
         // Dispose active screen
-        GameManager.getCurrentScreen().dispose();
+        ScreenManager.getCurrentScreen().dispose();
 
         // Dispose graphics resources
         GameManager.getBatch().dispose();
         GameManager.getShapeRenderer().dispose();
-    }
+        try { // fixme
+            GameManager.getPlayer().dispose();
+        } catch (IllegalStateException ignored) {
+        } catch (NullPointerException ignored) {
+        }
 
-    public void update() {
-        // Update cameras
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.update();
-
-        if (GameManager.getCurrentScreen() != getScreen()) setScreen(GameManager.getCurrentScreen());
     }
 
     @Override
@@ -72,6 +100,36 @@ public class OnyxGame extends Game {
 
         // Render frame
         getScreen().render(Utils.delta());
+        // Draw console
+        if (debug)
+            Console.draw(GameManager.getBatch());
+    }
+
+    public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            Console.dispatchCommand(new ConsoleCommand("screen"));
+            toggleDebug();
+        }
+
+        //TODO by Jay
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
+            Console.dispatchCommand(new ConsoleCommand("screen2"));
+            toggleDebug();
+        }
+
+        // Update console
+        Console.update();
+
+        // Update cameras
+        OrthographicCamera worldCamera = GameManager.getWorldCamera();
+        worldCamera.update();
+
+        if (ScreenManager.getCurrentScreen() != getScreen())
+            setScreen(ScreenManager.getCurrentScreen());
+    }
+
+    private static void toggleDebug() {
+        debug = ! debug;
     }
 
     @Override
@@ -84,4 +142,5 @@ public class OnyxGame extends Game {
         guiCamera.viewportWidth = width;
         guiCamera.viewportHeight = height;
     }
+
 }
