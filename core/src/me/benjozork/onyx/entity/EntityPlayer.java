@@ -6,23 +6,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-04.
+ * @author Benjozork
  */
 public class EntityPlayer extends LivingEntity {
 
     // Player textures
-    private final Texture PLAYER_TEXTURE = new Texture("ship/ship.png");
-    private final Texture FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_fire.png");
-    private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("ship/ship_weapon_engine_fire.png");
-    private final Texture MOVING_PLAYER_TEXTURE = new Texture("ship/ship_engine_fire.png");
+    private final Texture PLAYER_TEXTURE = new Texture("entity/player/texture_0.png");
+    private final Texture FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_2.png");
+    private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_3.png");
+    private final Texture MOVING_PLAYER_TEXTURE = new Texture("entity/player/texture_1.png");
 
     Sprite currentTexture = new Sprite(PLAYER_TEXTURE);
 
@@ -40,19 +40,24 @@ public class EntityPlayer extends LivingEntity {
     @Override
     public void init() {
         // Initialize hitbox
-        bounds = new Rectangle(getX(), getY(), 50, 50);
+        bounds = PolygonHelper.getPolygon(getX(), getY(), PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
     }
 
     @Override
     public void update() {
 
         if (direction == Direction.STRAIGHT) {
-            spriteRotation = 0f;
+            if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
+            if (spriteRotation < 0 * MathUtils.degreesToRadians)
+                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+            else if (spriteRotation > 0 * MathUtils.degreesToRadians)
+                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
         } else if (direction == Direction.RIGHT) {
-            if (spriteRotation < 25 * MathUtils.degreesToRadians) spriteRotation += (300 * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.setAngle(-180f);
-            if (!accelerated_right) {
-                accelerate(100f);
+            if (spriteRotation < 25 * MathUtils.degreesToRadians)
+                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+            velocity.setAngle(- 180f);
+            if (! accelerated_right) {
+                accelerate(5f);
                 accelerated_right = true;
                 accelerated_left = false;
             }
@@ -60,10 +65,11 @@ public class EntityPlayer extends LivingEntity {
                 velocity.x -= velocity.x * 2;
             }
         } else if (direction == Direction.LEFT) {
-            if (spriteRotation > -25 * MathUtils.degreesToRadians) spriteRotation -= (300 * MathUtils.degreesToRadians) * Utils.delta();
+            if (spriteRotation > - 25 * MathUtils.degreesToRadians)
+                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
-            if (!accelerated_left) {
-                accelerate(100f);
+            if (! accelerated_left) {
+                accelerate(5f);
                 accelerated_left = true;
                 accelerated_right = false;
             }
@@ -72,7 +78,7 @@ public class EntityPlayer extends LivingEntity {
             }
         }
 
-        if (getSpeed() > 0) setSpeed(getSpeed() - 5f);
+        if (getSpeed() > 0) setSpeed(getSpeed() - 15f);
         else setSpeed(getSpeed() + 5f);
 
         if (state == DrawState.IDLE) {

@@ -1,7 +1,7 @@
 package me.benjozork.onyx.exception;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * @author Benjozork
  */
 public class DuplicateElementIdentifierException extends IllegalArgumentException {
 

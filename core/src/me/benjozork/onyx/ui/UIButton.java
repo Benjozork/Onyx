@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.utils.Utils;
+import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.TextComponent;
+import me.benjozork.onyx.utils.Utils;
 
 /**
- * Created by Benjozork on 2017-03-19.
+ * @author Benjozork
  */
 public class UIButton extends UIElement {
 
@@ -38,7 +38,7 @@ public class UIButton extends UIElement {
 
     public UIButton(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
-        bounds = new Rectangle(getX(), getY(), width, height);
+        bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);
         this.text = component.getText();
@@ -54,8 +54,9 @@ public class UIButton extends UIElement {
     @Override
     public void update() {
         layout.setText(font, text);
-        bounds.width = getWidth() + layout.width + 10;
-        bounds.height = getHeight();
+//        bounds.width = getWidth() + layout.width + 10;
+//        bounds.height = getHeight();
+        PolygonHelper.setDimensions(bounds, getWidth(), getHeight());
 
         if (colorTimer >= 0) {
             if (colorTimer <= maxColorTimer) {

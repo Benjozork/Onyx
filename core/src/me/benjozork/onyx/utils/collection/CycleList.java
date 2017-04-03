@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Array;
 /**
  * A circular list, meaning calling next() when at the last element will wrap back
  * to the first element of the list, ad infinitum.
- * @author angelickite
  * @param <T> the type of the items in the list
+ * @author angelickite
  */
 public class CycleList<T> {
 
@@ -25,6 +25,10 @@ public class CycleList<T> {
         }
     }
 
+    /**
+     * Returns a CycleList containing the specified items
+     * @param items the items to be used
+     */
     public static <T> CycleList<T> of(T... items) {
         if (items == null || items.length == 0) {
             throw new IllegalArgumentException("Cycle requires at least one item!");
@@ -33,6 +37,10 @@ public class CycleList<T> {
         return new CycleList<T>(items);
     }
 
+    /**
+     * Returns a CycleList containing the specified items
+     * @param items the items to be used
+     */
     public static <T> CycleList<T> of(Array<T> items) {
         if (items == null || items.size == 0) {
             throw new IllegalArgumentException("Cycle requires at least one item!");
@@ -41,6 +49,10 @@ public class CycleList<T> {
         return new CycleList<T>(items);
     }
 
+    /**
+     * Increments or wraps around the current index, depending on the position
+     * @return the item at the current index
+     */
     public T next() {
         currentIndex++;
         currentIndex %= items.size;
