@@ -12,6 +12,7 @@ import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -117,7 +118,7 @@ public class EntityEnemy extends LivingEntity {
 
     @Override
     public void dispose() {
-        ((GameScreen) ScreenManager.getCurrentScreen()).removeEntity(this);
+        GameScreenManager.removeEntity(this);
     }
 
     /**

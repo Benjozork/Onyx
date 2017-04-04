@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,29 +21,29 @@ import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
+import me.benjozork.onyx.utils.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Manages the logic when a level is being played
+ * Manages the logic when a level is being played.<br/>
+ * Use {@link GameScreenManager} to access this {@link Screen}'s methods and contents.
  * @author Benjozork
  */
 public class GameScreen implements Screen {
 
     private final Color INITIAL_BACKGROUND_COLOR = Color.RED;
 
-    private int score = 0, highScore = 0;
-    private int lifeCount = 0, maxLife = 3;
     private float maxFrameTime;
 
-
     private BitmapFont font = new BitmapFont();
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    private TextComponent scoreText;
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
     private EntityPlayer player;
     private EntityEnemy enemy;
 
-    private List<Entity> registeredEntities = new ArrayList<Entity>();
     private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
     private List<Entity> toRemove = new ArrayList<Entity>();
 
@@ -70,8 +71,8 @@ public class GameScreen implements Screen {
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
         EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
-        registerEntity(player);
-        registerEntity(enemy);
+        GameScreenManager.registerEntity(player);
+        GameScreenManager.registerEntity(enemy);
         this.player = player;
         this.enemy = enemy;
         GameManager.setPlayer(player);
@@ -99,21 +100,10 @@ public class GameScreen implements Screen {
         crossFadeConfig.fadeOutDeltaMultiplier = 3f;
         crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
 
-        //TODO: Debug Camera by Jay
-        debugCameraController = new DebugCameraController();
-        debugCameraController.setStartPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-    }
-
-    public void registerEntity(Entity e) {
-        registeredEntities.add(e);
-        e.init();
+        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()), parameter);
     }
 
     public void update(float delta) {
-
-        //debug camera
-        debugCameraController.handleInputDebug(delta);
-        debugCameraController.applyTo(worldCam);
 
         // Update cameras
         //worldCam.position.x = player.getX() + 38;
@@ -193,6 +183,8 @@ public class GameScreen implements Screen {
             }
         }
 
+        scoreText.setText(String.valueOf(GameScreenManager.getScore()));
+
         // Update maxFrametime
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
@@ -202,11 +194,14 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
         // Update
+
         update(delta);
 
         // Begin batching
+
         if (! batch.isDrawing()) batch.begin();
         // Draw background
+
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
@@ -214,30 +209,37 @@ public class GameScreen implements Screen {
         background.draw(batch);
 
         // Draw life icons
+
         batch.enableBlending();
-        for (int i = 0; i < maxLife; i++) {
+        for (int i = 0; i < GameScreenManager.getMaxLives(); i++) {
             lifeIcon.setColor(backgroundColor);
             lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
             lifeIcon.draw(batch);
         }
 
+        // Draw score text
+
+        scoreText.draw(batch, Gdx.graphics.getWidth() - 20, 20);
+
         batch.setProjectionMatrix(worldCam.combined);
 
         // Update then draw entities
-        for (Entity e : registeredEntities) {
+
+        for (Entity e : GameScreenManager.getEntities()) {
             e.update(delta); // This call updates the Drawable class internally
         }
 
-        for (Entity e : registeredEntities) {
+        for (Entity e : GameScreenManager.getEntities()) {
             e.update();
         }
 
-        for (Entity e : registeredEntities) {
+        for (Entity e : GameScreenManager.getEntities()) {
             e.draw();
         }
 
         // Remove entities that need to be
-        registeredEntities.removeAll(toRemove);
+
+        GameScreenManager.getEntities().removeAll(GameScreenManager.getEntitiesToRemove());
 
         batch.end();
         //Collision detection test code
@@ -282,43 +284,9 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         GameManager.setPlayer(null);
-        for (Entity e : registeredEntities) {
+        for (Entity e : GameScreenManager.getEntities()) {
             e.dispose();
         }
-    }
-
-    public List<Entity> getRegisteredEntities() {
-        return registeredEntities;
-    }
-
-    public void removeEntity(Entity e) {
-        toRemove.add(e);
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-        if (this.score > highScore) highScore = score;
-    }
-
-    public void addScore(int v) {
-        score += v;
-        if (score > highScore) highScore = score;
-    }
-
-    public int getHighScore() {
-        return highScore;
-    }
-
-    public void setHighScore(int highScore) {
-        this.highScore = highScore;
-    }
-
-    public EntityPlayer getPlayer() {
-        return player;
     }
 
     public EntityEnemy getEnemy() {

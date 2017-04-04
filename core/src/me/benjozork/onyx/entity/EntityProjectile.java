@@ -9,6 +9,7 @@ import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -18,11 +19,9 @@ public class EntityProjectile extends Entity {
 
     private SpriteBatch batch;
 
-    private float maxTimer;
-    private float bulletTimer;
     private float damage = 0;
 
-    private String texturePath = new String();
+    private String texturePath = "";
     private Texture texture;
 
     public EntityProjectile(float x, float y) {
@@ -67,7 +66,7 @@ public class EntityProjectile extends Entity {
     @Override
     public void dispose() {
         texture.dispose();
-        ((GameScreen) ScreenManager.getCurrentScreen()).removeEntity(this);
+        GameScreenManager.removeEntity(this);
     }
 
     public float getDamage() {
