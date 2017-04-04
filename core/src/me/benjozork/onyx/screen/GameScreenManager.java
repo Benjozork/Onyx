@@ -8,7 +8,10 @@ import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.ScreenManager;
 
 /**
- * Allows to interact with a current {@link GameScreen} and it's properties
+ * Allows to interact with a current {@link GameScreen} and it's properties.<br/>.
+ * All of the methods of this class except {@link GameScreenManager#exists()} throw an {@link IllegalStateException}<br/>
+ * if {@link ScreenManager#getCurrentScreen()} DOES NOT return {@link GameScreen}.
+ *
  * @author Benjozork
  */
 public class GameScreenManager {
@@ -23,16 +26,36 @@ public class GameScreenManager {
     private static int maxLives = 3;
     private static int lifeCount = maxLives;
 
+    /**
+     * Returns the {@link EntityPlayer} instance used by {@link GameScreen}
+     * @return the player instance
+     */
     public static EntityPlayer getPlayer() {
         check();
         return player;
     }
 
+    /**
+     * Sets the {@link EntityPlayer} instance to be used by {@link GameScreen}
+     * @param p the player instance
+     */
+    protected static void setPlayer(EntityPlayer p) {
+        player = p;
+    }
+
+    /**
+     * Returns a {@link List} of entities that are present on the entity stack
+     * @return the entities present on the entity stack
+     */
     public static List<Entity> getEntities() {
         check();
         return registeredEntities;
     }
 
+    /**
+     * Adds an {@link Entity} to the entity stack and calls {@link Entity#init()} on said entity
+     * @param e the entity to be added
+     */
     public static void registerEntity(Entity e) {
         check();
         addEntity(e);
@@ -40,14 +63,23 @@ public class GameScreenManager {
     }
 
     private static void addEntity(Entity e) {
+        check();
         if (! registeredEntities.contains(e)) registeredEntities.add(e);
     }
 
+    /**
+     * Adds a given {@link Entity} to the list of entities that need to be removed from the entity stack
+     * @param e the entity to be removed
+     */
     public static void removeEntity(Entity e) {
         check();
         toRemove.add(e);
     }
 
+    /**
+     * Returns a {@link List} of entities that have been called to be removed from the entity stack
+     * @return the list of entities to be removed
+     */
     public static List<Entity> getEntitiesToRemove() {
         return toRemove;
     }
@@ -57,16 +89,16 @@ public class GameScreenManager {
         return score;
     }
 
-    public static void setScore(int score) {
+    public static void setScore(int v) {
         check();
-        score = score;
-        if (score > highScore) highScore = score;
+        score = v;
+        updateHighScore();
     }
 
     public static void addScore(int v) {
         check();
         score += v;
-        if (score > highScore) highScore = score;
+        updateHighScore();
     }
 
     public int getHighScore() {
@@ -79,19 +111,27 @@ public class GameScreenManager {
         highScore = highScore;
     }
 
+    private static void updateHighScore() {
+        if (score > highScore) highScore = score;
+    }
+
     public static int getLives() {
+        check();
         return lifeCount;
     }
 
     public static void setLives(int i) {
+        check();
         lifeCount = i;
     }
 
     public static int getMaxLives() {
+        check();
         return maxLives;
     }
 
     public static void setMaxLives(int i) {
+        check();
         maxLives = i;
     }
 
@@ -102,9 +142,26 @@ public class GameScreenManager {
         return ScreenManager.getCurrentScreen() instanceof GameScreen;
     }
 
+    /**
+     * Calls {@link GameScreenManager#exists()} and throws an exception if it returns <code>false</code>
+     */
     private static void check() {
         if (! exists()) throw new IllegalStateException("current screen must be GameScreen");
     }
 
+    /**
+     * Flushes the object cache when {@link GameScreen} is disposed of
+     */
+    protected static void flush() {
+        player = null;
+        registeredEntities = new ArrayList<Entity>();
+        toRemove = new ArrayList<Entity>();
+
+        score = 0;
+        highScore = 0;
+
+        maxLives = 0;
+        lifeCount = 0;
+    }
 
 }

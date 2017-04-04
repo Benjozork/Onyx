@@ -283,7 +283,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        GameManager.setPlayer(null);
+        GameScreenManager.flush();
         for (Entity e : GameScreenManager.getEntities()) {
             e.dispose();
         }
