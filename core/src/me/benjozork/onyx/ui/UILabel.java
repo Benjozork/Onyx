@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
-import me.benjozork.onyx.ui.object.TextComponent;
+import me.benjozork.onyx.utils.TextComponent;
 
 /**
  * @author Benjozork

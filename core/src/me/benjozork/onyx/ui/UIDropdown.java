@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
-import me.benjozork.onyx.ui.object.TextComponent;
+import me.benjozork.onyx.utils.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**

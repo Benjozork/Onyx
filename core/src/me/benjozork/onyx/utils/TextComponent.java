@@ -1,8 +1,9 @@
-package me.benjozork.onyx.ui.object;
+package me.benjozork.onyx.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
@@ -34,6 +35,17 @@ public class TextComponent {
         this.layout = new GlyphLayout(new FreeTypeFontGenerator(Gdx.files.internal(fontPath)).generateFont(parameter), text);
     }
 
+    /**
+     * @param text      the text to be displayed
+     * @param parameter the {@link FreeTypeFontGenerator.FreeTypeFontParameter} to be used
+     */
+    public TextComponent(String text, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
+        this.text = text;
+        this.generatedFont = new BitmapFont();
+        this.layout = new GlyphLayout(new BitmapFont(), text);
+    }
+
+
     public BitmapFont generateFont() {
         generatedFont = generator.generateFont(parameter);
         return generatedFont;
@@ -41,6 +53,14 @@ public class TextComponent {
 
     public BitmapFont getFont() {
         return generatedFont;
+    }
+
+    /**
+     * Draws the TextComponent's text
+     * @param b the {@link SpriteBatch to use}
+     */
+    public void draw(SpriteBatch b, float x, float y) {
+        generatedFont.draw(b, text, x, y);
     }
 
     public String getText() {

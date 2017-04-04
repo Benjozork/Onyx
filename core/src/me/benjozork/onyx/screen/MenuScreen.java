@@ -18,7 +18,7 @@ import me.benjozork.onyx.ui.UIRadioButton;
 import me.benjozork.onyx.ui.UIRadioButtonGroup;
 import me.benjozork.onyx.ui.UIScreen;
 import me.benjozork.onyx.ui.object.ActionEvent;
-import me.benjozork.onyx.ui.object.TextComponent;
+import me.benjozork.onyx.utils.TextComponent;
 
 /**
  * Manages the logic when the game's various menus are being navigated through
