@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Array;
 
 
+import me.benjozork.onyx.specialeffect.Effect;
 import me.benjozork.onyx.utils.Utils;
 
 
@@ -13,14 +14,13 @@ import me.benjozork.onyx.utils.Utils;
  *
  * @author Benjozork
  */
-public class ZoomPulseEffect {
+public class ZoomPulseEffect extends Effect {
 
     private final Array<OrthographicCamera> cameras;
 
     private float maxZoomTime;
     private float targetZoom;
 
-    private boolean isZooming;
     private boolean zoomBack;
     private float deltaZoom;
     private float zoomStep;
@@ -38,7 +38,7 @@ public class ZoomPulseEffect {
 
 
     public void update() {
-        if (! isZooming) return;
+        if (! isActive) return;
 
         if (zoomBack) {
             deltaZoom = - (targetZoom - cameras.get(0).zoom);
@@ -62,15 +62,11 @@ public class ZoomPulseEffect {
                     cam2.zoom = 1f;
                 }
                 zoomBack = false;
-                isZooming = false;
+                isActive = false;
 
                 break;
             }
         }
-    }
-
-    public void toggle() {
-        isZooming = ! isZooming;
     }
 
 }

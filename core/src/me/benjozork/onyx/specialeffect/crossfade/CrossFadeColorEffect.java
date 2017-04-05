@@ -2,6 +2,7 @@ package me.benjozork.onyx.specialeffect.crossfade;
 
 import com.badlogic.gdx.graphics.Color;
 
+import me.benjozork.onyx.specialeffect.Effect;
 import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.utils.collection.CycleList;
 
@@ -11,12 +12,11 @@ import me.benjozork.onyx.utils.collection.CycleList;
  *
  * @author angelickite
  */
-public class CrossFadeColorEffect {
+public class CrossFadeColorEffect extends Effect {
 
     private final Color source;
     private final CycleList<Color> cycle;
 
-    private boolean isActive;
     private float crossFadeTime;
     private float crossFadeDeltaTimeStepRequirement;
     private float fadeInDeltaMultiplier;
@@ -33,18 +33,6 @@ public class CrossFadeColorEffect {
         this.crossFadeDeltaTimeStepRequirement = configuration.crossFadeDeltaTimeStepRequirement;
         fadeInDeltaMultiplier = configuration.fadeInDeltaMultiplier;
         fadeOutDeltaMultiplier = configuration.fadeOutDeltaMultiplier;
-    }
-
-    public void resume() {
-        isActive = true;
-    }
-
-    public void pause() {
-        isActive = false;
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 
     public void update() {
