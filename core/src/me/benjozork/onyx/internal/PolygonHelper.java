@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import me.benjozork.onyx.logger.Log;
 
 /**
- * Used to convert rectangles to polygons and perform operations of rectangle on the polygon
+ * Used to convert {@link Rectangle}s to {@link Polygon}s and perform operations on the polygon.
  *
  * @author RishiRaj22
  */
