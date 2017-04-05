@@ -6,27 +6,25 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import me.benjozork.onyx.config.debug.DebugCameraController;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
+import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffect;
+import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffectConfiguration;
 import me.benjozork.onyx.utils.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * Manages the logic when a level is being played.<br/>
- * Use {@link GameScreenManager} to access this {@link Screen}'s methods and contents.
+ * Use {@link GameScreenManager} to interact with this {@link Screen}'s contents.
+ *
  * @author Benjozork
  */
 public class GameScreen implements Screen {
@@ -35,7 +33,6 @@ public class GameScreen implements Screen {
 
     private float maxFrameTime;
 
-    private BitmapFont font = new BitmapFont();
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private TextComponent scoreText;
 
@@ -43,9 +40,6 @@ public class GameScreen implements Screen {
 
     private EntityPlayer player;
     private EntityEnemy enemy;
-
-    private List<Entity> collidingWithPlayer = new ArrayList<Entity>();
-    private List<Entity> toRemove = new ArrayList<Entity>();
 
     private OrthographicCamera worldCam, guiCam;
 
@@ -55,19 +49,18 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
 
     // Crossfading
+
     private CrossFadeColorEffect crossFadeBackgroundColor;
 
-    // Camera zoom pulse
-    private boolean isZooming, zoomBack;
-    private float deltaZoom;
-    private float maxZoomTime = 0.1f / 3, zoomStep;
-    private float targetZoom = 0.8f;
+    // Zooming
 
-    private DebugCameraController debugCameraController;
+    private ZoomPulseEffect zoomPulseCamera;
 
     @Override
     public void show() {
+
         // Setup player
+
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
         EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
@@ -78,27 +71,37 @@ public class GameScreen implements Screen {
         GameManager.setPlayer(player);
 
         // Setup cameras
+
         worldCam = GameManager.getWorldCamera();
         guiCam = GameManager.getGuiCamera();
         batch = GameManager.getBatch();
 
         // Setup background
+
         background = new Sprite(new Texture("hud/background_base.png"));
         background.setPosition(0, 0);
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Setup life icons
+
         lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
         lifeIcon.setScale(0.4f, 0.4f);
 
         // Setup CrossFadeColorEffect
+
         CrossFadeColorEffectConfiguration crossFadeConfig = new CrossFadeColorEffectConfiguration();
         crossFadeConfig.cycleColors.addAll(Color.BLUE, Color.RED, Color.GREEN);
         crossFadeConfig.crossFadeTime = .5f;
         crossFadeConfig.crossFadeDeltaTimeStepRequirement = 32f;
         crossFadeConfig.fadeOutDeltaMultiplier = 3f;
-        crossFadeBackgroundColor = new CrossFadeColorEffect(backgroundColor, crossFadeConfig);
+        crossFadeBackgroundColor = new CrossFadeColorEffect(crossFadeConfig, backgroundColor);
+
+        // Setup ZoomPulseEffect
+        ZoomPulseEffectConfiguration zoomPulseConfig = new ZoomPulseEffectConfiguration();
+        zoomPulseConfig.maxZoomTime = 1f;
+        zoomPulseConfig.targetZoom = 0.5f;
+        zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
         scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()), parameter);
     }
@@ -152,36 +155,16 @@ public class GameScreen implements Screen {
             else crossFadeBackgroundColor.resume();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-            isZooming = true;
+            zoomPulseCamera.toggle();
         }
 
         // Update crossfade
+
         crossFadeBackgroundColor.update();
 
+        // Update zoom pulse
 
-        // Update zoom
-        if (isZooming) {
-            if (zoomBack) {
-                deltaZoom = - (targetZoom - worldCam.zoom);
-            } else {
-                deltaZoom = targetZoom - worldCam.zoom;
-            }
-
-            zoomStep = maxZoomTime / Utils.delta();
-
-            worldCam.zoom += (deltaZoom / zoomStep);
-            guiCam.zoom += (deltaZoom / zoomStep); // Make it possible to only zoom background. Sprite#scale() ?
-
-            if (deltaZoom > - 0.05f) {
-                zoomBack = true;
-            }
-            if (worldCam.zoom > 1f || guiCam.zoom > 1f) {
-                worldCam.zoom = 1f;
-                guiCam.zoom = 1f;
-                zoomBack = false;
-                isZooming = false;
-            }
-        }
+        zoomPulseCamera.update();
 
         scoreText.setText(String.valueOf(GameScreenManager.getScore()));
 
@@ -200,6 +183,7 @@ public class GameScreen implements Screen {
         // Begin batching
 
         if (! batch.isDrawing()) batch.begin();
+
         // Draw background
 
         background.setColor(backgroundColor);
@@ -263,7 +247,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        worldCam.viewportWidth = width;
+        worldCam.viewportHeight = height;
+        guiCam.viewportWidth = width;
+        guiCam.viewportHeight = height;
     }
 
     @Override
@@ -284,9 +271,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         GameScreenManager.flush();
-        for (Entity e : GameScreenManager.getEntities()) {
-            e.dispose();
-        }
     }
 
     public EntityEnemy getEnemy() {
