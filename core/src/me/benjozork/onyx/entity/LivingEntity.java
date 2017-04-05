@@ -30,7 +30,8 @@ public abstract class LivingEntity extends Entity {
         if (timer >= maxTime) {
             EntityProjectile projectile = new EntityProjectile(getX(), getY());
             projectile.setTexturePath(path);
-            projectile.setSpeed(1550f);
+            projectile.setSpeed(2550f);
+            projectile.setDamage(10f);
             GameScreenManager.registerEntity(projectile);
 
             //if (ammo < 0) return;
