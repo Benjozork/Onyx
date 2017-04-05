@@ -8,7 +8,7 @@ import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.internal.ScreenManager;
 
 /**
- * Allows to interact with a current {@link GameScreen} and it's properties.<br/>.
+ * Allows to interact with a {@link GameScreen} and it's properties.<br/>
  * All of the methods of this class except {@link GameScreenManager#exists()} throw an {@link IllegalStateException}<br/>
  * if {@link ScreenManager#getCurrentScreen()} DOES NOT return {@link GameScreen}.
  *
@@ -18,7 +18,7 @@ public class GameScreenManager {
 
     private static EntityPlayer player;
     private static List<Entity> registeredEntities = new ArrayList<Entity>();
-    private static List<Entity> toRemove;
+    private static List<Entity> toRemove = new ArrayList<Entity>();
 
     private static int score = 0;
     private static int highScore = 0;
@@ -152,8 +152,13 @@ public class GameScreenManager {
     /**
      * Flushes the object cache when {@link GameScreen} is disposed of
      */
-    protected static void flush() {
+    static void flush() {
         player = null;
+
+        for (Entity e : GameScreenManager.getEntities()) {
+            e.dispose();
+        }
+
         registeredEntities = new ArrayList<Entity>();
         toRemove = new ArrayList<Entity>();
 
