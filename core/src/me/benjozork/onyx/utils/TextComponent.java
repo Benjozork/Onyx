@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
- * Defines a text that is drawn on the screen. A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.
+ * Defines a text that is drawn on the screen.<br/>
+ * A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.
  * @author Benjozork
  */
 public class TextComponent {

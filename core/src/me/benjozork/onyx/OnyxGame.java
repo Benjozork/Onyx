@@ -43,6 +43,8 @@ public class OnyxGame extends Game {
     @Override
     public void create() {
 
+        // Load config
+
         projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
 
         log.print("Onyx %s starting", projectConfig.version);
@@ -51,6 +53,7 @@ public class OnyxGame extends Game {
         log.print("Current JRE version is %s", System.getProperty("java.version"));
 
         // Setup cameras
+
         OrthographicCamera worldCam = new OrthographicCamera();
         worldCam.setToOrtho(false);
         worldCam.viewportWidth = Gdx.graphics.getWidth();
@@ -62,15 +65,18 @@ public class OnyxGame extends Game {
         guiCam.viewportHeight = Gdx.graphics.getHeight();
 
         // Setup GameManager
+
         GameManager.setWorldCamera(worldCam);
         GameManager.setGuiCamera(guiCam);
         GameManager.setRenderer(new ShapeRenderer());
         GameManager.setBatch(new SpriteBatch());
 
         // Init console
+
         Console.init();
 
         // Setup Initial Screen
+
         ScreenManager.setCurrentScreen(new MenuScreen());
 
     }

@@ -104,9 +104,11 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
 
         // Begin batching
+
         GameManager.setIsRendering(true);
 
         // Draw background
+
         background.setColor(Color.GRAY);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         GameManager.getBatch().disableBlending();
@@ -132,6 +134,7 @@ public class MenuScreen implements Screen {
         uiScreen.update();
         uiScreen.draw();
         GameManager.getBatch().end();
+
     }
 
     @Override

@@ -19,7 +19,7 @@ import me.benjozork.onyx.internal.GameManager;
  */
 public class Utils {
 
-    /**
+    /*
      * Cached instances used for calculations or returning results.
      * Note: This potentially leads to bugs if the same temporary instance is used
      * multiple times throughout a method without care. If more cached instances
@@ -36,7 +36,8 @@ public class Utils {
     }
 
     /**
-     * This method takes the width of an object and gives a corresponding x axis coordinate in order to center said object.
+     * This method takes the width of an object and gives a corresponding x axis<br />
+     * coordinate in order to center said object.
      * @param w the width of the object
      * @return
      */
@@ -45,7 +46,7 @@ public class Utils {
     }
 
     /**
-     * Translate a point from screen coordinates to world coordinates.<br>
+     * Translates a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
      * @param vec the position of the point
      * @return the point position in world coordinates.
@@ -55,7 +56,7 @@ public class Utils {
     }
 
     /**
-     * Translate a point from screen coordinates to world coordinates.<br>
+     * Translates a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
      * @param x the x position of the point
      * @param y the y position of the point
@@ -95,7 +96,7 @@ public class Utils {
     }
 
     /**
-     * This method returns a Color object from three integer RGB values.
+     * Returns a {@link Color} object from three integer RGB values.
      * @param r the red value
      * @param g the green value
      * @param b the blue value
@@ -109,7 +110,7 @@ public class Utils {
     }
 
     /**
-     * his method returns a Color object from three integer RGBA values.
+     * Returns a {@link Color} object from three integer RGBA values.
      * @param r the red value
      * @param g the green value
      * @param b the blue value
@@ -125,15 +126,7 @@ public class Utils {
     }
 
     /**
-     * This method returns the current time (H:M:S)
-     * @return the time
-     */
-    public static String time() {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND);
-    }
-
-    /**
-     * This method formats a String list with commas and endpoints.
+     * Formats a String list with commas and endpoints.
      * @param strings the strings to format
      * @return the formatted list
      */
@@ -147,7 +140,7 @@ public class Utils {
     }
 
     /**
-     * This method transforms a group of Strings into an Array of Strings
+     * Transforms a group of Strings into an Array of Strings
      * @param strings the strings to use
      * @return the array
      */
