@@ -72,10 +72,6 @@ public abstract class Drawable {
         return PolygonHelper.collidePolygon(bounds,otherBounds);
     }
 
-    /**
-     * The Drawable's position
-     * @return The Drawable's position
-     */
     public Vector2 getPosition() {
         return position;
     }
@@ -85,10 +81,6 @@ public abstract class Drawable {
         this.bounds.setPosition(position.x, position.y);
     }
 
-    /**
-     * The X coordinate value
-     * @return The X coordinate value
-     */
     public float getX() {
         return position.x;
     }
@@ -98,10 +90,6 @@ public abstract class Drawable {
         bounds.setPosition(position.x, position.y);
     }
 
-    /**
-     * The Y coordinate value
-     * @return The Y coordinate value
-     */
     public float getY() {
         return position.y;
     }
@@ -118,10 +106,6 @@ public abstract class Drawable {
         bounds.setPosition(position.x, position.y);
     }
 
-    /**
-     * The velocity
-     * @return The velocity
-     */
     public Vector2 getVelocity() {
         return velocity;
     }
@@ -130,10 +114,6 @@ public abstract class Drawable {
         this.velocity = velocity;
     }
 
-    /**
-     * The acceleration
-     * @return The acceleration
-     */
     public Vector2 getAcceleration() {
         return acceleration;
     }
@@ -151,10 +131,6 @@ public abstract class Drawable {
         if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(0, 1); // Prevent this from having no effect
     }
 
-    /**
-     * The max velocity
-     * @return The max velocity
-     */
     public float getMaxVelocity() {
         return maxVelocity;
     }
@@ -167,10 +143,6 @@ public abstract class Drawable {
         angle += v * Utils.delta();
     }
 
-    /**
-     * The speed
-     * @return The speed
-     */
     public float getSpeed() {
         return speed;
     }
@@ -203,10 +175,6 @@ public abstract class Drawable {
 //        } else return false;
     }
 
-    /**
-     * The bounding box
-     * @return The bounding box
-     */
     public Polygon getBounds() {
         return bounds;
     }
@@ -215,9 +183,6 @@ public abstract class Drawable {
         this.bounds = bounds;
     }
 
-    /**
-     * Toggle the hitbox debug rendering
-     */
     public void toggleBoundsDebug() {
         boundsDebug = ! boundsDebug;
     }
