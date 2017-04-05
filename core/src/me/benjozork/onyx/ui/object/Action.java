@@ -3,7 +3,8 @@ package me.benjozork.onyx.ui.object;
 import me.benjozork.onyx.ui.UIElement;
 
 /**
- * Defines a code that is to be run by an {@link UIElement} when a specified {@link ActionEvent} takes place relative to the element.
+ * Defines a code that is to be run by an {@link UIElement} when<br/>
+ * a specified {@link ActionEvent} takes place relative to the element.
  * @author Benjozork
  */
 public class Action {
@@ -15,10 +16,10 @@ public class Action {
     private UIElement parent;
 
     /**
-     * @param parent     the UIElement to which the Action is assigned.
+     * @param parent     the {@link UIElement} to which the Action is assigned.
      * @param identifier the identifier of the Action
      * @param action     the code to be run when the event is triggered
-     * @param event      the ActionEvent to which the Action listens to
+     * @param event      the {@link ActionEvent} to which the Action listens to
      */
     public Action(UIElement parent, String identifier, Runnable action, ActionEvent event) {
         this.parent = parent;
@@ -35,7 +36,7 @@ public class Action {
     }
 
     /**
-     * The Runnable that will be run by the action
+     * The {@link Runnable} that will be run by the action
      * @return the Runnable
      */
     public Runnable getAction() {
@@ -55,24 +56,24 @@ public class Action {
     }
 
     /**
-     * The ActionEvent to which the Action listens
-     * @return the ActionEvent
+     * The {@link ActionEvent} to which the Action listens
+     * @return the {@link ActionEvent}
      */
     public ActionEvent getEvent() {
         return event;
     }
 
     /**
-     * Sets the ActionEvent to which the Action listens
-     * @param event the ActionEvent to be used
+     * Sets the {@link ActionEvent} to which the Action listens
+     * @param event the {@link ActionEvent} to be used
      */
     public void setEvent(ActionEvent event) {
         this.event = event;
     }
 
     /**
-     * The UIElement to which the Action is assigned
-     * @return the UIElement
+     * The {@link UIElement} to which the Action is assigned
+     * @return the {@link UIElement}
      */
     public UIElement getParent() {
         return parent;
@@ -80,7 +81,7 @@ public class Action {
 
     /**
      * Sets the UIElement to which the Action is assigned.
-     * @param parent the UIElement to be used
+     * @param parent the {@link UIElement} to be used
      */
     public void setParent(UIElement parent) {
         this.parent = parent;
