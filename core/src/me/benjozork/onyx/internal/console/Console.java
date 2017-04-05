@@ -14,6 +14,7 @@ import java.util.HashMap;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -115,7 +116,7 @@ public class Console {
                     "[#FF00FF]"
                             + Gdx.graphics.getFramesPerSecond()
                             + "  []fps,  [#FF00FF]"
-                            + ((GameScreen) ScreenManager.getCurrentScreen()).getRegisteredEntities().size()
+                            + GameScreenManager.getEntities().size()
                             + "  []entities",
                     20, Gdx.graphics.getHeight() - 10
             );
