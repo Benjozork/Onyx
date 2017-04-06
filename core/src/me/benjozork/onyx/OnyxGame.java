@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -16,6 +17,7 @@ import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.internal.console.ConsoleCommand;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.Utils;
 
@@ -70,6 +72,7 @@ public class OnyxGame extends Game {
         GameManager.setGuiCamera(guiCam);
         GameManager.setRenderer(new ShapeRenderer());
         GameManager.setBatch(new SpriteBatch());
+        GameManager.setFont(new BitmapFont());
 
         // Init console
 
@@ -88,15 +91,10 @@ public class OnyxGame extends Game {
 
         ScreenManager.getCurrentScreen().dispose();
 
-        // Dispose graphics resources
+        // Dispose various resources
 
-        GameManager.getBatch().dispose();
-        GameManager.getShapeRenderer().dispose();
-        try { // fixme
-            GameManager.getPlayer().dispose();
-        } catch (IllegalStateException ignored) {
-        } catch (NullPointerException ignored) {
-        }
+        GameManager.dispose();
+        if (GameScreenManager.exists()) GameScreenManager.dispose();
 
     }
 
@@ -116,7 +114,7 @@ public class OnyxGame extends Game {
         // Draw console
 
         if (debug)
-            Console.draw(GameManager.getBatch());
+            Console.draw();
     }
 
     public void update() {
