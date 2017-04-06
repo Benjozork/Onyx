@@ -19,7 +19,7 @@ public class ScreenManager {
     }
 
     public static void setCurrentScreen(Screen currentScreen) {
-        String name = currentScreen.getClass().getName().replace("me.benjozork.onyx.screen.", "");
+        String name = currentScreen.getClass().getSimpleName();
         log.print("Changed screen to '%s'", name);
         ScreenManager.currentScreen = currentScreen;
     }
