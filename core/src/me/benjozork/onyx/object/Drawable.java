@@ -20,6 +20,7 @@ public abstract class Drawable {
     protected float maxVelocity = 100f;
     protected float angle;
     protected Polygon bounds;
+
     private float speed, maxSpeed;
 
     private boolean boundsDebug = false;
@@ -69,7 +70,7 @@ public abstract class Drawable {
      * @return whether the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
-        return PolygonHelper.collidePolygon(bounds,otherBounds);
+        return PolygonHelper.collidePolygon(bounds, otherBounds);
     }
 
     public Vector2 getPosition() {
