@@ -52,11 +52,7 @@ public class UIDropdown extends UIElement {
     private final Texture EXPANDED_CLICKED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_2.png");
     private final NinePatch EXPANDED_CLICKED_MENU_LOWER = new NinePatch(EXPANDED_CLICKED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
 
-    //fixme: replace all of this with a TextComponent that contains all this crap
-    private FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("ui/cc_red_alert_inet.ttf"));
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    private BitmapFont font;
-    private GlyphLayout layout = new GlyphLayout();
+    private TextComponent component;
 
     private Vector2 dimension = new Vector2();
     private String text = new String();
@@ -74,19 +70,18 @@ public class UIDropdown extends UIElement {
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);
+        this.component = component;
         this.text = component.getText();
-        this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
-        this.parameter = component.getParameter();
     }
 
     @Override
     public void init() {
-        font = generator.generateFont(parameter);
+
     }
 
     @Override
     public void update() {
-        layout.setText(font, text);
+        component.updateLayout();
         PolygonHelper.setWidth(bounds, getWidth());
         if (expanded) {
             PolygonHelper.setHeight(bounds, ((items.size + 1) * getHeight()) - 6);
@@ -113,8 +108,7 @@ public class UIDropdown extends UIElement {
 
     @Override
     public void draw() {
-
-        layout.setText(font, text);
+        component.updateLayout();
 
         if (expanded) {
             for (int i = 0; i < items.size; i++) {
@@ -143,7 +137,7 @@ public class UIDropdown extends UIElement {
                 int index = (int) (dy / getHeight());
                 if (index < 0 || dy < 0) {
                     currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-                    font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
+                    component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
 
                     drawText();
 
@@ -172,11 +166,12 @@ public class UIDropdown extends UIElement {
 
             drawText();
 
-            layout.setText(font, text);
+            component.updateLayout();
         }
 
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-        font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
+        component.setText(text);
+        component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
     }
 
     @Override
@@ -204,9 +199,10 @@ public class UIDropdown extends UIElement {
 
     public void drawText() {
         for (int j = 0; j < items.size; j++) {
-            layout.setText(font, items.get(j));
-            font.draw(GameManager.getBatch(), items.get(j), (getX() + getWidth() / 2) - layout.width / 2, getY() - (j * getHeight() + layout.height / 2) - 4);
+            component.setText(items.get(j));
+            component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, getY() - (j * getHeight() + component.getLayout().height / 2) - 4);
         }
+        component.setText(text);
     }
 
     @Override
@@ -227,14 +223,6 @@ public class UIDropdown extends UIElement {
         EXPANDED_MENU_LOWER_TEXTURE.dispose();
         EXPANDED_HOVERED_MENU_LOWER_TEXTURE.dispose();
         EXPANDED_CLICKED_MENU_LOWER_TEXTURE.dispose();
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String v) {
-        text = v;
     }
 
     /**

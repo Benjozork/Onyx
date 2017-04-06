@@ -15,36 +15,28 @@ import me.benjozork.onyx.utils.TextComponent;
  */
 public class UILabel extends UIElement {
 
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    private BitmapFont font;
-
-    private GlyphLayout layout = new GlyphLayout();
-
-    private String text;
+    private TextComponent component;
 
     public UILabel(float x, float y, TextComponent component) {
         super(x, y);
-        this.text = component.getText();
-        this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
-        this.parameter = component.getParameter();
+        bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
+        this.component = component;
     }
 
     @Override
     public void init() {
-        bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
-        font = generator.generateFont(parameter);
+
     }
 
     @Override
     public void update() {
-        layout.setText(font, text);
-        PolygonHelper.setDimensions(bounds, layout.width, layout.height);
+        component.updateLayout();
+        PolygonHelper.setDimensions(bounds, component.getLayout().width, component.getLayout().height);
     }
 
     @Override
     public void draw() {
-        font.draw(GameManager.getBatch(), text, getX(), getY());
+        component.getFont().draw(GameManager.getBatch(), component.getText(), getX(), getY());
     }
 
     @Override

@@ -26,11 +26,8 @@ public class UIButton extends UIElement {
     private final Texture CLICKED_BUTTON_TEXTURE = new Texture("ui/button/button_2.png");
     private final NinePatch CLICKED_BUTTON = new NinePatch(CLICKED_BUTTON_TEXTURE, 6, 6, 6, 6);
 
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    private BitmapFont font;
-    private GlyphLayout layout = new GlyphLayout();
-    private String text = new String();
+    private TextComponent component;
+
     private NinePatch currentPatch = BUTTON;
 
     private float colorTimer;
@@ -41,21 +38,17 @@ public class UIButton extends UIElement {
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);
-        this.text = component.getText();
-        this.generator = new FreeTypeFontGenerator(Gdx.files.internal(component.getFontPath()));
-        this.parameter = component.getParameter();
+        this.component = component;
     }
 
     @Override
     public void init() {
-        font = generator.generateFont(parameter);
+
     }
 
     @Override
     public void update() {
-        layout.setText(font, text);
-//        bounds.width = getWidth() + layout.width + 10;
-//        bounds.height = getHeight();
+        component.updateLayout();
         PolygonHelper.setDimensions(bounds, getWidth(), getHeight());
 
         if (colorTimer >= 0) {
@@ -76,10 +69,10 @@ public class UIButton extends UIElement {
 
     @Override
     public void draw() {
-        layout.setText(font, text);
+        component.updateLayout();
 
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-        font.draw(GameManager.getBatch(), text, (getX() + getWidth() / 2) - layout.width / 2, (getY() + getHeight() / 2) + layout.height / 2);
+        component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
     }
 
     @Override
@@ -96,11 +89,4 @@ public class UIButton extends UIElement {
         CLICKED_BUTTON_TEXTURE.dispose();
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String v) {
-        text = v;
-    }
 }
