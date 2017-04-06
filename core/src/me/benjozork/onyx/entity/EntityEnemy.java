@@ -46,17 +46,18 @@ public class EntityEnemy extends LivingEntity {
 
     @Override
     public void update() {
+
         // The simplest AI ever written
-        if (getX() - GameManager.getPlayer().getX() < 400f * Utils.delta()
-                && getX() - GameManager.getPlayer().getX() > - 400f * Utils.delta()) {
-            position.x = GameManager.getPlayer().getX();
+        if (getX() - GameScreenManager.getPlayer().getX() < 400f * Utils.delta()
+                && getX() - GameScreenManager.getPlayer().getX() > - 400f * Utils.delta()) {
+            position.x = GameScreenManager.getPlayer().getX();
             direction = EntityEnemy.Direction.STRAIGHT;
         }
-        if (getX() < GameManager.getPlayer().getX()) {
+        if (getX() < GameScreenManager.getPlayer().getX()) {
             position.x += 400f * Utils.delta();
             direction = EntityEnemy.Direction.RIGHT;
         }
-        else if (getX() > GameManager.getPlayer().getX()) {
+        else if (getX() > GameScreenManager.getPlayer().getX()) {
             position.x -= 400f * Utils.delta();
             direction = Direction.LEFT;
         }
@@ -94,7 +95,7 @@ public class EntityEnemy extends LivingEntity {
         }
 
         if (getSpeed() > 0) setSpeed(getSpeed() - 15f);
-        else setSpeed(getSpeed() + 5f);
+        else setSpeed(getSpeed() + 15f);
 
         if (state == EntityEnemy.DrawState.IDLE) {
             currentTexture.setTexture(ENEMY_TEXTURE);
