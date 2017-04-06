@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import me.benjozork.onyx.logger.Log;
 
 /**
- * Used to convert {@link Rectangle}s to {@link Polygon}s and perform operations on the polygon.
- *
+ * Used to convert {@link Rectangle}s to {@link Polygon}s and perform operations on the polygon.<br/>
+ * WARNING: The width/height methods in this class ONLY work on rectangular polygons.
  * @author RishiRaj22
  */
 public class PolygonHelper {
