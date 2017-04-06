@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.FTFGeneratorCache;
 
@@ -64,9 +65,81 @@ public class TextComponent {
     /**
      * Draws the TextComponent's text
      * @param b the {@link SpriteBatch to use}
+     * @param x the x position of the desired point
+     * @param y the y position of the desired point
      */
     public void draw(SpriteBatch b, float x, float y) {
         generatedFont.draw(b, text, x, y);
+    }
+
+    /**
+     * Draws the TextComponent's text
+     * @param b the {@link SpriteBatch to use}
+     * @param p the position of the desired point
+     */
+    public void draw(SpriteBatch b, Vector2 p) {
+        generatedFont.draw(b, text, p.x, p.y);
+    }
+
+
+    /**
+     * Draws the TextComponent's text, centered at the specified point
+     * @param b the {@link SpriteBatch to use}
+     * @param x the x position of the desired point
+     * @param y the y position of the desired point
+     */
+    public void drawCenteredAt(SpriteBatch b, float x, float y) {
+        Vector2 pos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, x, y, layout.width, layout.height);
+        generatedFont.draw(b, text, pos.x, pos.y);
+    }
+
+    /**
+     * Draws the TextComponent's text, centered at the specified point
+     * @param b the {@link SpriteBatch to use}
+     * @param x the x position of the desired point
+     * @param y the y position of the desired point
+     */
+    public void drawCenteredAt(SpriteBatch b, float x, float y, boolean xalign, boolean yalign) {
+        Vector2 pos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, x, y, layout.width, layout.height);
+        if (xalign && yalign) {
+            generatedFont.draw(b, text, pos.x, pos.y);
+        } else if (xalign) {
+            generatedFont.draw(b, text, pos.x, y);
+        } else if (yalign) {
+            generatedFont.draw(b, text, x, pos.y);
+        } else throw new IllegalArgumentException("both xalign and yalign cannot be false");
+    }
+
+    /**
+     * Draws the TextComponent's text, centered in a container of specified position, width and height
+     * @param b the {@link SpriteBatch to use}
+     * @param x the x position of the container
+     * @param y the y position of the container
+     * @param w the width of the container
+     * @param h the height of the container
+     */
+    public void drawCenteredInContainer(SpriteBatch b, float x, float y, float w, float h) {
+        Vector2 pos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, x, y, layout.width, layout.height, w, h);
+        generatedFont.draw(b, text, pos.x, pos.y);
+    }
+
+    /**
+     * Draws the TextComponent's text, centered in a container of specified position, width and height
+     * @param b the {@link SpriteBatch to use}
+     * @param x the x position of the container
+     * @param y the y position of the container
+     * @param w the width of the container
+     * @param h the height of the container
+     */
+    public void drawCenteredInContainer(SpriteBatch b, float x, float y, float w, float h, boolean xalign, boolean yalign) {
+        Vector2 pos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, x, y, layout.width, layout.height, w, h);
+        if (xalign && yalign) {
+            generatedFont.draw(b, text, pos.x, pos.y);
+        } else if (xalign) {
+            generatedFont.draw(b, text, pos.x, y);
+        } else if (yalign) {
+            generatedFont.draw(b, text, x, pos.y);
+        } else throw new IllegalArgumentException("both xalign and yalign cannot be false");
     }
 
     public String getText() {

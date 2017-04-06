@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.utils.CenteredDrawer;
 import me.benjozork.onyx.utils.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
@@ -72,7 +73,17 @@ public class UIButton extends UIElement {
         component.updateLayout();
 
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-        component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
+        component.draw(GameManager.getBatch(),
+            CenteredDrawer.getContained (
+                CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER,
+                getX(),
+                getY(),
+                component.getLayout().width,
+                component.getLayout().height,
+                getWidth(),
+                getHeight()
+            )
+        );
     }
 
     @Override
