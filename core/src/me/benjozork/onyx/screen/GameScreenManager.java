@@ -9,7 +9,8 @@ import me.benjozork.onyx.internal.ScreenManager;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
- * All of the methods of this class except {@link GameScreenManager#exists()} throw an {@link IllegalStateException}<br/>
+ * All of the methods of this class except {@link GameScreenManager#exists()} and<br/>
+ * {@link GameScreenManager#dispose()}throw an {@link IllegalStateException}<br/>
  * if {@link ScreenManager#getCurrentScreen()} DOES NOT return {@link GameScreen}.
  *
  * @author Benjozork
@@ -152,7 +153,7 @@ public class GameScreenManager {
     /**
      * Flushes the object cache when {@link GameScreen} is disposed of
      */
-    static void flush() {
+    public static void dispose() {
         player = null;
 
         for (Entity e : GameScreenManager.getEntities()) {
