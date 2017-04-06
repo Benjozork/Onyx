@@ -64,16 +64,18 @@ public class GameScreen implements Screen {
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
         EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
+        enemy.setMaxSpeed(1000f);
         GameScreenManager.registerEntity(player);
         GameScreenManager.registerEntity(enemy);
         this.player = player;
         this.enemy = enemy;
-        GameManager.setPlayer(player);
+        GameScreenManager.setPlayer(player);
 
         // Setup cameras
 
         worldCam = GameManager.getWorldCamera();
         guiCam = GameManager.getGuiCamera();
+
         batch = GameManager.getBatch();
 
         // Setup background
@@ -103,7 +105,7 @@ public class GameScreen implements Screen {
         zoomPulseConfig.targetZoom = 0.5f;
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
-        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()), parameter);
+        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()));
     }
 
     public void update(float delta) {
@@ -145,7 +147,7 @@ public class GameScreen implements Screen {
             player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(- 100f);
+            player.accelerate(-100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("entity/player/bullet.png");
@@ -270,7 +272,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        GameScreenManager.flush();
+        GameScreenManager.dispose();
+        scoreText.dispose();
     }
 
     public EntityEnemy getEnemy() {
