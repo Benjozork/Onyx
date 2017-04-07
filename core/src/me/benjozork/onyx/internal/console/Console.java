@@ -32,16 +32,18 @@ public class Console {
 
     private static Rectangle textBox = new Rectangle();
 
-    private static SpriteBatch batch = GameManager.getBatch();
-    private static ShapeRenderer renderer = GameManager.getShapeRenderer();
+    private static SpriteBatch batch;
+    private static ShapeRenderer renderer;
 
     private static HashMap<CommandProcessor, Array<String>> cmdProcessorList = new HashMap<CommandProcessor, Array<String>>();
 
     private static boolean isTextBoxFocused = false;
 
-    public static void init() {
+        public static void init() {
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         font = new BitmapFont();
+
+        batch = GameManager.getBatch();
         renderer = GameManager.getShapeRenderer();
 
         /*
