@@ -11,7 +11,9 @@ import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
  * Defines a text that is drawn on the screen. Includes font and style methods to ease implementation of text.<br/>
- * A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.
+ * A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.<br/>
+ * Drawing methods to render the text are provided, which can also center the text if it is necessary.
+ *
  * @author Benjozork
  */
 public class TextComponent {
@@ -77,6 +79,7 @@ public class TextComponent {
 
     /**
      * Draws the TextComponent's text
+     *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the desired point
      * @param y the y position of the desired point
@@ -87,6 +90,7 @@ public class TextComponent {
 
     /**
      * Draws the TextComponent's text
+     *
      * @param b the {@link SpriteBatch to use}
      * @param p the position of the desired point
      */
@@ -97,6 +101,7 @@ public class TextComponent {
 
     /**
      * Draws the TextComponent's text, centered at the specified point
+     *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the desired point
      * @param y the y position of the desired point
@@ -107,7 +112,8 @@ public class TextComponent {
     }
 
     /**
-     * Draws the TextComponent's text, centered at the specified point
+     * Draws the TextComponent's text, centered at the specified point+
+     *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the desired point
      * @param y the y position of the desired point
@@ -127,6 +133,7 @@ public class TextComponent {
 
     /**
      * Draws the TextComponent's text, centered in a container of specified position, width and height
+     *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the container
      * @param y the y position of the container
@@ -140,6 +147,7 @@ public class TextComponent {
 
     /**
      * Draws the TextComponent's text, centered in a container of specified position, width and height
+     *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the container
      * @param y the y position of the container
