@@ -26,7 +26,6 @@ public class UILabel extends UIElement {
 
     @Override
     public void update() {
-        component.updateLayout();
         PolygonHelper.setDimensions(bounds, component.getLayout().width, component.getLayout().height);
     }
 

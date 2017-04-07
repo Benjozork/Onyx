@@ -46,7 +46,6 @@ public class UICheckbox extends UIElement {
 
     @Override
     public void update() {
-        component.updateLayout();
         PolygonHelper.setDimensions(bounds, getWidth() + component.getLayout().width + 10, getHeight());
 
         if (hovering()) {
@@ -58,8 +57,6 @@ public class UICheckbox extends UIElement {
 
     @Override
     public void draw() {
-        component.updateLayout();
-
         GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
         component.drawCenteredInContainer(GameManager.getBatch(), getX() + getWidth() + 10, getY(), getWidth() + component.getLayout().width + 50, getHeight(), false, true);
     }

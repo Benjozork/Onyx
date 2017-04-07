@@ -44,7 +44,6 @@ public class UIButton extends UIElement {
 
     @Override
     public void update() {
-        component.updateLayout();
         PolygonHelper.setDimensions(bounds, getWidth(), getHeight());
 
         if (colorTimer >= 0) {
@@ -65,7 +64,6 @@ public class UIButton extends UIElement {
 
     @Override
     public void draw() {
-        component.updateLayout();
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
         component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
     }

@@ -10,7 +10,7 @@ import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
- * Defines a text that is drawn on the screen.<br/>
+ * Defines a text that is drawn on the screen. Includes font and style methods to ease implementation of text.<br/>
  * A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.
  * @author Benjozork
  */
@@ -39,6 +39,17 @@ public class TextComponent {
     }
 
     /**
+     * @param text      the text to be displayed
+     * @param fontPath  the font path to be used
+     */
+    public TextComponent(String text, String fontPath) {
+        this.text = text;
+        this.fontPath = fontPath;
+        this.generatedFont = new BitmapFont();
+        this.layout = new GlyphLayout(new BitmapFont(), text);
+    }
+    
+    /**
      * @param text the text to be displayed
      */
     public TextComponent(String text) {
@@ -53,11 +64,12 @@ public class TextComponent {
      */
     public BitmapFont generateFont() {
         generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
+        updateLayout();
         return generatedFont;
     }
 
     /**
-     * Returns a {@link BitmapFont} without regenerating it
+     * Returns a {@link BitmapFont} without regenerating it.
      */
     public BitmapFont getFont() {
         return generatedFont;
@@ -163,6 +175,7 @@ public class TextComponent {
 
     public void setFontPath(String fontPath) {
         this.fontPath = fontPath;
+        generateFont();
     }
 
     /**
@@ -189,10 +202,7 @@ public class TextComponent {
         return layout;
     }
 
-    /**
-     * Updates the {@link GlyphLayout} instance to match an updated text
-     */
-    public void updateLayout() {
+    private void updateLayout() {
         this.getLayout().setText(this.getFont(), this.getText());
     }
 

@@ -78,7 +78,7 @@ public class UIDropdown extends UIElement {
 
     @Override
     public void update() {
-        component.updateLayout();
+
         PolygonHelper.setWidth(bounds, getWidth());
         if (expanded) {
             PolygonHelper.setHeight(bounds, ((items.size + 1) * getHeight()) - 6);
@@ -101,11 +101,11 @@ public class UIDropdown extends UIElement {
         if (hovering()) {
             currentPatch = expanded ? EXPANDED_HOVERED_DROPDOWN : HOVERED_DROPDOWN;
         }
+
     }
 
     @Override
     public void draw() {
-        component.updateLayout();
 
         if (expanded) {
             for (int i = 0; i < items.size; i++) {
@@ -163,12 +163,13 @@ public class UIDropdown extends UIElement {
 
             drawText();
 
-            component.updateLayout();
+
         }
 
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
         component.setText(text);
         component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+
     }
 
     @Override
