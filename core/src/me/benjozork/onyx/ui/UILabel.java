@@ -36,7 +36,7 @@ public class UILabel extends UIElement {
 
     @Override
     public void draw() {
-        component.getFont().draw(GameManager.getBatch(), component.getText(), getX(), getY());
+        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), component.getLayout().width, component.getLayout().height);
     }
 
     @Override

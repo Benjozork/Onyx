@@ -63,7 +63,7 @@ public class UIRadioButton extends UIElement {
         component.updateLayout();
 
         GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
-        component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() + 50) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
+        component.drawCenteredInContainer(GameManager.getBatch(), getX() + getWidth() + 10, getY(), getWidth() + component.getLayout().width + 50, getHeight(), false, true);
     }
 
     @Override

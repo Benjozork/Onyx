@@ -71,19 +71,8 @@ public class UIButton extends UIElement {
     @Override
     public void draw() {
         component.updateLayout();
-
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-        component.draw(GameManager.getBatch(),
-            CenteredDrawer.getContained (
-                CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER,
-                getX(),
-                getY(),
-                component.getLayout().width,
-                component.getLayout().height,
-                getWidth(),
-                getHeight()
-            )
-        );
+        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
     }
 
     @Override

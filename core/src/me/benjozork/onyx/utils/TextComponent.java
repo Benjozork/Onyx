@@ -98,6 +98,8 @@ public class TextComponent {
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the desired point
      * @param y the y position of the desired point
+     * @param xalign whether x-axis alignment is enabled
+     * @param yalign whether y-axis alignment is enabled
      */
     public void drawCenteredAt(SpriteBatch b, float x, float y, boolean xalign, boolean yalign) {
         Vector2 pos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, x, y, layout.width, layout.height);
@@ -130,6 +132,8 @@ public class TextComponent {
      * @param y the y position of the container
      * @param w the width of the container
      * @param h the height of the container
+     * @param xalign whether x-axis alignment is enabled
+     * @param yalign whether y-axis alignment is enabled
      */
     public void drawCenteredInContainer(SpriteBatch b, float x, float y, float w, float h, boolean xalign, boolean yalign) {
         Vector2 pos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, x, y, layout.width, layout.height, w, h);

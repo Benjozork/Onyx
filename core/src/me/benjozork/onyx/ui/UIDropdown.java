@@ -116,9 +116,9 @@ public class UIDropdown extends UIElement {
                     EXPANDED_MENU_LOWER.draw(
                             GameManager.getBatch(),
                             getX(),
-                            getY() - getHeight() * (i + 1),
+                            getY() - getHeight() * (i + 1) - 10,
                             getWidth(),
-                            getHeight()
+                            getHeight() + 10
                     );
                 } else {
                     EXPANDED_MENU_UPPER.draw(
@@ -148,9 +148,9 @@ public class UIDropdown extends UIElement {
                     EXPANDED_HOVERED_MENU_LOWER.draw(
                             GameManager.getBatch(),
                             getX(),
-                            getY() - getHeight() * (index + 1),
+                            getY() - getHeight() * (index + 1) - 10,
                             getWidth(),
-                            getHeight()
+                            getHeight() + 10
                     );
                 } else {
                     EXPANDED_HOVERED_MENU_UPPER.draw(
@@ -171,7 +171,7 @@ public class UIDropdown extends UIElement {
 
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
         component.setText(text);
-        component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
+        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
     }
 
     @Override
@@ -200,7 +200,8 @@ public class UIDropdown extends UIElement {
     public void drawText() {
         for (int j = 0; j < items.size; j++) {
             component.setText(items.get(j));
-            component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, getY() - (j * getHeight() + component.getLayout().height / 2) - 4);
+            //component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, getY() - (j * getHeight() + component.getLayout().height / 2) - 4);
+            component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY() - (j  * getHeight()) - getHeight(), getWidth(), getHeight());
         }
         component.setText(text);
     }
