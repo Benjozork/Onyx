@@ -1,4 +1,4 @@
-package me.benjozork.onyx.utils;
+package me.benjozork.onyx.object;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.FTFGeneratorCache;
+import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
  * Defines a text that is drawn on the screen.<br/>

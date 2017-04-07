@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import me.benjozork.onyx.config.serializer.BoundsSerializer;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.utils.Bounds;
-import me.benjozork.onyx.utils.Maybe;
+import me.benjozork.onyx.object.Bounds;
+import me.benjozork.onyx.object.Maybe;
 
 /**
  * Manages the game's various configuration files

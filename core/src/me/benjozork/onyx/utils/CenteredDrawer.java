@@ -3,10 +3,20 @@ package me.benjozork.onyx.utils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
+ * Allows to get centered position vectors following various centering cases.
  * @author Benjozork
  */
 public class CenteredDrawer {
 
+    /**
+     * Returns a {@link Vector2} containing a centered position
+     * @param type the centering method that is wished to be used
+     * @param x the x position of the desired center of the object
+     * @param y the y position of the desired center of the object
+     * @param w the width of the object
+     * @param h the height of the object
+     * @return a centered position vector
+     */
     public static Vector2 get(CenteredDrawingType type, float x, float y, float w, float h) {
         switch (type) {
             case CENTERED_AT_POINT:
@@ -24,6 +34,17 @@ public class CenteredDrawer {
         }
     }
 
+    /**
+     * Returns a {@link Vector2} containing a centered position
+     * @param type the centering method that is wished to be used
+     * @param x the x position of the desired center of the object
+     * @param y the y position of the desired center of the object
+     * @param w the width of the object
+     * @param h the height of the object
+     * @param cw the width of the container the center position must be relative to
+     * @param ch the height of the container the center position must be relative to
+     * @return a centered position vector
+     */
     public static Vector2 getContained(CenteredDrawingType type, float x, float y, float w, float h, float cw, float ch) {
         switch (type) {
             case CENTERED_IN_CONTAINER:
@@ -42,6 +63,9 @@ public class CenteredDrawer {
     }
 
 
+    /**
+     * Defines various centering methods to be used with {@link CenteredDrawer}.
+     */
     public enum CenteredDrawingType {
         CENTERED_AT_POINT,
         CENTERED_HORIZONTALLY_AT_POINT,

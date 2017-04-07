@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 import me.benjozork.onyx.specialeffect.Effect;
 import me.benjozork.onyx.utils.Utils;
-import me.benjozork.onyx.utils.collection.CycleList;
+import me.benjozork.onyx.object.collection.CycleList;
 
 /**
  * A CrossFadeColorEffect allows transforming a source color according to the provided<br/>

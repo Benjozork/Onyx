@@ -1,17 +1,12 @@
 package me.benjozork.onyx.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
-import me.benjozork.onyx.utils.TextComponent;
+import me.benjozork.onyx.object.TextComponent;
 
 /**
  * @author Benjozork

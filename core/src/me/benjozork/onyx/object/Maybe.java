@@ -1,4 +1,4 @@
-package me.benjozork.onyx.utils;
+package me.benjozork.onyx.object;
 
 /**
  * Represents an object that may or may not exist
