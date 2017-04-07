@@ -99,8 +99,11 @@ public class GameManager {
      * @param v the desired state
      */
     public static void setIsRendering(boolean v) {
-        if (v) if (! batch.isDrawing()) batch.begin();
-        else if (batch.isDrawing()) batch.end();
+        if (v) {
+            if (! batch.isDrawing()) batch.begin();
+        } else {
+            if (batch.isDrawing()) batch.end();
+        }
     }
 
     public static BitmapFont getFont() {

@@ -103,10 +103,6 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Begin batching
-
-        GameManager.setIsRendering(true);
-
         // Draw background
 
         background.setColor(Color.GRAY);
@@ -133,7 +129,6 @@ public class MenuScreen implements Screen {
 
         uiScreen.update();
         uiScreen.draw();
-        GameManager.getBatch().end();
 
     }
 

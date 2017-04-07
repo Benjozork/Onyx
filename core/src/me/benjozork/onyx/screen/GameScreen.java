@@ -182,10 +182,6 @@ public class GameScreen implements Screen {
 
         update(delta);
 
-        // Begin batching
-
-        if (! batch.isDrawing()) batch.begin();
-
         // Draw background
 
         background.setColor(backgroundColor);
