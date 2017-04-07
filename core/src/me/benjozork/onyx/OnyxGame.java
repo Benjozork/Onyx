@@ -70,8 +70,10 @@ public class OnyxGame extends Game {
 
         GameManager.setWorldCamera(worldCam);
         GameManager.setGuiCamera(guiCam);
+
         GameManager.setRenderer(new ShapeRenderer());
         GameManager.setBatch(new SpriteBatch());
+
         GameManager.setFont(new BitmapFont());
 
         // Init console
@@ -109,7 +111,9 @@ public class OnyxGame extends Game {
 
         // Render frame
 
+        GameManager.setIsRendering(true);
         getScreen().render(Utils.delta());
+        GameManager.setIsRendering(false);
 
         // Draw console
 
