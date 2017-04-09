@@ -50,14 +50,13 @@ public abstract class Drawable implements Disposable {
             velocity.set(velocity.x * (float)Math.sin(angle), velocity.y * (float)Math.cos(angle));
         }
 
-        position.add(velocity.scl(dt));
-        velocity.add(acceleration.scl(dt));
+        position.add(velocity.cpy().scl(dt));
+        velocity.add(acceleration);
 
         setPosition(position);
         setAcceleration(acceleration);
 
         bounds.setPosition(position.x, position.y);
-
     }
 
     //Abstract methods
