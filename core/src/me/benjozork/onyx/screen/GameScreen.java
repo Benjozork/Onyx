@@ -63,9 +63,10 @@ public class GameScreen implements Screen {
 
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
         GameScreenManager.setPlayer(player);
+        GameScreenManager.setEnemy(enemy);
         EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
-        player.setMaxSpeed(1000f);
-        enemy.setMaxSpeed(1000f);
+        player.setMaxSpeed(600f);
+        enemy.setMaxSpeed(600f);
         GameScreenManager.registerEntity(player);
         GameScreenManager.registerEntity(enemy);
         this.player = player;
@@ -209,6 +210,7 @@ public class GameScreen implements Screen {
 
         for (Entity e : GameScreenManager.getEntities()) {
             e.update(delta); // This call updates the Drawable class internally
+            System.out.println(e);
         }
 
         for (Entity e : GameScreenManager.getEntities()) {

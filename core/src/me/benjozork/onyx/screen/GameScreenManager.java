@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.benjozork.onyx.entity.Entity;
+import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.entity.EntityProjectile;
+import me.benjozork.onyx.entity.LivingEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
 
@@ -20,6 +22,8 @@ import me.benjozork.onyx.internal.ScreenManager;
 public class GameScreenManager {
 
     private static EntityPlayer player;
+    private static EntityEnemy enemy;
+
     private static List<Entity> registeredEntities = new ArrayList<Entity>();
     private static List<Entity> toRemove = new ArrayList<Entity>();
 
@@ -46,9 +50,18 @@ public class GameScreenManager {
      * Sets the {@link EntityPlayer} instance to be used by {@link GameScreen}
      * @param p the player instance
      */
-    protected static void setPlayer(EntityPlayer p) {
+    public static void setPlayer(EntityPlayer p) {
         player = p;
     }
+
+    public static LivingEntity getEnemy() {
+        return enemy;
+    }
+
+    public static void setEnemy(EntityEnemy e) {
+        enemy = e;
+    }
+
 
     /**
      * Returns a {@link List} of entities that are present on the entity stack
@@ -113,6 +126,7 @@ public class GameScreenManager {
         score += v;
         updateHighScore();
     }
+
 
     public int getHighScore() {
         check();
