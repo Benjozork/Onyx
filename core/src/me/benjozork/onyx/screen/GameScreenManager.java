@@ -5,6 +5,8 @@ import java.util.List;
 
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EntityPlayer;
+import me.benjozork.onyx.entity.EntityProjectile;
+import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
 
 /**
@@ -26,6 +28,10 @@ public class GameScreenManager {
 
     private static int maxLives = 3;
     private static int lifeCount = maxLives;
+
+    static {
+        ProjectileManager.init();
+    }
 
     /**
      * Returns the {@link EntityPlayer} instance used by {@link GameScreen}
@@ -65,7 +71,11 @@ public class GameScreenManager {
 
     private static void addEntity(Entity e) {
         check();
-        if (! registeredEntities.contains(e)) registeredEntities.add(e);
+        if (! registeredEntities.contains(e)){
+            registeredEntities.add(e);
+            if(e instanceof EntityProjectile)
+                ProjectileManager.addProjectile((EntityProjectile)e);
+        }
     }
 
     /**
@@ -75,6 +85,8 @@ public class GameScreenManager {
     public static void removeEntity(Entity e) {
         check();
         toRemove.add(e);
+        if(e instanceof EntityProjectile)
+            ProjectileManager.addProjectile((EntityProjectile)e);
     }
 
     /**

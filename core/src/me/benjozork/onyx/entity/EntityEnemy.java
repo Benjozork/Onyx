@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
+import me.benjozork.onyx.entity.ai.AI;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.screen.GameScreenManager;
@@ -30,6 +32,7 @@ public class EntityEnemy extends LivingEntity {
     private Direction direction = Direction.STRAIGHT;
     private float spriteRotation;
     private boolean accelerated_right = false, accelerated_left = false;
+    private AI ai;
 
     public EntityEnemy(float x, float y) {
         super(new Vector2(x, y));
@@ -40,25 +43,21 @@ public class EntityEnemy extends LivingEntity {
         // Initialize hitbox
         bounds = PolygonHelper.getPolygon(getX(), getY(), ENEMY_TEXTURE.getWidth(), ENEMY_TEXTURE.getHeight());
         currentTexture.flip(false, true);
+        ai = new AI(this,GameScreenManager.getPlayer(), AI.AIStrategy.LINEAR, AI.ProjectileReluctance.HIGH);
+        type = Type.ENEMY;
     }
 
     @Override
     public void update() {
-
+        super.update(Utils.delta());
+        ai.update(Utils.delta());
         // The simplest AI ever written
-        if (getX() - GameScreenManager.getPlayer().getX() < 400f * Utils.delta()
-                && getX() - GameScreenManager.getPlayer().getX() > - 400f * Utils.delta()) {
-            position.x = GameScreenManager.getPlayer().getX();
-            direction = EntityEnemy.Direction.STRAIGHT;
-        }
-        if (getX() < GameScreenManager.getPlayer().getX()) {
-            position.x += 400f * Utils.delta();
-            direction = EntityEnemy.Direction.RIGHT;
-        }
-        else if (getX() > GameScreenManager.getPlayer().getX()) {
-            position.x -= 400f * Utils.delta();
+        if(velocity.x < -2)
             direction = Direction.LEFT;
-        }
+        else if(velocity.x > 2)
+            direction = Direction.RIGHT;
+        else
+            direction = Direction.STRAIGHT;
 
         if (direction == EntityEnemy.Direction.STRAIGHT) {
             if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
@@ -69,31 +68,11 @@ public class EntityEnemy extends LivingEntity {
         } else if (direction == EntityEnemy.Direction.RIGHT) {
             if (spriteRotation < 25 * MathUtils.degreesToRadians)
                 spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.setAngle(- 180f);
-            if (! accelerated_right) {
-                accelerate(5f);
-                accelerated_right = true;
-                accelerated_left = false;
-            }
-            if (velocity.x < 0) {
-                velocity.x -= velocity.x * 2;
-            }
         } else if (direction == EntityEnemy.Direction.LEFT) {
             if (spriteRotation > - 25 * MathUtils.degreesToRadians)
                 spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.setAngle(180f);
-            if (! accelerated_left) {
-                accelerate(5f);
-                accelerated_left = true;
-                accelerated_right = false;
-            }
-            if (velocity.x > 0) {
-                velocity.x -= velocity.x * 2;
-            }
         }
 
-        if (getSpeed() > 0) setSpeed(getSpeed() - 15f);
-        else setSpeed(getSpeed() + 15f);
 
         if (state == EntityEnemy.DrawState.IDLE) {
             currentTexture.setTexture(ENEMY_TEXTURE);
@@ -105,7 +84,8 @@ public class EntityEnemy extends LivingEntity {
             currentTexture.setTexture(MOVING_FIRING_ENEMY_TEXTURE);
         }
 
-        currentTexture.setPosition(getX(), getY());
+        System.out.printf("X: %f Y: %f\n",bounds.getX(),bounds.getY());
+        currentTexture.setPosition(bounds.getX(), bounds.getY());
         currentTexture.setRotation((float) - spriteRotation * MathUtils.radiansToDegrees);
     }
 

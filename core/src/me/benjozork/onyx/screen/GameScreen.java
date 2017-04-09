@@ -62,6 +62,7 @@ public class GameScreen implements Screen {
         // Setup player
 
         EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
+        GameScreenManager.setPlayer(player);
         EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(1000f);
         enemy.setMaxSpeed(1000f);
@@ -69,7 +70,6 @@ public class GameScreen implements Screen {
         GameScreenManager.registerEntity(enemy);
         this.player = player;
         this.enemy = enemy;
-        GameScreenManager.setPlayer(player);
 
         // Setup cameras
 
@@ -121,13 +121,13 @@ public class GameScreen implements Screen {
         if (player.isFiring()) {
             player.setState(EntityPlayer.DrawState.FIRING);
         }
-        if (player.getSpeed() != 0) {
+        if (player.getVelocity().len() != 0) {
             player.setState(EntityPlayer.DrawState.MOVING);
             if (player.isFiring()) {
                 player.setState(EntityPlayer.DrawState.FIRING_MOVING);
             }
         }
-        if (! player.isFiring() && player.getSpeed() == 0f) {
+        if (! player.isFiring() && player.getVelocity().len() == 0f) {
             player.setState(EntityPlayer.DrawState.IDLE);
         }
 

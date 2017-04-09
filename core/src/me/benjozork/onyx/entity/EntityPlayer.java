@@ -41,11 +41,12 @@ public class EntityPlayer extends LivingEntity {
     public void init() {
         // Initialize hitbox
         bounds = PolygonHelper.getPolygon(getX(), getY(), PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
+		type = Type.PLAYER;
     }
 
     @Override
     public void update() {
-
+        super.update(Utils.delta());
         if (direction == Direction.STRAIGHT) {
             if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
             if (spriteRotation < 0 * MathUtils.degreesToRadians)
@@ -78,8 +79,10 @@ public class EntityPlayer extends LivingEntity {
             }
         }
 
-        if (getSpeed() > 0) setSpeed(getSpeed() - 15f);
-        else setSpeed(getSpeed() + 5f);
+        if(velocity.len() > 0) velocity.setLength(velocity.len() -15);
+//        if (getSpeed() > 0) setSpeed(getSpeed() - 15f);
+        else velocity.setLength(velocity.len() +5f);
+//        else setSpeed(getSpeed() + 5f);
 
         if (state == DrawState.IDLE) {
             currentTexture.setTexture(PLAYER_TEXTURE);

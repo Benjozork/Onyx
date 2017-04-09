@@ -21,8 +21,10 @@ public class EntityProjectile extends Entity {
 
     private float damage = 0;
 
-    private String texturePath = "";
-    private Texture texture;
+    private String texturePath = "entity/player/bullet.png";
+    private Texture texture = new Texture(texturePath);
+    public LivingEntity.Type source;
+
 
     public EntityProjectile(float x, float y) {
         super(new Vector2(x, y));
@@ -59,8 +61,7 @@ public class EntityProjectile extends Entity {
                     //this.dispose();
                 }
             }*/
-
-        batch.draw(texture, getX(), getY(), 10, 10);
+        batch.draw(texture, bounds.getX(), bounds.getY(), 10, 10);
     }
 
     @Override

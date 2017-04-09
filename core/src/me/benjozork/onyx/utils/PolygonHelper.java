@@ -10,7 +10,7 @@ import me.benjozork.onyx.logger.Log;
 /**
  * Used to convert {@link Rectangle}s to {@link Polygon}s and perform operations on the polygon.<br/>
  * WARNING: The width/height methods in this class ONLY work on rectangular polygons.
- * @author RishiRaj22
+ * @author Rishi Raj
  */
 public class PolygonHelper {
 
