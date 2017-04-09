@@ -6,15 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.benjozork.onyx.screen.GameScreen;
-import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 
 /**
  * @author Rishi Raj
  */
-
 public class ProjectileManager {
 
     private static List<EntityProjectile> projectiles;

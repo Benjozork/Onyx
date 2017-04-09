@@ -96,13 +96,13 @@ public class AI {
                 temp = bulletEscapeDir.add(sourceDir);
                 temp.scl(factor);
                 source.setAcceleration(temp);
-                System.out.println("acc:" + source.getAcceleration());
+                //System.out.println("acc:" + source.getAcceleration());
                 break;
             case LINEAR:
                 temp = bulletEscapeDir.add(sourceDir);
                 temp.scl(factor);
                 source.setVelocity(temp);
-                System.out.println("vel:" + source.getVelocity());
+                //System.out.println("vel:" + source.getVelocity());
                 break;
             default:
                 System.out.printf("Error: AI strategy %s not supported", strategy);

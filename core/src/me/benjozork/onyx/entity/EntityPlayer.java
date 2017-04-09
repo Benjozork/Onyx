@@ -28,6 +28,8 @@ public class EntityPlayer extends LivingEntity {
 
     private Vector3 mouse = new Vector3();
 
+    private final int ANGLE_DELTA = 100;
+
     private DrawState state = DrawState.IDLE;
     private Direction direction = Direction.STRAIGHT;
     private float spriteRotation;
@@ -50,12 +52,12 @@ public class EntityPlayer extends LivingEntity {
         if (direction == Direction.STRAIGHT) {
             if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
             if (spriteRotation < 0 * MathUtils.degreesToRadians)
-                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             else if (spriteRotation > 0 * MathUtils.degreesToRadians)
-                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
+                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
         } else if (direction == Direction.RIGHT) {
             if (spriteRotation < 25 * MathUtils.degreesToRadians)
-                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(- 180f);
             if (! accelerated_right) {
                 accelerate(5f);
@@ -67,10 +69,10 @@ public class EntityPlayer extends LivingEntity {
             }
         } else if (direction == Direction.LEFT) {
             if (spriteRotation > - 25 * MathUtils.degreesToRadians)
-                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
+                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
             if (! accelerated_left) {
-                accelerate(5f);
+                accelerate(2.5f);
                 accelerated_left = true;
                 accelerated_right = false;
             }

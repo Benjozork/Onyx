@@ -32,8 +32,7 @@ public abstract class LivingEntity extends Entity {
         timer += Utils.delta();
         if (timer >= maxTime) {
             EntityProjectile projectile = new EntityProjectile(getX(),getY());
-//            projectile.setSpeed(2550f);
-            projectile.getVelocity().setLength(2550f);
+            projectile.accelerate(2550f);
             projectile.setDamage(10f);
             projectile.source = type;
 
