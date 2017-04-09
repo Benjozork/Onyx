@@ -151,5 +151,14 @@ public class Utils {
         }
         return ret;
     }
+
+    /**
+     * Converts vector to one of its perpendicular vector
+     * @param v
+     */
+    public static void toPerpendicularVector(Vector2 v)
+    {
+        v.set(-v.y,v.x);
+    }
 }
 
