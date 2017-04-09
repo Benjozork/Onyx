@@ -21,7 +21,8 @@ public abstract class Drawable {
     protected float angle;
     protected Polygon bounds;
 
-    private float speed, maxSpeed;
+    private float maxSpeed;
+    private float accelerationScalar;
 
     private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
@@ -41,18 +42,23 @@ public abstract class Drawable {
      * @param dt The delta time
      */
     public void update(float dt) {
-        if (defaultMaxSpeed) maxSpeed = speed + 1f;
-        bounds.setPosition(position.x, position.y);
+        if (defaultMaxSpeed) maxSpeed = velocity.len() + 1f;
 
-        if (speed > maxSpeed) speed = maxSpeed;
-        if (speed < - maxSpeed) speed = - maxSpeed;
+        if (velocity.len() > maxSpeed) velocity.setLength(maxSpeed);
+        if (velocity.len() < - maxSpeed) velocity.setLength(-maxSpeed);
 
         if (angle != 0) {
-            velocity.x = (float) Math.sin(angle);
-            velocity.y = (float) Math.cos(angle);
+            velocity.set(velocity.x * (float)Math.sin(angle), velocity.y * (float)Math.cos(angle));
         }
 
-        position.add(velocity.nor().scl(dt).scl(speed));
+        position.add(velocity.scl(dt));
+        velocity.add(acceleration.scl(dt));
+
+        setPosition(position);
+        setAcceleration(acceleration);
+
+        bounds.setPosition(position.x, position.y);
+
     }
 
     public abstract void init();
@@ -128,8 +134,8 @@ public abstract class Drawable {
      * @param v The speed offset
      */
     public void accelerate(float v) {
-        speed += v;
-        if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(0, 1); // Prevent this from having no effect
+        if (velocity.x == 0 && velocity.y == 0) velocity.set(0, 1); // Prevent this from having no effect
+        velocity.scl(v);
     }
 
     public float getMaxVelocity() {
@@ -142,14 +148,6 @@ public abstract class Drawable {
 
     public void rotate(float v) {
         angle += v * Utils.delta();
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public float getMaxSpeed() {
