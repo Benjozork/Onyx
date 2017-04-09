@@ -15,7 +15,6 @@ public class AI {
     private Log log;
     private boolean debug = true;
 
-
     private AIConfiguration.AIStrategy strategy;
     private AIConfiguration.ProjectileReluctance reluctance;
 
@@ -27,7 +26,6 @@ public class AI {
     private Vector2 sourceDir;
     private Vector2 bulletEscapeDir;
     private Vector2 temp;
-
 
     /**
      * Creates a basic AI for an entity.
