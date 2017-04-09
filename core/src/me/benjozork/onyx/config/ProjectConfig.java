@@ -4,4 +4,5 @@ public class ProjectConfig {
 
     public String version;
     public String initial_screen;
+
 }

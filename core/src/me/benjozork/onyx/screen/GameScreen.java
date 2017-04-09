@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
+import me.benjozork.onyx.entity.EnemyEntity;
 import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.EntityEnemy;
-import me.benjozork.onyx.entity.EntityPlayer;
+import me.benjozork.onyx.entity.PlayerEntity;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
@@ -38,8 +38,8 @@ public class GameScreen implements Screen {
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
-    private EntityPlayer player;
-    private EntityEnemy enemy;
+    private PlayerEntity player;
+    private EnemyEntity enemy;
 
     private OrthographicCamera worldCam, guiCam;
 
@@ -61,10 +61,10 @@ public class GameScreen implements Screen {
 
         // Setup player
 
-        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
+        PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
         GameScreenManager.setPlayer(player);
         GameScreenManager.setEnemy(enemy);
-        EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
+        EnemyEntity enemy = new EnemyEntity(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
         player.setMaxSpeed(600f);
         enemy.setMaxSpeed(600f);
         GameScreenManager.registerEntity(player);
@@ -120,28 +120,28 @@ public class GameScreen implements Screen {
 
         // Update DrawState of player
         if (player.isFiring()) {
-            player.setState(EntityPlayer.DrawState.FIRING);
+            player.setState(PlayerEntity.DrawState.FIRING);
         }
         if (player.getVelocity().len() != 0) {
-            player.setState(EntityPlayer.DrawState.MOVING);
+            player.setState(PlayerEntity.DrawState.MOVING);
             if (player.isFiring()) {
-                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
+                player.setState(PlayerEntity.DrawState.FIRING_MOVING);
             }
         }
         if (! player.isFiring() && player.getVelocity().len() == 0f) {
-            player.setState(EntityPlayer.DrawState.IDLE);
+            player.setState(PlayerEntity.DrawState.IDLE);
         }
 
         // Update input
         if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.STRAIGHT);
+            player.setDirection(PlayerEntity.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.RIGHT);
+            player.setDirection(PlayerEntity.Direction.RIGHT);
             player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.setDirection(EntityPlayer.Direction.LEFT);
+            player.setDirection(PlayerEntity.Direction.LEFT);
             player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -210,7 +210,6 @@ public class GameScreen implements Screen {
 
         for (Entity e : GameScreenManager.getEntities()) {
             e.update(delta); // This call updates the Drawable class internally
-            System.out.println(e);
         }
 
         for (Entity e : GameScreenManager.getEntities()) {
@@ -274,7 +273,7 @@ public class GameScreen implements Screen {
         scoreText.dispose();
     }
 
-    public EntityEnemy getEnemy() {
+    public EnemyEntity getEnemy() {
         return enemy;
     }
 

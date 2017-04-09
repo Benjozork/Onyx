@@ -208,4 +208,13 @@ public class Console {
         }
     }
 
+    public static void dispatchCommand(String cmdstr) {
+        ConsoleCommand cmd = new ConsoleCommand(cmdstr);
+        for (CommandProcessor cp : cmdProcessorList.keySet()) {
+            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), false)) {
+                cp.onCommand(cmd);
+            }
+        }
+    }
+
 }

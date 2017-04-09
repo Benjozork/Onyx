@@ -16,7 +16,7 @@ import me.benjozork.onyx.utils.Utils;
 /**
  * @author Benjozork
  */
-public class EntityPlayer extends LivingEntity {
+public class PlayerEntity extends LivingEntity {
 
     // Player textures
     private final Texture PLAYER_TEXTURE = new Texture("entity/player/texture_0.png");
@@ -35,7 +35,7 @@ public class EntityPlayer extends LivingEntity {
     private float spriteRotation;
     private boolean accelerated_right = false, accelerated_left = false;
 
-    public EntityPlayer(float x, float y) {
+    public PlayerEntity(float x, float y) {
         super(new Vector2(x, y));
     }
 

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.EntityEnemy;
-import me.benjozork.onyx.entity.EntityPlayer;
-import me.benjozork.onyx.entity.EntityProjectile;
+import me.benjozork.onyx.entity.EnemyEntity;
+import me.benjozork.onyx.entity.PlayerEntity;
+import me.benjozork.onyx.entity.ProjectileEntity;
 import me.benjozork.onyx.entity.LivingEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
@@ -21,8 +21,8 @@ import me.benjozork.onyx.internal.ScreenManager;
  */
 public class GameScreenManager {
 
-    private static EntityPlayer player;
-    private static EntityEnemy enemy;
+    private static PlayerEntity player;
+    private static EnemyEntity enemy;
 
     private static List<Entity> registeredEntities = new ArrayList<Entity>();
     private static List<Entity> toRemove = new ArrayList<Entity>();
@@ -38,19 +38,19 @@ public class GameScreenManager {
     }
 
     /**
-     * Returns the {@link EntityPlayer} instance used by {@link GameScreen}
+     * Returns the {@link PlayerEntity} instance used by {@link GameScreen}
      * @return the player instance
      */
-    public static EntityPlayer getPlayer() {
+    public static PlayerEntity getPlayer() {
         check();
         return player;
     }
 
     /**
-     * Sets the {@link EntityPlayer} instance to be used by {@link GameScreen}
+     * Sets the {@link PlayerEntity} instance to be used by {@link GameScreen}
      * @param p the player instance
      */
-    public static void setPlayer(EntityPlayer p) {
+    public static void setPlayer(PlayerEntity p) {
         player = p;
     }
 
@@ -58,7 +58,7 @@ public class GameScreenManager {
         return enemy;
     }
 
-    public static void setEnemy(EntityEnemy e) {
+    public static void setEnemy(EnemyEntity e) {
         enemy = e;
     }
 
@@ -86,8 +86,8 @@ public class GameScreenManager {
         check();
         if (! registeredEntities.contains(e)){
             registeredEntities.add(e);
-            if(e instanceof EntityProjectile)
-                ProjectileManager.addProjectile((EntityProjectile)e);
+            if(e instanceof ProjectileEntity)
+                ProjectileManager.addProjectile((ProjectileEntity)e);
         }
     }
 
@@ -98,8 +98,8 @@ public class GameScreenManager {
     public static void removeEntity(Entity e) {
         check();
         toRemove.add(e);
-        if(e instanceof EntityProjectile)
-            ProjectileManager.addProjectile((EntityProjectile)e);
+        if(e instanceof ProjectileEntity)
+            ProjectileManager.addProjectile((ProjectileEntity)e);
     }
 
     /**

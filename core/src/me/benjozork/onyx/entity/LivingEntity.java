@@ -2,20 +2,18 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
-import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * @author Benjozork
  */
 public abstract class LivingEntity extends Entity {
 
-    protected float health = 100f;
+    private float health = 100f;
 
-    private float maxTime = 0.1f;
-    private float timer = 0f;
+    private final float maxBulletTime = 0.1f;
+    private float bulletTimer = 0f;
 
     public Type type;
 
@@ -29,9 +27,9 @@ public abstract class LivingEntity extends Entity {
     }
 
     public void fireProjectile(String path) {
-        timer += Utils.delta();
-        if (timer >= maxTime) {
-            EntityProjectile projectile = new EntityProjectile(getX(),getY());
+        bulletTimer += Utils.delta();
+        if (bulletTimer >= maxBulletTime) {
+            ProjectileEntity projectile = new ProjectileEntity(getX(),getY());
             projectile.accelerate(2550f);
             projectile.setDamage(10f);
             projectile.source = type;
@@ -41,7 +39,7 @@ public abstract class LivingEntity extends Entity {
             //if (ammo < 0) return;
             //ammo -= 1;
 
-            timer = 0f;
+            bulletTimer = 0f;
         }
     }
 

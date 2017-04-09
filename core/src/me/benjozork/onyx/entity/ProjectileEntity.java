@@ -7,15 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
-import me.benjozork.onyx.internal.ScreenManager;
-import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Benjozork
  */
-public class EntityProjectile extends Entity {
+public class ProjectileEntity extends Entity {
 
     private SpriteBatch batch;
 
@@ -26,7 +24,7 @@ public class EntityProjectile extends Entity {
     public LivingEntity.Type source;
 
 
-    public EntityProjectile(float x, float y) {
+    public ProjectileEntity(float x, float y) {
         super(new Vector2(x, y));
     }
 
@@ -42,12 +40,10 @@ public class EntityProjectile extends Entity {
 
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
         velocity.set(mouse.sub(getX(), getY()));
-        System.out.println("velocity_init: " + velocity);
     }
 
     @Override
     public void update() {
-        System.out.println("velocity: " + velocity);
         if (GameScreenManager.getEnemy() == null) return;
         if (this.collidesWith(GameScreenManager.getEnemy().getBounds())) {
             GameScreenManager.getEnemy().damage(10f);

@@ -4,13 +4,17 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.entity.LivingEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
+import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Rishi Raj
  */
-
 public class AI {
+
+    private Log log;
+    private boolean debug = true;
+
     /**
      * The different strategies by which an entity follows another entity
      */
@@ -38,7 +42,7 @@ public class AI {
     private ProjectileReluctance reluctance;
 
     /**
-     * Create a basic AI for an entity
+     * Creates a basic AI for an entity.
      *
      * @param source   The polygon entity to which AI is to be applied
      * @param target   The polygon entity which the source entity will follow
@@ -49,18 +53,18 @@ public class AI {
         this.target = target;
         this.strategy = strategy;
         this.reluctance = reluctance;
+        this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
     }
 
     public AI(LivingEntity source, LivingEntity target, AIStrategy strategy, ProjectileReluctance reluctance, float factor) {
         this(source, target, strategy, reluctance);
         this.factor = factor;
+        this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
     }
 
     /**
-     * Used to update the parameters of source according to the current location of
-     * target.
-     *
-     * @param delta
+     * Updates the parameters of source according to the current location of the target
+     * @param delta the delta time
      */
     public void update(float delta) {
         bulletEscapeDir = ProjectileManager.nearestBulletDirection(source);
@@ -88,7 +92,7 @@ public class AI {
                 bulletEscapeDir.scl(0);
                 break;
             default:
-                System.out.printf("Error: Reluctance %s not supported", reluctance);
+                log.print("Error: Reluctance %s not supported", reluctance);
         }
 
         switch (strategy) {
@@ -96,16 +100,16 @@ public class AI {
                 temp = bulletEscapeDir.add(sourceDir);
                 temp.scl(factor);
                 source.setAcceleration(temp);
-                //System.out.println("acc:" + source.getAcceleration());
+                if (debug) log.print("acc: " + source.getAcceleration());
                 break;
             case LINEAR:
                 temp = bulletEscapeDir.add(sourceDir);
                 temp.scl(factor);
                 source.setVelocity(temp);
-                //System.out.println("vel:" + source.getVelocity());
+                if (debug) log.print("vel: " + source.getVelocity());
                 break;
             default:
-                System.out.printf("Error: AI strategy %s not supported", strategy);
+                if (debug) log.print("Error: AI strategy %s not supported", strategy);
         }
 
     }
