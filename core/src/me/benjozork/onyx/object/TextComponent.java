@@ -21,7 +21,7 @@ public class TextComponent {
     private String text;
     private String fontPath;
 
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
     private GlyphLayout layout;
 
@@ -47,8 +47,8 @@ public class TextComponent {
     public TextComponent(String text, String fontPath) {
         this.text = text;
         this.fontPath = fontPath;
-        this.generatedFont = new BitmapFont();
-        this.layout = new GlyphLayout(new BitmapFont(), text);
+        this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
+        this.layout = new GlyphLayout(generatedFont, text);
     }
     
     /**
@@ -107,7 +107,9 @@ public class TextComponent {
      * @param y the y position of the desired point
      */
     public void drawCenteredAt(SpriteBatch b, float x, float y) {
+        CenteredDrawer.switchToBitmap();
         Vector2 pos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, x, y, layout.width, layout.height);
+        CenteredDrawer.switchToPixel();
         generatedFont.draw(b, text, pos.x, pos.y);
     }
 
@@ -121,7 +123,9 @@ public class TextComponent {
      * @param yalign whether y-axis alignment is enabled
      */
     public void drawCenteredAt(SpriteBatch b, float x, float y, boolean xalign, boolean yalign) {
+        CenteredDrawer.switchToBitmap();
         Vector2 pos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, x, y, layout.width, layout.height);
+        CenteredDrawer.switchToPixel();
         if (xalign && yalign) {
             generatedFont.draw(b, text, pos.x, pos.y);
         } else if (xalign) {
@@ -141,7 +145,9 @@ public class TextComponent {
      * @param h the height of the container
      */
     public void drawCenteredInContainer(SpriteBatch b, float x, float y, float w, float h) {
+        CenteredDrawer.switchToBitmap();
         Vector2 pos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, x, y, layout.width, layout.height, w, h);
+        CenteredDrawer.switchToPixel();
         generatedFont.draw(b, text, pos.x, pos.y);
     }
 
@@ -157,7 +163,9 @@ public class TextComponent {
      * @param yalign whether y-axis alignment is enabled
      */
     public void drawCenteredInContainer(SpriteBatch b, float x, float y, float w, float h, boolean xalign, boolean yalign) {
+        CenteredDrawer.switchToBitmap();
         Vector2 pos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, x, y, layout.width, layout.height, w, h);
+        CenteredDrawer.switchToPixel();
         if (xalign && yalign) {
             generatedFont.draw(b, text, pos.x, pos.y);
         } else if (xalign) {
