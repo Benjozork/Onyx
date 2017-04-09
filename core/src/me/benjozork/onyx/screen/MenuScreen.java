@@ -45,7 +45,7 @@ public class MenuScreen implements Screen {
         background.setColor(Color.GRAY);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        uiScreen = new UIScreen(new Vector2(0, 0));
+        uiScreen = new UIScreen(0, 0);
 
         // Init parameter
 

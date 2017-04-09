@@ -22,8 +22,8 @@ public class UIContainer extends Drawable {
 
     protected UIContainer parent;
 
-    public UIContainer(Vector2 position) {
-        super(position);
+    public UIContainer(float x, float y) {
+        super(x, y);
     }
 
     @Override
