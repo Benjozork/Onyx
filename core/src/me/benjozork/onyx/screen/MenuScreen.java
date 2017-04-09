@@ -18,7 +18,7 @@ import me.benjozork.onyx.ui.UIRadioButton;
 import me.benjozork.onyx.ui.UIRadioButtonGroup;
 import me.benjozork.onyx.ui.UIScreen;
 import me.benjozork.onyx.ui.object.ActionEvent;
-import me.benjozork.onyx.ui.object.TextComponent;
+import me.benjozork.onyx.object.TextComponent;
 
 /**
  * Manages the logic when the game's various menus are being navigated through
@@ -103,10 +103,8 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Begin batching
-        GameManager.setIsRendering(true);
-
         // Draw background
+
         background.setColor(Color.GRAY);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         GameManager.getBatch().disableBlending();
@@ -131,7 +129,7 @@ public class MenuScreen implements Screen {
 
         uiScreen.update();
         uiScreen.draw();
-        GameManager.getBatch().end();
+
     }
 
     @Override

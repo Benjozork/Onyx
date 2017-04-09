@@ -1,14 +1,12 @@
 package me.benjozork.onyx.internal;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import me.benjozork.onyx.entity.EntityPlayer;
-import me.benjozork.onyx.screen.GameScreen;
-
 /**
- * Manages {@link SpriteBatch}es, {@link OrthographicCamera}s and {@link ShapeRenderer}s
+ * Holds {@link SpriteBatch}, {@link OrthographicCamera}, {@link ShapeRenderer} and {@link BitmapFont} objects.
  * @author Benjozork
  */
 public class GameManager {
@@ -27,7 +25,7 @@ public class GameManager {
 
     private static SpriteBatch batch;
 
-    private static EntityPlayer player;
+    private static BitmapFont font;
 
     /**
      * Returns the camera instance that is used when rendering world objects
@@ -62,8 +60,8 @@ public class GameManager {
     }
 
     /**
-     * The ShapeRenderer
-     * @return the ShapeRenderer
+     * Returns the {@link ShapeRenderer}
+     * @return the {@link ShapeRenderer}
      */
     public static ShapeRenderer getShapeRenderer() {
         return renderer;
@@ -78,41 +76,48 @@ public class GameManager {
     }
 
     /**
-     * The SpriteBatch
-     * @return the SpriteBatch
+     * Returns the {@link SpriteBatch}
+     * @return the {@link SpriteBatch}
      */
     public static SpriteBatch getBatch() {
         return batch;
     }
 
     /**
-     * Set the SpriteBatch
-     * @param batch the SpriteBatch to be used
+     * Sets the {@link SpriteBatch}
+     * @param batch the {@link SpriteBatch} to be used
      */
     public static void setBatch(SpriteBatch batch) {
         GameManager.batch = batch;
     }
 
+    /**
+     * Sets whether the {@link SpriteBatch} instance is rendering or not.<br/>
+     * Use when a {@link ShapeRenderer} needs to render shapes, without causing<br/>
+     * OpenGL conflicts.
+     *
+     * @param v the desired state
+     */
     public static void setIsRendering(boolean v) {
-        if (v) if (! batch.isDrawing()) batch.begin();
-        if (! v) if (batch.isDrawing()) batch.end();
+        if (v) {
+            if (! batch.isDrawing()) batch.begin();
+        } else {
+            if (batch.isDrawing()) batch.end();
+        }
     }
 
-    /**
-     * The player entity used for GameScreen logic
-     * @return the player
-     * @throws IllegalStateException
-     */
-    public static EntityPlayer getPlayer() {
-        if (ScreenManager.getCurrentScreen() instanceof GameScreen) return player;
-        else throw new IllegalStateException("player does not exist in this screen");
+    public static BitmapFont getFont() {
+        return font;
     }
 
-    /**
-     * Sets the player instance
-     * @param player the player instance to be used
-     */
-    public static void setPlayer(EntityPlayer player) {
-        GameManager.player = player;
+    public static void setFont(BitmapFont font) {
+        GameManager.font = font;
     }
+
+    public static void dispose() {
+        batch.dispose();
+        renderer.dispose();
+        font.dispose();
+    }
+
 }

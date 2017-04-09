@@ -98,7 +98,6 @@ public class EntityEnemy extends LivingEntity {
     @Override
     public void dispose() {
         GameScreenManager.removeEntity(this);
-        GameScreenManager.setEnemy(null);
     }
 
     /**

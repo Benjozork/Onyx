@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
-import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -21,7 +21,9 @@ public abstract class Drawable implements Disposable {
     protected float maxVelocity = 100f;
     protected float angle;
     protected Polygon bounds;
-    private float speed, maxSpeed;
+
+    private float maxSpeed;
+    private float accelerationScalar;
 
     private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
@@ -39,18 +41,23 @@ public abstract class Drawable implements Disposable {
      * @param dt The delta time
      */
     public void update(float dt) {
-        if (defaultMaxSpeed) maxSpeed = speed + 1f;
-        bounds.setPosition(position.x, position.y);
+        if (defaultMaxSpeed) maxSpeed = velocity.len() + 1f;
 
-        if (speed > maxSpeed) speed = maxSpeed;
-        if (speed < - maxSpeed) speed = - maxSpeed;
+        if (velocity.len() > maxSpeed) velocity.setLength(maxSpeed);
+        if (velocity.len() < - maxSpeed) velocity.setLength(-maxSpeed);
 
         if (angle != 0) {
-            velocity.x = (float) Math.sin(angle);
-            velocity.y = (float) Math.cos(angle);
+            velocity.set(velocity.x * (float)Math.sin(angle), velocity.y * (float)Math.cos(angle));
         }
 
-        position.add(velocity.nor().scl(dt).scl(speed));
+        position.add(velocity.scl(dt));
+        velocity.add(acceleration.scl(dt));
+
+        setPosition(position);
+        setAcceleration(acceleration);
+
+        bounds.setPosition(position.x, position.y);
+
     }
 
     //Abstract methods
@@ -69,13 +76,9 @@ public abstract class Drawable implements Disposable {
      * @return whether the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
-        return PolygonHelper.collidePolygon(bounds,otherBounds);
+        return PolygonHelper.collidePolygon(bounds, otherBounds);
     }
 
-    /**
-     * The Drawable's position
-     * @return The Drawable's position
-     */
     public Vector2 getPosition() {
         return position;
     }
@@ -85,10 +88,6 @@ public abstract class Drawable implements Disposable {
         this.bounds.setPosition(position.x, position.y);
     }
 
-    /**
-     * The X coordinate value
-     * @return The X coordinate value
-     */
     public float getX() {
         return position.x;
     }
@@ -98,10 +97,6 @@ public abstract class Drawable implements Disposable {
         bounds.setPosition(position.x, position.y);
     }
 
-    /**
-     * The Y coordinate value
-     * @return The Y coordinate value
-     */
     public float getY() {
         return position.y;
     }
@@ -118,10 +113,6 @@ public abstract class Drawable implements Disposable {
         bounds.setPosition(position.x, position.y);
     }
 
-    /**
-     * The velocity
-     * @return The velocity
-     */
     public Vector2 getVelocity() {
         return velocity;
     }
@@ -130,10 +121,6 @@ public abstract class Drawable implements Disposable {
         this.velocity = velocity;
     }
 
-    /**
-     * The acceleration
-     * @return The acceleration
-     */
     public Vector2 getAcceleration() {
         return acceleration;
     }
@@ -147,14 +134,10 @@ public abstract class Drawable implements Disposable {
      * @param v the speed offset
      */
     public void accelerate(float v) {
-        speed += v;
-        if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(0, 1); // Prevent this from having no effect
+        if (velocity.x == 0 && velocity.y == 0) velocity.set(0, 1); // Prevent this from having no effect
+        velocity.scl(v);
     }
 
-    /**
-     * The max velocity
-     * @return The max velocity
-     */
     public float getMaxVelocity() {
         return maxVelocity;
     }
@@ -165,18 +148,6 @@ public abstract class Drawable implements Disposable {
 
     public void rotate(float v) {
         angle += v * Utils.delta();
-    }
-
-    /**
-     * The speed
-     * @return The speed
-     */
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public float getMaxSpeed() {
@@ -202,10 +173,6 @@ public abstract class Drawable implements Disposable {
 //        } else return false;
     }
 
-    /**
-     * The bounding box
-     * @return The bounding box
-     */
     public Polygon getBounds() {
         return bounds;
     }
@@ -214,9 +181,6 @@ public abstract class Drawable implements Disposable {
         this.bounds = bounds;
     }
 
-    /**
-     * Toggle the hitbox debug rendering
-     */
     public void toggleBoundsDebug() {
         boundsDebug = ! boundsDebug;
     }

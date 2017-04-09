@@ -11,7 +11,7 @@ import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
  * Defines a text that is drawn on the screen. Includes font and style methods to ease implementation of text.<br/>
- * A certain font path can be specified along with a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.<br/>
+ * A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.<br/>
  * Drawing methods to render the text are provided, which can also center the text if it is necessary.
  *
  * @author Benjozork
@@ -71,7 +71,7 @@ public class TextComponent {
     }
 
     /**
-     * Returns a {@link BitmapFont} without regenerating it
+     * Returns a {@link BitmapFont} without regenerating it.
      */
     public BitmapFont getFont() {
         return generatedFont;
@@ -112,7 +112,7 @@ public class TextComponent {
     }
 
     /**
-     * Draws the TextComponent's text, centered at the specified point, ignoring a specific axis alignment if needed
+     * Draws the TextComponent's text, centered at the specified point+
      *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the desired point
@@ -146,8 +146,7 @@ public class TextComponent {
     }
 
     /**
-     * Draws the TextComponent's text, centered in a container of specified position, width and height,<br/>
-     * ignoring a specific axis alignment if needed.
+     * Draws the TextComponent's text, centered in a container of specified position, width and height
      *
      * @param b the {@link SpriteBatch to use}
      * @param x the x position of the container

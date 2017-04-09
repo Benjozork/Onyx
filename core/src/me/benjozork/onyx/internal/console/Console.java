@@ -18,7 +18,7 @@ import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Manages the debugging console and command processing.<br/>
+ * Manages the debugging console and the command processing.<br/>
  * In order for a non-Onyx command to process correctly, a {@link CommandProcessor}<br/>
  * needs to be assigned to it using {@link Console#registerCommands(CommandProcessor, Array<String>)}.<br/>
  *
@@ -39,7 +39,7 @@ public class Console {
 
     private static boolean isTextBoxFocused = false;
 
-    public static void init() {
+        public static void init() {
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         font = new BitmapFont();
 
@@ -150,7 +150,7 @@ public class Console {
                     "[#FF00FF]"
                             + Gdx.graphics.getFramesPerSecond()
                             + "  []fps,  [#FF00FF]"
-                            + ((GameScreen) ScreenManager.getCurrentScreen()).getRegisteredEntities().size()
+                            + GameScreenManager.getEntities().size()
                             + "  []entities",
                     20, Gdx.graphics.getHeight() - 10
             );
@@ -160,7 +160,7 @@ public class Console {
             font.draw(
                     batch,
                     "current screen:  [#FF00FF]"
-                            + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                            + ScreenManager.getCurrentScreen().getClass().getSimpleName()
                             + "[]",
                     20, Gdx.graphics.getHeight() - 30
             );
@@ -200,14 +200,12 @@ public class Console {
         cmdProcessorList.put(commandProcessor, cmds);
     }
 
-    public static boolean dispatchCommand(String cmdString) {
-        ConsoleCommand cmd = new ConsoleCommand(cmdString);
+    public static void dispatchCommand(ConsoleCommand cmd) {
         for (CommandProcessor cp : cmdProcessorList.keySet()) {
-            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), false)) {
-                return cp.onCommand(cmd);
+            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), true)) {
+                cp.onCommand(cmd);
             }
         }
-        return false;
     }
 
 }

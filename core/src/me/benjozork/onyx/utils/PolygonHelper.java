@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal;
+package me.benjozork.onyx.utils;
 
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import me.benjozork.onyx.logger.Log;
 
 /**
- * Used to convert rectangles to polygons and perform operations of rectangle on the polygon
- *
- * @author RishiRaj22
+ * Used to convert {@link Rectangle}s to {@link Polygon}s and perform operations on the polygon.<br/>
+ * WARNING: The width/height methods in this class ONLY work on rectangular polygons.
+ * @author Rishi Raj
  */
 public class PolygonHelper {
 

@@ -1,4 +1,4 @@
-package me.benjozork.onyx.utils;
+package me.benjozork.onyx.object;
 
 public class Bounds {
 

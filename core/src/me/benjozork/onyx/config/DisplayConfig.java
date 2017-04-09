@@ -1,6 +1,6 @@
 package me.benjozork.onyx.config;
 
-import me.benjozork.onyx.utils.Bounds;
+import me.benjozork.onyx.object.Bounds;
 
 public class DisplayConfig {
 

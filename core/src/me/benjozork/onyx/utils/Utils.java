@@ -7,12 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Calendar;
+
 import me.benjozork.onyx.internal.GameManager;
 
 
 /**
  * Provides a few useful utilities to ease development
- *
  * @author Benjozork
  * @author angelickite
  */
@@ -96,12 +97,10 @@ public class Utils {
 
     /**
      * Returns a {@link Color} object from three integer RGB values.
-     *
      * @param r the red value
      * @param g the green value
      * @param b the blue value
-     *
-     * @return a Color object
+     * @return the Color object
      */
     public static Color rgb(int r, int g, int b) {
         float rf = r / 255.0f;
@@ -112,13 +111,11 @@ public class Utils {
 
     /**
      * Returns a {@link Color} object from three integer RGBA values.
-     *
      * @param r the red value
      * @param g the green value
      * @param b the blue value
      * @param a the alpha value
-     *
-     * @return a Color object
+     * @return the Color object
      */
     public static Color rgba(int r, int g, int b, int a) {
         float rf = r / 255.0f;
@@ -129,15 +126,15 @@ public class Utils {
     }
 
     /**
-     * Formats a String list with commas and endpoints
+     * Formats a String list with commas and endpoints.
      * @param strings the strings to format
-     * @return a formatted list
+     * @return the formatted list
      */
     public String list(String[] strings) {
-        StringBuilder ret = new StringBuilder("");
+        StringBuilder ret = new StringBuilder(new String());
         for (int i = 0; i < strings.length; i++) {
-            if (i < strings.length - 1) ret.append(strings[i]).append(", ");
-            else ret.append(strings[i]).append(".");
+            if (i < strings.length - 1) ret.append(strings[i] + ", ");
+            else ret.append(strings[i] + ".");
         }
         return ret.toString();
     }
@@ -145,7 +142,7 @@ public class Utils {
     /**
      * Transforms a group of Strings into an Array of Strings
      * @param strings the strings to use
-     * @return an {@link Array} of Strings
+     * @return the array
      */
     public Array<String> array(String... strings) {
         Array<String> ret = new Array<String>();

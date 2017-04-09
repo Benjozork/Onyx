@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
@@ -81,32 +80,24 @@ public class OnyxGame extends Game {
 
         Console.init();
 
-        // Setup Initial Screen: If the initial_screen field is invalid, we automatically load the loading screen
+        // Setup Initial Screen
 
-        if (! Console.dispatchCommand("screen " + projectConfig.initial_screen)) {
-            Console.dispatchCommand("screen loading");
-        };
+        ScreenManager.setCurrentScreen(new MenuScreen());
 
     }
 
-    public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            toggleDebug();
-        }
+    @Override
+    public void dispose() {
 
-        // Update console
+        // Dispose active screen
 
-        Console.update();
+        ScreenManager.getCurrentScreen().dispose();
 
-        // Update cameras
+        // Dispose various resources
 
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.update();
+        GameManager.dispose();
+        if (GameScreenManager.exists()) GameScreenManager.dispose();
 
-        // Make sure OnyxGame screen is the same as ScreenManager's
-
-        if (ScreenManager.getCurrentScreen() != getScreen())
-            setScreen(ScreenManager.getCurrentScreen());
     }
 
     @Override
@@ -130,6 +121,27 @@ public class OnyxGame extends Game {
             Console.draw();
     }
 
+    public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            Console.dispatchCommand(new ConsoleCommand("screen"));
+            toggleDebug();
+        }
+
+        // Update console
+        Console.update();
+
+        // Update cameras
+        OrthographicCamera worldCamera = GameManager.getWorldCamera();
+        worldCamera.update();
+
+        if (ScreenManager.getCurrentScreen() != getScreen())
+            setScreen(ScreenManager.getCurrentScreen());
+    }
+
+    private static void toggleDebug() {
+        debug = ! debug;
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -141,26 +153,6 @@ public class OnyxGame extends Game {
         OrthographicCamera guiCamera = GameManager.getGuiCamera();
         guiCamera.viewportWidth = width;
         guiCamera.viewportHeight = height;
-
-    }
-
-
-    @Override
-    public void dispose() {
-
-        // Dispose active screen
-
-        ScreenManager.getCurrentScreen().dispose();
-
-        // Dispose various resources
-
-        GameManager.dispose();
-        FTFGeneratorCache.dispose();
-
-    }
-
-    private static void toggleDebug() {
-        debug = ! debug;
     }
 
 }

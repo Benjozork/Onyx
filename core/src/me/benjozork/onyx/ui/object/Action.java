@@ -16,7 +16,7 @@ public class Action {
     private UIElement parent;
 
     /**
-     * @param parent     the {@link UIElement} to which the Action is assigned
+     * @param parent     the {@link UIElement} to which the Action is assigned.
      * @param identifier the identifier of the Action
      * @param action     the code to be run when the event is triggered
      * @param event      the {@link ActionEvent} to which the Action listens to
@@ -29,14 +29,14 @@ public class Action {
     }
 
     /**
-     * Runs the assigned code
+     * Run the assigned code
      */
     public void run() {
         action.run();
     }
 
     /**
-     * Returns the {@link Runnable} that will be run by the action
+     * The {@link Runnable} that will be run by the action
      * @return the Runnable
      */
     public Runnable getAction() {
@@ -56,7 +56,8 @@ public class Action {
     }
 
     /**
-     * Returns the {@link ActionEvent} to which the Action listens
+     * The {@link ActionEvent} to which the Action listens
+     * @return the {@link ActionEvent}
      */
     public ActionEvent getEvent() {
         return event;
@@ -64,20 +65,23 @@ public class Action {
 
     /**
      * Sets the {@link ActionEvent} to which the Action listens
+     * @param event the {@link ActionEvent} to be used
      */
     public void setEvent(ActionEvent event) {
         this.event = event;
     }
 
     /**
-     * Returns the {@link UIElement} to which the Action is assigned
+     * The {@link UIElement} to which the Action is assigned
+     * @return the {@link UIElement}
      */
     public UIElement getParent() {
         return parent;
     }
 
     /**
-     * Sets the {@link UIElement} to which the Action is assigned.
+     * Sets the UIElement to which the Action is assigned.
+     * @param parent the {@link UIElement} to be used
      */
     public void setParent(UIElement parent) {
         this.parent = parent;

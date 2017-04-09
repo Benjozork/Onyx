@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.EntityEnemy;
 import me.benjozork.onyx.entity.EntityPlayer;
 import me.benjozork.onyx.entity.EntityProjectile;
 import me.benjozork.onyx.entity.ProjectileManager;
@@ -21,8 +20,6 @@ import me.benjozork.onyx.internal.ScreenManager;
 public class GameScreenManager {
 
     private static EntityPlayer player;
-    private static EntityEnemy enemy;
-
     private static List<Entity> registeredEntities = new ArrayList<Entity>();
     private static List<Entity> toRemove = new ArrayList<Entity>();
 
@@ -38,6 +35,7 @@ public class GameScreenManager {
 
     /**
      * Returns the {@link EntityPlayer} instance used by {@link GameScreen}
+     * @return the player instance
      */
     public static EntityPlayer getPlayer() {
         check();
@@ -46,28 +44,10 @@ public class GameScreenManager {
 
     /**
      * Sets the {@link EntityPlayer} instance to be used by {@link GameScreen}
-     * @param p the player instance to be used
+     * @param p the player instance
      */
-    public static void setPlayer(EntityPlayer p) {
-        check();
+    protected static void setPlayer(EntityPlayer p) {
         player = p;
-    }
-
-    /**
-     * Returns the {@link EntityEnemy} instance used by {@link GameScreen}
-     */
-    public static EntityEnemy getEnemy() {
-        check();
-        return enemy;
-    }
-
-    /**
-     * Sets the {@link EntityEnemy} instance to be used by {@link GameScreen}
-     * @param e the enemy instance to be used
-     */
-    public static void setEnemy(EntityEnemy e) {
-        check();
-        enemy = e;
     }
 
     /**

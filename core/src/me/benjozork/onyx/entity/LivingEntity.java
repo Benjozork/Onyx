@@ -3,6 +3,7 @@ package me.benjozork.onyx.entity;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.screen.GameScreen;
 
@@ -16,6 +17,9 @@ public abstract class LivingEntity extends Entity {
     private float maxTime = 0.1f;
     private float timer = 0f;
 
+    public Type type;
+
+
     public LivingEntity(int x, int y) {
         super(new Vector2(x, y));
     }
@@ -27,10 +31,13 @@ public abstract class LivingEntity extends Entity {
     public void fireProjectile(String path) {
         timer += Utils.delta();
         if (timer >= maxTime) {
-            EntityProjectile projectile = new EntityProjectile(getX(), getY());
-            projectile.setTexturePath(path);
-            projectile.setSpeed(1550f);
-            ((GameScreen) ScreenManager.getCurrentScreen()).registerEntity(projectile);
+            EntityProjectile projectile = new EntityProjectile(getX(),getY());
+//            projectile.setSpeed(2550f);
+            projectile.getVelocity().setLength(2550f);
+            projectile.setDamage(10f);
+            projectile.source = type;
+
+            GameScreenManager.registerEntity(projectile);
 
             //if (ammo < 0) return;
             //ammo -= 1;
@@ -53,4 +60,8 @@ public abstract class LivingEntity extends Entity {
         this.ammo = ammo;
     }
     */
+    public enum Type{
+        ENEMY,
+        PLAYER
+    }
 }

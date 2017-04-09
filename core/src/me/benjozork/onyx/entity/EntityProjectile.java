@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonHelper;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -18,12 +19,12 @@ public class EntityProjectile extends Entity {
 
     private SpriteBatch batch;
 
-    private float maxTimer;
-    private float bulletTimer;
     private float damage = 0;
 
-    private String texturePath = new String();
-    private Texture texture;
+    private String texturePath = "entity/player/bullet.png";
+    private Texture texture = new Texture(texturePath);
+    public LivingEntity.Type source;
+
 
     public EntityProjectile(float x, float y) {
         super(new Vector2(x, y));
@@ -63,14 +64,13 @@ public class EntityProjectile extends Entity {
                     //this.dispose();
                 }
             }*/
-
-        batch.draw(texture, getX(), getY(), 10, 10);
+        batch.draw(texture, bounds.getX(), bounds.getY(), 10, 10);
     }
 
     @Override
     public void dispose() {
         texture.dispose();
-        ((GameScreen) ScreenManager.getCurrentScreen()).removeEntity(this);
+        GameScreenManager.removeEntity(this);
     }
 
     public float getDamage() {

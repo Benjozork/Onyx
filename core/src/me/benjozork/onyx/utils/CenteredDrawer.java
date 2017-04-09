@@ -10,13 +10,11 @@ public class CenteredDrawer {
 
     /**
      * Returns a {@link Vector2} containing a centered position
-     *
      * @param type the centering method that is wished to be used
      * @param x the x position of the desired center of the object
      * @param y the y position of the desired center of the object
      * @param w the width of the object
      * @param h the height of the object
-     *
      * @return a centered position vector
      */
     public static Vector2 get(CenteredDrawingType type, float x, float y, float w, float h) {
@@ -37,16 +35,14 @@ public class CenteredDrawer {
     }
 
     /**
-     * Returns a {@link Vector2} containing a centered position in a container of specified width and height
-     *
+     * Returns a {@link Vector2} containing a centered position
      * @param type the centering method that is wished to be used
-     * @param x the x position of the container
-     * @param y the y position of the container
+     * @param x the x position of the desired center of the object
+     * @param y the y position of the desired center of the object
      * @param w the width of the object
      * @param h the height of the object
-     * @param cw the width of the container
-     * @param ch the height of the container
-     *
+     * @param cw the width of the container the center position must be relative to
+     * @param ch the height of the container the center position must be relative to
      * @return a centered position vector
      */
     public static Vector2 getContained(CenteredDrawingType type, float x, float y, float w, float h, float cw, float ch) {

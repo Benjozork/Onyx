@@ -20,6 +20,8 @@ public class ZoomPulseEffect extends Effect {
     private float targetZoom;
 
     private boolean zoomBack;
+    private float deltaZoom;
+    private float zoomStep;
 
     /**
      * @param configuration the {@link ZoomPulseEffectConfiguration} which drives the effect
@@ -36,15 +38,13 @@ public class ZoomPulseEffect extends Effect {
     public void update() {
         if (! isActive) return;
 
-        float deltaZoom;
-
         if (zoomBack) {
             deltaZoom = - (targetZoom - cameras.get(0).zoom);
         } else {
             deltaZoom = targetZoom - cameras.get(0).zoom;
         }
 
-        float zoomStep = maxZoomTime / Utils.delta();
+        zoomStep = maxZoomTime / Utils.delta();
 
         for (OrthographicCamera cam : cameras) {
             cam.zoom += (deltaZoom / zoomStep);
@@ -54,10 +54,10 @@ public class ZoomPulseEffect extends Effect {
             zoomBack = true;
         }
 
-        for (OrthographicCamera cam : cameras) {
-            if (cam.zoom > 1f) {
-                for (OrthographicCamera cam2 : cameras) {
-                    cam2.zoom = 1f;
+        for (OrthographicCamera i : cameras) {
+            if (i.zoom > 1f) {
+                for (OrthographicCamera j : cameras) {
+                    j.zoom = 1f;
                 }
                 zoomBack = false;
                 isActive = false;
