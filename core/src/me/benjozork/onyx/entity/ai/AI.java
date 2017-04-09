@@ -39,6 +39,7 @@ public class AI {
         this.target = configuration.target;
         this.strategy = configuration.strategy;
         this.reluctance = configuration.reluctance;
+        this.factor = configuration.factor;
         this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
     }
 

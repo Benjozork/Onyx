@@ -27,7 +27,7 @@ public class AIConfiguration {
      */
     public LivingEntity target;
 
-    private float factor = 100f;
+    public float factor = 100f;
 
     /**
      * The different strategies by which an entity follows another entity
