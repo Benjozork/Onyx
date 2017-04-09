@@ -36,7 +36,7 @@ public class PlayerEntity extends LivingEntity {
     private boolean accelerated_right = false, accelerated_left = false;
 
     public PlayerEntity(float x, float y) {
-        super(new Vector2(x, y));
+        super(x, y);
     }
 
     @Override

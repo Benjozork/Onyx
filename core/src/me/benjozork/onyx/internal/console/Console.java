@@ -145,44 +145,44 @@ public class Console {
 
             // Draw FPS and entity count
 
-            font.draw(
-                    batch,
-                    "[#FF00FF]"
-                            + Gdx.graphics.getFramesPerSecond()
-                            + "  []fps,  [#FF00FF]"
-                            + GameScreenManager.getEntities().size()
-                            + "  []entities",
-                    20, Gdx.graphics.getHeight() - 10
+            font.draw (
+                batch,
+                "[#FF00FF]"
+                    + Gdx.graphics.getFramesPerSecond()
+                    + "  []fps,  [#FF00FF]"
+                    + GameScreenManager.getEntities().size()
+                    + "  []entities",
+                20, Gdx.graphics.getHeight() - 10
             );
 
             // Draw current screen
 
-            font.draw(
-                    batch,
-                    "current screen:  [#FF00FF]"
-                            + ScreenManager.getCurrentScreen().getClass().getSimpleName()
-                            + "[]",
-                    20, Gdx.graphics.getHeight() - 30
+            font.draw (
+                batch,
+                "current screen:  [#FF00FF]"
+                    + ScreenManager.getCurrentScreen().getClass().getSimpleName()
+                    + "[]",
+                20, Gdx.graphics.getHeight() - 30
             );
         } else {
 
             // Draw FPS
 
-            font.draw(
-                    batch,
-                    Gdx.graphics.getFramesPerSecond()
-                            + " fps ",
-                    20, Gdx.graphics.getHeight() - 10
+            font.draw (
+                batch,
+                Gdx.graphics.getFramesPerSecond()
+                    + " fps ",
+                20, Gdx.graphics.getHeight() - 10
             );
 
             // Draw current screen
 
             font.draw(
-                    batch,
-                    "current screen:  [#FF00FF]"
-                            + ScreenManager.getCurrentScreen().getClass().getSimpleName()
-                            + "[]",
-                    20, Gdx.graphics.getHeight() - 30
+                batch,
+                "current screen:  [#FF00FF]"
+                    + ScreenManager.getCurrentScreen().getClass().getSimpleName()
+                    + "[]",
+                20, Gdx.graphics.getHeight() - 30
             );
         }
 
@@ -202,7 +202,7 @@ public class Console {
 
     public static void dispatchCommand(ConsoleCommand cmd) {
         for (CommandProcessor cp : cmdProcessorList.keySet()) {
-            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), true)) {
+            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), false)) {
                 cp.onCommand(cmd);
             }
         }

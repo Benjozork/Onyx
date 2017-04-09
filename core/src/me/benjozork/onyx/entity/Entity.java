@@ -5,15 +5,16 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.screen.GameScreen;
+import me.benjozork.onyx.screen.GameScreenManager;
 
 /**
  * @author Benjozork
  */
 public abstract class Entity extends Drawable {
 
-    public Entity(Vector2 position) {
-        super(position);
-        if (! (ScreenManager.getCurrentScreen() instanceof GameScreen)) {
+    public Entity(float x, float y) {
+        super(x, y);
+        if (! GameScreenManager.exists()) {
             dispose();
             throw new IllegalStateException("entities cannot be created outside of a GameScreen");
         }

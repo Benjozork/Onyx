@@ -17,13 +17,8 @@ public abstract class LivingEntity extends Entity {
 
     public Type type;
 
-
-    public LivingEntity(int x, int y) {
-        super(new Vector2(x, y));
-    }
-
-    public LivingEntity(Vector2 pos) {
-        super(pos);
+    public LivingEntity(float x, float y) {
+        super(x, y);
     }
 
     public void fireProjectile(String path) {

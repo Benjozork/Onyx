@@ -25,7 +25,7 @@ public class ProjectileEntity extends Entity {
 
 
     public ProjectileEntity(float x, float y) {
-        super(new Vector2(x, y));
+        super(x, y);
     }
 
     @Override

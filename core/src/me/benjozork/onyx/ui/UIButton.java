@@ -15,6 +15,7 @@ import me.benjozork.onyx.utils.Utils;
 public class UIButton extends UIElement {
 
     // Button textures
+
     private final Texture BUTTON_TEXTURE = new Texture("ui/button/button_0.png");
     private final NinePatch BUTTON = new NinePatch(BUTTON_TEXTURE, 6, 6, 6, 6);
     private final Texture HOVERED_BUTTON_TEXTURE = new Texture("ui/button/button_1.png");

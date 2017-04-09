@@ -27,11 +27,7 @@ public abstract class UIElement extends Drawable {
     private Vector2 dimensions = new Vector2();
 
     public UIElement(float x, float y) {
-        super(new Vector2(x, y));
-    }
-
-    public UIElement(Vector2 position) {
-        super(position);
+        super(x, y);
     }
 
     public void update(float dt) {

@@ -20,20 +20,16 @@ public abstract class Drawable implements Disposable {
 
     protected float maxVelocity = 100f;
     protected float angle;
+
     protected Polygon bounds;
 
     private float maxSpeed;
-    private float accelerationScalar;
 
     private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
 
-    public Drawable(int x, int y) {
+    public Drawable(float x, float y) {
         this.position = new Vector2(x, y);
-    }
-
-    public Drawable(Vector2 position) {
-        this.position = position;
     }
 
     /**
