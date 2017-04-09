@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.entity.ai.AI;
+import me.benjozork.onyx.entity.ai.AIConfiguration;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.screen.GameScreenManager;
@@ -34,16 +34,31 @@ public class EnemyEntity extends LivingEntity {
     private AI ai;
 
     public EnemyEntity(float x, float y) {
-        super(new Vector2(x, y));
+        super(x, y);
     }
 
     @Override
     public void init() {
+
         // Initialize hitbox
+
         bounds = PolygonHelper.getPolygon(getX(), getY(), ENEMY_TEXTURE.getWidth(), ENEMY_TEXTURE.getHeight());
+
+        // Flip texture upside down
+
         currentTexture.flip(false, true);
-        ai = new AI(this, GameScreenManager.getPlayer(), AI.AIStrategy.LINEAR, AI.ProjectileReluctance.GOD);
+
+        // Setup AI
+
+        AIConfiguration aiConfiguration = new AIConfiguration();
+        aiConfiguration.strategy = AIConfiguration.AIStrategy.LINEAR;
+        aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.GOD;
+        aiConfiguration.source = this;
+        aiConfiguration.target = GameScreenManager.getPlayer();
+
+        ai = new AI(aiConfiguration);
         type = Type.ENEMY;
+
     }
 
     @Override

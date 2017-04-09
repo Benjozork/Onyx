@@ -15,50 +15,30 @@ public class AI {
     private Log log;
     private boolean debug = true;
 
-    /**
-     * The different strategies by which an entity follows another entity
-     */
-    public enum AIStrategy {
-        ACCELERATED,
-        LINEAR
-    }
 
-    public enum ProjectileReluctance {
-        NONE,
-        LOW,
-        MED,
-        HIGH,
-        GOD
-    }
+    private AIConfiguration.AIStrategy strategy;
+    private AIConfiguration.ProjectileReluctance reluctance;
 
-    private LivingEntity source, target;
-    private float factor = 100f;
-    private AIStrategy strategy;
+    private LivingEntity source;
+    private LivingEntity target;
+
+    private float factor;
 
     private Vector2 sourceDir;
     private Vector2 bulletEscapeDir;
     private Vector2 temp;
 
-    private ProjectileReluctance reluctance;
 
     /**
      * Creates a basic AI for an entity.
      *
-     * @param source   The polygon entity to which AI is to be applied
-     * @param target   The polygon entity which the source entity will follow
-     * @param strategy The strategy by which the source follows the target
+     * @param configuration the {@link AIConfiguration} which drives the AI
      */
-    public AI(LivingEntity source, LivingEntity target, AIStrategy strategy, ProjectileReluctance reluctance) {
-        this.source = source;
-        this.target = target;
-        this.strategy = strategy;
-        this.reluctance = reluctance;
-        this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
-    }
-
-    public AI(LivingEntity source, LivingEntity target, AIStrategy strategy, ProjectileReluctance reluctance, float factor) {
-        this(source, target, strategy, reluctance);
-        this.factor = factor;
+    public AI(AIConfiguration configuration) {
+        this.source = configuration.source;
+        this.target = configuration.target;
+        this.strategy = configuration.strategy;
+        this.reluctance = configuration.reluctance;
         this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
     }
 
