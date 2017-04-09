@@ -22,6 +22,8 @@ public abstract class UIElement extends Drawable {
 
     private boolean justHovered = false;
 
+    private boolean enabled = true;
+
     private Vector2 dimensions = new Vector2();
 
     public UIElement(float x, float y) {
@@ -52,8 +54,8 @@ public abstract class UIElement extends Drawable {
     public abstract void draw();
 
     /**
-     * Triggers an event and runs all the actions bound to this event
-     * @param e the event type
+     * Triggers an {@link ActionEvent} and runs all the {@link Action} objects bound to this {@link ActionEvent}
+     * @param e the {@link ActionEvent} to trigger
      */
     public void triggerEvent(ActionEvent e) {
         for (Action a : actions) {
@@ -64,7 +66,7 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * Call a click event
+     * Calls a click event
      * @param localPosition the position of the click
      * @return if the click was successful
      */
@@ -85,8 +87,7 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * The UIContainer in which the element is stored
-     * @return the container
+     * Returns {@link UIContainer} in which the element is stored
      */
     public UIContainer getParent() {
         return parent;
@@ -97,10 +98,11 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * Adds a new action to the element
+     * Adds a new {@link Action} to the element
+     *
      * @param identifier the action's identifier
      * @param action     the code to execute
-     * @param event      the event to listen to
+     * @param event      the {@link ActionEvent} to listen to
      */
     public void addAction(String identifier, Runnable action, ActionEvent event) {
         actions.add(new Action(this, identifier, action, event));

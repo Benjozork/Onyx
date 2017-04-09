@@ -7,19 +7,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Calendar;
-
 import me.benjozork.onyx.internal.GameManager;
 
 
 /**
  * Provides a few useful utilities to ease development
+ *
  * @author Benjozork
  * @author angelickite
  */
 public class Utils {
 
-    /**
+    /*
      * Cached instances used for calculations or returning results.
      * Note: This potentially leads to bugs if the same temporary instance is used
      * multiple times throughout a method without care. If more cached instances
@@ -36,7 +35,8 @@ public class Utils {
     }
 
     /**
-     * This method takes the width of an object and gives a corresponding x axis coordinate in order to center said object.
+     * This method takes the width of an object and gives a corresponding x axis<br />
+     * coordinate in order to center said object.
      * @param w the width of the object
      * @return
      */
@@ -45,7 +45,7 @@ public class Utils {
     }
 
     /**
-     * Translate a point from screen coordinates to world coordinates.<br>
+     * Translates a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
      * @param vec the position of the point
      * @return the point position in world coordinates.
@@ -55,7 +55,7 @@ public class Utils {
     }
 
     /**
-     * Translate a point from screen coordinates to world coordinates.<br>
+     * Translates a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
      * @param x the x position of the point
      * @param y the y position of the point
@@ -95,11 +95,13 @@ public class Utils {
     }
 
     /**
-     * This method returns a Color object from three integer RGB values.
+     * Returns a {@link Color} object from three integer RGB values.
+     *
      * @param r the red value
      * @param g the green value
      * @param b the blue value
-     * @return the Color object
+     *
+     * @return a Color object
      */
     public static Color rgb(int r, int g, int b) {
         float rf = r / 255.0f;
@@ -109,12 +111,14 @@ public class Utils {
     }
 
     /**
-     * his method returns a Color object from three integer RGBA values.
+     * Returns a {@link Color} object from three integer RGBA values.
+     *
      * @param r the red value
      * @param g the green value
      * @param b the blue value
      * @param a the alpha value
-     * @return the Color object
+     *
+     * @return a Color object
      */
     public static Color rgba(int r, int g, int b, int a) {
         float rf = r / 255.0f;
@@ -125,31 +129,23 @@ public class Utils {
     }
 
     /**
-     * This method returns the current time (H:M:S)
-     * @return the time
-     */
-    public static String time() {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND);
-    }
-
-    /**
-     * This method formats a String list with commas and endpoints.
+     * Formats a String list with commas and endpoints
      * @param strings the strings to format
-     * @return the formatted list
+     * @return a formatted list
      */
     public String list(String[] strings) {
-        StringBuilder ret = new StringBuilder(new String());
+        StringBuilder ret = new StringBuilder("");
         for (int i = 0; i < strings.length; i++) {
-            if (i < strings.length - 1) ret.append(strings[i] + ", ");
-            else ret.append(strings[i] + ".");
+            if (i < strings.length - 1) ret.append(strings[i]).append(", ");
+            else ret.append(strings[i]).append(".");
         }
         return ret.toString();
     }
 
     /**
-     * This method transforms a group of Strings into an Array of Strings
+     * Transforms a group of Strings into an Array of Strings
      * @param strings the strings to use
-     * @return the array
+     * @return an {@link Array} of Strings
      */
     public Array<String> array(String... strings) {
         Array<String> ret = new Array<String>();
@@ -157,6 +153,15 @@ public class Utils {
             ret.add(s);
         }
         return ret;
+    }
+
+    /**
+     * Converts vector to one of its perpendicular vector
+     * @param v
+     */
+    public static void toPerpendicularVector(Vector2 v)
+    {
+        v.set(-v.y,v.x);
     }
 }
 

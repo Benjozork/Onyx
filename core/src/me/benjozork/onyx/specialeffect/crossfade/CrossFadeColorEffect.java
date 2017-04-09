@@ -30,8 +30,8 @@ public class CrossFadeColorEffect {
         this.cycle = CycleList.of(configuration.cycleColors);
         this.crossFadeTime = configuration.crossFadeTime;
         this.crossFadeDeltaTimeStepRequirement = configuration.crossFadeDeltaTimeStepRequirement;
-        fadeInDeltaMultiplier = configuration.fadeInDeltaMultiplier;
-        fadeOutDeltaMultiplier = configuration.fadeOutDeltaMultiplier;
+        this.fadeInDeltaMultiplier = configuration.fadeInDeltaMultiplier;
+        this.fadeOutDeltaMultiplier = configuration.fadeOutDeltaMultiplier;
     }
 
     public void resume() {

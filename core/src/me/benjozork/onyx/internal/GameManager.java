@@ -30,7 +30,7 @@ public class GameManager {
     private static EntityPlayer player;
 
     /**
-     * The camera instance that is used when rendering world objects
+     * Returns the camera instance that is used when rendering world objects
      * @return the world camera
      */
     public static OrthographicCamera getWorldCamera() {
@@ -38,7 +38,7 @@ public class GameManager {
     }
 
     /**
-     * Set the camera instance to be used when rendering world objects
+     * Sets the camera instance to be used when rendering world objects
      * @param worldCamera the camera instance to be used
      */
     public static void setWorldCamera(OrthographicCamera worldCamera) {
@@ -46,7 +46,7 @@ public class GameManager {
     }
 
     /**
-     * The camera instance that is used when rendering gui objects
+     * Returns the camera instance that is used when rendering gui objects
      * @return the gui camera
      */
     public static OrthographicCamera getGuiCamera() {
@@ -70,7 +70,7 @@ public class GameManager {
     }
 
     /**
-     * Set the ShapeRenderer
+     * Sets the ShapeRenderer
      * @param renderer the ShapeRenderer to be used
      */
     public static void setRenderer(ShapeRenderer renderer) {

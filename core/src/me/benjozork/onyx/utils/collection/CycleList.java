@@ -5,7 +5,9 @@ import com.badlogic.gdx.utils.Array;
 /**
  * A circular list, meaning calling next() when at the last element will wrap back
  * to the first element of the list, ad infinitum.
+ *
  * @param <T> the type of the items in the list
+ *
  * @author angelickite
  */
 public class CycleList<T> {

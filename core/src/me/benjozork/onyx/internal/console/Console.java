@@ -14,34 +14,49 @@ import java.util.HashMap;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.screen.GameScreen;
+import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Manages the debugging console and the command processing
+ * Manages the debugging console and command processing.<br/>
+ * In order for a non-Onyx command to process correctly, a {@link CommandProcessor}<br/>
+ * needs to be assigned to it using {@link Console#registerCommands(CommandProcessor, Array<String>)}.<br/>
+ *
  * @author Benjozork
  */
 public class Console {
 
     private static String lines = "", prevLines = "";
     private static GlyphLayout layout = new GlyphLayout();
-    private static BitmapFont font;
-    private static ShapeRenderer renderer;
+    private static BitmapFont font = GameManager.getFont();
+
     private static Rectangle textBox = new Rectangle();
 
+    private static SpriteBatch batch;
+    private static ShapeRenderer renderer;
+
     private static HashMap<CommandProcessor, Array<String>> cmdProcessorList = new HashMap<CommandProcessor, Array<String>>();
-    private static Array<String> cmdBuffer = new Array<String>();
 
     private static boolean isTextBoxFocused = false;
 
     public static void init() {
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         font = new BitmapFont();
+
+        batch = GameManager.getBatch();
         renderer = GameManager.getShapeRenderer();
+
+        /*
+        Here, we add all the commands from the base game.
+        ALWAYS add the commands here, or else the commands won't be processed !
+        Thanks,
+                    - Ben
+         */
 
         OnyxCommandProcessor ocpInstance = new OnyxCommandProcessor();
         Array<String> ocpCommands = new Array<String>();
         ocpCommands.add("screen");
-        cmdProcessorList.put(ocpInstance, ocpCommands);
+        registerCommands(ocpInstance, ocpCommands);
     }
 
     public static void update() {
@@ -58,15 +73,11 @@ public class Console {
 
     /**
      * Prints a string to the console on a new line
-     * @param x the object to pdrint
+     * @param x the object to print
      */
     public static void println(Object x) {
         newLine();
         lines += x.toString();
-    }
-
-    private static void newLine() {
-        lines += "[]\n"; // Resets markup and breaks lines
     }
 
     /**
@@ -77,10 +88,34 @@ public class Console {
         lines += x.toString();
     }
 
-    public static void draw(SpriteBatch batch) {
+    /**
+     * Prints a formatted string to the console on a new line
+     * @param x the object to print
+     * @param f the objects to format the string with
+     */
+    public static void printfln(Object x, Object... f) {
+        newLine();
+        lines += String.format(String.valueOf(x), f);
+    }
+
+
+    /**
+     * Prints a formatted string to the console
+     * @param x the object to print
+     * @param f the objects to format the string with
+     */
+    public static void printf(Object x, Object... f) {
+        lines += String.format(String.valueOf(x), f);
+    }
+
+    private static void newLine() {
+        lines += "[]\n"; // Resets markup and breaks lines
+    }
+
+    public static void draw() {
 
         /*
-        This code contains a lot of SpriteBatch#begin()/end().
+        This code contains a lot of SpriteBatch#begin()/end() via GameManager#setIsRendering().
         This is NECESSARY so no OpenGL conflicts happen.
         Please do not remove those lines.
         Thanks,
@@ -145,7 +180,7 @@ public class Console {
             font.draw(
                     batch,
                     "current screen:  [#FF00FF]"
-                            + ScreenManager.getCurrentScreen().getClass().getName().replace("me.benjozork.onyx.screen.", "")
+                            + ScreenManager.getCurrentScreen().getClass().getSimpleName()
                             + "[]",
                     20, Gdx.graphics.getHeight() - 30
             );
@@ -161,16 +196,18 @@ public class Console {
 
     }
 
-    public static void registerCommands(CommandProcessor commandProcessor, String... cmds) {
-        cmdProcessorList.put(commandProcessor, Array.with(cmds));
+    public static void registerCommands(CommandProcessor commandProcessor, Array<String> cmds) {
+        cmdProcessorList.put(commandProcessor, cmds);
     }
 
-    public static void dispatchCommand(ConsoleCommand cmd) {
+    public static boolean dispatchCommand(String cmdString) {
+        ConsoleCommand cmd = new ConsoleCommand(cmdString);
         for (CommandProcessor cp : cmdProcessorList.keySet()) {
-            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), true)) {
-                cp.onCommand(cmd);
+            if (cmdProcessorList.get(cp).contains(cmd.getCommand(), false)) {
+                return cp.onCommand(cmd);
             }
         }
+        return false;
     }
 
 }

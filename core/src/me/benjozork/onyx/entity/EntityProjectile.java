@@ -32,19 +32,22 @@ public class EntityProjectile extends Entity {
     @Override
     public void init() {
         batch = GameManager.getBatch();
-        // initialize hitbox
+
+        // Initialize hitbox
+
         bounds = PolygonHelper.getPolygon(getX(), getY(), 10, 10);
 
-        // get mouse point, unproject it, and set velocity accordingly
+        // Get mouse point, unproject it, and set velocity accordingly
+
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
         velocity.set(mouse.sub(getX(), getY()));
     }
 
     @Override
     public void update() {
-        GameScreen gameScreen  = (GameScreen) ScreenManager.getCurrentScreen();
-        if (this.collidesWith(gameScreen.getEnemy().getBounds())) {
-            gameScreen.getEnemy().damage(10f);
+        if (GameScreenManager.getEnemy() == null) return;
+        if (this.collidesWith(GameScreenManager.getEnemy().getBounds())) {
+            GameScreenManager.getEnemy().damage(10f);
             this.dispose();
         }
     }

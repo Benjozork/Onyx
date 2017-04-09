@@ -11,7 +11,7 @@ import me.benjozork.onyx.utils.Bounds;
 import me.benjozork.onyx.utils.Maybe;
 
 /**
- * Manages the game's various configuration files
+ * Manages the game's various configuration files.
  * @author angelickite
  */
 public class Configs {
@@ -71,7 +71,7 @@ public class Configs {
         }
 
         cache.put(internalPath, config);
-        log.print("config '%s' loaded and cached.", internalPath);
+        log.print("Config '%s' loaded and cached.", internalPath);
         return Maybe.of(config);
     }
 
@@ -110,7 +110,7 @@ public class Configs {
     }
 
     /**
-     * Reloads a certain config file, and tries to reload a fallback file if the former does not exist.
+     * Reloads a certain config file, and tries to reload a fallback file if the former does not exist.<br/>
      * Throws an {@link IllegalStateException} if the fallback file also does not exist.
      *
      * @param internalPath the path for the file to be reloaded from
@@ -126,7 +126,7 @@ public class Configs {
     }
 
     /**
-     * Loads a certain config file, and tries to load a fallback file if the former does not exist.
+     * Loads a certain config file, and tries to load a fallback file if the former does not exist.<br/>
      * Throws an {@link IllegalStateException} if the fallback file also does not exist.
      *
      * @param internalPath the path for the file to be loaded from

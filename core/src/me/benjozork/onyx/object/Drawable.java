@@ -3,6 +3,7 @@ package me.benjozork.onyx.object;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 
 import me.benjozork.onyx.internal.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
@@ -11,7 +12,7 @@ import me.benjozork.onyx.utils.Utils;
  * Describes an object that is to be drawn on the screen
  * @author Benjozork
  */
-public abstract class Drawable {
+public abstract class Drawable implements Disposable {
 
     protected Vector2 position;
     protected Vector2 velocity = new Vector2(0, 0);
@@ -25,8 +26,6 @@ public abstract class Drawable {
     private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
 
-    private Polygon cache;
-
     public Drawable(int x, int y) {
         this.position = new Vector2(x, y);
     }
@@ -36,7 +35,7 @@ public abstract class Drawable {
     }
 
     /**
-     * Internally update the Drawable
+     * Internally updates the Drawable
      * @param dt The delta time
      */
     public void update(float dt) {
@@ -54,18 +53,19 @@ public abstract class Drawable {
         position.add(velocity.nor().scl(dt).scl(speed));
     }
 
+    //Abstract methods
+
     public abstract void init();
 
-    /**
-     * Update the Drawable
-     */
     public abstract void update();
 
     public abstract void draw();
 
+    public abstract void dispose();
+
     /**
-     * Check if the Drawable collides with a polygon
-     * @param otherBounds The polygon used to check
+     * Checks if the Drawable collides with a specified {@link Polygon}
+     * @param otherBounds the polygon used to perform the check
      * @return whether the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
@@ -143,8 +143,8 @@ public abstract class Drawable {
     }
 
     /**
-     * Change the speed
-     * @param v The speed offset
+     * Changes the speed
+     * @param v the speed offset
      */
     public void accelerate(float v) {
         speed += v;
@@ -189,8 +189,7 @@ public abstract class Drawable {
     }
 
     /**
-     * Check if the mouse hovers above the hitbox
-     * @return result
+     * Checks if the mouse hovers above the hitbox
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
@@ -221,7 +220,5 @@ public abstract class Drawable {
     public void toggleBoundsDebug() {
         boundsDebug = ! boundsDebug;
     }
-
-    public abstract void dispose();
 
 }
