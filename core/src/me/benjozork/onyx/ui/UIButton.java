@@ -1,5 +1,6 @@
 package me.benjozork.onyx.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
@@ -45,6 +46,7 @@ public class UIButton extends UIElement {
 
     @Override
     public void update() {
+
         PolygonHelper.setDimensions(bounds, getWidth(), getHeight());
 
         if (colorTimer >= 0) {
@@ -55,12 +57,9 @@ public class UIButton extends UIElement {
                 colorTimer = - 1;
             }
         } else {
-            if (hovering()) {
-                currentPatch = HOVERED_BUTTON;
-            } else {
-                currentPatch = BUTTON;
-            }
+            currentPatch = hovering() ? HOVERED_BUTTON : BUTTON;
         }
+
     }
 
     @Override

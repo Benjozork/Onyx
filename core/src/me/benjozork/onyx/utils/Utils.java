@@ -7,8 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Calendar;
-
 import me.benjozork.onyx.internal.GameManager;
 
 
@@ -160,5 +158,11 @@ public class Utils {
     {
         v.set(-v.y,v.x);
     }
+
+    public static <T> void requireNonNull(T obj) {
+        if (obj == null)
+            throw new NullPointerException();
+    }
+
 }
 

@@ -51,15 +51,15 @@ public class MenuScreen implements Screen {
 
         // "Play" button
 
-        final float BUTTON_PLAY_WIDTH = 400, BUTTON_PLAY_HEIGHT = 70;
+        final float BUTTON_PLAY_WIDTH = 400, BUTTON_PLAY_HEIGHT = 65;
 
-        final Vector2 centeredButtonPos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER,
+        final Vector2 centeredButtonPos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_HORIZONTALLY_IN_CONTAINER,
                 0, 0, BUTTON_PLAY_WIDTH, BUTTON_PLAY_HEIGHT, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         final TextComponent buttonPlayText = new TextComponent("Play", currentUIFont, currentParameter);
 
         // Add buttons
-        UIButton buttonPlay = new UIButton(centeredButtonPos.x, centeredButtonPos.y, BUTTON_PLAY_WIDTH, BUTTON_PLAY_HEIGHT, buttonPlayText);
+        UIButton buttonPlay = new UIButton(centeredButtonPos.x, 500, BUTTON_PLAY_WIDTH, BUTTON_PLAY_HEIGHT, buttonPlayText);
 
         // Init screen
 
