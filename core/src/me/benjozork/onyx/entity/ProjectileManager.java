@@ -14,6 +14,7 @@ import me.benjozork.onyx.utils.PolygonHelper;
 public class ProjectileManager {
 
     private static Log log = Log.create("ProjectileManager");
+    private static boolean debug = false;
 
     private static List<ProjectileEntity> projectiles;
 
@@ -59,7 +60,7 @@ public class ProjectileManager {
     }
 
     public static void addProjectile(ProjectileEntity projectile) {
-        log.print("Added projectile");
+        if (debug) log.print("Added projectile");
         projectiles.add(projectile);
     }
 
@@ -67,4 +68,7 @@ public class ProjectileManager {
         return projectiles.remove(projectile);
     }
 
+    public static void toggleDebug() {
+        debug = ! debug;
+    }
 }
