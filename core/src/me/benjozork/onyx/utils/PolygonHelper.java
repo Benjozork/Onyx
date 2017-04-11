@@ -208,7 +208,7 @@ public class PolygonHelper {
         return Intersector.intersectSegments(f1, f2, f3, f4, f5, f6, f7, f8, null);
     }
 
-    private static boolean toggleDebug() {
+    public static boolean toggleDebug() {
         return debug = ! debug;
     }
 }
