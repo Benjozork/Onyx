@@ -13,7 +13,7 @@ import me.benjozork.onyx.utils.Utils;
 public class AI {
 
     private Log log;
-    private boolean debug = true;
+    private boolean debug = false;
 
     private AIConfiguration.AIStrategy strategy;
     private AIConfiguration.ProjectileReluctance reluctance;
@@ -88,7 +88,7 @@ public class AI {
                 if (debug) log.print("vel: " + source.getVelocity());
                 break;
             default:
-                if (debug) log.print("Error: AI strategy %s not supported", strategy);
+                log.print("Error: AI strategy %s not supported", strategy);
         }
 
     }
@@ -100,4 +100,9 @@ public class AI {
     public void setFactor(float factor) {
         this.factor = factor;
     }
+
+    public void toggleDebug() {
+        debug = ! debug;
+    }
+
 }
