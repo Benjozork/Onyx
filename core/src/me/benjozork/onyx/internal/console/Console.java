@@ -56,6 +56,9 @@ public class Console {
         OnyxCommandProcessor ocpInstance = new OnyxCommandProcessor();
         Array<String> ocpCommands = new Array<String>();
         ocpCommands.add("screen");
+        ocpCommands.add("debug");
+        ocpCommands.add("exit");
+        ocpCommands.add("echo");
         registerCommands(ocpInstance, ocpCommands);
     }
 

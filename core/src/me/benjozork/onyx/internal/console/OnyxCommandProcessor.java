@@ -1,9 +1,14 @@
 package me.benjozork.onyx.internal.console;
 
+import com.badlogic.gdx.Gdx;
+
+import me.benjozork.onyx.OnyxGame;
+import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.MenuScreen;
+import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
  * The default {@link CommandProcessor} for Onyx
@@ -18,7 +23,9 @@ public class OnyxCommandProcessor implements CommandProcessor {
 
     @Override
     public boolean onCommand(ConsoleCommand c) {
-        if (c.getCommand().equals("screen")) {
+
+        if (c.getCommand().equals("screen")) { // "screen" command
+
             if (c.getArgs().length == 0) {
                 log.print("Need one argument: [game, menu]");
                 return false;
@@ -34,8 +41,55 @@ public class OnyxCommandProcessor implements CommandProcessor {
                     return false;
                 }
             }
+
         }
+
+        else if (c.getCommand().equals("debug")) { // "debug" command
+
+            if (c.getArgs().length == 0) {
+                log.print("Need one argument: [ui, ai, projectile, polygon]");
+                return false;
+            } else {
+                if (c.getArgs()[0].equals("ui")) {
+                    //@TODO
+                } else if (c.getArgs()[0].equals("ai")) {
+                    //@TODO
+                } else if (c.getArgs()[0].equals("projectile")) {
+                    ProjectileManager.toggleDebug();
+                    return true;
+                } else if (c.getArgs()[0].equals("polygon")) {
+                    PolygonHelper.toggleDebug();
+                    return true;
+                } else {
+                    log.print("Invalid argument '%s'", c.getArgs()[0]);
+                    return false;
+                }
+            }
+
+        }
+
+        else if (c.getCommand().equals("exit")) { // "exit" command
+            log.print("Game exited");
+            Gdx.app.exit();
+        }
+
+        else if (c.getCommand().equals("echo")) { // "echo" command
+            if (c.getArgs().length == 0) {
+                Console.println("echo!");
+                System.out.println("echo!");
+                return true;
+            } else {
+                StringBuilder textBuilder = new StringBuilder();
+                for (String s : c.getArgs()) textBuilder.append(" ").append(s);
+                String text = textBuilder.toString();
+                Console.println(text);
+                System.out.println(text);
+                return false;
+            }
+        }
+
         return false;
+
     }
 
 }
