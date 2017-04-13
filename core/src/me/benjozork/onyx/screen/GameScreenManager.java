@@ -51,14 +51,17 @@ public class GameScreenManager {
      * @param p the player instance
      */
     public static void setPlayer(PlayerEntity p) {
+        check();
         player = p;
     }
 
     public static LivingEntity getEnemy() {
+        check();
         return enemy;
     }
 
     public static void setEnemy(EnemyEntity e) {
+        check();
         enemy = e;
     }
 
