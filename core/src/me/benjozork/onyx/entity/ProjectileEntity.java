@@ -45,6 +45,9 @@ public class ProjectileEntity extends Entity {
 
     @Override
     public void update() {
+        if (getX() < 0 || getX() > Gdx.graphics.getWidth() || getY() < 0 || getY() > Gdx.graphics.getHeight()) {
+            dispose();
+        }
         if (GameScreenManager.getEnemy() == null) return;
         if (this.collidesWith(GameScreenManager.getEnemy().getBounds())) {
             GameScreenManager.getEnemy().damage(10f);
