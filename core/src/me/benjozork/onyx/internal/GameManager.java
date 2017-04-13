@@ -101,8 +101,10 @@ public class GameManager {
     public static void setIsRendering(boolean v) {
         if (v) {
             if (! batch.isDrawing()) batch.begin();
+            if(! renderer.isDrawing()) renderer.begin(ShapeRenderer.ShapeType.Line);
         } else {
             if (batch.isDrawing()) batch.end();
+            if(renderer.isDrawing()) renderer.end();
         }
     }
 
