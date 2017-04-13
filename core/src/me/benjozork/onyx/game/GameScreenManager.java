@@ -12,6 +12,7 @@ import me.benjozork.onyx.entity.PlayerEntity;
 import me.benjozork.onyx.entity.ProjectileEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.logger.Log;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
@@ -36,6 +37,8 @@ public class GameScreenManager {
 
     private static int maxLives = 3;
     private static int lifeCount = maxLives;
+
+    private static Log log = Log.create("GameScreenManager");
 
     static {
         ProjectileManager.init();
@@ -143,14 +146,7 @@ public class GameScreenManager {
             int posy = random.nextInt(ymax - ymin + 1) + ymin;
             addEnemy(new EnemyEntity(posx, posy));
         }
-    }
-
-    /**
-     * Returns a {@link List} of entities that have been called to be removed from the entity stack
-     * @return the list of entities to be removed
-     */
-    public static Array<Entity> getEntitiesToRemove() {
-        return entitiesToRemove;
+        log.print("Generated %s enemies in range [x %s, y %s] and [x %s, y %s]", count, xmin, ymin, xmax, ymax);
     }
 
     public static int getScore() {
