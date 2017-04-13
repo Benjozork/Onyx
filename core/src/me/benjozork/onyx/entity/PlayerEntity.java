@@ -52,6 +52,9 @@ public class PlayerEntity extends LivingEntity {
     @Override
     public void update() {
         super.update(Utils.delta());
+
+        // Get rotation depending on direction
+
         if (direction == Direction.STRAIGHT) {
             if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
             if (spriteRotation < 0 * MathUtils.degreesToRadians)
@@ -72,8 +75,17 @@ public class PlayerEntity extends LivingEntity {
             velocity.x += velocity.x * 2;
         }
 
+        // Check and block out-of-bounds movement
+
+        if (getX() < 0) setX(0);
+        if (getX() > Gdx.graphics.getWidth() - PLAYER_TEXTURE.getWidth()) setX(Gdx.graphics.getWidth() - PLAYER_TEXTURE.getWidth());
+
+        // Add/sub speed decay
+
         if (velocity.len() > 0) velocity.setLength(velocity.len() - 15f);
         else velocity.setLength(velocity.len() + 15f);
+
+        // Set current texture depending on state
 
         if (state == DrawState.IDLE) {
             currentTexture.setTexture(PLAYER_TEXTURE);
@@ -85,8 +97,12 @@ public class PlayerEntity extends LivingEntity {
             currentTexture.setTexture(MOVING_FIRING_PLAYER_TEXTURE);
         }
 
+        // Rotate texture
+
         currentTexture.setPosition(getX(), getY());
         currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+
+        // Rotate bounds
 
         bounds.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
     }
@@ -94,7 +110,6 @@ public class PlayerEntity extends LivingEntity {
     @Override
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
-        //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
         currentTexture.draw(batch);
     }
 
