@@ -41,7 +41,10 @@ public abstract class LivingEntity extends Entity {
 
     public void damage(float v) {
         health -= v;
-        if (health < 0) this.dispose();
+        if (health < 0) {
+            if (this instanceof EnemyEntity) GameScreenManager.addScore(100);
+            this.dispose();
+        }
     }
 
     public Vector2 getBulletShootOrigin() {
