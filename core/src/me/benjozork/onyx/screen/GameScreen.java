@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Polygon;
 
 import me.benjozork.onyx.entity.EnemyEntity;
 import me.benjozork.onyx.entity.Entity;
@@ -19,6 +20,7 @@ import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfigurati
 import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffect;
 import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffectConfiguration;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -63,8 +65,8 @@ public class GameScreen implements Screen {
 
         PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
         GameScreenManager.setPlayer(player);
-        GameScreenManager.setEnemy(enemy);
         EnemyEntity enemy = new EnemyEntity(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
+        GameScreenManager.setEnemy(enemy);
         player.setMaxSpeed(600f);
         enemy.setMaxSpeed(600f);
         GameScreenManager.registerEntity(player);
@@ -220,28 +222,23 @@ public class GameScreen implements Screen {
             e.draw();
         }
 
+		 /*
+         Note for all: Whenever collision seems to stop working,
+         instead of thinking the system is broken, check for some
+         subtle errors in your code, but just to be sure, you may
+         uncomment the next line
+         */
+
+        //collisionCheck();
+
+
         // Remove entities that need to be
 
         GameScreenManager.getEntities().removeAll(GameScreenManager.getEntitiesToRemove());
 
         batch.end();
-        //Collision detection test code
-//        Polygon p1 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
-//        Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
-//        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-//        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-//        GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-//        GameManager.getShapeRenderer().setColor(Color.GREEN);
-//        GameManager.getShapeRenderer().polygon(p1.getTransformedVertices());
-//        GameManager.getShapeRenderer().setColor(Color.BLUE);
-//        GameManager.getShapeRenderer().polygon(p2.getTransformedVertices());
-//        PolygonHelper.collidePolygon(p1,p2);
-//        GameManager.getShapeRenderer().end();
-//        try {
-//            Thread.sleep(2500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        GameManager.getShapeRenderer().end();
+
     }
 
     @Override
@@ -275,6 +272,19 @@ public class GameScreen implements Screen {
 
     public EnemyEntity getEnemy() {
         return enemy;
+    }
+
+    private void collisionCheck() {
+        //Collision detection test code
+        Polygon p1 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
+        Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
+//        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
+//        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
+        GameManager.getShapeRenderer().setColor(Color.GREEN);
+        GameManager.getShapeRenderer().polygon(p1.getTransformedVertices());
+        GameManager.getShapeRenderer().setColor(Color.BLUE);
+        GameManager.getShapeRenderer().polygon(p2.getTransformedVertices());
+        System.out.println(PolygonHelper.collidePolygon(p1,p2));
     }
 
 }
