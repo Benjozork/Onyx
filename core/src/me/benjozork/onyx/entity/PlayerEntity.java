@@ -62,32 +62,18 @@ public class PlayerEntity extends LivingEntity {
             if (spriteRotation < 25 * MathUtils.degreesToRadians)
                 spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(- 180f);
-            if (! accelerated_right) {
-                accelerate(5f);
-                accelerated_right = true;
-                accelerated_left = false;
-            }
-            if (velocity.x < 0) {
-                velocity.x -= velocity.x * 2;
-            }
+            accelerate(5f);
+            velocity.x -= velocity.x * 2;
         } else if (direction == Direction.LEFT) {
             if (spriteRotation > - 25 * MathUtils.degreesToRadians)
                 spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
-            if (! accelerated_left) {
-                accelerate(2.5f);
-                accelerated_left = true;
-                accelerated_right = false;
-            }
-            if (velocity.x > 0) {
-                velocity.x -= velocity.x * 2;
-            }
+            accelerate(2.5f);
+            velocity.x += velocity.x * 2;
         }
 
-        if(velocity.len() > 0) velocity.setLength(velocity.len() -15);
-//        if (getSpeed() > 0) setSpeed(getSpeed() - 15f);
-        else velocity.setLength(velocity.len() +5f);
-//        else setSpeed(getSpeed() + 5f);
+        if (velocity.len() > 0) velocity.setLength(velocity.len() - 15f);
+        else velocity.setLength(velocity.len() + 15f);
 
         if (state == DrawState.IDLE) {
             currentTexture.setTexture(PLAYER_TEXTURE);
