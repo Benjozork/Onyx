@@ -139,6 +139,7 @@ public class GameScreenManager {
     }
 
     public static void generateRandomEnemyWave(int min, int max, int xmin, int xmax, int ymin, int ymax) {
+        check();
         Random random = new Random();
         int count = random.nextInt(max - min + 1) + min;
         for (int i = 0; i < count; i++) {
