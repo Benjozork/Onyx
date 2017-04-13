@@ -1,4 +1,4 @@
-package me.benjozork.onyx.screen;
+package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -65,12 +65,8 @@ public class GameScreen implements Screen {
 
         PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
         GameScreenManager.setPlayer(player);
-        EnemyEntity enemy = new EnemyEntity(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
-        GameScreenManager.setEnemy(enemy);
         player.setMaxSpeed(600f);
-        enemy.setMaxSpeed(600f);
-        GameScreenManager.registerEntity(player);
-        GameScreenManager.registerEntity(enemy);
+        GameScreenManager.addEntity(player);
         this.player = player;
         this.enemy = enemy;
 
@@ -109,6 +105,8 @@ public class GameScreen implements Screen {
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
         scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()));
+
+        GameScreenManager.generateRandomEnemyWave(5, 15, 0, 1920, 500, 1200);
     }
 
     public void update(float delta) {
@@ -146,12 +144,12 @@ public class GameScreen implements Screen {
             player.setDirection(PlayerEntity.Direction.LEFT);
             player.accelerate(100f);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        /*if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.accelerate(-100f);
-        }
+        }*/
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             player.fireProjectile("entity/player/bullet.png");
         }
@@ -234,7 +232,7 @@ public class GameScreen implements Screen {
 
         // Remove entities that need to be
 
-        GameScreenManager.getEntities().removeAll(GameScreenManager.getEntitiesToRemove());
+        GameScreenManager.flushEntities();
 
         batch.end();
         GameManager.getShapeRenderer().end();

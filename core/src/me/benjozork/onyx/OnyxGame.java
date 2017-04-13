@@ -17,7 +17,7 @@ import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.internal.console.ConsoleCommand;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.screen.GameScreenManager;
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**

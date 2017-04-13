@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.screen.GameScreenManager;
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -48,10 +48,12 @@ public class ProjectileEntity extends Entity {
         if (getX() < 0 || getX() > Gdx.graphics.getWidth() || getY() < 0 || getY() > Gdx.graphics.getHeight()) {
             dispose();
         }
-        if (GameScreenManager.getEnemy() == null) return;
-        if (this.collidesWith(GameScreenManager.getEnemy().getBounds())) {
-            GameScreenManager.getEnemy().damage(10f);
-            this.dispose();
+        if (GameScreenManager.getEnemies().size == 0) return;
+        for (EnemyEntity enemy : GameScreenManager.getEnemies()) {
+            if (this.collidesWith(enemy.getBounds())) {
+                enemy.damage(10f);
+                this.dispose();
+            }
         }
     }
 

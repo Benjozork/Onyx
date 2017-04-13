@@ -1,7 +1,7 @@
 package me.benjozork.onyx.entity;
 
 import me.benjozork.onyx.object.Drawable;
-import me.benjozork.onyx.screen.GameScreenManager;
+import me.benjozork.onyx.game.GameScreenManager;
 
 /**
  * @author Benjozork

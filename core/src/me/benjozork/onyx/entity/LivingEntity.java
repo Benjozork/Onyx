@@ -1,6 +1,8 @@
 package me.benjozork.onyx.entity;
 
-import me.benjozork.onyx.screen.GameScreenManager;
+import com.badlogic.gdx.math.Vector2;
+
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -12,6 +14,7 @@ public abstract class LivingEntity extends Entity {
 
     private final float maxBulletTime = 0.1f;
     private float bulletTimer = 0f;
+    private Vector2 bulletShootOrigin = new Vector2();
 
     public Type type;
 
@@ -22,12 +25,12 @@ public abstract class LivingEntity extends Entity {
     public void fireProjectile(String path) {
         bulletTimer += Utils.delta();
         if (bulletTimer >= maxBulletTime) {
-            ProjectileEntity projectile = new ProjectileEntity(getX(),getY());
+            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y);
             projectile.accelerate(2550f);
             projectile.setDamage(10f);
             projectile.source = type;
 
-            GameScreenManager.registerEntity(projectile);
+            GameScreenManager.addEntity(projectile);
 
             //if (ammo < 0) return;
             //ammo -= 1;
@@ -41,6 +44,14 @@ public abstract class LivingEntity extends Entity {
         if (health < 0) this.dispose();
     }
 
+    public Vector2 getBulletShootOrigin() {
+        return bulletShootOrigin;
+    }
+
+    public void setBulletShootOrigin(float x, float y) {
+        bulletShootOrigin.set(x, y);
+    }
+
     /*
     public int getAmmo() {
         return ammo;
@@ -50,7 +61,8 @@ public abstract class LivingEntity extends Entity {
         this.ammo = ammo;
     }
     */
-    public enum Type{
+
+    public enum Type {
         ENEMY,
         PLAYER
     }

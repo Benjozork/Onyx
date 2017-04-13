@@ -18,10 +18,11 @@ import me.benjozork.onyx.utils.Utils;
 public class PlayerEntity extends LivingEntity {
 
     // Player textures
+
     private final Texture PLAYER_TEXTURE = new Texture("entity/player/texture_0.png");
-    private final Texture FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_2.png");
+    private final Texture FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_1.png");
     private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_3.png");
-    private final Texture MOVING_PLAYER_TEXTURE = new Texture("entity/player/texture_1.png");
+    private final Texture MOVING_PLAYER_TEXTURE = new Texture("entity/player/texture_2.png");
 
     Sprite currentTexture = new Sprite(PLAYER_TEXTURE);
 
@@ -44,6 +45,8 @@ public class PlayerEntity extends LivingEntity {
         // Initialize hitbox
         bounds = PolygonHelper.getPolygon(getX(), getY(), PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
 		type = Type.PLAYER;
+
+		setBulletShootOrigin(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
     }
 
     @Override

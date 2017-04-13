@@ -135,7 +135,6 @@ public class GameManager {
             if (spriteCache && ! batch.isDrawing()) {
                 batch.begin();
                 spriteCache = false;
-                System.out.println(batch.isDrawing());
             }
         }
     }
