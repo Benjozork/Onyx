@@ -2,7 +2,6 @@ package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.utils.Array;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -81,11 +80,23 @@ public class GameScreenManager {
     }
 
     /**
+     * Returns a {@link List} of enemies that are present on the enemy stack
+     * @return the entities present on the entity stack
+     */
+    public static Array<EnemyEntity> getEnemies() {
+        check();
+        return enemies;
+    }
+
+    /**
      * Adds an {@link Entity} to the entity stack and calls {@link Entity#init()} on said entity
-     * @param e the entity to be added
+     * @param e the entity o be added
      */
     public static void addEntity(Entity e) {
         check();
+        if (e instanceof EnemyEntity) {
+            putEnemy((EnemyEntity) e);
+        }
         putEntity(e);
         e.init();
     }
@@ -99,43 +110,27 @@ public class GameScreenManager {
         }
     }
 
+    private static void putEnemy(EnemyEntity e) {
+        check();
+        if (! entities.contains(e, true)){
+            enemies.add(e);
+        }
+    }
+
+
     /**
      * Adds a given {@link Entity} to the list of entities that need to be removed from the entity stack
      * @param e the entity to be removed
      */
     public static void removeEntity(Entity e) {
         check();
-        if (e instanceof EnemyEntity) {// Remove enemy
+        if (e instanceof EnemyEntity) // Remove enemy
             enemiesToRemove.add((EnemyEntity) e);
-            entitiesToRemove.add(e);
-        }
         if (e instanceof PlayerEntity) // Remove player
             player = null;
-        entitiesToRemove.add(e);
-        if( e instanceof ProjectileEntity) // Remove projectile
+        if (e instanceof ProjectileEntity) // Remove projectile
             ProjectileManager.removeProjectile((ProjectileEntity) e);
-    }
-
-    public static Array<EnemyEntity> getEnemies() {
-        check();
-        return enemies;
-    }
-
-
-    public static void addEnemy(EnemyEntity e) {
-        check();
-        enemies.add(e);
-        entities.add(e);
-        e.init();
-    }
-
-    /**
-     * Adds a given {@link EnemyEntity} to the list of enemies that need to be removed from the enemy stack
-     * @param e the enemy to be removed
-     */
-    public static void removeEnemy(EnemyEntity e) {
-        check();
-        enemiesToRemove.add(e);
+        entitiesToRemove.add(e);
     }
 
     public static void generateRandomEnemyWave(int min, int max, int xmin, int xmax, int ymin, int ymax) {
@@ -145,9 +140,9 @@ public class GameScreenManager {
         for (int i = 0; i < count; i++) {
             int posx = random.nextInt(xmax - xmin + 1) + xmin;
             int posy = random.nextInt(ymax - ymin + 1) + ymin;
-            addEnemy(new EnemyEntity(posx, posy));
+            addEntity(new EnemyEntity(posx, posy));
         }
-        log.print("Generated %s enemies in range [x %s, y %s] and [x %s, y %s]", count, xmin, ymin, xmax, ymax);
+        log.print("Generated %s enemies in range [x: %s, y: %s] and [x: %s, y: %s]", count, xmin, ymin, xmax, ymax);
     }
 
     public static int getScore() {
