@@ -106,14 +106,12 @@ public class GameScreen implements Screen {
 
         scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()));
 
-        GameScreenManager.generateRandomEnemyWave(5, 15, 0, 1920, 500, 1200);
     }
 
     public void update(float delta) {
 
         // Update cameras
-        //worldCam.position.x = player.getX() + 38;
-        //worldCam.position.y = player.getY() + 55;
+
         worldCam.update();
 
         guiCam.update();
@@ -170,6 +168,8 @@ public class GameScreen implements Screen {
         zoomPulseCamera.update();
 
         scoreText.setText(String.valueOf(GameScreenManager.getScore()));
+
+        if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(5, 15, 0, 1920, 500, 1200);
 
         // Update maxFrametime
         if (delta > maxFrameTime) {
