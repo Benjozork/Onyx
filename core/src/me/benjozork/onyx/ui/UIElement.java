@@ -49,6 +49,9 @@ public abstract class UIElement extends Drawable {
     @Override
     public abstract void draw();
 
+    @Override
+    public abstract void dispose();
+
     /**
      * Triggers an {@link ActionEvent} and runs all the {@link Action} objects bound to this {@link ActionEvent}
      * @param e the {@link ActionEvent} to trigger

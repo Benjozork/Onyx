@@ -28,7 +28,7 @@ public class UIButton extends UIElement {
     private NinePatch currentPatch = BUTTON;
 
     private float colorTimer;
-    private float maxColorTimer = 0.1f;
+    private final float maxColorTimer = 0.1f;
 
     public UIButton(float x, float y, float width, float height, TextComponent component) {
         super(x, y);
