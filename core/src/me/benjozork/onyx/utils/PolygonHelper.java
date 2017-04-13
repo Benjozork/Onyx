@@ -150,7 +150,7 @@ public class PolygonHelper {
     public static boolean collidePolygon(Polygon p1, Polygon p2) {
         float[] v1 = p1.getTransformedVertices();
         float[] v2 = p2.getTransformedVertices();
-        float t1, t2, t3, t4;
+        float p1x1, p1y1, t3, t4;
         float s1, s2, s3, s4;
         int i, j;
 
@@ -163,52 +163,22 @@ public class PolygonHelper {
         }
 
         //To check if any of the line segments of polygons intersect at any place
-        for (i = 0; i < v1.length - 3; i += 2) {
-            t1 = v1[i];
-            t2 = v1[i + 1];
-            t3 = v1[i + 2];
-            t4 = v1[i + 3];
-            for (j = 0; j < v2.length - 3; j += 2) {
+
+        for (i = 0; i < v1.length; i += 2) {
+            p1x1 = v1[i];
+            p1y1 = v1[i + 1];
+            t3 = v1[(i + 2) % v1.length]; //To return back to 0 when i+2 > len
+            t4 = v1[(i + 3) % v1.length]; //To return back to 0 when i+3 > len
+            for (j = 0; j < v2.length; j += 2) {
                 s1 = v2[j];
                 s2 = v2[j + 1];
-                s3 = v2[j + 2];
-                s4 = v2[j + 3];
-                if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
+                s3 = v2[(j + 2) % v2.length]; //To return back to 0 when j+2 > len
+                s4 = v2[(j + 3) % v2.length]; //To return back to 0 when j+3 > len
+                if (collisionAtPoints(p1x1, p1y1, t3, t4, s1, s2, s3, s4)) {
                     if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
                     return true;
                 }
             }
-            s1 = v2[v2.length - 2];
-            s2 = v2[v2.length - 1];
-            s3 = v2[0];
-            s4 = v2[1];
-            if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
-                if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
-                return true;
-            }
-        }
-        // ************ LAST CASE ********************
-        t1 = v1[v1.length - 2];
-        t2 = v1[v1.length - 1];
-        t3 = v1[0];
-        t4 = v1[1];
-        for (j = 0; j < v2.length - 3; j += 2) {
-            s1 = v2[j];
-            s2 = v2[j + 1];
-            s3 = v2[j + 2];
-            s4 = v2[j + 3];
-            if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
-                if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
-                return true;
-            }
-        }
-        s1 = v2[v2.length - 2];
-        s2 = v2[v2.length - 1];
-        s3 = v2[0];
-        s4 = v2[1];
-        if (collisionAtPoints(t1, t2, t3, t4, s1, s2, s3, s4)) {
-            if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
-            return true;
         }
         return false;
     }
