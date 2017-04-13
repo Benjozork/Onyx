@@ -36,9 +36,12 @@ public class Utils {
     /**
      * This method takes the width of an object and gives a corresponding x axis<br />
      * coordinate in order to center said object.
+     *
      * @param w the width of the object
-     * @return
+     *
+     * @return a centered position
      */
+    @Deprecated
     public static float getCenterPos(int w) {
         return (Gdx.graphics.getWidth() / 2) + w / 2;
     }
@@ -46,7 +49,9 @@ public class Utils {
     /**
      * Translates a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
+     *
      * @param vec the position of the point
+     *
      * @return the point position in world coordinates.
      */
     public static Vector2 unprojectWorld(Vector2 vec) {
@@ -56,8 +61,10 @@ public class Utils {
     /**
      * Translates a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
+     *
      * @param x the x position of the point
      * @param y the y position of the point
+     *
      * @return the point position in world coordinates.
      */
     public static Vector2 unprojectWorld(float x, float y) {
@@ -71,7 +78,9 @@ public class Utils {
     /**
      * Translate a point from screen coordinates to world coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
+     *
      * @param vec the position of the point
+     *
      * @return the point position in world coordinates.
      */
     public static Vector2 unprojectGui(Vector2 vec) {
@@ -81,8 +90,10 @@ public class Utils {
     /**
      * Translate a point from screen coordinates to gui coordinates.<br>
      * This method returns an internally cached vector instance, do not store this instance!
+     *
      * @param x the x position of the point
      * @param y the y position of the point
+     *
      * @return the point position in world coordinates.
      */
     public static Vector2 unprojectGui(float x, float y) {
@@ -95,9 +106,11 @@ public class Utils {
 
     /**
      * Returns a {@link Color} object from three integer RGB values.
+     *
      * @param r the red value
      * @param g the green value
      * @param b the blue value
+     *
      * @return the Color object
      */
     public static Color rgb(int r, int g, int b) {
@@ -109,10 +122,12 @@ public class Utils {
 
     /**
      * Returns a {@link Color} object from three integer RGBA values.
+     *
      * @param r the red value
      * @param g the green value
      * @param b the blue value
      * @param a the alpha value
+     *
      * @return the Color object
      */
     public static Color rgba(int r, int g, int b, int a) {

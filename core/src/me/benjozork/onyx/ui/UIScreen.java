@@ -1,7 +1,5 @@
 package me.benjozork.onyx.ui;
 
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * @author Benjozork
  */

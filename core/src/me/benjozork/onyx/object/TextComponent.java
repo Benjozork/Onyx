@@ -50,7 +50,7 @@ public class TextComponent {
         this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
         this.layout = new GlyphLayout(generatedFont, text);
     }
-    
+
     /**
      * @param text the text to be displayed
      */

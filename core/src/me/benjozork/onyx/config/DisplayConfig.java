@@ -2,6 +2,9 @@ package me.benjozork.onyx.config;
 
 import me.benjozork.onyx.object.Bounds;
 
+/**
+ * @author angelickite
+ */
 public class DisplayConfig {
 
     public String title;

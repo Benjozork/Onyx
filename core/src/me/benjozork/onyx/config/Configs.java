@@ -80,6 +80,7 @@ public class Configs {
      *
      * @param internalPath the path for the file to be reloaded from
      * @param clazz the config file class that has to be reloaded
+     *
      * @return the reloaded file
      *
      * @throws IllegalStateException if the file does not exist
@@ -94,6 +95,7 @@ public class Configs {
      *
      * @param internalPath the path for the file to be loaded from
      * @param clazz the config file class that has to be loaded
+     *
      * @return the loaded file
      *
      * @throws IllegalStateException if the file does not exist
@@ -116,6 +118,7 @@ public class Configs {
      * @param internalPath the path for the file to be reloaded from
      * @param fallbackInternalPath the path for the fallback file to be reloaded from, if the default file fails
      * @param clazz the config file class that has to be reloaded
+     *
      * @return the reloaded file
      *
      * @throws IllegalStateException if the fallback file does not exist
@@ -132,6 +135,7 @@ public class Configs {
      * @param internalPath the path for the file to be loaded from
      * @param fallbackInternalPath the path for the fallback file to be loaded from, if the default file fails
      * @param clazz the config file class that has to be loaded
+     *
      * @return the loaded file
      *
      * @throws IllegalStateException if the fallback file does not exist
@@ -152,6 +156,7 @@ public class Configs {
      * @param internalPath the path for the file to be reloaded from
      * @param fallbackInternalPath the path for the fallback file to be reloaded from, if the default file fails
      * @param clazz the config file class that has to be reloaded
+     *
      * @return the reloaded file
      */
     public static <T> Maybe<T> reloadWithFallback(String internalPath, String fallbackInternalPath, Class<T> clazz) {
@@ -165,6 +170,7 @@ public class Configs {
      * @param internalPath the path for the file to be loaded from
      * @param fallbackInternalPath the path for the fallback file to be loaded from, if the default file fails
      * @param clazz the class of the config file that has to be loaded
+     *
      * @return the loaded file
      */
     public static <T> Maybe<T> loadWithFallback(String internalPath, String fallbackInternalPath, Class<T> clazz) {

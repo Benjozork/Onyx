@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.Array;
 import java.util.NoSuchElementException;
 
 import me.benjozork.onyx.exception.DuplicateElementIdentifierException;
-import me.benjozork.onyx.utils.Utils;
 import me.benjozork.onyx.object.Drawable;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Contains {@link UIElement}s

@@ -15,11 +15,11 @@ import me.benjozork.onyx.entity.EnemyEntity;
 import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.PlayerEntity;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
 import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffect;
 import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffectConfiguration;
-import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 

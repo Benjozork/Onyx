@@ -1,7 +1,6 @@
 package me.benjozork.onyx.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,15 +9,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.ScreenManager;
-import me.benjozork.onyx.ui.UIButton;
-import me.benjozork.onyx.ui.UICheckbox;
-import me.benjozork.onyx.ui.UIDropdown;
-import me.benjozork.onyx.ui.UIRadioButton;
-import me.benjozork.onyx.ui.UIRadioButtonGroup;
-import me.benjozork.onyx.ui.UIScreen;
-import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.ui.UIButton;
+import me.benjozork.onyx.ui.UIScreen;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
