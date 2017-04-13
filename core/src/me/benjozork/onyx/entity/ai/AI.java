@@ -56,19 +56,19 @@ public class AI {
 
         switch (reluctance) {
             case GOD:
-                bulletEscapeDir.scl(1);
+                bulletEscapeDir.scl(2.0f);
                 break;
             case HIGH:
-                bulletEscapeDir.scl(0.7f);
+                bulletEscapeDir.scl(1.5f);
                 break;
             case MED:
-                bulletEscapeDir.scl(0.5f);
+                bulletEscapeDir.scl(1f);
                 break;
             case LOW:
-                bulletEscapeDir.scl(0.3f);
+                bulletEscapeDir.scl(0.5f);
                 break;
             case NONE:
-                bulletEscapeDir.scl(0);
+                bulletEscapeDir.scl(0f);
                 break;
             default:
                 log.print("Error: Reluctance %s not supported", reluctance);
