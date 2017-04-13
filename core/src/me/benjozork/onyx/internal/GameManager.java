@@ -27,6 +27,8 @@ public class GameManager {
 
     private static BitmapFont font;
 
+    private static boolean shapeCache = false, spriteCache = false;
+
     /**
      * Returns the camera instance that is used when rendering world objects
      * @return the world camera
@@ -100,11 +102,41 @@ public class GameManager {
      */
     public static void setIsRendering(boolean v) {
         if (v) {
+            if (renderer.isDrawing() && ! batch.isDrawing()) {
+                renderer.begin();
+                shapeCache = true;
+            }
             if (! batch.isDrawing()) batch.begin();
-            if(! renderer.isDrawing()) renderer.begin(ShapeRenderer.ShapeType.Line);
         } else {
             if (batch.isDrawing()) batch.end();
-            if(renderer.isDrawing()) renderer.end();
+            if (shapeCache && ! renderer.isDrawing()) {
+                renderer.begin(ShapeRenderer.ShapeType.Line);
+                shapeCache = false;
+            }
+        }
+    }
+
+    /**
+     * Sets whether the {@link ShapeRenderer} instance is rendering or not.<br/>
+     * Use when a {@link SpriteBatch} needs to render pixmaps, without causing<br/>
+     * OpenGL conflicts.
+     *
+     * @param v the desired state
+     */
+    public static void setIsShapeRendering(boolean v) {
+        if (v) {
+            if (batch.isDrawing() && ! renderer.isDrawing()) {
+                batch.end();
+                spriteCache = true;
+            }
+            if (! renderer.isDrawing()) renderer.begin(ShapeRenderer.ShapeType.Line);
+        } else {
+            if (renderer.isDrawing()) renderer.end();
+            if (spriteCache && ! batch.isDrawing()) {
+                batch.begin();
+                spriteCache = false;
+                System.out.println(batch.isDrawing());
+            }
         }
     }
 
