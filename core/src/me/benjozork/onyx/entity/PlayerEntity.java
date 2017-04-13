@@ -96,9 +96,10 @@ public class PlayerEntity extends LivingEntity {
             currentTexture.setTexture(MOVING_FIRING_PLAYER_TEXTURE);
         }
 
-        //sprite.setColor(GameManager.getCurrentColor());
         currentTexture.setPosition(getX(), getY());
-        currentTexture.setRotation((float) - spriteRotation * MathUtils.radiansToDegrees);
+        currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+
+        bounds.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
     }
 
     @Override

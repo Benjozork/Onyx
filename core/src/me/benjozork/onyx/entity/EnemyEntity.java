@@ -99,9 +99,10 @@ public class EnemyEntity extends LivingEntity {
             currentTexture.setTexture(MOVING_FIRING_ENEMY_TEXTURE);
         }
 
-        //System.out.printf("X: %f Y: %f\n",bounds.getX(),bounds.getY());
-        currentTexture.setPosition(bounds.getX(), bounds.getY());
-        currentTexture.setRotation((float) - spriteRotation * MathUtils.radiansToDegrees);
+        currentTexture.setPosition(getX(), getY());
+        currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+
+        bounds.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
     }
 
     @Override
