@@ -32,6 +32,7 @@ public class EnemyEntity extends LivingEntity {
     private Direction direction = Direction.STRAIGHT;
     private float spriteRotation;
     private AI ai;
+    private boolean debug = true;
 
     public EnemyEntity(float x, float y) {
         super(x, y);
@@ -107,6 +108,10 @@ public class EnemyEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
+
+        //Draw bounds polygon if debug enabled
+        if(debug)
+            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
     }
 
     @Override

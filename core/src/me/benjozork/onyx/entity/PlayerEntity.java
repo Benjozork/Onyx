@@ -34,6 +34,7 @@ public class PlayerEntity extends LivingEntity {
     private Direction direction = Direction.STRAIGHT;
     private float spriteRotation;
     private boolean accelerated_right = false, accelerated_left = false;
+    private boolean debug = true;
 
     public PlayerEntity(float x, float y) {
         super(x, y);
@@ -106,6 +107,10 @@ public class PlayerEntity extends LivingEntity {
         SpriteBatch batch = GameManager.getBatch();
         //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
         currentTexture.draw(batch);
+
+        //Draw bounds polygon if debug enabled
+        if(debug)
+            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
     }
 
     @Override

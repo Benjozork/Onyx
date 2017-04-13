@@ -22,6 +22,7 @@ public class ProjectileEntity extends Entity {
     private String texturePath = "entity/player/bullet.png";
     private Texture texture = new Texture(texturePath);
     public LivingEntity.Type source;
+    private boolean debug = true;
 
 
     public ProjectileEntity(float x, float y) {
@@ -63,6 +64,10 @@ public class ProjectileEntity extends Entity {
                 }
             }*/
         batch.draw(texture, bounds.getX(), bounds.getY(), 10, 10);
+
+        //Draw bounds polygon if debug enabled
+        if(debug)
+            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
     }
 
     @Override
