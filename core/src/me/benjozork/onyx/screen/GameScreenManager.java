@@ -3,11 +3,11 @@ package me.benjozork.onyx.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.benjozork.onyx.entity.Entity;
 import me.benjozork.onyx.entity.EnemyEntity;
+import me.benjozork.onyx.entity.Entity;
+import me.benjozork.onyx.entity.LivingEntity;
 import me.benjozork.onyx.entity.PlayerEntity;
 import me.benjozork.onyx.entity.ProjectileEntity;
-import me.benjozork.onyx.entity.LivingEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
 
@@ -97,9 +97,13 @@ public class GameScreenManager {
      */
     public static void removeEntity(Entity e) {
         check();
+        if (e instanceof EnemyEntity)  // Remove enemy
+            enemy = null;
+        if (e instanceof PlayerEntity) // Remove player
+            player = null;
         toRemove.add(e);
-        if(e instanceof ProjectileEntity)
-            ProjectileManager.addProjectile((ProjectileEntity)e);
+        if( e instanceof ProjectileEntity) // Remove projectile
+            ProjectileManager.removeProjectile((ProjectileEntity) e);
     }
 
     /**
