@@ -60,7 +60,7 @@ public class OnyxCommandProcessor implements CommandProcessor {
                 } else if (c.getArgs()[0].equals("polygon")) {
                     PolygonHelper.toggleDebug();
                     return true;
-                } else if (c.getArgs()[0].equals("polygon")) {
+                } else if (c.getArgs()[0].equals("debug")) {
                     Drawable.toggleDebug();
                     return true;
                 } else {
