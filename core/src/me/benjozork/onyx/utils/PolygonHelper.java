@@ -153,6 +153,16 @@ public class PolygonHelper {
         float t1, t2, t3, t4;
         float s1, s2, s3, s4;
         int i, j;
+
+        // To check if any point of one polygon lies inside another polygon
+
+        for(i = 0; i < v1.length-1 ;i+=2)
+        {
+            if((p2.contains(v1[i],v1[i+1])))
+                return true;
+        }
+
+        //To check if any of the line segments of polygons intersect at any place
         for (i = 0; i < v1.length - 3; i += 2) {
             t1 = v1[i];
             t2 = v1[i + 1];
