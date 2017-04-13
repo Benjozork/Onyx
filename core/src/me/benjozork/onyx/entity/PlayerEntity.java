@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.GameManager;
@@ -107,10 +106,6 @@ public class PlayerEntity extends LivingEntity {
         SpriteBatch batch = GameManager.getBatch();
         //GameManager.getBatch().draw(img, getX(), getY(), 0, 0, sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), 1f, 1f, (float) -angle, 0, 0, 0, 0, false, false);
         currentTexture.draw(batch);
-
-        //Draw bounds polygon if debug enabled
-        if(debug)
-            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
     }
 
     @Override

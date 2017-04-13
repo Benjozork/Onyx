@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.screen.GameScreenManager;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -54,20 +54,7 @@ public class ProjectileEntity extends Entity {
 
     @Override
     public void draw() {
-        // For every entity registered, check if it is an LivingEntity and apply damage, then destroy entity
-           /* for (Entity e : GameManager.getRegisteredEntities()) {
-                if (this.collidesWith(e)) {
-                    if (e instanceof LivingEntity) {
-                        ((LivingEntity) e).damage(damage);
-                    }
-                    //this.dispose();
-                }
-            }*/
         batch.draw(texture, bounds.getX(), bounds.getY(), 10, 10);
-
-        //Draw bounds polygon if debug enabled
-        if(debug)
-            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
     }
 
     @Override

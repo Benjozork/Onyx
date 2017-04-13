@@ -2,10 +2,10 @@ package me.benjozork.onyx.internal.console;
 
 import com.badlogic.gdx.Gdx;
 
-import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.PolygonHelper;
@@ -47,7 +47,7 @@ public class OnyxCommandProcessor implements CommandProcessor {
         else if (c.getCommand().equals("debug")) { // "debug" command
 
             if (c.getArgs().length == 0) {
-                log.print("Need one argument: [ui, ai, projectile, polygon]");
+                log.print("Need one argument: [ui, ai, projectile, polygon, hitbox]");
                 return false;
             } else {
                 if (c.getArgs()[0].equals("ui")) {
@@ -59,6 +59,9 @@ public class OnyxCommandProcessor implements CommandProcessor {
                     return true;
                 } else if (c.getArgs()[0].equals("polygon")) {
                     PolygonHelper.toggleDebug();
+                    return true;
+                } else if (c.getArgs()[0].equals("polygon")) {
+                    Drawable.toggleDebug();
                     return true;
                 } else {
                     log.print("Invalid argument '%s'", c.getArgs()[0]);

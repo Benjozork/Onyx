@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.MathUtils;
 import me.benjozork.onyx.entity.ai.AI;
 import me.benjozork.onyx.entity.ai.AIConfiguration;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.screen.GameScreenManager;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -108,10 +108,6 @@ public class EnemyEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
-
-        //Draw bounds polygon if debug enabled
-        if(debug)
-            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
     }
 
     @Override

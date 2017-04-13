@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
+import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -24,9 +25,9 @@ public abstract class Drawable implements Disposable {
     protected Polygon bounds;
 
     private float maxSpeed;
-
-    private boolean boundsDebug = false;
     private boolean defaultMaxSpeed = true;
+
+    private static boolean debug = true;
 
     public Drawable(float x, float y) {
         this.position = new Vector2(x, y);
@@ -53,9 +54,18 @@ public abstract class Drawable implements Disposable {
         setAcceleration(acceleration);
 
         bounds.setPosition(position.x, position.y);
+
+        // Draw bounds polygon if debug enabled
+
+        if (debug) {
+            GameManager.getShapeRenderer().setProjectionMatrix(GameManager.getWorldCamera().combined);
+            GameManager.setIsShapeRendering(true);
+            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
+            GameManager.setIsShapeRendering(false);
+        }
     }
 
-    //Abstract methods
+    // Abstract methods
 
     public abstract void init();
 
@@ -160,12 +170,6 @@ public abstract class Drawable implements Disposable {
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
         return getBounds().contains(mouse);
-//        if (mouse.x > getBounds().getX()
-//                && mouse.x < (getBounds().getX() + getBounds().getWidth())
-//                && mouse.y > getBounds().getY()
-//                && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
-//            return true;
-//        } else return false;
     }
 
     public Polygon getBounds() {
@@ -176,8 +180,8 @@ public abstract class Drawable implements Disposable {
         this.bounds = bounds;
     }
 
-    public void toggleBoundsDebug() {
-        boundsDebug = ! boundsDebug;
+    public static void toggleDebug() {
+        debug = ! debug;
     }
 
 }

@@ -1,10 +1,6 @@
 package me.benjozork.onyx.entity;
 
-import com.badlogic.gdx.math.Vector2;
-
-import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.object.Drawable;
-import me.benjozork.onyx.screen.GameScreen;
 import me.benjozork.onyx.screen.GameScreenManager;
 
 /**

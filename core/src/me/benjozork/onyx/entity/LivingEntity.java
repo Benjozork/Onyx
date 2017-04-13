@@ -1,7 +1,5 @@
 package me.benjozork.onyx.entity;
 
-import com.badlogic.gdx.math.Vector2;
-
 import me.benjozork.onyx.screen.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
