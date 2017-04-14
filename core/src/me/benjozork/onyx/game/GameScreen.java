@@ -134,11 +134,11 @@ public class GameScreen implements Screen {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(PlayerEntity.Direction.RIGHT);
-            player.accelerate(1000f);
+            player.accelerate(new Vector2(1000f, 0f));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.setDirection(PlayerEntity.Direction.LEFT);
-            player.accelerate(1000f);
+            player.accelerate(new Vector2(-1000f, 0f));
         }
         /*if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(100f);

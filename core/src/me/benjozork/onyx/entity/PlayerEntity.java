@@ -68,14 +68,12 @@ public class PlayerEntity extends LivingEntity {
             if (spriteRotation < TARGET_ANGLE * MathUtils.degreesToRadians)
                 spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(- 180f);
-            accelerate(5f);
             velocity.x -= velocity.x * 2;
             velocity.y = 0;
         } else if (direction == Direction.LEFT) {
             if (spriteRotation > - 25 * MathUtils.degreesToRadians)
                 spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
-            accelerate(2.5f);
             velocity.x += velocity.x * 2;
             velocity.y = 0;
         }

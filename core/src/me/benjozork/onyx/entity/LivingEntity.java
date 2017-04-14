@@ -26,7 +26,7 @@ public abstract class LivingEntity extends Entity {
         bulletTimer += Utils.delta();
         if (bulletTimer >= maxBulletTime) {
             ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety);
-            projectile.accelerate(2550f);
+            projectile.getVelocity().scl(2550f);
             projectile.setDamage(10f);
             projectile.source = type;
 

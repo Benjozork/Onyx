@@ -48,8 +48,8 @@ public abstract class Drawable implements Disposable {
             velocity.set(velocity.x * (float)Math.sin(angle), velocity.y * (float)Math.cos(angle));
         }
 
-        position.add(velocity.cpy().scl(dt));
         velocity.add(acceleration);
+        position.add(velocity.cpy().scl(dt));
 
         setPosition(position);
         setAcceleration(acceleration);
@@ -130,12 +130,10 @@ public abstract class Drawable implements Disposable {
     }
 
     /**
-     * Changes the magnitude (length) of the velocity vector
-     * @param v the offset to be applied
+     * Adds a scaled directional {@link Vector2} to the velocity
      */
-    public void accelerate(float v) {
-        if (velocity.x == 0 && velocity.y == 0) velocity.set(0, 1); // Prevent this from having no effect
-        velocity.scl(v);
+    public void accelerate(Vector2 dv) {
+        velocity.add(dv);
     }
 
     public void rotate(float v) {
