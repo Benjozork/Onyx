@@ -6,9 +6,9 @@ import me.benjozork.onyx.utils.PolygonHelper;
 /**
  * @author Benjozork
  */
-public class EntityTest extends Entity {
+public class TestEntity extends Entity {
 
-    public EntityTest(float x, float y) {
+    public TestEntity(float x, float y) {
         super(x, y);
     }
 
