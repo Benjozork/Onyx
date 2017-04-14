@@ -24,7 +24,7 @@ public abstract class LivingEntity extends Entity {
 
     public void fireProjectileAt(String path, float targetx, float targety) {
         bulletTimer += Utils.delta();
-        if (bulletTimer >= maxBulletTime) {
+        if (bulletTimer >= maxBulletTime || ! (this instanceof PlayerEntity)) {
             ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety);
             projectile.getVelocity().scl(2550f);
             projectile.setDamage(10f);
