@@ -127,11 +127,12 @@ public class OnyxGame extends Game {
         }
 
         // Update console
+
         Console.update();
 
-        // Update cameras
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.update();
+        // Update camera
+
+        GameManager.getWorldCamera().update();
 
         if (ScreenManager.getCurrentScreen() != getScreen())
             setScreen(ScreenManager.getCurrentScreen());
@@ -146,12 +147,16 @@ public class OnyxGame extends Game {
 
         // Update cameras
 
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.viewportWidth = width;
-        worldCamera.viewportHeight = height;
-        OrthographicCamera guiCamera = GameManager.getGuiCamera();
-        guiCamera.viewportWidth = width;
-        guiCamera.viewportHeight = height;
+        OrthographicCamera worldCam = GameManager.getWorldCamera();
+        worldCam.setToOrtho(false);
+        worldCam.viewportWidth = Gdx.graphics.getWidth();
+        worldCam.viewportHeight = Gdx.graphics.getHeight();
+
+        OrthographicCamera guiCam = GameManager.getGuiCamera();
+        guiCam.setToOrtho(false);
+        guiCam.viewportWidth = Gdx.graphics.getWidth();
+        guiCam.viewportHeight = Gdx.graphics.getHeight();
+
     }
 
 }

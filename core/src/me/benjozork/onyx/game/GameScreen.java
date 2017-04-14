@@ -99,6 +99,7 @@ public class GameScreen implements Screen {
         crossFadeBackgroundColor = new CrossFadeColorEffect(crossFadeConfig, backgroundColor);
 
         // Setup ZoomPulseEffect
+
         ZoomPulseEffectConfiguration zoomPulseConfig = new ZoomPulseEffectConfiguration();
         zoomPulseConfig.maxZoomTime = 1f;
         zoomPulseConfig.targetZoom = 0.5f;
@@ -110,13 +111,8 @@ public class GameScreen implements Screen {
 
     public void update(float delta) {
 
-        // Update cameras
-
-        worldCam.update();
-
-        guiCam.update();
-
         // Update DrawState of player
+
         if (player.isFiring()) {
             player.setState(PlayerEntity.DrawState.FIRING);
         }
@@ -131,16 +127,17 @@ public class GameScreen implements Screen {
         }
 
         // Update input
+
         if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(PlayerEntity.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.setDirection(PlayerEntity.Direction.RIGHT);
-            player.accelerate(100f);
+            player.accelerate(1000f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.setDirection(PlayerEntity.Direction.LEFT);
-            player.accelerate(100f);
+            player.accelerate(1000f);
         }
         /*if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(100f);
@@ -241,10 +238,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        worldCam.viewportWidth = width;
-        worldCam.viewportHeight = height;
-        guiCam.viewportWidth = width;
-        guiCam.viewportHeight = height;
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
