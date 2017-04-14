@@ -2,6 +2,8 @@ package me.benjozork.onyx.entity.ai;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.Random;
+
 import me.benjozork.onyx.entity.LivingEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
@@ -12,7 +14,10 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class AI {
 
+    private Random random = new Random();
+
     private Log log;
+
     private boolean debug = false;
 
     private AIConfiguration.AIStrategy strategy;
@@ -89,6 +94,10 @@ public class AI {
                 break;
             default:
                 log.print("Error: AI strategy %s not supported", strategy);
+        }
+
+        if (random.nextBoolean()) {
+            source.fireProjectileAt("", target.getX(),  target.getY());
         }
 
     }

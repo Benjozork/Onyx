@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.entity.EnemyEntity;
 import me.benjozork.onyx.entity.Entity;
@@ -146,7 +147,8 @@ public class GameScreen implements Screen {
             player.accelerate(-100f);
         }*/
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player.fireProjectile("entity/player/bullet.png");
+            Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
+            player.fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();

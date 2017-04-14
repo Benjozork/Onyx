@@ -22,10 +22,10 @@ public abstract class LivingEntity extends Entity {
         super(x, y);
     }
 
-    public void fireProjectile(String path) {
+    public void fireProjectileAt(String path, float targetx, float targety) {
         bulletTimer += Utils.delta();
         if (bulletTimer >= maxBulletTime) {
-            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y);
+            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety);
             projectile.accelerate(2550f);
             projectile.setDamage(10f);
             projectile.source = type;

@@ -15,18 +15,20 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class ProjectileEntity extends Entity {
 
+    private Vector2 target;
+
     private SpriteBatch batch;
 
     private float damage = 0;
 
     private String texturePath = "entity/player/bullet.png";
     private Texture texture = new Texture(texturePath);
+
     public LivingEntity.Type source;
-    private boolean debug = true;
 
-
-    public ProjectileEntity(float x, float y) {
+    public ProjectileEntity(float x, float y, float targetx, float targety) {
         super(x, y);
+        this.target = new Vector2(targetx, targety);
     }
 
     @Override
@@ -37,10 +39,9 @@ public class ProjectileEntity extends Entity {
 
         bounds = PolygonHelper.getPolygon(getX(), getY(), 10, 10);
 
-        // Get mouse point, unproject it, and set velocity accordingly
+        // Set velocity accordingly to target
 
-        Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-        velocity.set(mouse.sub(getX(), getY()));
+        velocity.set(target.sub(getX(), getY()));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ProjectileEntity extends Entity {
         }
         if (GameScreenManager.getEnemies().size == 0) return;
         for (EnemyEntity enemy : GameScreenManager.getEnemies()) {
-            if (this.collidesWith(enemy.getBounds())) {
+            if (this.collidesWith(enemy.getBounds()) && enemy.type != source) {
                 enemy.damage(10f);
                 this.dispose();
             }
