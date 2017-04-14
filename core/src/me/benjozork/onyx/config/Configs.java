@@ -11,7 +11,7 @@ import me.benjozork.onyx.object.Bounds;
 import me.benjozork.onyx.object.Maybe;
 
 /**
- * Manages the game's various configuration files
+ * Manages the game's various configuration files.
  * @author angelickite
  */
 public class Configs {
@@ -71,7 +71,7 @@ public class Configs {
         }
 
         cache.put(internalPath, config);
-        log.print("config '%s' loaded and cached.", internalPath);
+        log.print("Config '%s' loaded and cached.", internalPath);
         return Maybe.of(config);
     }
 
@@ -80,6 +80,7 @@ public class Configs {
      *
      * @param internalPath the path for the file to be reloaded from
      * @param clazz the config file class that has to be reloaded
+     *
      * @return the reloaded file
      *
      * @throws IllegalStateException if the file does not exist
@@ -94,6 +95,7 @@ public class Configs {
      *
      * @param internalPath the path for the file to be loaded from
      * @param clazz the config file class that has to be loaded
+     *
      * @return the loaded file
      *
      * @throws IllegalStateException if the file does not exist
@@ -110,12 +112,13 @@ public class Configs {
     }
 
     /**
-     * Reloads a certain config file, and tries to reload a fallback file if the former does not exist.
+     * Reloads a certain config file, and tries to reload a fallback file if the former does not exist.<br/>
      * Throws an {@link IllegalStateException} if the fallback file also does not exist.
      *
      * @param internalPath the path for the file to be reloaded from
      * @param fallbackInternalPath the path for the fallback file to be reloaded from, if the default file fails
      * @param clazz the config file class that has to be reloaded
+     *
      * @return the reloaded file
      *
      * @throws IllegalStateException if the fallback file does not exist
@@ -126,12 +129,13 @@ public class Configs {
     }
 
     /**
-     * Loads a certain config file, and tries to load a fallback file if the former does not exist.
+     * Loads a certain config file, and tries to load a fallback file if the former does not exist.<br/>
      * Throws an {@link IllegalStateException} if the fallback file also does not exist.
      *
      * @param internalPath the path for the file to be loaded from
      * @param fallbackInternalPath the path for the fallback file to be loaded from, if the default file fails
      * @param clazz the config file class that has to be loaded
+     *
      * @return the loaded file
      *
      * @throws IllegalStateException if the fallback file does not exist
@@ -152,6 +156,7 @@ public class Configs {
      * @param internalPath the path for the file to be reloaded from
      * @param fallbackInternalPath the path for the fallback file to be reloaded from, if the default file fails
      * @param clazz the config file class that has to be reloaded
+     *
      * @return the reloaded file
      */
     public static <T> Maybe<T> reloadWithFallback(String internalPath, String fallbackInternalPath, Class<T> clazz) {
@@ -165,6 +170,7 @@ public class Configs {
      * @param internalPath the path for the file to be loaded from
      * @param fallbackInternalPath the path for the fallback file to be loaded from, if the default file fails
      * @param clazz the class of the config file that has to be loaded
+     *
      * @return the loaded file
      */
     public static <T> Maybe<T> loadWithFallback(String internalPath, String fallbackInternalPath, Class<T> clazz) {

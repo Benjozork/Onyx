@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.utils.PolygonHelper;
-import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.ui.object.ActionEvent;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -18,6 +18,7 @@ import me.benjozork.onyx.utils.Utils;
 public class UIDropdown extends UIElement {
 
     // Unexpanded Dropdown textures
+
     private final Texture DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_0.png");
     private final NinePatch DROPDOWN = new NinePatch(DROPDOWN_TEXTURE, 6, 40, 6, 6);
     private final Texture HOVERED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_1.png");
@@ -26,6 +27,7 @@ public class UIDropdown extends UIElement {
     private final NinePatch CLICKED_DROPDOWN = new NinePatch(CLICKED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
 
     // Expanded Dropdown textures
+
     private final Texture EXPANDED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_3.png");
     private final NinePatch EXPANDED_DROPDOWN = new NinePatch(EXPANDED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
     private final Texture EXPANDED_HOVERED_DROPDOWN_TEXTURE = new Texture("ui/dropdown/dropdown_4.png");
@@ -34,6 +36,7 @@ public class UIDropdown extends UIElement {
     private final NinePatch EXPANDED_CLICKED_DROPDOWN = new NinePatch(EXPANDED_CLICKED_DROPDOWN_TEXTURE, 6, 40, 6, 6);
 
     // Upper Dropdown menu textures
+
     private final Texture EXPANDED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_0.png");
     private final NinePatch EXPANDED_MENU_UPPER = new NinePatch(EXPANDED_MENU_UPPER_TEXTURE, 6, 6, 0, 6);
     private final Texture EXPANDED_HOVERED_MENU_UPPER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_upper_1.png");
@@ -42,6 +45,7 @@ public class UIDropdown extends UIElement {
     private final NinePatch EXPANDED_CLICKED_MENU_UPPER = new NinePatch(EXPANDED_CLICKED_MENU_UPPER_TEXTURE, 6, 6, 0, 0);
 
     // Lower Dropdown menu textures
+
     private final Texture EXPANDED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_0.png");
     private final NinePatch EXPANDED_MENU_LOWER = new NinePatch(EXPANDED_MENU_LOWER_TEXTURE, 6, 6, 0, 6);
     private final Texture EXPANDED_HOVERED_MENU_LOWER_TEXTURE = new Texture("ui/dropdown/dropdown_menu_lower_1.png");
@@ -55,11 +59,11 @@ public class UIDropdown extends UIElement {
     private String text = new String();
     private NinePatch currentPatch = DROPDOWN;
 
-    private float colorTimer = - 1f, movementTimer;
-    private float maxColorTimer = 0.1f, maxMovementTimer = 0.25f;
+    private float colorTimer = - 1f;
+    private final float maxColorTimer = 0.1f;
 
     private Array<String> items = new Array<String>();
-    private int currentItem;
+
     private boolean expanded = false;
 
     public UIDropdown(float x, float y, float width, float height, TextComponent component) {
@@ -79,6 +83,8 @@ public class UIDropdown extends UIElement {
     @Override
     public void update() {
 
+        // Set hitbox position and dimensions according to expanded status and list length
+
         PolygonHelper.setWidth(bounds, getWidth());
         if (expanded) {
             PolygonHelper.setHeight(bounds, ((items.size + 1) * getHeight()) - 6);
@@ -88,11 +94,15 @@ public class UIDropdown extends UIElement {
             PolygonHelper.setHeight(bounds, getHeight());
         }
 
+        // Reset click color
+
         if (colorTimer <= maxColorTimer && colorTimer > 0) {
             colorTimer += Utils.delta();
         } else {
             colorTimer = - 1;
         }
+
+        // Assign textures depending on expanded/hovered status
 
         if (colorTimer == - 1) {
             currentPatch = expanded ? EXPANDED_DROPDOWN : DROPDOWN;
@@ -106,6 +116,8 @@ public class UIDropdown extends UIElement {
 
     @Override
     public void draw() {
+
+        // Draw list element textures
 
         if (expanded) {
             for (int i = 0; i < items.size; i++) {
@@ -127,6 +139,8 @@ public class UIDropdown extends UIElement {
                     );
                 }
             }
+
+            // Find element to highlight depending on mouse position and change it's texture
 
             if (hovering()) {
                 Vector2 mouse = Utils.unprojectGui(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
@@ -161,10 +175,13 @@ public class UIDropdown extends UIElement {
 
             }
 
+            // Draw list element texts
+
             drawText();
 
-
         }
+
+        // Draw button
 
         currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
         component.setText(text);
@@ -174,6 +191,9 @@ public class UIDropdown extends UIElement {
 
     @Override
     public boolean click(Vector2 localPosition) {
+
+        // Find the element to select and change the button's text, then trigger an event accordingly
+
         if (expanded) {
             float position = localPosition.y;
             for (int i = 0; i < items.size; i++) {
@@ -198,7 +218,6 @@ public class UIDropdown extends UIElement {
     public void drawText() {
         for (int j = 0; j < items.size; j++) {
             component.setText(items.get(j));
-            //component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, getY() - (j * getHeight() + component.getLayout().height / 2) - 4);
             component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY() - (j  * getHeight()) - getHeight(), getWidth(), getHeight());
         }
         component.setText(text);

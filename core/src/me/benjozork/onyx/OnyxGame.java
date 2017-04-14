@@ -12,13 +12,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
+import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.internal.console.ConsoleCommand;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.screen.GameScreenManager;
-import me.benjozork.onyx.screen.MenuScreen;
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -72,6 +73,8 @@ public class OnyxGame extends Game {
         GameManager.setGuiCamera(guiCam);
 
         GameManager.setRenderer(new ShapeRenderer());
+        GameManager.getRenderer().setAutoShapeType(true);
+
         GameManager.setBatch(new SpriteBatch());
 
         GameManager.setFont(new BitmapFont());
@@ -80,25 +83,34 @@ public class OnyxGame extends Game {
 
         Console.init();
 
+        // Init PolygonLoader
+        PolygonLoader.init();
+
         // Setup Initial Screen
 
-        ScreenManager.setCurrentScreen(new MenuScreen());
+        Console.dispatchCommand("screen " + projectConfig.initial_screen);
 
     }
 
-    @Override
-    public void dispose() {
 
-        // Dispose active screen
+    public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            Console.dispatchCommand(new ConsoleCommand("screen"));
+            toggleDebug();
+        }
 
-        ScreenManager.getCurrentScreen().dispose();
+        // Update console
 
-        // Dispose various resources
+        Console.update();
 
-        GameManager.dispose();
-        if (GameScreenManager.exists()) GameScreenManager.dispose();
+        // Update camera
 
+        GameManager.getWorldCamera().update();
+
+        if (ScreenManager.getCurrentScreen() != getScreen())
+            setScreen(ScreenManager.getCurrentScreen());
     }
+
 
     @Override
     public void render() {
@@ -121,21 +133,20 @@ public class OnyxGame extends Game {
             Console.draw();
     }
 
-    public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            Console.dispatchCommand(new ConsoleCommand("screen"));
-            toggleDebug();
-        }
+    @Override
+    public void dispose() {
 
-        // Update console
-        Console.update();
+        // Dispose active screen
 
-        // Update cameras
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.update();
+        ScreenManager.getCurrentScreen().dispose();
 
-        if (ScreenManager.getCurrentScreen() != getScreen())
-            setScreen(ScreenManager.getCurrentScreen());
+        // Dispose various resources
+
+        GameManager.dispose();
+        FTFGeneratorCache.dispose();
+        PolygonLoader.dispose();
+        if (GameScreenManager.exists()) GameScreenManager.dispose();
+
     }
 
     private static void toggleDebug() {
@@ -147,12 +158,16 @@ public class OnyxGame extends Game {
 
         // Update cameras
 
-        OrthographicCamera worldCamera = GameManager.getWorldCamera();
-        worldCamera.viewportWidth = width;
-        worldCamera.viewportHeight = height;
-        OrthographicCamera guiCamera = GameManager.getGuiCamera();
-        guiCamera.viewportWidth = width;
-        guiCamera.viewportHeight = height;
+        OrthographicCamera worldCam = GameManager.getWorldCamera();
+        worldCam.setToOrtho(false);
+        worldCam.viewportWidth = Gdx.graphics.getWidth();
+        worldCam.viewportHeight = Gdx.graphics.getHeight();
+
+        OrthographicCamera guiCam = GameManager.getGuiCamera();
+        guiCam.setToOrtho(false);
+        guiCam.viewportWidth = Gdx.graphics.getWidth();
+        guiCam.viewportHeight = Gdx.graphics.getHeight();
+
     }
 
 }

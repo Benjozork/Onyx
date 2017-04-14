@@ -2,48 +2,57 @@ package me.benjozork.onyx.entity;
 
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.ScreenManager;
-import me.benjozork.onyx.screen.GameScreenManager;
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
-import me.benjozork.onyx.screen.GameScreen;
 
 /**
  * @author Benjozork
  */
 public abstract class LivingEntity extends Entity {
 
-    protected float health = 100f;
+    private float health = 100f;
 
-    private float maxTime = 0.1f;
-    private float timer = 0f;
+    private final float maxBulletTime = 0.1f;
+    private float bulletTimer = 0f;
+    private Vector2 bulletShootOrigin = new Vector2();
 
-    public LivingEntity(int x, int y) {
-        super(new Vector2(x, y));
+    public Type type;
+
+    public LivingEntity(float x, float y) {
+        super(x, y);
     }
 
-    public LivingEntity(Vector2 pos) {
-        super(pos);
-    }
-
-    public void fireProjectile(String path) {
-        timer += Utils.delta();
-        if (timer >= maxTime) {
-            EntityProjectile projectile = new EntityProjectile(getX(), getY());
-            projectile.setTexturePath(path);
-            projectile.setSpeed(2550f);
+    public void fireProjectileAt(String path, float targetx, float targety) {
+        bulletTimer += Utils.delta();
+        if (bulletTimer >= maxBulletTime) {
+            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety);
+            projectile.getVelocity().scl(2550f);
             projectile.setDamage(10f);
-            GameScreenManager.registerEntity(projectile);
+            projectile.source = type;
+
+            GameScreenManager.addEntity(projectile);
 
             //if (ammo < 0) return;
             //ammo -= 1;
 
-            timer = 0f;
+            bulletTimer = 0f;
         }
     }
 
     public void damage(float v) {
         health -= v;
-        if (health < 0) this.dispose();
+        if (health < 0) {
+            if (this instanceof EnemyEntity) GameScreenManager.addScore(100);
+            this.dispose();
+        }
+    }
+
+    public Vector2 getBulletShootOrigin() {
+        return bulletShootOrigin;
+    }
+
+    public void setBulletShootOrigin(float x, float y) {
+        bulletShootOrigin.set(x, y);
     }
 
     /*
@@ -55,4 +64,9 @@ public abstract class LivingEntity extends Entity {
         this.ammo = ammo;
     }
     */
+
+    public enum Type {
+        ENEMY,
+        PLAYER
+    }
 }

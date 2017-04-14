@@ -3,10 +3,10 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.ui.object.Action;
 import me.benjozork.onyx.ui.object.ActionEvent;
+import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
  * Allows the user to interact with the UI
@@ -16,20 +16,18 @@ public abstract class UIElement extends Drawable {
 
     private Array<Action> actions = new Array<Action>();
 
-    private UIContainer parent;
+    private UIScreen parent;
 
     private String identifier;
 
     private boolean justHovered = false;
 
+    private boolean enabled = true;
+
     private Vector2 dimensions = new Vector2();
 
     public UIElement(float x, float y) {
-        super(new Vector2(x, y));
-    }
-
-    public UIElement(Vector2 position) {
-        super(position);
+        super(x, y);
     }
 
     public void update(float dt) {
@@ -51,9 +49,12 @@ public abstract class UIElement extends Drawable {
     @Override
     public abstract void draw();
 
+    @Override
+    public abstract void dispose();
+
     /**
-     * Triggers an event and runs all the actions bound to this event
-     * @param e the event type
+     * Triggers an {@link ActionEvent} and runs all the {@link Action} objects bound to this {@link ActionEvent}
+     * @param e the {@link ActionEvent} to trigger
      */
     public void triggerEvent(ActionEvent e) {
         for (Action a : actions) {
@@ -64,7 +65,7 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * Call a click event
+     * Calls a click event
      * @param localPosition the position of the click
      * @return if the click was successful
      */
@@ -85,10 +86,9 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * The UIContainer in which the element is stored
-     * @return the container
+     * Returns {@link UIScreen} in which the element is stored
      */
-    public UIContainer getParent() {
+    public UIScreen getParent() {
         return parent;
     }
 
@@ -97,10 +97,11 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * Adds a new action to the element
+     * Adds a new {@link Action} to the element
+     *
      * @param identifier the action's identifier
      * @param action     the code to execute
-     * @param event      the event to listen to
+     * @param event      the {@link ActionEvent} to listen to
      */
     public void addAction(String identifier, Runnable action, ActionEvent event) {
         actions.add(new Action(this, identifier, action, event));

@@ -3,8 +3,8 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
  * @author Benjozork

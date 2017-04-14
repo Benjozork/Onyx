@@ -1,4 +1,4 @@
-package me.benjozork.onyx.screen;
+package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,16 +9,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.entity.EnemyEntity;
 import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.EntityEnemy;
-import me.benjozork.onyx.entity.EntityPlayer;
+import me.benjozork.onyx.entity.PlayerEntity;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
 import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffect;
 import me.benjozork.onyx.specialeffect.zoompulse.ZoomPulseEffectConfiguration;
-import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -38,8 +41,8 @@ public class GameScreen implements Screen {
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
-    private EntityPlayer player;
-    private EntityEnemy enemy;
+    private PlayerEntity player;
+    private EnemyEntity enemy;
 
     private OrthographicCamera worldCam, guiCam;
 
@@ -61,15 +64,12 @@ public class GameScreen implements Screen {
 
         // Setup player
 
-        EntityPlayer player = new EntityPlayer(Utils.getCenterPos(78), 50);
-        EntityEnemy enemy = new EntityEnemy(Utils.getCenterPos(50), Gdx.graphics.getHeight() - 100);
-        player.setMaxSpeed(1000f);
-        enemy.setMaxSpeed(1000f);
-        GameScreenManager.registerEntity(player);
-        GameScreenManager.registerEntity(enemy);
+        PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
+        GameScreenManager.setPlayer(player);
+        player.setMaxSpeed(600f);
+        GameScreenManager.addEntity(player);
         this.player = player;
         this.enemy = enemy;
-        GameScreenManager.setPlayer(player);
 
         // Setup cameras
 
@@ -100,57 +100,55 @@ public class GameScreen implements Screen {
         crossFadeBackgroundColor = new CrossFadeColorEffect(crossFadeConfig, backgroundColor);
 
         // Setup ZoomPulseEffect
+
         ZoomPulseEffectConfiguration zoomPulseConfig = new ZoomPulseEffectConfiguration();
         zoomPulseConfig.maxZoomTime = 1f;
         zoomPulseConfig.targetZoom = 0.5f;
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
         scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()));
+
     }
 
     public void update(float delta) {
 
-        // Update cameras
-        //worldCam.position.x = player.getX() + 38;
-        //worldCam.position.y = player.getY() + 55;
-        worldCam.update();
-
-        guiCam.update();
-
         // Update DrawState of player
+
         if (player.isFiring()) {
-            player.setState(EntityPlayer.DrawState.FIRING);
+            player.setState(PlayerEntity.DrawState.FIRING);
         }
-        if (player.getSpeed() != 0) {
-            player.setState(EntityPlayer.DrawState.MOVING);
+        if (player.getVelocity().len() != 0) {
+            player.setState(PlayerEntity.DrawState.MOVING);
             if (player.isFiring()) {
-                player.setState(EntityPlayer.DrawState.FIRING_MOVING);
+                player.setState(PlayerEntity.DrawState.FIRING_MOVING);
             }
         }
-        if (! player.isFiring() && player.getSpeed() == 0f) {
-            player.setState(EntityPlayer.DrawState.IDLE);
+        if (! player.isFiring() && player.getVelocity().len() == 0f) {
+            player.setState(PlayerEntity.DrawState.IDLE);
         }
 
         // Update input
+
         if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.STRAIGHT);
+            player.setDirection(PlayerEntity.Direction.STRAIGHT);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(EntityPlayer.Direction.RIGHT);
-            player.accelerate(100f);
+            player.setDirection(PlayerEntity.Direction.RIGHT);
+            player.accelerate(new Vector2(1000f, 0f));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.setDirection(EntityPlayer.Direction.LEFT);
-            player.accelerate(100f);
+            player.setDirection(PlayerEntity.Direction.LEFT);
+            player.accelerate(new Vector2(-1000f, 0f));
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        /*if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.accelerate(100f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.accelerate(-100f);
-        }
+        }*/
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player.fireProjectile("entity/player/bullet.png");
+            Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
+            player.fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
@@ -170,6 +168,8 @@ public class GameScreen implements Screen {
 
         scoreText.setText(String.valueOf(GameScreenManager.getScore()));
 
+        if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(5, 15, 0, 1920, 500, 1200);
+
         // Update maxFrametime
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
@@ -177,6 +177,11 @@ public class GameScreen implements Screen {
     }
 
     public void render(float delta) {
+
+        if (GameScreenManager.isDisposing()) {
+            GameScreenManager.dispose();
+            return;
+        }
 
         // Update
 
@@ -219,36 +224,28 @@ public class GameScreen implements Screen {
             e.draw();
         }
 
+		 /*
+         Note for all: Whenever collision seems to stop working,
+         instead of thinking the system is broken, check for some
+         subtle errors in your code, but just to be sure, you may
+         uncomment the next line
+         */
+
+        //collisionCheck();
+
+
         // Remove entities that need to be
 
-        GameScreenManager.getEntities().removeAll(GameScreenManager.getEntitiesToRemove());
+        GameScreenManager.flushEntities();
 
         batch.end();
-        //Collision detection test code
-//        Polygon p1 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
-//        Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
-//        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-//        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-//        GameManager.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-//        GameManager.getShapeRenderer().setColor(Color.GREEN);
-//        GameManager.getShapeRenderer().polygon(p1.getTransformedVertices());
-//        GameManager.getShapeRenderer().setColor(Color.BLUE);
-//        GameManager.getShapeRenderer().polygon(p2.getTransformedVertices());
-//        PolygonHelper.collidePolygon(p1,p2);
-//        GameManager.getShapeRenderer().end();
-//        try {
-//            Thread.sleep(2500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        GameManager.getRenderer().end();
+
     }
 
     @Override
     public void resize(int width, int height) {
-        worldCam.viewportWidth = width;
-        worldCam.viewportHeight = height;
-        guiCam.viewportWidth = width;
-        guiCam.viewportHeight = height;
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
@@ -272,8 +269,21 @@ public class GameScreen implements Screen {
         scoreText.dispose();
     }
 
-    public EntityEnemy getEnemy() {
+    public EnemyEntity getEnemy() {
         return enemy;
+    }
+
+    private void collisionCheck() {
+        //Collision detection test code
+        Polygon p1 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
+        Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
+//        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
+//        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
+        GameManager.getRenderer().setColor(Color.GREEN);
+        GameManager.getRenderer().polygon(p1.getTransformedVertices());
+        GameManager.getRenderer().setColor(Color.BLUE);
+        GameManager.getRenderer().polygon(p2.getTransformedVertices());
+        System.out.println(PolygonHelper.collidePolygon(p1,p2));
     }
 
 }

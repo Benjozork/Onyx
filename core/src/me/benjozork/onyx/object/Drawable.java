@@ -1,9 +1,12 @@
 package me.benjozork.onyx.object;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 
+import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -11,7 +14,7 @@ import me.benjozork.onyx.utils.Utils;
  * Describes an object that is to be drawn on the screen
  * @author Benjozork
  */
-public abstract class Drawable {
+public abstract class Drawable implements Disposable {
 
     protected Vector2 position;
     protected Vector2 velocity = new Vector2(0, 0);
@@ -19,54 +22,64 @@ public abstract class Drawable {
 
     protected float maxVelocity = 100f;
     protected float angle;
+
     protected Polygon bounds;
 
-    private float speed, maxSpeed;
-
-    private boolean boundsDebug = false;
+    private float maxSpeed;
     private boolean defaultMaxSpeed = true;
 
-    private Polygon cache;
+    private static boolean debug = true;
 
-    public Drawable(int x, int y) {
+    public Drawable(float x, float y) {
         this.position = new Vector2(x, y);
     }
 
-    public Drawable(Vector2 position) {
-        this.position = position;
-    }
-
     /**
-     * Internally update the Drawable
+     * Internally updates the Drawable
      * @param dt The delta time
      */
     public void update(float dt) {
-        if (defaultMaxSpeed) maxSpeed = speed + 1f;
-        bounds.setPosition(position.x, position.y);
+        if (defaultMaxSpeed) maxSpeed = velocity.len() + 1f;
 
-        if (speed > maxSpeed) speed = maxSpeed;
-        if (speed < - maxSpeed) speed = - maxSpeed;
+        if (velocity.len() > maxSpeed) velocity.setLength(maxSpeed);
+        if (velocity.len() < - maxSpeed) velocity.setLength(-maxSpeed);
 
         if (angle != 0) {
-            velocity.x = (float) Math.sin(angle);
-            velocity.y = (float) Math.cos(angle);
+            velocity.set(velocity.x * (float)Math.sin(angle), velocity.y * (float)Math.cos(angle));
         }
 
-        position.add(velocity.nor().scl(dt).scl(speed));
+        velocity.add(acceleration);
+        position.add(velocity.cpy().scl(dt));
+
+        setPosition(position);
+        setAcceleration(acceleration);
+
+        bounds.setPosition(position.x, position.y);
+
+        // Draw bounds polygon if debug enabled
+
+        if (debug) {
+            GameManager.getRenderer().setProjectionMatrix(GameManager.getWorldCamera().combined);
+            GameManager.getRenderer().setColor(Color.WHITE);
+            GameManager.setIsShapeRendering(true);
+            GameManager.getRenderer().polygon(this.getBounds().getTransformedVertices());
+            GameManager.setIsShapeRendering(false);
+        }
     }
+
+    // Abstract methods
 
     public abstract void init();
 
-    /**
-     * Update the Drawable
-     */
     public abstract void update();
 
     public abstract void draw();
 
+    public abstract void dispose();
+
     /**
-     * Check if the Drawable collides with a polygon
-     * @param otherBounds The polygon used to check
+     * Checks if the Drawable collides with a specified {@link Polygon}
+     * @param otherBounds the polygon used to perform the check
      * @return whether the Drawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
@@ -100,13 +113,6 @@ public abstract class Drawable {
         bounds.setPosition(position.x, position.y);
     }
 
-    public void move(float dx, float dy) {
-        // here, we move the position and the bounding box
-        position.x += dx * Utils.delta();
-        position.y += dy * Utils.delta();
-        bounds.setPosition(position.x, position.y);
-    }
-
     public Vector2 getVelocity() {
         return velocity;
     }
@@ -124,32 +130,14 @@ public abstract class Drawable {
     }
 
     /**
-     * Change the speed
-     * @param v The speed offset
+     * Adds a scaled directional {@link Vector2} to the velocity
      */
-    public void accelerate(float v) {
-        speed += v;
-        if (velocity.x == 0 && velocity.y == 0 && speed > 0f) velocity.set(0, 1); // Prevent this from having no effect
-    }
-
-    public float getMaxVelocity() {
-        return maxVelocity;
-    }
-
-    public void setMaxVelocity(float maxVelocity) {
-        this.maxVelocity = maxVelocity;
+    public void accelerate(Vector2 dv) {
+        velocity.add(dv);
     }
 
     public void rotate(float v) {
         angle += v * Utils.delta();
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public float getMaxSpeed() {
@@ -162,18 +150,11 @@ public abstract class Drawable {
     }
 
     /**
-     * Check if the mouse hovers above the hitbox
-     * @return result
+     * Checks if the mouse hovers above the hitbox
      */
     public boolean hovering() {
         Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
         return getBounds().contains(mouse);
-//        if (mouse.x > getBounds().getX()
-//                && mouse.x < (getBounds().getX() + getBounds().getWidth())
-//                && mouse.y > getBounds().getY()
-//                && mouse.y < (getBounds().getY() + getBounds().getHeight())) {
-//            return true;
-//        } else return false;
     }
 
     public Polygon getBounds() {
@@ -184,10 +165,8 @@ public abstract class Drawable {
         this.bounds = bounds;
     }
 
-    public void toggleBoundsDebug() {
-        boundsDebug = ! boundsDebug;
+    public static void toggleDebug() {
+        debug = ! debug;
     }
-
-    public abstract void dispose();
 
 }

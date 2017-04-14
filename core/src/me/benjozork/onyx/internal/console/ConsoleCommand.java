@@ -1,13 +1,15 @@
 package me.benjozork.onyx.internal.console;
 
+import com.badlogic.gdx.utils.Array;
+
 /**
- * Describes a command sent to the console
+ * Describes a command sent to the {@link Console}
  * @author Benjozork
  */
 public class ConsoleCommand {
 
     private String command;
-    private String args[];
+    private String args[] = new String[]{};
 
     /**
      * @param str the whole string of the command, including identifier and arguments all separated by whitespaces
@@ -17,9 +19,13 @@ public class ConsoleCommand {
         this.command = splitBuf[0];
         if (splitBuf.length <= 1) {
             this.args = new String[]{};
-            return;
+        } else {
+            Array<String> arr = new Array<String>();
+            for (String s : splitBuf) {
+                if (! s.equals(splitBuf[0])) arr.add(s);
+            }
+            this.args = arr.toArray(String.class);
         }
-        System.arraycopy(splitBuf, 1, args, 1, splitBuf.length - 1);
     }
 
     public String getCommand() {

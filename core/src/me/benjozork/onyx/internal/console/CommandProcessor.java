@@ -10,6 +10,6 @@ public interface CommandProcessor {
      * Called when a {@link ConsoleCommand} assigned to this CommandProcessor is received
      * @param c the {@link ConsoleCommand}}
      */
-    void onCommand(ConsoleCommand c);
+    boolean onCommand(ConsoleCommand c);
 
 }

@@ -1,7 +1,6 @@
 package me.benjozork.onyx.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,15 +9,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.ScreenManager;
-import me.benjozork.onyx.ui.UIButton;
-import me.benjozork.onyx.ui.UICheckbox;
-import me.benjozork.onyx.ui.UIDropdown;
-import me.benjozork.onyx.ui.UIRadioButton;
-import me.benjozork.onyx.ui.UIRadioButtonGroup;
-import me.benjozork.onyx.ui.UIScreen;
-import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.ui.UIButton;
+import me.benjozork.onyx.ui.UIScreen;
+import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
  * Manages the logic when the game's various menus are being navigated through
@@ -27,10 +21,6 @@ import me.benjozork.onyx.object.TextComponent;
 public class MenuScreen implements Screen {
 
     private UIScreen uiScreen;
-    private UIButton button;
-    private UICheckbox checkbox;
-    private UIDropdown dropdown;
-    private UIRadioButtonGroup radioButtonGroup;
 
     private Sprite background;
 
@@ -45,58 +35,29 @@ public class MenuScreen implements Screen {
         background.setColor(Color.GRAY);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        uiScreen = new UIScreen(new Vector2(0, 0));
+        uiScreen = new UIScreen(0, 0);
 
         // Init parameter
 
         currentParameter.size = 35;
         currentParameter.color = Color.WHITE;
 
-        // Add button
+        // "Play" button
 
-        button = new UIButton(960 - (95 / 2), 600 - 55 / 2, 95, 55, new TextComponent("Play!", currentUIFont, currentParameter));
-        button.addAction("action", new Runnable() {
-            @Override
-            public void run() {
-                ScreenManager.setCurrentScreen(new GameScreen());
-            }
-        }, ActionEvent.CLICKED);
+        final float BUTTON_PLAY_WIDTH = 400, BUTTON_PLAY_HEIGHT = 65;
 
-        // Add checkbox
+        final Vector2 centeredButtonPos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_HORIZONTALLY_IN_CONTAINER,
+                0, 0, BUTTON_PLAY_WIDTH, BUTTON_PLAY_HEIGHT, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        checkbox = new UICheckbox(960 - (95 / 2), 600 - (55 / 2) - 40, 32, 32, new TextComponent("Check!", currentUIFont, currentParameter));
+        final TextComponent buttonPlayText = new TextComponent("Play", currentUIFont, currentParameter);
 
-        // Add dropdown
-
-        dropdown = new UIDropdown(960 - (95 / 2), 600 - (55 / 2) - 100, 305, 55, new TextComponent("Dropdown!", currentUIFont, currentParameter));
-        dropdown.add("Apple", "Banana", "Orange", "Watermelon", "Raspberry");
-
-        // Add radio buttons
-
-        TextComponent radioComponent = new TextComponent("Radio!", currentUIFont, currentParameter);
-
-        radioButtonGroup = new UIRadioButtonGroup();
-        radioButtonGroup.addAction("action", new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("value changed");
-            }
-        }, ActionEvent.VALUE_CHANGED);
-
-        radioButtonGroup.addButton(new UIRadioButton(200, 200, 26, 26, radioComponent));
-        radioButtonGroup.addButton(new UIRadioButton(200, 240, 26, 26, radioComponent));
-        radioButtonGroup.addButton(new UIRadioButton(200, 280, 26, 26, radioComponent));
+        // Add buttons
+        UIButton buttonPlay = new UIButton(centeredButtonPos.x, 500, BUTTON_PLAY_WIDTH, BUTTON_PLAY_HEIGHT, buttonPlayText);
 
         // Init screen
 
+        uiScreen.add(buttonPlay);
         uiScreen.init();
-        uiScreen.add(button);
-        uiScreen.add(checkbox);
-        for (UIRadioButton button : radioButtonGroup.getButtons()) {
-            uiScreen.add(button);
-        }
-        uiScreen.add(radioButtonGroup);
-        uiScreen.add(dropdown);
 
     }
 
@@ -110,22 +71,6 @@ public class MenuScreen implements Screen {
         GameManager.getBatch().disableBlending();
         background.draw(GameManager.getBatch());
         GameManager.getBatch().enableBlending();
-
-        if (Gdx.input.justTouched()) {
-            uiScreen.click(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            button.resize(10f, 0f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            button.resize(- 10f, 0f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            button.resize(0f, 10f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            button.resize(0f, - 10f);
-        }
 
         uiScreen.update();
         uiScreen.draw();

@@ -4,8 +4,8 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.ui.object.ActionEvent;
+import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
  * @author Benjozork
