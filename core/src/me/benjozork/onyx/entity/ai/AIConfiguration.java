@@ -27,6 +27,11 @@ public class AIConfiguration {
      */
     public LivingEntity target;
 
+    /**
+     * The {@link AIShootingConfiguration} to use for shooting mechanics
+     */
+    public AIShootingConfiguration shootingConfig;
+
     public float factor = 100f;
 
     /**

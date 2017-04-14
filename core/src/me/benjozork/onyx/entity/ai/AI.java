@@ -26,11 +26,31 @@ public class AI {
     private LivingEntity source;
     private LivingEntity target;
 
+    private float minShootStreakDelay;
+    private float maxShootStreakDelay;
+    private float shootStreakDelay;
+
+    private float minShootStreakTime;
+    private float maxShootStreakTime;
+    private float shootStreakTime;
+
+    private float maxShootingResetTime, shootingResetTimer;
+
+    private float shootStreakTimer;
+    private float maxBulletTime, bulletTimer;
+
+    private float minShootImprecision;
+    private float maxShootImprecision;
+    private float shootImprecision;
+
+    public boolean isFiring = false;
+
     private float factor;
 
     private Vector2 sourceDir;
     private Vector2 bulletEscapeDir;
     private Vector2 temp;
+    private Vector2 precisionTemp;
 
     /**
      * Creates a basic AI for an entity.
@@ -40,10 +60,38 @@ public class AI {
     public AI(AIConfiguration configuration) {
         this.source = configuration.source;
         this.target = configuration.target;
-        this.strategy = configuration.strategy;
-        this.reluctance = configuration.reluctance;
-        this.factor = configuration.factor;
+
         this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
+
+        if (debug) log.print("Source entity: '%s'", source.getClass().getSimpleName());
+        if (debug) log.print("Target entity: '%s'", target.getClass().getSimpleName());
+
+        this.strategy = configuration.strategy;
+        if (debug) log.print("Strategy: '%s'", strategy);
+        this.reluctance = configuration.reluctance;
+        if (debug) log.print("Reluctance: '%s'", reluctance);
+
+        this.minShootStreakDelay = configuration.shootingConfig.minShootStreakDelay;
+        this.maxShootStreakDelay = configuration.shootingConfig.maxShootStreakDelay;
+        this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
+        if (debug) log.print("ShootStreakDelay: '%s'", shootStreakDelay);
+
+        this.minShootStreakTime = configuration.shootingConfig.minShootStreakTime;
+        this.maxShootStreakTime = configuration.shootingConfig.maxShootStreakDelay;
+        this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
+        if (debug) log.print("ShootStreakTime: '%s'", shootStreakTime);
+
+        this.maxShootingResetTime = configuration.shootingConfig.shootingConfigValueLifetime;
+        if (debug) log.print("MaxShootingResetTime: '%s'", maxShootingResetTime);
+        this.maxBulletTime = configuration.shootingConfig.shootInterval;
+        if (debug) log.print("MaxBulletTime: '%s'", maxBulletTime);
+
+        this.minShootImprecision = configuration.shootingConfig.minShootImprecision;
+        this.maxShootImprecision = configuration.shootingConfig.maxShootImprecision;
+        this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
+        if (debug) log.print("ShootPrecision: '%s'", shootImprecision);
+
+        this.factor = configuration.factor;
     }
 
     /**
@@ -51,6 +99,36 @@ public class AI {
      * @param delta the delta time
      */
     public void update(float delta) {
+
+        shootStreakTimer += delta;
+        bulletTimer += delta;
+        shootingResetTimer += delta;
+
+        if (! isFiring) {
+            if (shootStreakTimer > shootStreakDelay) {
+                isFiring = true;
+            }
+        } else {
+            if (shootStreakTimer < shootStreakTime) {
+                if (bulletTimer > maxBulletTime) {
+
+                    precisionTemp = target.getPosition().cpy().add(shootImprecision, shootImprecision);
+
+                    source.fireProjectileAt("", precisionTemp.x, precisionTemp.y);
+                    bulletTimer = 0f;
+                }
+            } else {
+                shootStreakTimer = 0f;
+                isFiring = false;
+            }
+        }
+
+        if (shootingResetTimer > maxShootingResetTime) {
+            this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
+            this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
+            this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
+        }
+
         bulletEscapeDir = ProjectileManager.nearestBulletDirection(source);
         sourceDir = new Vector2(target.getX() - source.getX(), target.getY() - source.getY());
 
@@ -94,10 +172,6 @@ public class AI {
                 break;
             default:
                 log.print("Error: AI strategy %s not supported", strategy);
-        }
-
-        if (random.nextBoolean()) {
-            source.fireProjectileAt("", target.getX(),  target.getY());
         }
 
     }

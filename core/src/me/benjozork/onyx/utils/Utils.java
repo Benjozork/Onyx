@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Random;
+
 import me.benjozork.onyx.internal.GameManager;
 
 
@@ -25,6 +27,8 @@ public class Utils {
      */
     private static final Vector2 v2 = new Vector2();
     private static final Vector3 v3 = new Vector3();
+
+    private static final Random random = new Random();
 
     /**
      * The current frame-time
@@ -174,9 +178,14 @@ public class Utils {
         v.set(-v.y,v.x);
     }
 
-    public static <T> void requireNonNull(T obj) {
-        if (obj == null)
-            throw new NullPointerException();
+    /**
+     * Returns a random value between two floats
+     * @param min the lower bound
+     * @param max the upper bound
+     * @return the random value generated
+     */
+    public static float randomBetween(float min, float max) {
+        return random.nextFloat() * (max - min) + min;
     }
 
 }
