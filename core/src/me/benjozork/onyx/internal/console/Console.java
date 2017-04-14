@@ -49,7 +49,7 @@ public class Console {
         font = new BitmapFont();
 
         batch = GameManager.getBatch();
-        renderer = GameManager.getShapeRenderer();
+        renderer = GameManager.getRenderer();
 
         /*
         Here, we add all the commands from the base game.

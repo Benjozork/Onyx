@@ -1,5 +1,7 @@
 package me.benjozork.onyx.entity;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 
@@ -25,7 +27,8 @@ public class TestEntity extends Entity {
     @Override
     public void draw() {
         GameManager.setIsShapeRendering(true);
-        GameManager.getShapeRenderer().polygon(bounds.getTransformedVertices());
+        GameManager.getRenderer().set(ShapeRenderer.ShapeType.Filled);
+        GameManager.getRenderer().polygon(bounds.getTransformedVertices());
         GameManager.setIsShapeRendering(false);
     }
 

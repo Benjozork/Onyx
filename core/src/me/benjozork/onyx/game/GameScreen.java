@@ -232,7 +232,7 @@ public class GameScreen implements Screen {
         GameScreenManager.flushEntities();
 
         batch.end();
-        GameManager.getShapeRenderer().end();
+        GameManager.getRenderer().end();
 
     }
 
@@ -272,10 +272,10 @@ public class GameScreen implements Screen {
         Polygon p2 = PolygonHelper.getPolygon((float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400),(float) (100+Math.random()*400));
 //        Polygon p1 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
 //        Polygon p2 = new Polygon(new float[]{(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f,(float) Math.random()*200f});
-        GameManager.getShapeRenderer().setColor(Color.GREEN);
-        GameManager.getShapeRenderer().polygon(p1.getTransformedVertices());
-        GameManager.getShapeRenderer().setColor(Color.BLUE);
-        GameManager.getShapeRenderer().polygon(p2.getTransformedVertices());
+        GameManager.getRenderer().setColor(Color.GREEN);
+        GameManager.getRenderer().polygon(p1.getTransformedVertices());
+        GameManager.getRenderer().setColor(Color.BLUE);
+        GameManager.getRenderer().polygon(p2.getTransformedVertices());
         System.out.println(PolygonHelper.collidePolygon(p1,p2));
     }
 

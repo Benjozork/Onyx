@@ -59,10 +59,10 @@ public abstract class Drawable implements Disposable {
         // Draw bounds polygon if debug enabled
 
         if (debug) {
-            GameManager.getShapeRenderer().setProjectionMatrix(GameManager.getWorldCamera().combined);
-            GameManager.getShapeRenderer().setColor(Color.WHITE);
+            GameManager.getRenderer().setProjectionMatrix(GameManager.getWorldCamera().combined);
+            GameManager.getRenderer().setColor(Color.WHITE);
             GameManager.setIsShapeRendering(true);
-            GameManager.getShapeRenderer().polygon(this.getBounds().getTransformedVertices());
+            GameManager.getRenderer().polygon(this.getBounds().getTransformedVertices());
             GameManager.setIsShapeRendering(false);
         }
     }

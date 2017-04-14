@@ -65,7 +65,7 @@ public class GameManager {
      * Returns the {@link ShapeRenderer}
      * @return the {@link ShapeRenderer}
      */
-    public static ShapeRenderer getShapeRenderer() {
+    public static ShapeRenderer getRenderer() {
         return renderer;
     }
 

@@ -71,6 +71,8 @@ public class OnyxGame extends Game {
         GameManager.setGuiCamera(guiCam);
 
         GameManager.setRenderer(new ShapeRenderer());
+        GameManager.getRenderer().setAutoShapeType(true);
+
         GameManager.setBatch(new SpriteBatch());
 
         GameManager.setFont(new BitmapFont());
