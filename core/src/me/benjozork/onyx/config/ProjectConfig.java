@@ -7,5 +7,6 @@ public class ProjectConfig {
 
     public String version;
     public String initial_screen;
+    public String default_font;
 
 }

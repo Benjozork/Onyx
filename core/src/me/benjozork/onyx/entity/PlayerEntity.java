@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.utils.PolygonHelper;
@@ -119,6 +120,7 @@ public class PlayerEntity extends LivingEntity {
 
     @Override
     public void dispose() {
+        GameScreenManager.removeEntity(this);
         PLAYER_TEXTURE.dispose();
         FIRING_PLAYER_TEXTURE.dispose();
         MOVING_FIRING_PLAYER_TEXTURE.dispose();

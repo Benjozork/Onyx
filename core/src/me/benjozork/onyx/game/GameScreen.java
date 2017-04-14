@@ -178,6 +178,11 @@ public class GameScreen implements Screen {
 
     public void render(float delta) {
 
+        if (GameScreenManager.isDisposing()) {
+            GameScreenManager.dispose();
+            return;
+        }
+
         // Update
 
         update(delta);

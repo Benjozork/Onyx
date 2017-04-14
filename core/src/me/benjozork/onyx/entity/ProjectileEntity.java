@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.PolygonHelper;
@@ -53,12 +54,20 @@ public class ProjectileEntity extends Entity {
         if (getX() < 0 || getX() > Gdx.graphics.getWidth() || getY() < 0 || getY() > Gdx.graphics.getHeight()) {
             dispose();
         }
+
         if (GameScreenManager.getEnemies().size == 0) return;
+
         for (EnemyEntity enemy : GameScreenManager.getEnemies()) {
             if (this.collidesWith(enemy.getBounds()) && enemy.type != source) {
                 enemy.damage(10f);
                 this.dispose();
             }
+        }
+
+        PlayerEntity player = GameScreenManager.getPlayer();
+        if (this.collidesWith(player.getBounds()) && player.type != source) {
+            player.damage(10f);
+            this.dispose();
         }
     }
 
@@ -69,8 +78,9 @@ public class ProjectileEntity extends Entity {
 
     @Override
     public void dispose() {
-        texture.dispose();
         GameScreenManager.removeEntity(this);
+        ProjectileManager.removeProjectile(this);
+        texture.dispose();
     }
 
     public float getDamage() {

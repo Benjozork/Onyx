@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.config.Configs;
+import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
@@ -55,9 +57,11 @@ public class TextComponent {
      * @param text the text to be displayed
      */
     public TextComponent(String text) {
+        ProjectConfig projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
         this.text = text;
-        this.generatedFont = new BitmapFont();
-        this.layout = new GlyphLayout(new BitmapFont(), text);
+        this.fontPath = projectConfig.default_font;
+        this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
+        this.layout = new GlyphLayout(generatedFont, text);
     }
 
 
@@ -195,14 +199,15 @@ public class TextComponent {
     }
 
     /**
-     * Returns the FreeTypeFontParameter of the font used to render the text
+     * Returns the FreeTypeFontParameter of the font used to render the text.<br/>
+     * WARNING: {@link TextComponent#generateFont()} should ALWAYS be called after editing the parameter.
      */
     public FreeTypeFontGenerator.FreeTypeFontParameter getParameter() {
         return parameter;
     }
 
     /**
-     * Sets the FreeTypeFontParameter of the font used to render the text
+     * Sets the FreeTypeFontParameter of the font used to render the text<br/>
      * WARNING: This method generates a new {@link BitmapFont} using the cached {@link FreeTypeFontGenerator}<br/>
      * instance in {@link FTFGeneratorCache} that matches the font path.
      */
