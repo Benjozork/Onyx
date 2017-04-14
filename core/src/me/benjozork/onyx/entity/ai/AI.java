@@ -10,7 +10,7 @@ import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Describes an AI behavior using an {@link AIConfiguration}, which contains an {@link AIShootingConfiguration}.<br/>
+ * Manages an AI behavior using an {@link AIConfiguration}, which contains an {@link AIShootingConfiguration}.<br/>
  *
  * Movement mechanics programming by Rishi Raj<br/>
  * Shooting mechanics programming by Benjozork
@@ -95,7 +95,7 @@ public class AI {
         this.minShootImprecision = configuration.shootingConfig.minShootImprecision;
         this.maxShootImprecision = configuration.shootingConfig.maxShootImprecision;
         this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
-        if (debug) log.print("ShootPrecision: '%s'", shootImprecision);
+        if (debug) log.print("ShootImprecision: '%s'", shootImprecision);
 
         this.factor = configuration.factor;
     }

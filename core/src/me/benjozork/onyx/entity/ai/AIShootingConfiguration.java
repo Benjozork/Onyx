@@ -7,42 +7,42 @@ package me.benjozork.onyx.entity.ai;
 public class AIShootingConfiguration {
 
     /**
-     * The minimum time between two shooting streaks
+     * The minimum time between two shooting streaks, in seconds
      */
     public float minShootStreakDelay;
 
     /**
-     * The maximum time between two shooting streaks
+     * The maximum time between two shooting streaks, in seconds
      */
     public float maxShootStreakDelay;
 
     /**
-     * The minimum duration of a shooting streak
+     * The minimum duration of a shooting streak, in seconds
      */
     public float minShootStreakTime;
 
     /**
-     * The maximum duration of a shooting streak
+     * The maximum duration of a shooting streak, in seconds
      */
     public float maxShootStreakTime;
 
     /**
-     * The interval at which a projectile is fired
+     * The interval at which a projectile is fired, in seconds
      */
     public float shootInterval;
 
     /**
-     * The interval for new shooting config values to be generated
+     * The interval for new shooting config values to be generated, in seconds
      */
     public float shootingConfigValueLifetime;
 
     /**
-     * The minimum precision with which the projectiles are fired
+     * The minimum imprecision with which the projectiles are fired, in pixels
      */
     public float minShootImprecision;
 
     /**
-     * The maximum precision with which the projectiles are fired
+     * The maximum imprecision with which the projectiles are fired, in pixels
      */
     public float maxShootImprecision;
 
