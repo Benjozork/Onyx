@@ -87,8 +87,6 @@ public class PlayerEntity extends LivingEntity {
         if (velocity.len() > 0) velocity.setLength(velocity.len() - 15f);
         else velocity.setLength(velocity.len() + 15f);
 
-        System.out.println(velocity);
-
         // Set current texture depending on state
 
         if (state == DrawState.IDLE) {
