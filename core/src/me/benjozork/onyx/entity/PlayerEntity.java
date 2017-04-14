@@ -28,13 +28,12 @@ public class PlayerEntity extends LivingEntity {
 
     private Vector3 mouse = new Vector3();
 
-    private final int ANGLE_DELTA = 100;
+    private final float ANGLE_DELTA = 100, TARGET_ANGLE = 25, ANGLE_DELTA_TOLERANCE = 0.1f;
 
     private DrawState state = DrawState.IDLE;
     private Direction direction = Direction.STRAIGHT;
+
     private float spriteRotation;
-    private boolean accelerated_right = false, accelerated_left = false;
-    private boolean debug = true;
 
     public PlayerEntity(float x, float y) {
         super(x, y);
@@ -56,23 +55,26 @@ public class PlayerEntity extends LivingEntity {
         // Get rotation depending on direction
 
         if (direction == Direction.STRAIGHT) {
-            if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
+            if (spriteRotation < ANGLE_DELTA_TOLERANCE && spriteRotation > - ANGLE_DELTA_TOLERANCE) spriteRotation = 0f;
             if (spriteRotation < 0 * MathUtils.degreesToRadians)
                 spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             else if (spriteRotation > 0 * MathUtils.degreesToRadians)
                 spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
+            velocity.y = 0;
         } else if (direction == Direction.RIGHT) {
-            if (spriteRotation < 25 * MathUtils.degreesToRadians)
+            if (spriteRotation < TARGET_ANGLE * MathUtils.degreesToRadians)
                 spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(- 180f);
             accelerate(5f);
             velocity.x -= velocity.x * 2;
+            velocity.y = 0;
         } else if (direction == Direction.LEFT) {
             if (spriteRotation > - 25 * MathUtils.degreesToRadians)
                 spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
             accelerate(2.5f);
             velocity.x += velocity.x * 2;
+            velocity.y = 0;
         }
 
         // Check and block out-of-bounds movement
@@ -84,6 +86,8 @@ public class PlayerEntity extends LivingEntity {
 
         if (velocity.len() > 0) velocity.setLength(velocity.len() - 15f);
         else velocity.setLength(velocity.len() + 15f);
+
+        System.out.println(velocity);
 
         // Set current texture depending on state
 
@@ -119,17 +123,6 @@ public class PlayerEntity extends LivingEntity {
         FIRING_PLAYER_TEXTURE.dispose();
         MOVING_FIRING_PLAYER_TEXTURE.dispose();
         MOVING_PLAYER_TEXTURE.dispose();
-    }
-
-    @Override
-    public void move(float vx, float vy) {
-        if ((getX() + vx * Utils.delta()) + 50 > Gdx.graphics.getWidth()
-                || (getY() + vy * Utils.delta()) + 50 > Gdx.graphics.getHeight()
-                || (getX() + vx * Utils.delta()) < 0
-                || (getY() + vy * Utils.delta()) < 0) {
-            return;
-        }
-        super.move(vx, vy);
     }
 
     /**

@@ -28,10 +28,15 @@ public class EnemyEntity extends LivingEntity {
 
     private Sprite currentTexture = new Sprite(ENEMY_TEXTURE);
 
+    private final float ANGLE_DELTA = 100, TARGET_ANGLE = 25, ANGLE_DELTA_TOLERANCE = 0.1f;
+
     private DrawState state = DrawState.IDLE;
     private Direction direction = Direction.STRAIGHT;
+
     private float spriteRotation;
+
     private AI ai;
+
     private boolean debug = true;
 
     public EnemyEntity(float x, float y) {
@@ -67,25 +72,25 @@ public class EnemyEntity extends LivingEntity {
 
         ai.update(Utils.delta());
 
-        if(velocity.x < -2)
-            direction = Direction.LEFT;
-        else if(velocity.x > 2)
+        if (velocity.x < -2)
             direction = Direction.RIGHT;
+        else if (velocity.x > 2)
+            direction = Direction.LEFT;
         else
             direction = Direction.STRAIGHT;
 
         if (direction == EnemyEntity.Direction.STRAIGHT) {
-            if (spriteRotation < 0.1 && spriteRotation > - 0.1) spriteRotation = 0f;
+            if (spriteRotation < ANGLE_DELTA_TOLERANCE && spriteRotation > - ANGLE_DELTA_TOLERANCE) spriteRotation = 0f;
             if (spriteRotation < 0 * MathUtils.degreesToRadians)
-                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             else if (spriteRotation > 0 * MathUtils.degreesToRadians)
-                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
+                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
         } else if (direction == EnemyEntity.Direction.RIGHT) {
-            if (spriteRotation < 25 * MathUtils.degreesToRadians)
-                spriteRotation += (200 * MathUtils.degreesToRadians) * Utils.delta();
+            if (spriteRotation < TARGET_ANGLE * MathUtils.degreesToRadians)
+                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
         } else if (direction == EnemyEntity.Direction.LEFT) {
-            if (spriteRotation > - 25 * MathUtils.degreesToRadians)
-                spriteRotation -= (200 * MathUtils.degreesToRadians) * Utils.delta();
+            if (spriteRotation > - TARGET_ANGLE * MathUtils.degreesToRadians)
+                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
         }
 
 
@@ -103,6 +108,7 @@ public class EnemyEntity extends LivingEntity {
         currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
 
         bounds.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+
     }
 
     @Override
