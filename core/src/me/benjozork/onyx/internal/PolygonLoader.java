@@ -29,6 +29,10 @@ public class PolygonLoader {
         value = reader.parse(new FileHandle("data/models.json"));
     }
 
+    /**
+     * Loads a new polygon into the polygon cache
+     * @param name the name of the polygon to load
+     */
     public static void loadPolygon(String name) {
         int len = 0, i = 0;
         Polygon p;
@@ -67,10 +71,22 @@ public class PolygonLoader {
         log.print("Polygon '%s' loaded", name);
     }
 
+    /**
+     * Retrieves a polygon from the polygon cache
+     * @param name the polygon to retrieve
+     * @return the loaded polygon
+     */
     public static Polygon getPolygon(String name) {
         return getPolygon(name, 1, 1);
     }
 
+    /**
+     * Retrieves a polygon from the polygon cache, with a specified width and height
+     * @param name the polygon to retrieve
+     * @param width the width of the polygon
+     * @param height the height of the polygon
+     * @return the loaded polygon
+     */
     public static Polygon getPolygon(String name, float width, float height) {
         if(! polygons.containsKey(name))
             loadPolygon(name);
@@ -87,6 +103,13 @@ public class PolygonLoader {
         ret.setOrigin(width/2, height/2);
         return ret;
         //NOTE: Origin might need to be revisited
+    }
+
+    /**
+     * Empties the polygon cache
+     */
+    public static void dispose() {
+        polygons = new HashMap<String, Polygon>();
     }
 
 }

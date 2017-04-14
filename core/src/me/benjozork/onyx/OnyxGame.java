@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
+import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.internal.ScreenManager;
@@ -91,19 +92,25 @@ public class OnyxGame extends Game {
 
     }
 
-    @Override
-    public void dispose() {
 
-        // Dispose active screen
+    public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            Console.dispatchCommand(new ConsoleCommand("screen"));
+            toggleDebug();
+        }
 
-        ScreenManager.getCurrentScreen().dispose();
+        // Update console
 
-        // Dispose various resources
+        Console.update();
 
-        GameManager.dispose();
-        if (GameScreenManager.exists()) GameScreenManager.dispose();
+        // Update camera
 
+        GameManager.getWorldCamera().update();
+
+        if (ScreenManager.getCurrentScreen() != getScreen())
+            setScreen(ScreenManager.getCurrentScreen());
     }
+
 
     @Override
     public void render() {
@@ -126,22 +133,20 @@ public class OnyxGame extends Game {
             Console.draw();
     }
 
-    public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            Console.dispatchCommand(new ConsoleCommand("screen"));
-            toggleDebug();
-        }
+    @Override
+    public void dispose() {
 
-        // Update console
+        // Dispose active screen
 
-        Console.update();
+        ScreenManager.getCurrentScreen().dispose();
 
-        // Update camera
+        // Dispose various resources
 
-        GameManager.getWorldCamera().update();
+        GameManager.dispose();
+        FTFGeneratorCache.dispose();
+        PolygonLoader.dispose();
+        if (GameScreenManager.exists()) GameScreenManager.dispose();
 
-        if (ScreenManager.getCurrentScreen() != getScreen())
-            setScreen(ScreenManager.getCurrentScreen());
     }
 
     private static void toggleDebug() {
