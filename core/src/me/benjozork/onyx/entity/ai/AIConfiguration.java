@@ -3,6 +3,7 @@ package me.benjozork.onyx.entity.ai;
 import me.benjozork.onyx.entity.LivingEntity;
 
 /**
+ * Describes an AI behavior
  * @author Benjozork
  */
 public class AIConfiguration {

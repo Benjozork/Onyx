@@ -1,6 +1,7 @@
 package me.benjozork.onyx.entity.ai;
 
 /**
+ * Describes an AI shooting behavior
  * @author Benjozork
  */
 public class AIShootingConfiguration {

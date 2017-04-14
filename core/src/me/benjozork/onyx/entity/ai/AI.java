@@ -10,7 +10,13 @@ import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * Describes an AI behavior using an {@link AIConfiguration}, which contains an {@link AIShootingConfiguration}.<br/>
+ *
+ * Movement mechanics programming by Rishi Raj<br/>
+ * Shooting mechanics programming by Benjozork
+ *
  * @author Rishi Raj
+ * @author Benjozork
  */
 public class AI {
 
@@ -18,7 +24,7 @@ public class AI {
 
     private Log log;
 
-    private boolean debug = false;
+    private boolean debug = false;  // This currently causes A LOT of lag. DO NOT TURN IT ON !
 
     private AIConfiguration.AIStrategy strategy;
     private AIConfiguration.ProjectileReluctance reluctance;
@@ -100,17 +106,30 @@ public class AI {
      */
     public void update(float delta) {
 
+        // Update timers
+
         shootStreakTimer += delta;
         bulletTimer += delta;
         shootingResetTimer += delta;
 
+        // Check if we are currently firing
+
         if (! isFiring) {
+
+            // Check if it is time to start firing
+
             if (shootStreakTimer > shootStreakDelay) {
                 isFiring = true;
             }
+
         } else {
+
+            // Check if we should still fire
+
             if (shootStreakTimer < shootStreakTime) {
                 if (bulletTimer > maxBulletTime) {
+
+                    // Apply imprecision and fire projectile
 
                     precisionTemp = target.getPosition().cpy().add(shootImprecision, shootImprecision);
 
@@ -118,8 +137,12 @@ public class AI {
                     bulletTimer = 0f;
                 }
             } else {
+
+                // We should stop firing
+
                 shootStreakTimer = 0f;
                 isFiring = false;
+
             }
         }
 
