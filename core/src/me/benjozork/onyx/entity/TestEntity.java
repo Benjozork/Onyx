@@ -6,6 +6,7 @@ import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
+ * For testing purposes only.
  * @author Benjozork
  */
 public class TestEntity extends Entity {

@@ -71,4 +71,5 @@ public class ProjectileManager {
     public static void toggleDebug() {
         debug = ! debug;
     }
+
 }
