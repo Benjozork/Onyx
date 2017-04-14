@@ -21,6 +21,8 @@ public class ProjectileEntity extends Entity {
 
     private float damage = 0;
 
+    private float speed = 1000;
+
     private String texturePath = "entity/player/bullet.png";
     private Texture texture = new Texture(texturePath);
 
@@ -42,6 +44,8 @@ public class ProjectileEntity extends Entity {
         // Set velocity accordingly to target
 
         velocity.set(target.sub(getX(), getY()));
+
+        velocity.nor().scl(speed);
     }
 
     @Override
