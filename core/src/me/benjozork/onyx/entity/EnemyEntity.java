@@ -48,7 +48,7 @@ public class EnemyEntity extends LivingEntity {
 
         // Initialize hitbox
 
-        bounds = PolygonLoader.getPolygon("Enemy", ENEMY_TEXTURE.getWidth(), ENEMY_TEXTURE.getHeight() - 35);
+        bounds = PolygonLoader.getPolygon("Enemy", ENEMY_TEXTURE.getWidth(), ENEMY_TEXTURE.getHeight());
 
         // Flip texture upside down
 
