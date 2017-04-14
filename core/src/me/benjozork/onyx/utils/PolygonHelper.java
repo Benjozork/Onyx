@@ -3,7 +3,6 @@ package me.benjozork.onyx.utils;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.JsonValue;
 
 import me.benjozork.onyx.logger.Log;
 
@@ -117,30 +116,6 @@ public class PolygonHelper {
 
 
     /**
-     * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
-     * Get a polygon from a JSON Value(JSON array of JSON objects having x,y co-ordinates)
-     *
-     * @param value  Array denoting the pol
-     * @param width
-     * @param height
-     * @return
-     */
-    public static Polygon loadPolygon(JsonValue value, float width, float height) {
-        JsonValue.JsonIterator iter = value.iterator();
-        int len = 0, i = 0;
-        for (JsonValue val : iter) {
-            len += 2;
-        }
-        float[] vertices = new float[len];
-        for (JsonValue val : iter) {
-            vertices[i] = val.getFloat("x") * width;
-            vertices[i + 1] = val.getFloat("y") * height;
-            i += 2;
-        }
-        return new Polygon(vertices);
-    }
-
-    /**
      * Checks whether two polygons collide
      *
      * @param p1 the first polygon
@@ -150,8 +125,8 @@ public class PolygonHelper {
     public static boolean collidePolygon(Polygon p1, Polygon p2) {
         float[] v1 = p1.getTransformedVertices();
         float[] v2 = p2.getTransformedVertices();
-        float p1x1, p1y1, t3, t4;
-        float s1, s2, s3, s4;
+        float p1x1, p1y1, p1x2, p1y2;
+        float p2x1, p2y1, p2x2, p2y2;
         int i, j;
 
         // To check if any point of one polygon lies inside another polygon
@@ -167,14 +142,14 @@ public class PolygonHelper {
         for (i = 0; i < v1.length; i += 2) {
             p1x1 = v1[i];
             p1y1 = v1[i + 1];
-            t3 = v1[(i + 2) % v1.length]; //To return back to 0 when i+2 > len
-            t4 = v1[(i + 3) % v1.length]; //To return back to 0 when i+3 > len
+            p1x2 = v1[(i + 2) % v1.length]; //To return back to 0 when i+2 > len
+            p1y2 = v1[(i + 3) % v1.length]; //To return back to 0 when i+3 > len
             for (j = 0; j < v2.length; j += 2) {
-                s1 = v2[j];
-                s2 = v2[j + 1];
-                s3 = v2[(j + 2) % v2.length]; //To return back to 0 when j+2 > len
-                s4 = v2[(j + 3) % v2.length]; //To return back to 0 when j+3 > len
-                if (collisionAtPoints(p1x1, p1y1, t3, t4, s1, s2, s3, s4)) {
+                p2x1 = v2[j];
+                p2y1 = v2[j + 1];
+                p2x2 = v2[(j + 2) % v2.length]; //To return back to 0 when j+2 > len
+                p2y2 = v2[(j + 3) % v2.length]; //To return back to 0 when j+3 > len
+                if (collisionAtPoints(p1x1, p1y1, p1x2, p1y2, p2x1, p2y1, p2x2, p2y2)) {
                     if (debug) log.print("Collision at %d of p1 and %d of p2", i / 2 + 1, j / 2 + 1);
                     return true;
                 }
