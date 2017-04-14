@@ -65,12 +65,12 @@ public class EnemyEntity extends LivingEntity {
         AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
         shootingConfiguration.minShootStreakDelay = 1f;
         shootingConfiguration.maxShootStreakDelay = 2.5f;
-        shootingConfiguration.minShootStreakTime = 1.5f;
-        shootingConfiguration.maxShootStreakTime = 3.5f;
+        shootingConfiguration.minShootStreakTime = 2f;
+        shootingConfiguration.maxShootStreakTime = 4f;
         shootingConfiguration.shootingConfigValueLifetime = 5f;
         shootingConfiguration.shootInterval = 0.005f;
-        shootingConfiguration.minShootImprecision = 45f;
-        shootingConfiguration.maxShootImprecision = 100f;
+        shootingConfiguration.minShootImprecision = 25f;
+        shootingConfiguration.maxShootImprecision = 80f;
         aiConfiguration.shootingConfig = shootingConfiguration;
 
         ai = new AI(aiConfiguration);

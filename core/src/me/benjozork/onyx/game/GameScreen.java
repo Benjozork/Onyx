@@ -168,7 +168,7 @@ public class GameScreen implements Screen {
 
         scoreText.setText(String.valueOf(GameScreenManager.getScore()));
 
-        if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(5, 15, 0, 1920, 500, 1200);
+        if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(1, 3, 0, 1920, 500, 1200);
 
         // Update maxFrametime
         if (delta > maxFrameTime) {
