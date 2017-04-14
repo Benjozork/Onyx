@@ -10,7 +10,7 @@ import java.util.HashMap;
 import me.benjozork.onyx.logger.Log;
 
 /**
- * Class to load {@link Polygon} from a JSON value and to get
+ * Loads {@link Polygon} objects form JSON files and serves them to the game.
  * @author Rishi Raj
  */
 
@@ -31,6 +31,7 @@ public class PolygonLoader {
 
     /**
      * Loads a new polygon into the polygon cache
+     *
      * @param name the name of the polygon to load
      */
     public static void loadPolygon(String name) {
@@ -73,7 +74,9 @@ public class PolygonLoader {
 
     /**
      * Retrieves a polygon from the polygon cache
+     *
      * @param name the polygon to retrieve
+     *
      * @return the loaded polygon
      */
     public static Polygon getPolygon(String name) {
@@ -82,9 +85,11 @@ public class PolygonLoader {
 
     /**
      * Retrieves a polygon from the polygon cache, with a specified width and height
+     *
      * @param name the polygon to retrieve
      * @param width the width of the polygon
      * @param height the height of the polygon
+     *
      * @return the loaded polygon
      */
     public static Polygon getPolygon(String name, float width, float height) {
