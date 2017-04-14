@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
 import me.benjozork.onyx.internal.console.ConsoleCommand;
@@ -80,6 +81,9 @@ public class OnyxGame extends Game {
         // Init console
 
         Console.init();
+
+        // Init PolygonLoader
+        PolygonLoader.init();
 
         // Setup Initial Screen
 
