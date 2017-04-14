@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -42,7 +43,8 @@ public class PlayerEntity extends LivingEntity {
     @Override
     public void init() {
         // Initialize hitbox
-        bounds = PolygonHelper.getPolygon(getX(), getY(), PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
+        bounds = PolygonLoader.getPolygon("Ship",PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight() - 35);
+
 		type = Type.PLAYER;
 
 		setBulletShootOrigin(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);

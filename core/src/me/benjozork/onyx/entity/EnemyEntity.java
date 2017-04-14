@@ -11,7 +11,7 @@ import me.benjozork.onyx.entity.ai.AI;
 import me.benjozork.onyx.entity.ai.AIConfiguration;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.utils.PolygonHelper;
+import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -48,7 +48,7 @@ public class EnemyEntity extends LivingEntity {
 
         // Initialize hitbox
 
-        bounds = PolygonHelper.getPolygon(getX(), getY(), ENEMY_TEXTURE.getWidth(), ENEMY_TEXTURE.getHeight());
+        bounds = PolygonLoader.getPolygon("Enemy", ENEMY_TEXTURE.getWidth(), ENEMY_TEXTURE.getHeight() - 35);
 
         // Flip texture upside down
 
