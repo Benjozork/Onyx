@@ -24,7 +24,7 @@ public class AI {
 
     private Log log;
 
-    private boolean debug = false;  // This currently causes A LOT of lag. DO NOT TURN IT ON !
+    private boolean debug = true;  // This currently causes A LOT of lag. DO NOT TURN IT ON !
 
     private AIConfiguration.AIStrategy strategy;
     private AIConfiguration.ProjectileReluctance reluctance;
@@ -40,16 +40,16 @@ public class AI {
     private float maxShootStreakTime;
     private float shootStreakTime;
 
-    private float maxShootingResetTime, shootingResetTimer;
+    private float shootResetTime, shootResetTimer;
 
     private float shootStreakTimer;
-    private float maxBulletTime, bulletTimer;
+    private float shootInterval, shootBulletTimer;
 
     private float minShootImprecision;
     private float maxShootImprecision;
     private float shootImprecision;
 
-    public boolean isFiring = false;
+    public boolean isFiring = true;
 
     private float factor;
 
@@ -83,14 +83,14 @@ public class AI {
         if (debug) log.print("ShootStreakDelay: '%s'", shootStreakDelay);
 
         this.minShootStreakTime = configuration.shootingConfig.minShootStreakTime;
-        this.maxShootStreakTime = configuration.shootingConfig.maxShootStreakDelay;
+        this.maxShootStreakTime = configuration.shootingConfig.maxShootStreakTime;
         this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
         if (debug) log.print("ShootStreakTime: '%s'", shootStreakTime);
 
-        this.maxShootingResetTime = configuration.shootingConfig.shootingConfigValueLifetime;
-        if (debug) log.print("MaxShootingResetTime: '%s'", maxShootingResetTime);
-        this.maxBulletTime = configuration.shootingConfig.shootInterval;
-        if (debug) log.print("MaxBulletTime: '%s'", maxBulletTime);
+        this.shootResetTime = configuration.shootingConfig.shootResetTime;
+        if (debug) log.print("ShootResetTime: '%s'", shootResetTime);
+        this.shootInterval = configuration.shootingConfig.shootInterval;
+        if (debug) log.print("MaxBulletTime: '%s'", shootInterval);
 
         this.minShootImprecision = configuration.shootingConfig.minShootImprecision;
         this.maxShootImprecision = configuration.shootingConfig.maxShootImprecision;
@@ -109,8 +109,8 @@ public class AI {
         // Update timers
 
         shootStreakTimer += delta;
-        bulletTimer += delta;
-        shootingResetTimer += delta;
+        shootBulletTimer += delta;
+        shootResetTimer += delta;
 
         // Check if we are currently firing
 
@@ -127,14 +127,14 @@ public class AI {
             // Check if we should still fire
 
             if (shootStreakTimer < shootStreakTime) {
-                if (bulletTimer > maxBulletTime) {
+                if (shootBulletTimer > shootInterval) {
 
                     // Apply imprecision and fire projectile
 
                     precisionTemp = target.getPosition().cpy().add(shootImprecision, shootImprecision);
 
                     source.fireProjectileAt("", precisionTemp.x, precisionTemp.y);
-                    bulletTimer = 0f;
+                    shootBulletTimer = 0f;
                 }
             } else {
 
@@ -146,7 +146,7 @@ public class AI {
             }
         }
 
-        if (shootingResetTimer > maxShootingResetTime) {
+        if (shootResetTimer > shootResetTime) {
             this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
             this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
             this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
@@ -191,7 +191,7 @@ public class AI {
                 temp = bulletEscapeDir.add(sourceDir);
                 temp.scl(factor);
                 source.setVelocity(temp);
-                if (debug) log.print("vel: " + source.getVelocity());
+                //if (debug) log.print("vel: " + source.getVelocity());
                 break;
             default:
                 log.print("Error: AI strategy %s not supported", strategy);

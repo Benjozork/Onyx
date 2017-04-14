@@ -34,7 +34,7 @@ public class AIShootingConfiguration {
     /**
      * The interval for new shooting config values to be generated, in seconds
      */
-    public float shootingConfigValueLifetime;
+    public float shootResetTime;
 
     /**
      * The minimum imprecision with which the projectiles are fired, in pixels
