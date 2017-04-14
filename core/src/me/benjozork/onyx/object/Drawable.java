@@ -130,20 +130,12 @@ public abstract class Drawable implements Disposable {
     }
 
     /**
-     * Changes the speed
-     * @param v the speed offset
+     * Changes the magnitude (length) of the velocity vector
+     * @param v the offset to be applied
      */
     public void accelerate(float v) {
         if (velocity.x == 0 && velocity.y == 0) velocity.set(0, 1); // Prevent this from having no effect
         velocity.scl(v);
-    }
-
-    public float getMaxVelocity() {
-        return maxVelocity;
-    }
-
-    public void setMaxVelocity(float maxVelocity) {
-        this.maxVelocity = maxVelocity;
     }
 
     public void rotate(float v) {
