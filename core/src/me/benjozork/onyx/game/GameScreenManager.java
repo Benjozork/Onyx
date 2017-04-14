@@ -12,6 +12,7 @@ import me.benjozork.onyx.entity.ProjectileEntity;
 import me.benjozork.onyx.entity.ProjectileManager;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.screen.GameOverScreen;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
@@ -38,6 +39,8 @@ public class GameScreenManager {
     private static int lifeCount = maxLives;
 
     private static Log log = Log.create("GameScreenManager");
+
+    private static boolean checking = true;
 
     static {
         ProjectileManager.init();
@@ -126,8 +129,9 @@ public class GameScreenManager {
         check();
         if (e instanceof EnemyEntity) // Remove enemy
             enemiesToRemove.add((EnemyEntity) e);
-        if (e instanceof PlayerEntity) // Remove player
-            player = null;
+        if (e instanceof PlayerEntity) { // Remove player
+            setIsDisposing(true);
+        }
         if (e instanceof ProjectileEntity) // Remove projectile
             ProjectileManager.removeProjectile((ProjectileEntity) e);
         entitiesToRemove.add(e);
@@ -208,7 +212,15 @@ public class GameScreenManager {
      * Calls {@link GameScreenManager#exists()} and throws an exception if it returns <code>false</code>
      */
     private static void check() {
-        if (! exists()) throw new IllegalStateException("current screen must be GameScreen");
+        if (! exists() && checking) throw new IllegalStateException("current screen must be GameScreen");
+    }
+
+    public static boolean isDisposing() {
+        return !checking;
+    }
+
+    public static void setIsDisposing(boolean v) {
+        checking = !v ;
     }
 
     /**
@@ -229,6 +241,9 @@ public class GameScreenManager {
 
         maxLives = 0;
         lifeCount = 0;
+
+        setIsDisposing(false);
+        ScreenManager.setCurrentScreen(new GameOverScreen());
     }
 
 }

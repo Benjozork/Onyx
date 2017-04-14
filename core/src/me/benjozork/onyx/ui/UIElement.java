@@ -16,7 +16,7 @@ public abstract class UIElement extends Drawable {
 
     private Array<Action> actions = new Array<Action>();
 
-    private UIContainer parent;
+    private UIScreen parent;
 
     private String identifier;
 
@@ -86,9 +86,9 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * Returns {@link UIContainer} in which the element is stored
+     * Returns {@link UIScreen} in which the element is stored
      */
-    public UIContainer getParent() {
+    public UIScreen getParent() {
         return parent;
     }
 

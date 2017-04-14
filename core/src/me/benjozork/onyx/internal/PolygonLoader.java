@@ -1,4 +1,5 @@
 package me.benjozork.onyx.internal;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.JsonReader;
@@ -63,15 +64,14 @@ public class PolygonLoader {
         p = new Polygon(vertices);
         p.setOrigin(required.get("origin").getFloat("x"),required.get("origin").getFloat("y"));
         polygons.put(name,p);
-        log.print("Polygon for %s added to list", name);
+        log.print("Polygon '%s' loaded", name);
     }
 
     public static Polygon getPolygon(String name) {
         return getPolygon(name, 1, 1);
     }
 
-    public static Polygon getPolygon(String name, float width, float height)
-    {
+    public static Polygon getPolygon(String name, float width, float height) {
         if(! polygons.containsKey(name))
             loadPolygon(name);
         Polygon temp = polygons.get(name);
@@ -85,7 +85,6 @@ public class PolygonLoader {
         }
         Polygon ret = new Polygon(returnVertices);
         ret.setOrigin(width/2, height/2);
-        log.print("Polygon %s added to screen", name);
         return ret;
         //NOTE: Origin might need to be revisited
     }
