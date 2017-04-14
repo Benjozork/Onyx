@@ -113,13 +113,6 @@ public abstract class Drawable implements Disposable {
         bounds.setPosition(position.x, position.y);
     }
 
-    public void move(float dx, float dy) {
-        // here, we move the position and the bounding box
-        position.x += dx * Utils.delta();
-        position.y += dy * Utils.delta();
-        bounds.setPosition(position.x, position.y);
-    }
-
     public Vector2 getVelocity() {
         return velocity;
     }
