@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
+import me.benjozork.onyx.game.entity.LivingEntity;
+import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
@@ -27,8 +29,8 @@ public class AI {
     private AIConfiguration.AIStrategy strategy;
     private AIConfiguration.ProjectileReluctance reluctance;
 
-    private me.benjozork.onyx.game.entity.LivingEntity source;
-    private me.benjozork.onyx.game.entity.LivingEntity target;
+    private LivingEntity source;
+    private LivingEntity target;
 
     private float minShootStreakDelay;
     private float maxShootStreakDelay;
@@ -153,7 +155,7 @@ public class AI {
             if (debug) log.print("AI values regenerated");
         }
 
-        bulletEscapeDir = me.benjozork.onyx.game.entity.ProjectileManager.nearestBulletDirection(source);
+        bulletEscapeDir = ProjectileManager.nearestBulletVelocity(source);
         sourceDir = new Vector2(target.getX() - source.getX(), target.getY() - source.getY());
 
         sourceDir.nor();
