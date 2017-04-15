@@ -49,6 +49,8 @@ public class AI {
     private float maxShootImprecision;
     private float shootImprecision;
 
+    private boolean recalculateShootImprecisionRandomly;
+
     public boolean isFiring = true;
 
     private float factor;
@@ -97,6 +99,8 @@ public class AI {
         this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
         if (debug) log.print("ShootImprecision: '%s'", shootImprecision);
 
+        this.recalculateShootImprecisionRandomly = configuration.shootingConfig.recalculateShootImprecisionRandomly;
+
         this.factor = configuration.factor;
     }
 
@@ -131,6 +135,11 @@ public class AI {
                 if (shootBulletTimer > shootInterval) {
 
                     // Apply imprecision and fire projectile
+
+                    if (recalculateShootImprecisionRandomly) {
+                        this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
+                        System.out.println(shootImprecision);
+                    }
 
                     precisionTemp = target.getPosition().cpy().add(shootImprecision, shootImprecision);
 

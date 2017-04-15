@@ -14,6 +14,7 @@ import me.benjozork.onyx.utils.PolygonHelper;
  */
 public class ProjectileEntity extends Entity {
 
+    private Vector2 origin;
     private Vector2 target;
 
     private SpriteBatch batch;
@@ -29,6 +30,7 @@ public class ProjectileEntity extends Entity {
 
     public ProjectileEntity(float x, float y, float targetx, float targety) {
         super(x, y);
+        this.origin = new Vector2(x, y);
         this.target = new Vector2(targetx, targety);
     }
 
@@ -49,7 +51,7 @@ public class ProjectileEntity extends Entity {
 
     @Override
     public void update() {
-        if (getX() < 0 || getX() > Gdx.graphics.getWidth() || getY() < 0 || getY() > Gdx.graphics.getHeight()) {
+        if (getX() < - Gdx.graphics.getWidth()  || getX() > Gdx.graphics.getWidth() * 2 || getY() < - Gdx.graphics.getHeight() || getY() > Gdx.graphics.getHeight() * 2) {
             dispose();
         }
 
