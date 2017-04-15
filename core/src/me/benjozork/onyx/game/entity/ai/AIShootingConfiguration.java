@@ -46,4 +46,10 @@ public class AIShootingConfiguration {
      */
     public float maxShootImprecision;
 
+    /**
+     * Whether the shooting imprecision should be dynamically recalculated for a more dynamic effect.<br/>
+     * WARNING: This increases the imprecision and CPU load.
+     */
+    public boolean recalculateShootImprecisionRandomly;
+
 }
