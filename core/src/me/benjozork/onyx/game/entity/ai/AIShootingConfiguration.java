@@ -1,4 +1,4 @@
-package me.benjozork.onyx.entity.ai;
+package me.benjozork.onyx.game.entity.ai;
 
 /**
  * Describes an AI shooting behavior

@@ -1,6 +1,4 @@
-package me.benjozork.onyx.entity.ai;
-
-import me.benjozork.onyx.entity.LivingEntity;
+package me.benjozork.onyx.game.entity.ai;
 
 /**
  * Describes an AI behavior
@@ -19,14 +17,14 @@ public class AIConfiguration {
     public ProjectileReluctance reluctance;
 
     /**
-     * The source {@link LivingEntity} of the AI
+     * The source {@link me.benjozork.onyx.game.entity.LivingEntity} of the AI
      */
-    public LivingEntity source;
+    public me.benjozork.onyx.game.entity.LivingEntity source;
 
     /**
-     * The target {@link LivingEntity} of the AI
+     * The target {@link me.benjozork.onyx.game.entity.LivingEntity} of the AI
      */
-    public LivingEntity target;
+    public me.benjozork.onyx.game.entity.LivingEntity target;
 
     /**
      * The {@link AIShootingConfiguration} to use for shooting mechanics

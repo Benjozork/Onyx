@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.entity.EnemyEntity;
-import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.PlayerEntity;
+import me.benjozork.onyx.game.entity.EnemyEntity;
+import me.benjozork.onyx.game.entity.Entity;
+import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
@@ -85,10 +85,8 @@ public class GameScreen implements Screen {
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Setup life icons
-
-        lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
-        lifeIcon.setScale(0.4f, 0.4f);
+        LifeIcons.setMaxLives(3);
+        LifeIcons.setLives(3);
 
         // Setup CrossFadeColorEffect
 
@@ -198,11 +196,7 @@ public class GameScreen implements Screen {
         // Draw life icons
 
         batch.enableBlending();
-        for (int i = 0; i < GameScreenManager.getMaxLives(); i++) {
-            lifeIcon.setColor(backgroundColor);
-            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
-            lifeIcon.draw(batch);
-        }
+        LifeIcons.draw(batch, backgroundColor, 10, 0, 0.6f);
 
         // Draw score text
 

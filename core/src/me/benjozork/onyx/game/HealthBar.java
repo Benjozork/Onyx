@@ -1,4 +1,4 @@
-package me.benjozork.onyx.entity;
+package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ArrayMap;
 
+import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.Utils;
 

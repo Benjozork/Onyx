@@ -1,4 +1,4 @@
-package me.benjozork.onyx.entity;
+package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 

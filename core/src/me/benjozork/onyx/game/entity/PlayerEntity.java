@@ -1,4 +1,4 @@
-package me.benjozork.onyx.entity;
+package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.game.HealthBar;
 import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.internal.PolygonLoader;
-import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
