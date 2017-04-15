@@ -155,13 +155,11 @@ public class AI {
             if (debug) log.print("AI values regenerated");
         }
 
-        bulletEscapeDir = ProjectileManager.nearestBulletVelocity(source);
+        bulletEscapeDir = ProjectileManager.bulletEscapeDir(source);
         sourceDir = new Vector2(target.getX() - source.getX(), target.getY() - source.getY());
 
         sourceDir.nor();
         bulletEscapeDir.nor();
-
-        Utils.toPerpendicularVector(bulletEscapeDir);
 
         switch (reluctance) {
             case GOD:
