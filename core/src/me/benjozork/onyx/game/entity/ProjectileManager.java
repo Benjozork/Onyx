@@ -64,13 +64,13 @@ public class ProjectileManager {
 
                 if(Math.sqrt( Math.pow(dx - vy, 2) + Math.pow(dy + vx, 2) )
                         < Math.sqrt( Math.pow(dx + vy, 2) + Math.pow(dy - vx, 2) ))
-                    currentEscape.set(vy, -vx);
-                else
                     currentEscape.set(-vy, vx);
+                else
+                    currentEscape.set(vy, -vx);
 
-                //Adjust constants
+                //Adjust constants to make it better
 
-                currentEscape.scl(1/( dis + 10));
+                currentEscape.scl((float) 1/(dis + 1));
                 currentEscape.add(lastEscape.scl(0.3f));
             }
         }
