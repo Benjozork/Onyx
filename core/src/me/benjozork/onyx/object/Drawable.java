@@ -28,7 +28,7 @@ public abstract class Drawable implements Disposable {
     private float maxSpeed;
     private boolean defaultMaxSpeed = true;
 
-    private static boolean debug = true;
+    private static boolean debug = false;
 
     public Drawable(float x, float y) {
         this.position = new Vector2(x, y);

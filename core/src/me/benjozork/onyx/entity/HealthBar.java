@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
 import me.benjozork.onyx.internal.GameManager;
@@ -25,7 +24,7 @@ public class HealthBar {
 
     private float maxValue, value;
 
-    ShapeRenderer renderer = GameManager.getRenderer();
+    private ShapeRenderer renderer = GameManager.getRenderer();
 
     private float VALUE_DELTA = 70f;
 
@@ -54,7 +53,9 @@ public class HealthBar {
 
         if (value > parent.getHealth()) value -= VALUE_DELTA * Utils.delta();
 
+
         GameManager.setIsShapeRendering(true);
+        renderer.setProjectionMatrix(GameManager.getWorldCamera().combined);
         renderer.set(ShapeRenderer.ShapeType.Filled);
 
         // Draw background
