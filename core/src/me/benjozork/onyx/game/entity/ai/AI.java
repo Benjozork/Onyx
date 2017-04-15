@@ -30,7 +30,7 @@ public class AI {
     private AIConfiguration.ProjectileReluctance reluctance;
 
     private LivingEntity source;
-    private LivingEntity target;
+    private LivingEntity target; // Should not be used for AI, only to update untrackedTarget.
 
     private float minShootStreakDelay;
     private float maxShootStreakDelay;
@@ -51,6 +51,10 @@ public class AI {
 
     private boolean recalculateShootImprecisionRandomly;
 
+    private float minTargetTrackingDelta;
+    private float maxTargetTrackingDelta;
+    private float targetTrackingDelta;
+
     public boolean isFiring = true;
 
     private float factor;
@@ -59,6 +63,7 @@ public class AI {
     private Vector2 bulletEscapeDir;
     private Vector2 temp;
     private Vector2 precisionTemp;
+    private Vector2 untrackedTarget;
 
     /**
      * Creates a basic AI for an entity.
@@ -68,6 +73,8 @@ public class AI {
     public AI(AIConfiguration configuration) {
         this.source = configuration.source;
         this.target = configuration.target;
+
+        this.untrackedTarget = new Vector2(target.getPosition());
 
         this.log = Log.create("AI-" + source.getClass().getSimpleName() + "-" + String.valueOf(hashCode()));
 
@@ -79,27 +86,32 @@ public class AI {
         this.reluctance = configuration.reluctance;
         if (debug) log.print("Reluctance: '%s'", reluctance);
 
-        this.minShootStreakDelay = configuration.shootingConfig.minShootStreakDelay;
-        this.maxShootStreakDelay = configuration.shootingConfig.maxShootStreakDelay;
+        this.minShootStreakDelay = configuration.shootingConfig.minStreakDelay;
+        this.maxShootStreakDelay = configuration.shootingConfig.maxStreakDelay;
         this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
         if (debug) log.print("ShootStreakDelay: '%s'", shootStreakDelay);
 
-        this.minShootStreakTime = configuration.shootingConfig.minShootStreakTime;
-        this.maxShootStreakTime = configuration.shootingConfig.maxShootStreakTime;
+        this.minShootStreakTime = configuration.shootingConfig.minStreakTime;
+        this.maxShootStreakTime = configuration.shootingConfig.maxStreakTime;
         this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
         if (debug) log.print("ShootStreakTime: '%s'", shootStreakTime);
 
-        this.shootResetTime = configuration.shootingConfig.shootResetTime;
+        this.shootResetTime = configuration.shootingConfig.resetTime;
         if (debug) log.print("ShootResetTime: '%s'", shootResetTime);
         this.shootInterval = configuration.shootingConfig.shootInterval;
         if (debug) log.print("ShootInterval: '%s'", shootInterval);
 
-        this.minShootImprecision = configuration.shootingConfig.minShootImprecision;
-        this.maxShootImprecision = configuration.shootingConfig.maxShootImprecision;
+        this.minShootImprecision = configuration.shootingConfig.minImprecision;
+        this.maxShootImprecision = configuration.shootingConfig.maxImprecision;
         this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
         if (debug) log.print("ShootImprecision: '%s'", shootImprecision);
 
-        this.recalculateShootImprecisionRandomly = configuration.shootingConfig.recalculateShootImprecisionRandomly;
+        this.recalculateShootImprecisionRandomly = configuration.shootingConfig.recalculateImprecisionRandomly;
+
+        this.minTargetTrackingDelta = configuration.shootingConfig.minTargetTrackingDelta;
+        this.maxTargetTrackingDelta = configuration.shootingConfig.maxTargetTrackingDelta;
+        this.targetTrackingDelta = Utils.randomBetween(minTargetTrackingDelta, maxTargetTrackingDelta);
+        if (debug) log.print("TargetTrackingDelta: '%s'", targetTrackingDelta);
 
         this.factor = configuration.factor;
     }
@@ -109,6 +121,13 @@ public class AI {
      * @param delta the delta time
      */
     public void update(float delta) {
+
+        // Update tracking
+
+        if (untrackedTarget.x < target.getPosition().x) untrackedTarget.add(targetTrackingDelta * Utils.delta(), 0f);
+        if (untrackedTarget.x > target.getPosition().x) untrackedTarget.sub(targetTrackingDelta * Utils.delta(), 0f);
+        if (untrackedTarget.y < target.getPosition().y) untrackedTarget.add(0f, targetTrackingDelta * Utils.delta());
+        if (untrackedTarget.y > target.getPosition().y) untrackedTarget.sub(0f, targetTrackingDelta * Utils.delta());
 
         // Update timers
 
@@ -138,10 +157,9 @@ public class AI {
 
                     if (recalculateShootImprecisionRandomly) {
                         this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
-                        System.out.println(shootImprecision);
                     }
 
-                    precisionTemp = target.getPosition().cpy().add(shootImprecision, shootImprecision);
+                    precisionTemp = untrackedTarget.cpy().add(shootImprecision, shootImprecision);
 
                     source.fireProjectileAt("", precisionTemp.x, precisionTemp.y);
                     shootBulletTimer = 0f;
@@ -160,6 +178,7 @@ public class AI {
             this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
             this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
             this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
+            this.targetTrackingDelta = Utils.randomBetween(minTargetTrackingDelta, maxTargetTrackingDelta);
             shootResetTimer = 0f;
             if (debug) log.print("AI values regenerated");
         }
