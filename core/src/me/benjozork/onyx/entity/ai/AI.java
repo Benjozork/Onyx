@@ -90,7 +90,7 @@ public class AI {
         this.shootResetTime = configuration.shootingConfig.shootResetTime;
         if (debug) log.print("ShootResetTime: '%s'", shootResetTime);
         this.shootInterval = configuration.shootingConfig.shootInterval;
-        if (debug) log.print("MaxBulletTime: '%s'", shootInterval);
+        if (debug) log.print("ShootInterval: '%s'", shootInterval);
 
         this.minShootImprecision = configuration.shootingConfig.minShootImprecision;
         this.maxShootImprecision = configuration.shootingConfig.maxShootImprecision;
@@ -150,6 +150,8 @@ public class AI {
             this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
             this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
             this.shootImprecision = Utils.randomBetween(minShootImprecision, maxShootImprecision);
+            shootResetTimer = 0f;
+            if (debug) log.print("AI values regenerated");
         }
 
         bulletEscapeDir = ProjectileManager.nearestBulletDirection(source);
