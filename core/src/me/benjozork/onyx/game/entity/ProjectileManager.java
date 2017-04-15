@@ -1,5 +1,6 @@
 package me.benjozork.onyx.game.entity;
 
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -39,13 +40,14 @@ public class ProjectileManager {
     }
 
     /**
-     * Returns the velocity for the nearest {@link ProjectileEntity} for a given {@link LivingEntity}
+     * Returns the direction for escaping the nearest {@link ProjectileEntity} for a given {@link LivingEntity}
      * @param src the source entity as to which the nearest bullet's direction is set
      * @return The velocity of the nearest Bullet
      */
-    public static Vector2 nearestBulletVelocity(LivingEntity src) {
-        float dx, dy, dis, least;
-        Vector2 returnVector = new Vector2(0, 0);
+    public static Vector2 bulletEscapeDir(LivingEntity src) {
+        float dx, dy, dis, least , vx, vy;
+        Vector2 currentEscape = new Vector2(0, 0);
+        Vector2 lastEscape = new Vector2(0, 0);
         least = 0;
         for (ProjectileEntity pr :
                 projectiles) {
@@ -54,10 +56,25 @@ public class ProjectileManager {
             dis = dx * dx + dy * dy;
             if (dis < least || least == 0) {
                 least = dis;
-                returnVector = pr.getVelocity().cpy();
+                vx = pr.getVelocity().x;
+                vy = pr.getVelocity().y;
+                lastEscape = currentEscape.cpy();
+
+                //I know this looks atrocious, but trust me its fine ;)
+
+                if(Math.sqrt( Math.pow(dx - vy, 2) + Math.pow(dy + vx, 2) )
+                        < Math.sqrt( Math.pow(dx + vy, 2) + Math.pow(dy - vx, 2) ))
+                    currentEscape.set(vy, -vx);
+                else
+                    currentEscape.set(-vy, vx);
+
+                //Adjust constants
+
+                currentEscape.scl(1/( dis + 10));
+                currentEscape.add(lastEscape.scl(0.3f));
             }
         }
-        return returnVector;
+        return currentEscape.nor();
     }
 
     public static void addProjectile(ProjectileEntity projectile) {
