@@ -1,7 +1,11 @@
 package me.benjozork.onyx.game.entity.ai;
 
 /**
- * Describes an AI shooting behavior
+ * Describes an AI shooting behavior.<br/>
+ *
+ * Most of the values here are defined using a minimum and a maximum; Those values will be<br/>
+ * generated randomly each time the {@code resetTime} is passed.
+ *
  * @author Benjozork
  */
 public class AIShootingConfiguration {
