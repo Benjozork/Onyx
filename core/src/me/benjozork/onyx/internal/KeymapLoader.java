@@ -39,11 +39,11 @@ public class KeymapLoader {
              try {
                  if (field.get(keymapConfig).equals("SPACE")) { // "Because fuck consistency, right ?" -Libgdx devs
                      keymaps.put(field.getName(), Input.Keys.valueOf("Space"));
-                     log.print("Loaded keymap '%s' -> '%s'", field.getName(), "SPACE");
+                     if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), "SPACE");
                      return;
                  }
                  keymaps.put(field.getName(), Input.Keys.valueOf((String) field.get(keymapConfig)));
-                 log.print("Loaded keymap '%s' -> '%s'", field.getName(), field.get(keymapConfig));
+                 if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), field.get(keymapConfig));
              } catch (IllegalAccessException e) {
                  Maybe<ProjectConfig> projectConfig = Configs.load("config/project.json", ProjectConfig.class);
                  log.print("FATAL: Failed to access field '%s' in object '%s': Illegal access.", field.getName(), keymapConfig);
