@@ -39,10 +39,11 @@ public class ProjectileManager {
     }
 
     /**
-     * Returns the direction for the nearest bullet for a given {@link LivingEntity}
+     * Returns the velocity for the nearest {@link ProjectileEntity} for a given {@link LivingEntity}
      * @param src the source entity as to which the nearest bullet's direction is set
+     * @return The velocity of the nearest Bullet
      */
-    public static Vector2 nearestBulletDirection(LivingEntity src) {
+    public static Vector2 nearestBulletVelocity(LivingEntity src) {
         float dx, dy, dis, least;
         Vector2 returnVector = new Vector2(0, 0);
         least = 0;
@@ -53,7 +54,7 @@ public class ProjectileManager {
             dis = dx * dx + dy * dy;
             if (dis < least || least == 0) {
                 least = dis;
-                returnVector.set(dx, dy);
+                returnVector = pr.getVelocity().cpy();
             }
         }
         return returnVector;

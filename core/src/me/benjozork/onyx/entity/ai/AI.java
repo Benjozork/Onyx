@@ -155,7 +155,7 @@ public class AI {
             if (debug) log.print("AI values regenerated");
         }
 
-        bulletEscapeDir = ProjectileManager.nearestBulletDirection(source);
+        bulletEscapeDir = ProjectileManager.nearestBulletVelocity(source);
         sourceDir = new Vector2(target.getX() - source.getX(), target.getY() - source.getY());
 
         sourceDir.nor();
