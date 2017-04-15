@@ -120,6 +120,7 @@ public class AI {
 
             if (shootStreakTimer > shootStreakDelay) {
                 isFiring = true;
+                shootStreakTimer = 0f;
             }
 
         } else {
