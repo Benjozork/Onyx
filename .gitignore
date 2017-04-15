@@ -1,7 +1,7 @@
 ## Onyx
 # ignore mods
 /android/assets/mod/
-/android/assets/config/
+/android/assets/config/display.json
 
 
 ## Java

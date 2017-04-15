@@ -16,6 +16,7 @@ import me.benjozork.onyx.game.entity.EnemyEntity;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.OnyxInputProcessor;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
@@ -61,6 +62,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+
+        // Setup input processing
+
+        OnyxInputProcessor.setCurrentProcessor(new GameScreenInputProcessor());
 
         // Setup player
 
@@ -125,37 +130,6 @@ public class GameScreen implements Screen {
             player.setState(PlayerEntity.DrawState.IDLE);
         }
 
-        // Update input
-
-        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(PlayerEntity.Direction.STRAIGHT);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(PlayerEntity.Direction.RIGHT);
-            player.accelerate(new Vector2(1000f, 0f));
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.setDirection(PlayerEntity.Direction.LEFT);
-            player.accelerate(new Vector2(-1000f, 0f));
-        }
-        /*if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.accelerate(100f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-100f);
-        }*/
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-            player.fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
-            else crossFadeBackgroundColor.resume();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-            zoomPulseCamera.toggle();
-        }
-
         // Update crossfade
 
         crossFadeBackgroundColor.update();
@@ -172,6 +146,7 @@ public class GameScreen implements Screen {
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
         }
+
     }
 
     public void render(float delta) {

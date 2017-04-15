@@ -1,0 +1,16 @@
+{
+	"player": {
+		"movement": {
+			"player_movement_forward": "W",
+			"player_movement_left": "A",
+			"player_movement_backward": "S",
+			"plater_movement_right": "D"
+		},
+		"fire_main_weapon": "MOUSE1",
+		"fire_secondary_weapon": "MOUSE2",
+	},
+
+	"game": {
+		"toggle_crossfade": "SPACE"
+	}
+}

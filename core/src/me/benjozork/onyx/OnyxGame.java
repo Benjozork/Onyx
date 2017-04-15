@@ -1,5 +1,6 @@
 package me.benjozork.onyx;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
@@ -15,6 +17,7 @@ import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.OnyxInputProcessor;
 import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.internal.ScreenManager;
 import me.benjozork.onyx.internal.console.Console;
@@ -45,7 +48,6 @@ public class OnyxGame extends Game {
 
     @Override
     public void create() {
-
         // Load config
 
         projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
@@ -84,6 +86,7 @@ public class OnyxGame extends Game {
         Console.init();
 
         // Init PolygonLoader
+
         PolygonLoader.init();
 
         // Setup Initial Screen
@@ -94,6 +97,7 @@ public class OnyxGame extends Game {
 
 
     public void update() {
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             Console.dispatchCommand(new ConsoleCommand("screen"));
             toggleDebug();
@@ -109,6 +113,11 @@ public class OnyxGame extends Game {
 
         if (ScreenManager.getCurrentScreen() != getScreen())
             setScreen(ScreenManager.getCurrentScreen());
+
+        // Process input
+
+        OnyxInputProcessor.getCurrentProcessor().processInput();
+
     }
 
 
