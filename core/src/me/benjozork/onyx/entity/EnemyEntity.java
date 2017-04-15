@@ -38,6 +38,8 @@ public class EnemyEntity extends LivingEntity {
 
     private AI ai;
 
+    private HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
+
     private boolean debug = true;
 
     public EnemyEntity(float x, float y) {
@@ -65,12 +67,12 @@ public class EnemyEntity extends LivingEntity {
         AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
         shootingConfiguration.minShootStreakDelay = 1.5f;
         shootingConfiguration.maxShootStreakDelay = 3f;
-        shootingConfiguration.minShootStreakTime = 2f;
-        shootingConfiguration.maxShootStreakTime = 4f;
+        shootingConfiguration.minShootStreakTime = 1.5f;
+        shootingConfiguration.maxShootStreakTime = 3f;
         shootingConfiguration.shootResetTime = 5f;
         shootingConfiguration.shootInterval = 0.1f;
-        shootingConfiguration.minShootImprecision = -25f;
-        shootingConfiguration.maxShootImprecision = 25f;
+        shootingConfiguration.minShootImprecision = -100f;
+        shootingConfiguration.maxShootImprecision = 100f;
         aiConfiguration.shootingConfig = shootingConfiguration;
 
         ai = new AI(aiConfiguration);
@@ -126,6 +128,7 @@ public class EnemyEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
+        healthBar.draw(getX() + ENEMY_TEXTURE.getWidth() / 2 - healthBar.getWidth() / 2, getY() - healthBar.getHeight() / 0.5f);
     }
 
     @Override

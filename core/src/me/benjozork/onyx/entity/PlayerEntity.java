@@ -37,6 +37,8 @@ public class PlayerEntity extends LivingEntity {
 
     private float spriteRotation;
 
+    private HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
+
     public PlayerEntity(float x, float y) {
         super(x, y);
     }
@@ -114,6 +116,7 @@ public class PlayerEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
+        healthBar.draw(getX() + PLAYER_TEXTURE.getWidth() / 2 - healthBar.getWidth() / 2, getY() - healthBar.getHeight() / 0.5f);
     }
 
     @Override

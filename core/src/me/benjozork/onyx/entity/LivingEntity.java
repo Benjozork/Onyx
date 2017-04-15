@@ -55,15 +55,10 @@ public abstract class LivingEntity extends Entity {
         bulletShootOrigin.set(x, y);
     }
 
-    /*
-    public int getAmmo() {
-        return ammo;
+    public float getHealth() {
+        return health;
     }
 
-    public void setAmmo(int ammo) {
-        this.ammo = ammo;
-    }
-    */
 
     public enum Type {
         ENEMY,
