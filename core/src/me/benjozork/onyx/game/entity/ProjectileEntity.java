@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.internal.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
@@ -25,7 +25,7 @@ public class ProjectileEntity extends Entity {
     private String texturePath = "entity/player/bullet.png";
     private Texture texture = new Texture(texturePath);
 
-    public me.benjozork.onyx.game.entity.LivingEntity.Type source;
+    public LivingEntity.Type source;
 
     public ProjectileEntity(float x, float y, float targetx, float targety) {
         super(x, y);
@@ -55,14 +55,14 @@ public class ProjectileEntity extends Entity {
 
         if (GameScreenManager.getEnemies().size == 0) return;
 
-        for (me.benjozork.onyx.game.entity.EnemyEntity enemy : GameScreenManager.getEnemies()) {
+        for (EnemyEntity enemy : GameScreenManager.getEnemies()) {
             if (this.collidesWith(enemy.getBounds()) && enemy.type != source) {
                 enemy.damage(10f);
                 this.dispose();
             }
         }
 
-        me.benjozork.onyx.game.entity.PlayerEntity player = GameScreenManager.getPlayer();
+        PlayerEntity player = GameScreenManager.getPlayer();
         if (this.collidesWith(player.getBounds()) && player.type != source) {
             player.damage(10f);
             this.dispose();
@@ -77,7 +77,7 @@ public class ProjectileEntity extends Entity {
     @Override
     public void dispose() {
         GameScreenManager.removeEntity(this);
-        me.benjozork.onyx.game.entity.ProjectileManager.removeProjectile(this);
+        ProjectileManager.removeProjectile(this);
         texture.dispose();
     }
 

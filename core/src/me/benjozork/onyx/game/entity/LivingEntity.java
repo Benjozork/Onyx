@@ -24,7 +24,7 @@ public abstract class LivingEntity extends Entity {
 
     public void fireProjectileAt(String path, float targetx, float targety) {
         bulletTimer += Utils.delta();
-        if (bulletTimer >= maxBulletTime || ! (this instanceof me.benjozork.onyx.game.entity.PlayerEntity)) {
+        if (bulletTimer >= maxBulletTime || ! (this instanceof PlayerEntity)) {
             ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety);
             projectile.getVelocity().scl(2550f);
             projectile.setDamage(10f);
@@ -42,7 +42,7 @@ public abstract class LivingEntity extends Entity {
     public void damage(float v) {
         health -= v;
         if (health < 0) {
-            if (this instanceof me.benjozork.onyx.game.entity.EnemyEntity) GameScreenManager.addScore(100);
+            if (this instanceof EnemyEntity) GameScreenManager.addScore(100);
             this.dispose();
         }
     }

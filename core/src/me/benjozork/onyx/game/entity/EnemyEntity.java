@@ -7,11 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.game.HealthBar;
 import me.benjozork.onyx.game.entity.ai.AI;
 import me.benjozork.onyx.game.entity.ai.AIConfiguration;
+import me.benjozork.onyx.game.entity.ai.AIShootingConfiguration;
 import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.utils.Utils;
 
@@ -64,7 +65,7 @@ public class EnemyEntity extends LivingEntity {
         aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.GOD;
         aiConfiguration.source = this;
         aiConfiguration.target = GameScreenManager.getPlayer();
-        me.benjozork.onyx.game.entity.ai.AIShootingConfiguration shootingConfiguration = new me.benjozork.onyx.game.entity.ai.AIShootingConfiguration();
+        AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
         shootingConfiguration.minShootStreakDelay = 1.5f;
         shootingConfiguration.maxShootStreakDelay = 3f;
         shootingConfiguration.minShootStreakTime = 1.5f;
