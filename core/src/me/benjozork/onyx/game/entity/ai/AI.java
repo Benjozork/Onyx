@@ -192,13 +192,17 @@ public class AI {
 
         switch (strategy) {
             case ACCELERATED:
+                sourceDir.scl((float)Math.sqrt(Math.pow(source.getX()-target.getX(),2)+Math.pow(source.getY()-target.getY(),2)) * 0.0004f);
                 temp = bulletEscapeDir.add(sourceDir);
+                temp.nor();
                 temp.scl(factor);
                 source.setAcceleration(temp);
+                source.accelerate(temp);
                 if (debug) log.print("acc: " + source.getAcceleration());
                 break;
             case LINEAR:
                 temp = bulletEscapeDir.add(sourceDir);
+                temp.nor();
                 temp.scl(factor);
                 source.setVelocity(temp);
                 //if (debug) log.print("vel: " + source.getVelocity());
