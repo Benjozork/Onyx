@@ -180,5 +180,14 @@ public class Utils {
         return random.nextFloat() * (max - min) + min;
     }
 
+    /**
+     * Removes package names in instances where Class#getSimpleName() cannot be called, i.e. reflection.
+     * @param s the unsanitized class name
+     * @return the sanitized class name
+     */
+    public static String sanitizeClassName(String s) {
+        return s.substring(s.lastIndexOf(".") + 1);
+    }
+
 }
 

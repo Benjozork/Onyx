@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.game.entity.PlayerEntity;
+import me.benjozork.onyx.internal.KeymapLoader;
 import me.benjozork.onyx.internal.OnyxInputProcessor;
 import me.benjozork.onyx.utils.Utils;
 
@@ -17,18 +18,18 @@ public class GameScreenInputProcessor extends OnyxInputProcessor {
     public void processInput() {
         if (GameScreenManager.exists()) { // GameScreen input here
 
-            if (! isKeyDown(Input.Keys.A) && ! isKeyDown(Input.Keys.D)) {
+            if (! isKeyDown(KeymapLoader.getKeyCode("player_movement_left")) && ! isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
                 GameScreenManager.getPlayer().setDirection(PlayerEntity.Direction.STRAIGHT);
             }
-            if (isKeyDown(Input.Keys.D)) {
+            if (isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
                 GameScreenManager.getPlayer().setDirection(PlayerEntity.Direction.RIGHT);
                 GameScreenManager.getPlayer().accelerate(new Vector2(1000f, 0f));
             }
-            if (isKeyDown(Input.Keys.A)) {
+            if (isKeyDown(KeymapLoader.getKeyCode("player_movement_left"))) {
                 GameScreenManager.getPlayer().setDirection(PlayerEntity.Direction.LEFT);
                 GameScreenManager.getPlayer().accelerate(new Vector2(- 1000f, 0f));
             }
-            if (isKeyDown(Input.Keys.SPACE)) {
+            if (isKeyDown(KeymapLoader.getKeyCode("player_fire_primary"))) {
                 Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
                 GameScreenManager.getPlayer().fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
             }

@@ -17,6 +17,7 @@ import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.internal.FTFGeneratorCache;
 import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.internal.KeymapLoader;
 import me.benjozork.onyx.internal.OnyxInputProcessor;
 import me.benjozork.onyx.internal.PolygonLoader;
 import me.benjozork.onyx.internal.ScreenManager;
@@ -48,6 +49,7 @@ public class OnyxGame extends Game {
 
     @Override
     public void create() {
+
         // Load config
 
         projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
@@ -88,6 +90,10 @@ public class OnyxGame extends Game {
         // Init PolygonLoader
 
         PolygonLoader.init();
+
+        // Init KeymapLoader
+
+        KeymapLoader.init();
 
         // Setup Initial Screen
 
