@@ -3,7 +3,7 @@ package me.benjozork.onyx.logger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import me.benjozork.onyx.internal.console.Console;
+import me.benjozork.onyx.console.Console;
 
 /**
  * Single thread use only.

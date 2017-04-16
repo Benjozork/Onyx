@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**

@@ -12,8 +12,8 @@ import me.benjozork.onyx.game.HealthBar;
 import me.benjozork.onyx.game.entity.ai.AI;
 import me.benjozork.onyx.game.entity.ai.AIConfiguration;
 import me.benjozork.onyx.game.entity.ai.AIShootingConfiguration;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonLoader;
+import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.PolygonLoader;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -65,7 +65,7 @@ public class EnemyEntity extends LivingEntity {
         aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.MED;
         aiConfiguration.source = this;
         aiConfiguration.target = GameScreenManager.getPlayer();
-        aiConfiguration.factor = 100f;
+        aiConfiguration.factor = -10f;
         AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
         shootingConfiguration.minStreakDelay = 1.5f;
         shootingConfiguration.maxStreakDelay = 3f;

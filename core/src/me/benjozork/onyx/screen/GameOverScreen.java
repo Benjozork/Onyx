@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.game.GameScreen;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.ScreenManager;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.ui.UIButton;
 import me.benjozork.onyx.ui.UIScreen;

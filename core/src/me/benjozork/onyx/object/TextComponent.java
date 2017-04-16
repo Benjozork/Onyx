@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.internal.FTFGeneratorCache;
+import me.benjozork.onyx.FTFGeneratorCache;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**

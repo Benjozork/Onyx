@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 
 
 /**

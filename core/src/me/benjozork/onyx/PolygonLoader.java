@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal;
+package me.benjozork.onyx;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Polygon;
@@ -13,7 +13,6 @@ import me.benjozork.onyx.logger.Log;
  * Loads {@link Polygon} objects form JSON files and serves them to the game.
  * @author Rishi Raj
  */
-
 public class PolygonLoader {
 
     private static JsonValue value;

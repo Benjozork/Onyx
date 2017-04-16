@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal;
+package me.benjozork.onyx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -72,13 +72,13 @@ public class KeymapLoader {
     }
 
     /**
-     * Returns a keycode, in the form of an int, using a provided action.
+     * Returns a keycode, in the form of an {@code int}, using a provided action.
      * @param action the action to lookup
      * @return the requested keycode. returns {@code -1} if there was an error in the process.
      */
     public static int getKeyCode(String action) {
         if (keymapConfig == null) {
-            log.print("ERROR: keymapConfig not initialized! Please call init() before requesting any keycodes!");
+            log.print("ERROR: keymapConfig not initialized! Please call init()!");
             return -1;
         }
         if (keymaps.get(action) == null) {

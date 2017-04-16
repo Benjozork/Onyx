@@ -1,4 +1,4 @@
-package me.benjozork.onyx.exception;
+package me.benjozork.onyx.object.exception;
 
 /**
  * @author Benjozork

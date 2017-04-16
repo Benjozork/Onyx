@@ -124,10 +124,10 @@ public class AI {
 
         // Update tracking
 
-        if (untrackedTarget.x < target.getPosition().x) untrackedTarget.add(targetTrackingDelta * Utils.delta(), 0f);
-        if (untrackedTarget.x > target.getPosition().x) untrackedTarget.sub(targetTrackingDelta * Utils.delta(), 0f);
-        if (untrackedTarget.y < target.getPosition().y) untrackedTarget.add(0f, targetTrackingDelta * Utils.delta());
-        if (untrackedTarget.y > target.getPosition().y) untrackedTarget.sub(0f, targetTrackingDelta * Utils.delta());
+        if (untrackedTarget.x < target.getBulletImpactTarget().x) untrackedTarget.add(targetTrackingDelta * Utils.delta(), 0f);
+        if (untrackedTarget.x > target.getBulletImpactTarget().x) untrackedTarget.sub(targetTrackingDelta * Utils.delta(), 0f);
+        if (untrackedTarget.y < target.getBulletImpactTarget().y) untrackedTarget.add(0f, targetTrackingDelta * Utils.delta());
+        if (untrackedTarget.y > target.getBulletImpactTarget().y) untrackedTarget.sub(0f, targetTrackingDelta * Utils.delta());
 
         // Update timers
 

@@ -1,10 +1,10 @@
-package me.benjozork.onyx.internal.console;
+package me.benjozork.onyx.console;
 
 import com.badlogic.gdx.Gdx;
 
 import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.game.entity.ProjectileManager;
-import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.ScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.screen.MenuScreen;

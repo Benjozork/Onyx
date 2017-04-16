@@ -2,7 +2,7 @@ package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**

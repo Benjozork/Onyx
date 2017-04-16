@@ -1,12 +1,11 @@
 package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.game.entity.PlayerEntity;
-import me.benjozork.onyx.internal.KeymapLoader;
-import me.benjozork.onyx.internal.OnyxInputProcessor;
+import me.benjozork.onyx.KeymapLoader;
+import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.utils.Utils;
 
 /**

@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal.console;
+package me.benjozork.onyx.console;
 
 /**
  * Processes commands sent to console

@@ -6,12 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.game.HealthBar;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonLoader;
+import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.PolygonLoader;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -28,29 +27,30 @@ public class PlayerEntity extends LivingEntity {
 
     Sprite currentTexture = new Sprite(PLAYER_TEXTURE);
 
-    private Vector3 mouse = new Vector3();
-
     private final float ANGLE_DELTA = 100, TARGET_ANGLE = 25, ANGLE_DELTA_TOLERANCE = 0.1f;
+
+    private float spriteRotation;
 
     private DrawState state = DrawState.IDLE;
     private Direction direction = Direction.STRAIGHT;
 
-    private float spriteRotation;
-
-    private HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
+    private final HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
 
     public PlayerEntity(float x, float y) {
         super(x, y);
     }
 
     @Override
+
     public void init() {
         // Initialize hitbox
+
         bounds = PolygonLoader.getPolygon("Ship",PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
 
 		type = Type.PLAYER;
 
 		setBulletShootOrigin(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
+		setBulletImpactTarget(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,13 +9,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.game.entity.EnemyEntity;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.OnyxInputProcessor;
+import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;

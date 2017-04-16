@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal.console;
+package me.benjozork.onyx.console;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,8 +13,8 @@ import java.util.HashMap;
 
 import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.ScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**

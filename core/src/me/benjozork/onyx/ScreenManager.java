@@ -1,4 +1,4 @@
-package me.benjozork.onyx.internal;
+package me.benjozork.onyx;
 
 import com.badlogic.gdx.Screen;
 

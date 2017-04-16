@@ -14,7 +14,9 @@ public abstract class LivingEntity extends Entity {
 
     private final float maxBulletTime = 0.1f;
     private float bulletTimer = 0f;
-    private Vector2 bulletShootOrigin = new Vector2();
+
+    private final Vector2 bulletShootOrigin = new Vector2();
+    private final Vector2 bulletImpactTarget = new Vector2();
 
     public Type type;
 
@@ -47,18 +49,29 @@ public abstract class LivingEntity extends Entity {
         }
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
     public Vector2 getBulletShootOrigin() {
-        return bulletShootOrigin;
+        return new Vector2(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y);
     }
 
     public void setBulletShootOrigin(float x, float y) {
         bulletShootOrigin.set(x, y);
     }
 
-    public float getHealth() {
-        return health;
+    public Vector2 getBulletImpactTarget() {
+        return new Vector2(getX() + bulletImpactTarget.x, getY() + bulletImpactTarget.y);
     }
 
+    public void setBulletImpactTarget(float x, float y) {
+        this.bulletImpactTarget.set(x,  y);
+    }
 
     public enum Type {
         ENEMY,
