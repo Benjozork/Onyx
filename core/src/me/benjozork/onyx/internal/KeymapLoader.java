@@ -40,9 +40,15 @@ public class KeymapLoader {
                  if (field.get(keymapConfig).equals("SPACE")) { // "Because fuck consistency, right ?" -Libgdx devs
                      keymaps.put(field.getName(), Input.Keys.valueOf("Space"));
                      if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), "SPACE");
-                     return;
+                     continue;
                  }
                  keymaps.put(field.getName(), Input.Keys.valueOf((String) field.get(keymapConfig)));
+                 if (keymaps.get(field.getName()) == -1) {
+                    log.print("ERROR: Keymap '%s' bound to invalid key '%s'!", field.getName(), field.get(keymapConfig));
+                    illegalKeyMapIDs.add((String) field.get(keymapConfig));
+                    keymaps.removeKey(field.getName());
+                    continue;
+                 }
                  if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), field.get(keymapConfig));
              } catch (IllegalAccessException e) {
                  Maybe<ProjectConfig> projectConfig = Configs.load("config/project.json", ProjectConfig.class);
@@ -57,10 +63,12 @@ public class KeymapLoader {
                  log.print("gdxVersion: %s", Version.VERSION);
                  Gdx.app.exit();
              } catch (NullPointerException e) {
-                 log.print("ERROR: Field '%s' does exist, but is not defined in configs/keymap.json!", field.getName());
+                 log.print("ERROR: Keymap '%s' does exist, but is not defined in configs/keymap.json!", field.getName());
                  illegalKeyMapIDs.add(field.getName());
              }
          }
+         if (illegalKeyMapIDs.size == 0) log.print("%s keymaps loaded", keymaps.size);
+         else log.print("%s keymaps loaded with %S errors", keymaps.size, illegalKeyMapIDs.size);
     }
 
     /**
@@ -81,8 +89,8 @@ public class KeymapLoader {
                 StackTraceElement e = stacktrace[2];
                 String className = Utils.sanitizeClassName(e.getClassName());
 
-                log.print("ERROR: Invalid keymap ID '%s' requested by class '%s'!", action, className);
-            } else log.print("ERROR: Invalid keymap ID '%s'!", action);
+                log.print("ERROR: Keymap '%s' does not exist! (requested by class '%s')", action, className);
+            } else log.print("ERROR: Keymap '%s' does not exist!", action);
             illegalKeyMapIDs.add(action);
             return -1;
         }
