@@ -1,28 +1,19 @@
 package me.benjozork.onyx;
 
-import box2dLight.RayHandler;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.internal.FTFGeneratorCache;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.KeymapLoader;
-import me.benjozork.onyx.internal.OnyxInputProcessor;
-import me.benjozork.onyx.internal.PolygonLoader;
-import me.benjozork.onyx.internal.ScreenManager;
-import me.benjozork.onyx.internal.console.Console;
-import me.benjozork.onyx.internal.console.ConsoleCommand;
+import me.benjozork.onyx.console.Console;
+import me.benjozork.onyx.console.ConsoleCommand;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
@@ -98,13 +89,12 @@ public class OnyxGame extends Game {
         // Setup Initial Screen
 
         Console.dispatchCommand("screen " + projectConfig.initial_screen);
-
     }
 
 
     public void update() {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+        if (Gdx.input.isKeyJustPressed(KeymapLoader.getKeyCode("game_toggle_debug"))) {
             Console.dispatchCommand(new ConsoleCommand("screen"));
             toggleDebug();
         }
