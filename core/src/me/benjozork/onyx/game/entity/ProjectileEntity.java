@@ -23,15 +23,15 @@ public class ProjectileEntity extends Entity {
 
     private float speed = 1000;
 
-    private String texturePath = "entity/player/bullet.png";
-    private Texture texture = new Texture(texturePath);
+    private Texture texture;
 
     public LivingEntity.Type source;
 
-    public ProjectileEntity(float x, float y, float targetx, float targety) {
+    public ProjectileEntity(float x, float y, float targetx, float targety, String texturePath) {
         super(x, y);
         this.origin = new Vector2(x, y);
         this.target = new Vector2(targetx, targety);
+        this.texture = new Texture(texturePath);
     }
 
     @Override
@@ -89,15 +89,6 @@ public class ProjectileEntity extends Entity {
 
     public void setDamage(float damage) {
         this.damage = damage;
-    }
-
-    public String getTexturePath() {
-        return texturePath;
-    }
-
-    public void setTexturePath(String texturePath) {
-        this.texturePath = texturePath;
-        this.texture = new Texture(texturePath);
     }
 
 }

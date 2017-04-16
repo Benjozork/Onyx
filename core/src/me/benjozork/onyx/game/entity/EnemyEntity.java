@@ -30,10 +30,7 @@ public class EnemyEntity extends LivingEntity {
 
     private Sprite currentTexture = new Sprite(ENEMY_TEXTURE);
 
-    private final float ANGLE_DELTA = 100, TARGET_ANGLE = 25, ANGLE_DELTA_TOLERANCE = 0.1f;
-
     private DrawState state = DrawState.IDLE;
-    private Direction direction = Direction.STRAIGHT;
 
     private float spriteRotation;
 
@@ -65,7 +62,7 @@ public class EnemyEntity extends LivingEntity {
         aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.MED;
         aiConfiguration.source = this;
         aiConfiguration.target = GameScreenManager.getPlayer();
-        aiConfiguration.factor = -10f;
+        aiConfiguration.factor = 100f;
         AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
         shootingConfiguration.minStreakDelay = 1.5f;
         shootingConfiguration.maxStreakDelay = 3f;
@@ -83,34 +80,13 @@ public class EnemyEntity extends LivingEntity {
         ai = new AI(aiConfiguration);
         type = Type.ENEMY;
 
+        setBulletShootOrigin(ENEMY_TEXTURE.getWidth() / 2, ENEMY_TEXTURE.getHeight() / 2);
     }
 
     @Override
     public void update() {
 
         ai.update(Utils.delta());
-
-        if (velocity.x < -2)
-            direction = Direction.RIGHT;
-        else if (velocity.x > 2)
-            direction = Direction.LEFT;
-        else
-            direction = Direction.STRAIGHT;
-
-        if (direction == EnemyEntity.Direction.STRAIGHT) {
-            if (spriteRotation < ANGLE_DELTA_TOLERANCE && spriteRotation > - ANGLE_DELTA_TOLERANCE) spriteRotation = 0f;
-            if (spriteRotation < 0 * MathUtils.degreesToRadians)
-                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-            else if (spriteRotation > 0 * MathUtils.degreesToRadians)
-                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-        } else if (direction == EnemyEntity.Direction.RIGHT) {
-            if (spriteRotation < TARGET_ANGLE * MathUtils.degreesToRadians)
-                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-        } else if (direction == EnemyEntity.Direction.LEFT) {
-            if (spriteRotation > - TARGET_ANGLE * MathUtils.degreesToRadians)
-                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-        }
-
 
         if (state == EnemyEntity.DrawState.IDLE) {
             currentTexture.setTexture(ENEMY_TEXTURE);
@@ -123,9 +99,9 @@ public class EnemyEntity extends LivingEntity {
         }
 
         currentTexture.setPosition(getX(), getY());
-        currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+        currentTexture.setRotation(- getRotation() * MathUtils.radiansToDegrees);
 
-        bounds.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+        bounds.setRotation(- getRotation() * MathUtils.radiansToDegrees);
 
     }
 
@@ -157,22 +133,6 @@ public class EnemyEntity extends LivingEntity {
         this.state = v;
     }
 
-    /**
-     * The direction of the player
-     * @return the direction
-     */
-    public Direction getDirection() {
-        return direction;
-    }
-
-    /**
-     * Changes the direction of the player
-     * @param v the direction to be used
-     */
-    public void setDirection(Direction v) {
-        this.direction = v;
-    }
-
     public boolean isFiring() {
         return Gdx.input.isKeyPressed(Input.Keys.SPACE);
     }
@@ -182,12 +142,6 @@ public class EnemyEntity extends LivingEntity {
         FIRING,
         MOVING,
         FIRING_MOVING,
-    }
-
-    public enum Direction {
-        STRAIGHT,
-        RIGHT,
-        LEFT
     }
 
 }

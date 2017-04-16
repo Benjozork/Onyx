@@ -10,6 +10,8 @@ import me.benjozork.onyx.utils.Utils;
  */
 public abstract class LivingEntity extends Entity {
 
+    private float rotation;
+
     private float health = 100f;
 
     private final float maxBulletTime = 0.1f;
@@ -27,7 +29,7 @@ public abstract class LivingEntity extends Entity {
     public void fireProjectileAt(String path, float targetx, float targety) {
         bulletTimer += Utils.delta();
         if (bulletTimer >= maxBulletTime || ! (this instanceof PlayerEntity)) {
-            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety);
+            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety, path);
             projectile.getVelocity().scl(2550f);
             projectile.setDamage(10f);
             projectile.source = type;
@@ -71,6 +73,14 @@ public abstract class LivingEntity extends Entity {
 
     public void setBulletImpactTarget(float x, float y) {
         this.bulletImpactTarget.set(x,  y);
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 
     public enum Type {

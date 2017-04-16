@@ -1,5 +1,6 @@
 package me.benjozork.onyx.game.entity.ai;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
@@ -62,8 +63,13 @@ public class AI {
     private Vector2 sourceDir;
     private Vector2 bulletEscapeDir;
     private Vector2 temp;
+
     private Vector2 precisionTemp;
+
     private Vector2 untrackedTarget;
+
+    private double targetAngle;
+    private final float ANGLE_DELTA = 100, ANGLE_DELTA_TOLERANCE = 0.1f;
 
     /**
      * Creates a basic AI for an entity.
@@ -122,6 +128,16 @@ public class AI {
      */
     public void update(float delta) {
 
+        targetAngle = Math.atan2(source.getX() - untrackedTarget.x, source.getY() - untrackedTarget.y);
+
+        System.out.println(targetAngle);
+
+        // Update angle
+
+        if (targetAngle - source.getRotation() < ANGLE_DELTA_TOLERANCE || targetAngle - source.getRotation() >  ANGLE_DELTA_TOLERANCE) source.setRotation((float) targetAngle);
+        if (source.getRotation() > targetAngle) source.setRotation(source.getRotation() - (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta());
+        if (source.getRotation() < targetAngle) source.setRotation(source.getRotation() + (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta());
+
         // Update tracking
 
         if (untrackedTarget.x < target.getBulletImpactTarget().x) untrackedTarget.add(targetTrackingDelta * Utils.delta(), 0f);
@@ -161,7 +177,7 @@ public class AI {
 
                     precisionTemp = untrackedTarget.cpy().add(shootImprecision, shootImprecision);
 
-                    source.fireProjectileAt("", precisionTemp.x, precisionTemp.y);
+                    source.fireProjectileAt("entity/enemy/bullet.png", precisionTemp.x, precisionTemp.y);
                     shootBulletTimer = 0f;
                 }
             } else {
