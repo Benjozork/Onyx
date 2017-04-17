@@ -3,6 +3,8 @@ package me.benjozork.onyx.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -193,12 +195,21 @@ public class Utils {
     }
 
     /**
-     * Removes package names in instances where Class#getSimpleName() cannot be called, i.e. reflection.
+     * Removes package names in instances where {@link Class#getSimpleName()} cannot be called, i.e. reflection.
      * @param s the unsanitized class name
      * @return the sanitized class name
      */
     public static String sanitizeClassName(String s) {
         return s.substring(s.lastIndexOf(".") + 1);
+    }
+
+    /**
+     * Returns a string that can be used in the formatting of {@link BitmapFont}
+     * @param c the color to be used
+     * @return the converted string
+     */
+    public static String toMarkupColor(Color c) {
+        return "[#" + c.toString().toUpperCase() + "]";
     }
 
 }

@@ -197,8 +197,8 @@ public class Console {
      * @param x the object to print
      */
     public static void print(Object x) {
-        if (x.toString().startsWith("->")) lines.add(x.toString().replace("->", "->[#" + color.toString().toUpperCase() + "]"));
-        else lines.add("[#" + color.toString().toUpperCase() + "]" + x.toString());
+        if (x.toString().startsWith("->")) lines.add(x.toString().replace("->", Utils.toMarkupColor(color)));
+        else lines.add(Utils.toMarkupColor(color) + x.toString());
         if (resetColor) Console.color(Color.WHITE);
     }
 
