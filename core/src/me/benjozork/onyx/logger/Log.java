@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import me.benjozork.onyx.console.Console;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Single thread use only.
@@ -48,6 +49,15 @@ public class Log {
         latestPrintLog = this;
 
         printMessage(message, args);
+    }
+
+    /**
+     * Prints a formatted error message
+     * @param message the message to be printed
+     * @param args the objects to format the message with
+     */
+    public void error(String message, Object... args) {
+        print(Utils.ERROR, message, args);
     }
 
     /**

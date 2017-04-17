@@ -226,8 +226,7 @@ public class AI {
                 bulletEscapeDir.scl(0f);
                 break;
             default:
-                Console.color(Utils.ERROR);
-                log.print("ERROR: Reluctance '%s' not supported", reluctance);
+                log.error("ERROR: Reluctance '%s' not supported", reluctance);
         }
 
         switch (strategy) {
@@ -248,8 +247,7 @@ public class AI {
                 //if (debug) log.print("vel: " + source.getVelocity());
                 break;
             default:
-                Console.color(Utils.ERROR);
-                log.print("ERROR: AI strategy '%s' not supported", strategy);
+                log.error("ERROR: AI strategy '%s' not supported", strategy);
         }
 
     }

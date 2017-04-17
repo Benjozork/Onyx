@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
 
-import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
@@ -51,10 +50,8 @@ public class PolygonLoader {
         }
 
         if (required == null) {
-            Console.colorBegin(Utils.ERROR);
-            log.print("ERROR: Polygon named %s not found", name);
-            log.print("A default polygon has been loaded.");
-            Console.colorEnd();
+            log.error("ERROR: Polygon named %s not found", name);
+            log.error("A default polygon has been loaded.");
             polygons.put(name, PolygonHelper.getPolygon(0, 0, 50 ,50));
             return;
         }

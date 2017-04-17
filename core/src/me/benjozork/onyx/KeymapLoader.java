@@ -54,20 +54,18 @@ public class KeymapLoader {
                  if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), field.get(keymapConfig));
              } catch (IllegalAccessException e) {
                  Maybe<ProjectConfig> projectConfig = Configs.load("config/project.json", ProjectConfig.class);
-                 Console.colorBegin(Utils.ERROR);
-                 log.print("FATAL: Failed to access field '%s' in object '%s': Illegal access.", field.getName(), keymapConfig);
-                 log.print("Please report this crash to the Onyx devs:");
-                 log.print("reflectedClass: %s", keymapConfig);
-                 log.print("reflectedFieldName: %s", field.getName());
-                 log.print("reflectedFieldType: %s", field.getType());
-                 log.print("gameBackend: %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
-                 Console.colorEnd();
-                 if (! projectConfig.exists()) log.print("FATAL: Additionally, we were unable to access the project config.");
+                 log.error("FATAL: Failed to access field '%s' in object '%s': Illegal access.", field.getName(), keymapConfig);
+                 log.error("Please report this crash to the Onyx devs:");
+                 log.error("reflectedClass: %s", keymapConfig);
+                 log.error("reflectedFieldName: %s", field.getName());
+                 log.error("reflectedFieldType: %s", field.getType());
+                 log.error("gameBackend: %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
+                 if (! projectConfig.exists()) log.error("FATAL: Additionally, we were unable to access the project config.");
                  else log.print("gameVersion: %s",projectConfig.get().version);
                  log.print("gdxVersion: %s", Version.VERSION);
                  Gdx.app.exit();
              } catch (NullPointerException e) {
-                 log.print("ERROR: Keymap '%s' does exist, but is not defined in configs/keymap.json!", field.getName());
+                 log.error("ERROR: Keymap '%s' does exist, but is not defined in configs/keymap.json!", field.getName());
                  illegalKeyMapIDs.add(field.getName());
              }
          }
@@ -82,8 +80,7 @@ public class KeymapLoader {
      */
     public static int getKeyCode(String action) {
         if (keymapConfig == null) {
-            Console.color(Utils.ERROR);
-            log.print("ERROR: keymapConfig not initialized! Please call init()!");
+            log.error("ERROR: keymapConfig not initialized! Please call init()!");
             return -1;
         }
         if (keymaps.get(action) == null) {
@@ -94,11 +91,9 @@ public class KeymapLoader {
                 StackTraceElement e = stacktrace[2];
                 String className = Utils.sanitizeClassName(e.getClassName());
 
-                Console.color(Utils.ERROR);
-                log.print(Color.RED, "ERROR: Keymap '%s' does not exist! (requested by class '%s')", action, className);
+                log.error("ERROR: Keymap '%s' does not exist! (requested by class '%s')", action, className);
             } else {
-                Console.color(Utils.ERROR);
-                log.print(Color.RED, "ERROR: Keymap '%s' does not exist!", action);
+                log.error("ERROR: Keymap '%s' does not exist!", action);
             }
             illegalKeyMapIDs.add(action);
             return -1;
