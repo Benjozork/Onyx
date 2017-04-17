@@ -3,7 +3,6 @@ package me.benjozork.onyx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
@@ -12,7 +11,6 @@ import java.lang.reflect.Field;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.KeymapConfig;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.Maybe;
 import me.benjozork.onyx.utils.Utils;
@@ -20,6 +18,8 @@ import me.benjozork.onyx.utils.Utils;
 /**
  * Loads keymaps from {@code config/keymap.json}.<br/>
  * WARNING: {@link KeymapLoader#init()} should ALWAYS be called before requesting any keycodes!
+ *
+ * @see KeymapConfig
  *
  * @author Benjozork
  */

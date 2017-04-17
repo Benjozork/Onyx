@@ -1,6 +1,10 @@
 package me.benjozork.onyx.config;
 
+import me.benjozork.onyx.KeymapLoader;
+
 /**
+ * @see KeymapLoader
+ *
  * @author Benjozork
  */
 public class KeymapConfig {

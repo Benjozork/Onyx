@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.HealthBar;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.PolygonLoader;
+import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.game.HealthBar;
 import me.benjozork.onyx.utils.Utils;
 
 /**

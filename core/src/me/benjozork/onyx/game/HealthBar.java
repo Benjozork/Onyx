@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ArrayMap;
 
-import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.utils.Utils;
 
 /**

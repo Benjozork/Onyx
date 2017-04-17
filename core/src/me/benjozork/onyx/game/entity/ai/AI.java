@@ -1,12 +1,10 @@
 package me.benjozork.onyx.game.entity.ai;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
-import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
@@ -137,15 +135,15 @@ public class AI {
         // Update rotation
 
         if (targetAngle - source.getRotation() < ANGLE_DELTA_TOLERANCE || targetAngle - source.getRotation() >  ANGLE_DELTA_TOLERANCE) source.setRotation((float) targetAngle);
-        if (source.getRotation() > targetAngle) source.setRotation(source.getRotation() - (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta());
-        if (source.getRotation() < targetAngle) source.setRotation(source.getRotation() + (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta());
+        if (source.getRotation() > targetAngle) source.setRotation(source.getRotation() - (ANGLE_DELTA * MathUtils.degreesToRadians) * delta);
+        if (source.getRotation() < targetAngle) source.setRotation(source.getRotation() + (ANGLE_DELTA * MathUtils.degreesToRadians) * delta);
 
         // Update tracking
 
-        if (untrackedTarget.x < target.getBulletImpactTarget().x) untrackedTarget.add(targetTrackingDelta * Utils.delta(), 0f);
-        if (untrackedTarget.x > target.getBulletImpactTarget().x) untrackedTarget.sub(targetTrackingDelta * Utils.delta(), 0f);
-        if (untrackedTarget.y < target.getBulletImpactTarget().y) untrackedTarget.add(0f, targetTrackingDelta * Utils.delta());
-        if (untrackedTarget.y > target.getBulletImpactTarget().y) untrackedTarget.sub(0f, targetTrackingDelta * Utils.delta());
+        if (untrackedTarget.x < target.getBulletImpactTarget().x) untrackedTarget.add(targetTrackingDelta * delta, 0f);
+        if (untrackedTarget.x > target.getBulletImpactTarget().x) untrackedTarget.sub(targetTrackingDelta * delta, 0f);
+        if (untrackedTarget.y < target.getBulletImpactTarget().y) untrackedTarget.add(0f, targetTrackingDelta * delta);
+        if (untrackedTarget.y > target.getBulletImpactTarget().y) untrackedTarget.sub(0f, targetTrackingDelta * delta);
 
         // Update timers
 

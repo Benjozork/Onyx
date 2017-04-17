@@ -1,6 +1,5 @@
 package me.benjozork.onyx.game.entity;
 
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;

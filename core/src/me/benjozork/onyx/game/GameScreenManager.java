@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.Array;
 import java.util.List;
 import java.util.Random;
 
+import me.benjozork.onyx.ScreenManager;
 import me.benjozork.onyx.game.entity.EnemyEntity;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.entity.ProjectileEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
-import me.benjozork.onyx.ScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.screen.GameOverScreen;
 

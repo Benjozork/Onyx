@@ -1,7 +1,6 @@
 package me.benjozork.onyx;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.PolygonHelper;
-import me.benjozork.onyx.utils.Utils;
 
 /**
  * Loads {@link Polygon} objects form JSON files and serves them to the game.

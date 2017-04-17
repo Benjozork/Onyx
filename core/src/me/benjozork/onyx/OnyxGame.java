@@ -11,16 +11,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.console.ConsoleCommand;
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * The main Onyx client
  *
- * @version 0.3.0-alpha
+ * @version 0.5.0-alpha
  *
  * Written with <3 by :
  *

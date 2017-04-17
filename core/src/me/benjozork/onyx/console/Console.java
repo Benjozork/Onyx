@@ -13,10 +13,10 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 
-import me.benjozork.onyx.game.GameScreen;
-import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.ScreenManager;
+import me.benjozork.onyx.game.GameScreen;
+import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
