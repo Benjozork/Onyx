@@ -27,7 +27,7 @@ public class OnyxCommandProcessor implements CommandProcessor {
         if (c.getCommand().equals("screen")) { // "screen" command
 
             if (c.getArgs().length == 0) {
-                log.print("Need one argument: [game, menu]");
+                log.warn("Need one argument: [game, menu]");
                 return false;
             } else {
                 if (c.getArgs()[0].equals("game")) {
@@ -37,7 +37,7 @@ public class OnyxCommandProcessor implements CommandProcessor {
                     ScreenManager.setCurrentScreen(new MenuScreen());
                     return true;
                 } else {
-                    log.print("Invalid argument '%s'", c.getArgs()[0]);
+                    log.warn("Invalid argument '%s'", c.getArgs()[0]);
                     return false;
                 }
             }

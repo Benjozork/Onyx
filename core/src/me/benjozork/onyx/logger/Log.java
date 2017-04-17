@@ -61,6 +61,33 @@ public class Log {
     }
 
     /**
+     * Prints a formatted warning message
+     * @param message the message to be printed
+     * @param args the objects to format the message with
+     */
+    public void warn(String message, Object... args) {
+        print(Utils.WARN, message, args);
+    }
+
+    /**
+     * Prints a formatted fatal message
+     * @param message the message to be printed
+     * @param args the objects to format the message with
+     */
+    public void fatal(String message, Object... args) {
+        print(Utils.FATAL, message, args);
+    }
+
+    /**
+     * Prints a formatted debug message
+     * @param message the message to be printed
+     * @param args the objects to format the message with
+     */
+    public void debug(String message, Object... args) {
+        print(Utils.DEBUG, message, args);
+    }
+
+    /**
      * Prints a formatted string
      * @param message the message to be printed
      * @param args the objects to format the message with
