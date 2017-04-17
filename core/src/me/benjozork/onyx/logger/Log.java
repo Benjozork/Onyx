@@ -1,5 +1,7 @@
 package me.benjozork.onyx.logger;
 
+import com.badlogic.gdx.graphics.Color;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,6 +50,26 @@ public class Log {
         printMessage(message, args);
     }
 
+    /**
+     * Prints a formatted string
+     * @param message the message to be printed
+     * @param args the objects to format the message with
+     */
+    public void print(Color color, String message, Object... args) {
+        boolean isNewLog = latestPrintLog == null || latestPrintLog != this;
+        if (isNewLog) {
+            printNewline();
+            printInfo();
+        }
+
+        latestPrintLog = this;
+
+        Color prevColor = Console.getColor();
+        Console.color(color);
+        printMessage(message, args);
+        Console.color(prevColor);
+    }
+
     private void printNewline() {
         System.out.println();
     }
@@ -55,12 +77,12 @@ public class Log {
     private void printInfo() {
         String date = sdf.format(new Date());
         System.out.printf("[%s] (%s)\n", tag, date);
-        Console.println(String.format("\n[%s] (%s)", tag, date));
+        Console.printf("\n[%s] (%s)", tag, date);
     }
 
     private void printMessage(String message, Object... args) {
         System.out.printf("-> %s\n", String.format(message, args));
-        Console.println("-> " + String.format(message, args));
+        Console.print("-> " + String.format(message, args));
     }
 
 }

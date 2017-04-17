@@ -1,13 +1,17 @@
 package me.benjozork.onyx;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
 
+import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.utils.PolygonHelper;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Loads {@link Polygon} objects form JSON files and serves them to the game.
@@ -46,8 +50,12 @@ public class PolygonLoader {
                 required = temp;
         }
 
-        if(required == null) {
+        if (required == null) {
+            Console.colorBegin(Utils.ERROR);
             log.print("ERROR: Polygon named %s not found", name);
+            log.print("A default polygon has been loaded.");
+            Console.colorEnd();
+            polygons.put(name, PolygonHelper.getPolygon(0, 0, 50 ,50));
             return;
         }
 

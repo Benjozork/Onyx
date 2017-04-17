@@ -20,6 +20,18 @@ import me.benjozork.onyx.GameManager;
 public class Utils {
 
     /*
+     * Color instances used to markup console text.
+     * WARN: Warning text. Non-failing problems.
+     * ERROR: Error text. Failing problems.
+     * FATAL: Critical problem that interrupts the game.
+     * DEBUG: Debugging text. Technical information used for debugging.
+     */
+    public static final Color WARN = rgb(255, 255, 100);
+    public static final Color ERROR = rgb(255, 100, 100);
+    public static final Color FATAL = rgb(255, 65, 65);
+    public static final Color DEBUG = rgb(255, 100, 255);
+
+    /*
      * Cached instances used for calculations or returning results.
      * Note: This potentially leads to bugs if the same temporary instance is used
      * multiple times throughout a method without care. If more cached instances
@@ -31,7 +43,7 @@ public class Utils {
     private static final Random random = new Random();
 
     /**
-     * The current frame-time
+     * Returns the current frame-time
      */
     public static float delta() {
         return Gdx.graphics.getDeltaTime();

@@ -3,6 +3,7 @@ package me.benjozork.onyx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
@@ -11,12 +12,13 @@ import java.lang.reflect.Field;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.KeymapConfig;
 import me.benjozork.onyx.config.ProjectConfig;
+import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.Maybe;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Loads keymaps from 'config/keymap.json'.<br/>
+ * Loads keymaps from {@code config/keymap.json}.<br/>
  * WARNING: {@link KeymapLoader#init()} should ALWAYS be called before requesting any keycodes!
  *
  * @author Benjozork
@@ -52,12 +54,14 @@ public class KeymapLoader {
                  if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), field.get(keymapConfig));
              } catch (IllegalAccessException e) {
                  Maybe<ProjectConfig> projectConfig = Configs.load("config/project.json", ProjectConfig.class);
+                 Console.colorBegin(Utils.ERROR);
                  log.print("FATAL: Failed to access field '%s' in object '%s': Illegal access.", field.getName(), keymapConfig);
                  log.print("Please report this crash to the Onyx devs:");
                  log.print("reflectedClass: %s", keymapConfig);
                  log.print("reflectedFieldName: %s", field.getName());
                  log.print("reflectedFieldType: %s", field.getType());
                  log.print("gameBackend: %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
+                 Console.colorEnd();
                  if (! projectConfig.exists()) log.print("FATAL: Additionally, we were unable to access the project config.");
                  else log.print("gameVersion: %s",projectConfig.get().version);
                  log.print("gdxVersion: %s", Version.VERSION);
@@ -78,6 +82,7 @@ public class KeymapLoader {
      */
     public static int getKeyCode(String action) {
         if (keymapConfig == null) {
+            Console.color(Utils.ERROR);
             log.print("ERROR: keymapConfig not initialized! Please call init()!");
             return -1;
         }
@@ -89,8 +94,12 @@ public class KeymapLoader {
                 StackTraceElement e = stacktrace[2];
                 String className = Utils.sanitizeClassName(e.getClassName());
 
-                log.print("ERROR: Keymap '%s' does not exist! (requested by class '%s')", action, className);
-            } else log.print("ERROR: Keymap '%s' does not exist!", action);
+                Console.color(Utils.ERROR);
+                log.print(Color.RED, "ERROR: Keymap '%s' does not exist! (requested by class '%s')", action, className);
+            } else {
+                Console.color(Utils.ERROR);
+                log.print(Color.RED, "ERROR: Keymap '%s' does not exist!", action);
+            }
             illegalKeyMapIDs.add(action);
             return -1;
         }

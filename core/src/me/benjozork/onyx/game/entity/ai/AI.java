@@ -1,10 +1,12 @@
 package me.benjozork.onyx.game.entity.ai;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
+import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
@@ -25,7 +27,7 @@ public class AI {
 
     private Log log;
 
-    private boolean debug = true;  // This currently causes A LOT of lag. DO NOT TURN IT ON !
+    private boolean debug = false;  // This currently causes A LOT of lag. DO NOT TURN IT ON !
 
     private AIConfiguration.AIStrategy strategy;
     private AIConfiguration.ProjectileReluctance reluctance;
@@ -128,11 +130,11 @@ public class AI {
      */
     public void update(float delta) {
 
+        // Find the target angle
+
         targetAngle = Math.atan2(source.getX() - untrackedTarget.x, source.getY() - untrackedTarget.y);
 
-        System.out.println(targetAngle);
-
-        // Update angle
+        // Update rotation
 
         if (targetAngle - source.getRotation() < ANGLE_DELTA_TOLERANCE || targetAngle - source.getRotation() >  ANGLE_DELTA_TOLERANCE) source.setRotation((float) targetAngle);
         if (source.getRotation() > targetAngle) source.setRotation(source.getRotation() - (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta());
@@ -190,6 +192,8 @@ public class AI {
             }
         }
 
+        // Regenerate values if necessary
+
         if (shootResetTimer > shootResetTime) {
             this.shootStreakDelay = Utils.randomBetween(minShootStreakDelay, maxShootStreakDelay);
             this.shootStreakTime = Utils.randomBetween(minShootStreakTime, maxShootStreakTime);
@@ -222,7 +226,8 @@ public class AI {
                 bulletEscapeDir.scl(0f);
                 break;
             default:
-                log.print("Error: Reluctance %s not supported", reluctance);
+                Console.color(Utils.ERROR);
+                log.print("ERROR: Reluctance '%s' not supported", reluctance);
         }
 
         switch (strategy) {
@@ -243,7 +248,8 @@ public class AI {
                 //if (debug) log.print("vel: " + source.getVelocity());
                 break;
             default:
-                log.print("Error: AI strategy %s not supported", strategy);
+                Console.color(Utils.ERROR);
+                log.print("ERROR: AI strategy '%s' not supported", strategy);
         }
 
     }

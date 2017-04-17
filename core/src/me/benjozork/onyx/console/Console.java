@@ -1,12 +1,14 @@
 package me.benjozork.onyx.console;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class Console {
 
-    private static String lines = "", prevLines = "";
+    private static Array<String> lines = new Array<String>(), prevLines = new Array<String>();
 
     private static GlyphLayout layout = new GlyphLayout();
     private static BitmapFont font = GameManager.getFont();
@@ -40,11 +42,27 @@ public class Console {
 
     private static boolean isTextBoxFocused = false;
 
+    private static final float LINE_OFFSET = 8;
+    private static final float CONSOLE_VERTICAL_TEXT_OFFSET = 45;
+    private static final float CONSOLE_HORIZONTAL_TEXT_OFFSET = 20;
+
+    private static final float CONSOLE_HEIGHT = 600;
+    private static final float CONSOLE_WIDTH = 600;
+    private static final float CONSOLE_INNER_VERTICAL_OFFSET = 10;
+    private static final float CONSOLE_INNER_HORIZONTAL_OFFSET = 10;
+
+    private static final float CONSOLE_TEXTBOX_HEIGHT = 25;
+
+    private static Color color = Color.WHITE;
+
+    private static boolean resetColor = true;
+
     /**
      * Prepares the console. Should only be called once in the code, before any call<br/>
      * of {@link Console#update()} or {@link Console#draw()}.
      */
     public static void init() {
+
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         font = new BitmapFont();
 
@@ -102,9 +120,9 @@ public class Console {
         renderer.set(ShapeRenderer.ShapeType.Filled);
         renderer.setProjectionMatrix(GameManager.getGuiCamera().combined);
         renderer.setColor(0.1f, 0.1f, 0.1f, 0.6f);
-        renderer.rect(0, Gdx.graphics.getHeight() - 600, 600, 600);
+        renderer.rect(0, Gdx.graphics.getHeight() - CONSOLE_HEIGHT, CONSOLE_WIDTH, CONSOLE_HEIGHT);
         renderer.setColor(0.1f, 0.1f, 0.1f, 0.6f);
-        renderer.rect(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
+        renderer.rect(CONSOLE_INNER_HORIZONTAL_OFFSET, Gdx.graphics.getHeight() - CONSOLE_HEIGHT + CONSOLE_INNER_VERTICAL_OFFSET, CONSOLE_WIDTH - CONSOLE_INNER_HORIZONTAL_OFFSET * 2, CONSOLE_TEXTBOX_HEIGHT);
         GameManager.setIsShapeRendering(false);
         Gdx.gl.glDisable(GL20.GL_BLEND);
         GameManager.setIsRendering(true);
@@ -126,7 +144,7 @@ public class Console {
                     + "  []fps,  [#FF00FF]"
                     + GameScreenManager.getEntities().size
                     + "  []entities",
-                20, Gdx.graphics.getHeight() - 10
+                20, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET
             );
 
             // Draw current screen
@@ -136,7 +154,7 @@ public class Console {
                 "current screen:  [#FF00FF]"
                     + ScreenManager.getCurrentScreen().getClass().getSimpleName()
                     + "[]",
-                20, Gdx.graphics.getHeight() - 30
+                20, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET
             );
         } else {
 
@@ -160,10 +178,14 @@ public class Console {
             );
         }
 
-        if (! lines.equals("")) {
-            if (! prevLines.equals(lines)) layout.setText(font, lines);
-            prevLines = lines;
-            font.draw(batch, lines, 20, Gdx.graphics.getHeight() - 600 + layout.height + 45);
+        if (lines.size != 0) {
+            int i = lines.size;
+            float currentdy = 0;
+            while (i --> 0) {
+                layout.setText(font, lines.get(i));
+                if (! (lines.get(i).isEmpty())) currentdy += layout.height + LINE_OFFSET;
+                font.draw(batch, lines.get(i), CONSOLE_HORIZONTAL_TEXT_OFFSET, Gdx.graphics.getHeight() - CONSOLE_HEIGHT + CONSOLE_VERTICAL_TEXT_OFFSET + currentdy, CONSOLE_WIDTH, Align.left, true);
+            }
         }
 
         GameManager.setIsRendering(false);
@@ -171,30 +193,12 @@ public class Console {
     }
 
     /**
-     * Prints a string to the console on a new line
-     * @param x the object to print
-     */
-    public static void println(Object x) {
-        newLine();
-        lines += x.toString();
-    }
-
-    /**
      * Prints a string to the console
      * @param x the object to print
      */
     public static void print(Object x) {
-        lines += x.toString();
-    }
-
-    /**
-     * Prints a formatted string to the console on a new line
-     * @param x the object to print
-     * @param f the objects to format the string with
-     */
-    public static void printfln(Object x, Object... f) {
-        newLine();
-        lines += String.format(String.valueOf(x), f);
+        lines.add("[#" + color.toString().toUpperCase() + "]" + x.toString());
+        if (resetColor) Console.color(Color.WHITE);
     }
 
     /**
@@ -203,13 +207,39 @@ public class Console {
      * @param f the objects to format the string with
      */
     public static void printf(Object x, Object... f) {
-        lines += String.format(String.valueOf(x), f);
+        print(String.format(x.toString(), f));
+    }
+
+    /**
+     * Prints a string to the console on a new line
+     * @param x the object to print
+     */
+    public static void println(Object x) {
+        print(x);
+        newLine();
     }
 
     private static void newLine() {
-        lines += "[]\n"; // Resets markup and breaks lines
+        lines.add("[]\n"); // Resets markup and breaks lines
     }
 
+     public static void color(Color color) {
+        Console.color = color;
+     }
+
+    public static Color getColor() {
+        return color;
+    }
+
+    public static void colorBegin(Color color) {
+        color(color);
+        resetColor = false;
+    }
+
+    public static void colorEnd() {
+        color(Color.WHITE);
+        resetColor = true;
+    }
 
     /**
      * Registers commands so they can be listened to by a {@link CommandProcessor}

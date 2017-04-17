@@ -1,6 +1,7 @@
 package me.benjozork.onyx;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 
 import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.logger.Log;
