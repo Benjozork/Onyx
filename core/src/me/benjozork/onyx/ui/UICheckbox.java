@@ -14,6 +14,7 @@ import me.benjozork.onyx.utils.PolygonHelper;
 public class UICheckbox extends UIElement {
 
     // Checkbox textures
+
     private final Texture CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_0.png");
     private final Texture TICKED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_2.png");
     private final Texture HOVERED_CHECKBOX_TEXTURE = new Texture("ui/checkbox/checkbox_1.png");

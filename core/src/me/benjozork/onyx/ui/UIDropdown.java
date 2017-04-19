@@ -55,7 +55,6 @@ public class UIDropdown extends UIElement {
 
     private TextComponent component;
 
-    private Vector2 dimension = new Vector2();
     private String text = new String();
     private NinePatch currentPatch = DROPDOWN;
 
