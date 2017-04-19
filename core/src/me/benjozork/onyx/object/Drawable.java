@@ -20,7 +20,6 @@ public abstract class Drawable implements Disposable {
     protected Vector2 velocity = new Vector2(0, 0);
     protected Vector2 acceleration = new Vector2(0, 0);
 
-    protected float maxVelocity = 100f;
     protected float angle;
 
     protected Polygon bounds;
@@ -50,9 +49,6 @@ public abstract class Drawable implements Disposable {
 
         velocity.add(acceleration);
         position.add(velocity.cpy().scl(dt));
-
-        setPosition(position);
-        setAcceleration(acceleration);
 
         bounds.setPosition(position.x, position.y);
 
