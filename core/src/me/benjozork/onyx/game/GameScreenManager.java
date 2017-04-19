@@ -20,6 +20,8 @@ import me.benjozork.onyx.screen.GameOverScreen;
  * {@link GameScreenManager#dispose()}throw an {@link IllegalStateException}<br/>
  * if {@link ScreenManager#getCurrentScreen()} DOES NOT return {@link GameScreen}.
  *
+ * @see GameScreen
+ *
  * @author Benjozork
  */
 public class GameScreenManager {

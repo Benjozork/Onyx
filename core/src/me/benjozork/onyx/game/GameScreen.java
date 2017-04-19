@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Polygon;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.OnyxInputProcessor;
-import me.benjozork.onyx.game.entity.EnemyEntity;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.object.TextComponent;
@@ -27,6 +25,8 @@ import me.benjozork.onyx.utils.Utils;
  * Manages the logic when a level is being played.<br/>
  * Use {@link GameScreenManager} to interact with this {@link Screen}'s contents.
  *
+ * @see GameScreenManager
+ *
  * @author Benjozork
  */
 public class GameScreen implements Screen {
@@ -35,18 +35,15 @@ public class GameScreen implements Screen {
 
     private float maxFrameTime;
 
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private TextComponent scoreText;
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
     private PlayerEntity player;
-    private EnemyEntity enemy;
 
     private OrthographicCamera worldCam, guiCam;
 
     private Sprite background;
-    private Sprite lifeIcon;
 
     private SpriteBatch batch;
 
@@ -72,7 +69,6 @@ public class GameScreen implements Screen {
         player.setMaxSpeed(600f);
         GameScreenManager.addEntity(player);
         this.player = player;
-        this.enemy = enemy;
 
         // Setup cameras
 
@@ -234,10 +230,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         GameScreenManager.dispose();
         scoreText.dispose();
-    }
-
-    public EnemyEntity getEnemy() {
-        return enemy;
     }
 
     private void collisionCheck() {
