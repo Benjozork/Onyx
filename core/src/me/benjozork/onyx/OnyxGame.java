@@ -13,6 +13,8 @@ import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.console.ConsoleCommand;
+import me.benjozork.onyx.event.EventHandler;
+import me.benjozork.onyx.event.impl.listener.EnemyListener;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
@@ -34,6 +36,7 @@ import me.benjozork.onyx.utils.Utils;
 public class OnyxGame extends Game {
 
     private static final Log log = Log.create("Onyx");
+
     public static ProjectConfig projectConfig;
 
     private static boolean debug = false;
@@ -89,6 +92,12 @@ public class OnyxGame extends Game {
         // Setup Initial Screen
 
         Console.dispatchCommand("screen " + projectConfig.initial_screen);
+
+        // Event handling
+
+        EnemyListener listener = new EnemyListener();
+        EventHandler.subscribeTo(listener);
+
     }
 
 

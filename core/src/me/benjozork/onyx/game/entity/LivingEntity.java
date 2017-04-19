@@ -2,6 +2,8 @@ package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.math.Vector2;
 
+import me.benjozork.onyx.event.EventHandler;
+import me.benjozork.onyx.event.impl.EntityDeathEvent;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
@@ -13,6 +15,8 @@ public abstract class LivingEntity extends Entity {
     private float rotation;
 
     private float health = 100f;
+
+    private boolean dead = false;
 
     private final float MAX_BULLET_TIME = 0.1f;
     private float bulletTimer = 0f;
@@ -45,9 +49,14 @@ public abstract class LivingEntity extends Entity {
 
     public void damage(float v) {
         health -= v;
-        if (health < 0) {
+        if (health < 0 && ! dead) {
+            dead = true;
             if (this instanceof EnemyEntity) GameScreenManager.addScore(100);
             this.dispose();
+            EntityDeathEvent deathEvent = new EntityDeathEvent();
+            deathEvent.entity = this;
+            deathEvent.cause = DeathCause.KILLED;
+            EventHandler.pushEvent(deathEvent);
         }
     }
 
