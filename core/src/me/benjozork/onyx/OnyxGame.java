@@ -13,8 +13,8 @@ import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.console.ConsoleCommand;
-import me.benjozork.onyx.event.EventHandler;
-import me.benjozork.onyx.event.impl.listener.EnemyListener;
+import me.benjozork.onyx.event.EventManager;
+import me.benjozork.onyx.event.impl.listener.OnyxEnemyListener;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
@@ -95,8 +95,8 @@ public class OnyxGame extends Game {
 
         // Event handling
 
-        EnemyListener listener = new EnemyListener();
-        EventHandler.subscribe(listener);
+        OnyxEnemyListener listener = new OnyxEnemyListener();
+        EventManager.subscribe(listener);
 
     }
 

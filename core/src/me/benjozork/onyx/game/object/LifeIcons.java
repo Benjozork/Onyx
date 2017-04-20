@@ -1,4 +1,4 @@
-package me.benjozork.onyx.game;
+package me.benjozork.onyx.game.object;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -51,5 +51,6 @@ public class LifeIcons {
     public static void addLife() {
         lives++;
     }
+
 
 }

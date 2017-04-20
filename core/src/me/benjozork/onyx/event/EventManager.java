@@ -11,7 +11,7 @@ import me.benjozork.onyx.logger.Log;
  * Manages game events and their processing.
  * @author Benjozork
  */
-public class EventHandler {
+public class EventManager {
 
     private static Log log = Log.create("EventHandler");
 

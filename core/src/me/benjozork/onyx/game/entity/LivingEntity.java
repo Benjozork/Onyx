@@ -2,15 +2,16 @@ package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.event.EventHandler;
+import me.benjozork.onyx.event.EventManager;
 import me.benjozork.onyx.event.impl.EntityDeathEvent;
 import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.object.Textured;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Benjozork
  */
-public abstract class LivingEntity extends Entity {
+public abstract class LivingEntity extends Entity implements Textured {
 
     private float rotation;
 
@@ -56,7 +57,7 @@ public abstract class LivingEntity extends Entity {
             EntityDeathEvent deathEvent = new EntityDeathEvent();
             deathEvent.entity = this;
             deathEvent.cause = DeathCause.KILLED;
-            EventHandler.pushEvent(deathEvent);
+            EventManager.pushEvent(deathEvent);
         }
     }
 
@@ -91,6 +92,10 @@ public abstract class LivingEntity extends Entity {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+
+    public abstract float getTextureWidth();
+
+    public abstract float getTextureHeight();
 
     public enum Type {
         ENEMY,

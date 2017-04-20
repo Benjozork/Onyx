@@ -25,39 +25,41 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class KeymapLoader {
 
-    private static Log log = Log.create("KeymapLoader");
+    private final static Log log = Log.create("KeymapLoader");
 
     private static KeymapConfig keymapConfig;
 
-    private static ArrayMap<String, Integer> keymaps = new ArrayMap<String, Integer>();
+    private final static ArrayMap<String, Integer> keymaps = new ArrayMap<String, Integer>();
 
-    private static Array<String> illegalKeyMapIDs = new Array<String>();
+    private final static Array<String> illegalKeyMapIDs = new Array<String>();
 
     private static boolean debug = true;
 
     public static void init() {
          keymapConfig = Configs.loadRequire("config/keymap.json", KeymapConfig.class);
          for (Field field : keymapConfig.getClass().getFields()) {
+             final String name = field.getName();
              try {
-                 if (field.get(keymapConfig).equals("SPACE")) { // "Because fuck consistency, right ?" -Libgdx devs
-                     keymaps.put(field.getName(), Input.Keys.valueOf("Space"));
-                     if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), "SPACE");
+                 final Object value = field.get(keymapConfig);
+                 if (value.equals("SPACE")) { // "Because fuck consistency, right ?" -Libgdx devs
+                     keymaps.put(name, Input.Keys.valueOf("Space"));
+                     if (debug) log.print("Loaded keymap '%s' -> '%s'", name, "SPACE");
                      continue;
                  }
-                 keymaps.put(field.getName(), Input.Keys.valueOf((String) field.get(keymapConfig)));
-                 if (keymaps.get(field.getName()) == -1) {
-                    log.print("ERROR: Keymap '%s' bound to invalid key '%s'!", field.getName(), field.get(keymapConfig));
-                    illegalKeyMapIDs.add((String) field.get(keymapConfig));
-                    keymaps.removeKey(field.getName());
+                 keymaps.put(name, Input.Keys.valueOf((String) value));
+                 if (keymaps.get(name) == -1) {
+                    log.print("ERROR: Keymap '%s' bound to invalid key '%s'!", name, value);
+                    illegalKeyMapIDs.add((String) value);
+                    keymaps.removeKey(name);
                     continue;
                  }
-                 if (debug) log.print("Loaded keymap '%s' -> '%s'", field.getName(), field.get(keymapConfig));
+                 if (debug) log.print("Loaded keymap '%s' -> '%s'", name, value);
              } catch (IllegalAccessException e) {
                  Maybe<ProjectConfig> projectConfig = Configs.load("config/project.json", ProjectConfig.class);
-                 log.error("FATAL: Failed to access field '%s' in object '%s': Illegal access.", field.getName(), keymapConfig);
+                 log.error("FATAL: Failed to access field '%s' in object '%s': Illegal access.", name, keymapConfig);
                  log.error("Please report this crash to the Onyx devs:");
                  log.error("reflectedClass: %s", keymapConfig);
-                 log.error("reflectedFieldName: %s", field.getName());
+                 log.error("reflectedFieldName: %s", name);
                  log.error("reflectedFieldType: %s", field.getType());
                  log.error("gameBackend: %s/%s", Gdx.app.getType(), System.getProperty("os.name"));
                  if (! projectConfig.exists()) log.error("FATAL: Additionally, we were unable to access the project config.");
@@ -65,12 +67,12 @@ public class KeymapLoader {
                  log.print("gdxVersion: %s", Version.VERSION);
                  Gdx.app.exit();
              } catch (NullPointerException e) {
-                 log.error("ERROR: Keymap '%s' does exist, but is not defined in configs/keymap.json!", field.getName());
-                 illegalKeyMapIDs.add(field.getName());
+                 log.error("ERROR: Keymap '%s' does exist, but is not defined in configs/keymap.json!", name);
+                 illegalKeyMapIDs.add(name);
              }
          }
          if (illegalKeyMapIDs.size == 0) log.print("%s keymaps loaded", keymaps.size);
-         else log.print("%s keymaps loaded with %S errors", keymaps.size, illegalKeyMapIDs.size);
+         else log.print("%s keymaps loaded with %s errors", keymaps.size, illegalKeyMapIDs.size);
     }
 
     /**

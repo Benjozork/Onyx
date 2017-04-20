@@ -12,6 +12,7 @@ import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.entity.ProjectileEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.screen.GameOverScreen;
 
 /**
@@ -33,6 +34,8 @@ public class GameScreenManager {
 
     private static Array<Entity> entities = new Array<Entity>();
     private static Array<Entity> entitiesToRemove = new Array<Entity>();
+
+    private static Array<StaticDrawable> staticObjects = new Array<StaticDrawable>();
 
     private static int score = 0;
     private static int highScore = 0;
@@ -139,6 +142,13 @@ public class GameScreenManager {
         entitiesToRemove.add(e);
     }
 
+    /**
+     * @return an {@link Array} of {@link StaticDrawable} objects.
+     */
+    public static Array<StaticDrawable> getStaticObjects() {
+        return staticObjects;
+    }
+
     public static void generateRandomEnemyWave(int min, int max, int xmin, int xmax, int ymin, int ymax) {
         check();
         Random random = new Random();
@@ -167,7 +177,6 @@ public class GameScreenManager {
         score += v;
         updateHighScore();
     }
-
 
     public int getHighScore() {
         check();
@@ -237,6 +246,8 @@ public class GameScreenManager {
 
         entities = new Array<Entity>();
         entitiesToRemove = new Array<Entity>();
+
+        staticObjects = new Array<StaticDrawable>();
 
         score = 0;
         highScore = 0;

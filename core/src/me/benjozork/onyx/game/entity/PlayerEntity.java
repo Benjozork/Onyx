@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.PolygonLoader;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.HealthBar;
+import me.benjozork.onyx.game.object.HealthBar;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -115,7 +115,7 @@ public class PlayerEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
-        healthBar.draw(getX() + PLAYER_TEXTURE.getWidth() / 2 - healthBar.getWidth() / 2, getY() - healthBar.getHeight() / 0.5f);
+        healthBar.draw();
     }
 
     @Override
@@ -161,6 +161,16 @@ public class PlayerEntity extends LivingEntity {
 
     public boolean isFiring() {
         return Gdx.input.isKeyPressed(Input.Keys.SPACE);
+    }
+
+    @Override
+    public float getTextureWidth() {
+        return PLAYER_TEXTURE.getWidth();
+    }
+
+    @Override
+    public float getTextureHeight() {
+        return PLAYER_TEXTURE.getHeight();
     }
 
     public enum DrawState {

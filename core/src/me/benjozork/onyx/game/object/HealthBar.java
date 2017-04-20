@@ -1,19 +1,22 @@
-package me.benjozork.onyx.game;
+package me.benjozork.onyx.game.object;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.game.entity.LivingEntity;
+import me.benjozork.onyx.object.StaticDrawable;
+import me.benjozork.onyx.utils.CenteredDrawer;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Benjozork
  */
-public class HealthBar {
+public class HealthBar extends StaticDrawable {
 
     private LivingEntity parent;
 
@@ -27,9 +30,10 @@ public class HealthBar {
 
     private ShapeRenderer renderer = GameManager.getRenderer();
 
-    private float VALUE_DELTA = 70f;
+    private final float VALUE_DELTA = 70f;
 
     public HealthBar(LivingEntity parent, float width, float height, float maxValue) {
+        super(parent.getX(), parent.getY());
         this.parent = parent;
         this.width = width;
         this.height = height;
@@ -48,8 +52,18 @@ public class HealthBar {
         healthColors.put(100, Utils.rgb(0, 255, 0));
     }
 
-    public void draw(float x, float y) {
+    @Override
+    public void init() {
 
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void draw() {
         // Set Value
 
         if (value > parent.getHealth()) value -= VALUE_DELTA * Utils.delta();
@@ -66,7 +80,8 @@ public class HealthBar {
 
         renderer.setColor(bgColor);
 
-        renderer.rect(x, y, width, height);
+        Vector2 centerPos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, parent.getX() + parent.getTextureWidth() / 2, parent.getY() - getHeight() / 0.5f, getWidth(), getHeight());
+        renderer.rect(centerPos.x, centerPos.y, getWidth(), getHeight());
 
         // Draw health
 
@@ -81,9 +96,14 @@ public class HealthBar {
 
         renderer.setColor(drawColor);
 
-        renderer.rect(x, y, (value / maxValue) * width, height);
+        renderer.rect(centerPos.x, centerPos.y, (value / maxValue) * width, height);
 
         GameManager.setIsShapeRendering(false);
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     public float getWidth() {

@@ -13,6 +13,8 @@ import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
+import me.benjozork.onyx.game.object.LifeIcons;
+import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
@@ -179,12 +181,24 @@ public class GameScreen implements Screen {
             e.update(delta); // This call updates the Drawable class internally
         }
 
+        for (StaticDrawable sd : GameScreenManager.getStaticObjects()) {
+            sd.update(delta);
+        }
+
         for (Entity e : GameScreenManager.getEntities()) {
             e.update();
         }
 
+        for (StaticDrawable sd : GameScreenManager.getStaticObjects()) {
+            sd.update();
+        }
+
         for (Entity e : GameScreenManager.getEntities()) {
             e.draw();
+        }
+
+        for (StaticDrawable sd : GameScreenManager.getStaticObjects()) {
+            sd.draw();
         }
 
 		 /*
