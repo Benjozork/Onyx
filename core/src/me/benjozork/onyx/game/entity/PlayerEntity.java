@@ -41,7 +41,6 @@ public class PlayerEntity extends LivingEntity {
     }
 
     @Override
-
     public void init() {
         // Initialize hitbox
 
