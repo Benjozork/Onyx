@@ -96,7 +96,7 @@ public class OnyxGame extends Game {
         // Event handling
 
         EnemyListener listener = new EnemyListener();
-        EventHandler.subscribeTo(listener);
+        EventHandler.subscribe(listener);
 
     }
 
@@ -124,7 +124,6 @@ public class OnyxGame extends Game {
         OnyxInputProcessor.getCurrentProcessor().processInput();
 
     }
-
 
     @Override
     public void render() {

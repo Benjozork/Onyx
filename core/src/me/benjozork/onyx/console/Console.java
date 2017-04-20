@@ -48,6 +48,7 @@ public class Console {
 
     private static final float CONSOLE_HEIGHT = 600;
     private static final float CONSOLE_WIDTH = 600;
+
     private static final float CONSOLE_INNER_VERTICAL_OFFSET = 10;
     private static final float CONSOLE_INNER_HORIZONTAL_OFFSET = 10;
 
@@ -144,7 +145,7 @@ public class Console {
                     + "  []fps,  [#FF00FF]"
                     + GameScreenManager.getEntities().size
                     + "  []entities",
-                20, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET
+                400, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET
             );
 
             // Draw current screen
@@ -164,7 +165,7 @@ public class Console {
                 batch,
                 Gdx.graphics.getFramesPerSecond()
                     + " fps ",
-                20, Gdx.graphics.getHeight() - 10
+                400, Gdx.graphics.getHeight() - 10
             );
 
             // Draw current screen
