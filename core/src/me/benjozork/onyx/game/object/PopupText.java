@@ -20,7 +20,7 @@ import me.benjozork.onyx.utils.Utils;
  * @author Benjozork
  */
 @SuppressWarnings ("WeakerAccess")
-public class PopupScoreText extends StaticDrawable {
+public class PopupText extends StaticDrawable {
 
     private static final ProjectConfig projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
 
@@ -32,6 +32,8 @@ public class PopupScoreText extends StaticDrawable {
 
     private final BitmapFont font;
 
+    // Public attributes
+
     public int initialFontSize = 35;
     public Color initialFontColor = Color.WHITE;
 
@@ -40,13 +42,14 @@ public class PopupScoreText extends StaticDrawable {
 
     public float transparencyDeltaTolerance = 0.05f;
 
-    public PopupScoreText(LivingEntity parent, int value) {
+    // End public attributes
+
+    public PopupText(LivingEntity parent, String text) {
         super(0, 0);
 
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = initialFontSize;
         parameter.color = initialFontColor;
-        String text = value > 0 ? "+" + value : "-" + value;
         this.component = new TextComponent(text, projectConfig.default_font, parameter);
 
         Vector2 pos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, parent.getX() + parent.getTextureWidth() /2, parent.getY() + parent.getTextureHeight() / 2, component.getLayout().width, component.getLayout().height);
