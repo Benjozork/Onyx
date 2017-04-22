@@ -7,9 +7,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
 
+import java.math.BigDecimal;
+
 import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.config.Configs;
+import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.object.StaticDrawable;
+import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.CenteredDrawer;
 import me.benjozork.onyx.utils.Utils;
 
@@ -22,15 +27,21 @@ public class HealthBar extends StaticDrawable {
 
     private float width, height;
 
-    private Color bgColor = Utils.rgba(0, 0, 0, 200);
+    private float maxValue, value;
 
     private ArrayMap<Integer, Color> healthColors = new ArrayMap<Integer, Color>();
 
-    private float maxValue, value;
+    private TextComponent component;
 
     private ShapeRenderer renderer = GameManager.getRenderer();
 
+    private final Color BACKGROUND_COLOR = Utils.rgba(0, 0, 0, 200);
+
     private final float VALUE_DELTA = 70f;
+
+    private final float HEALTH_TEXT_VERTICAL_OFFSET = 5;
+
+    private BigDecimal bd;
 
     public HealthBar(LivingEntity parent, float width, float height, float maxValue) {
         super(parent.getX(), parent.getY());
@@ -39,6 +50,7 @@ public class HealthBar extends StaticDrawable {
         this.height = height;
         this.maxValue = maxValue;
         this.value = parent.getHealth();
+        this.component = new TextComponent(String.valueOf(maxValue), Configs.loadCached(ProjectConfig.class).default_font);
 
         healthColors.put(10, Utils.rgb(255, 0, 0));
         healthColors.put(20, Utils.rgb(226, 26, 0));
@@ -60,15 +72,20 @@ public class HealthBar extends StaticDrawable {
     @Override
     public void update() {
 
-    }
-
-    @Override
-    public void draw() {
-        // Set Value
+        // Set value with delay
 
         if (value > parent.getHealth()) value -= VALUE_DELTA * Utils.delta();
 
         if (value < parent.getHealth()) value += VALUE_DELTA * Utils.delta();
+
+        bd = new BigDecimal(Float.toString(value));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+
+        component.setText(String.valueOf(bd.toPlainString()));
+    }
+
+    @Override
+    public void draw() {
 
         GameManager.setIsShapeRendering(true);
         renderer.setProjectionMatrix(GameManager.getWorldCamera().combined);
@@ -79,10 +96,11 @@ public class HealthBar extends StaticDrawable {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        renderer.setColor(bgColor);
+        renderer.setColor(BACKGROUND_COLOR);
 
         Vector2 centerPos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, parent.getX() + parent.getTextureWidth() / 2, parent.getY() - getHeight() / 0.5f, getWidth(), getHeight());
         renderer.rect(centerPos.x, centerPos.y, getWidth(), getHeight());
+        getPosition().set(centerPos.x ,centerPos.y - getHeight() - HEALTH_TEXT_VERTICAL_OFFSET);
 
         // Draw health
 
@@ -95,11 +113,24 @@ public class HealthBar extends StaticDrawable {
             }
         }
 
+        // Draw health
+
+        renderer.set(ShapeRenderer.ShapeType.Filled);
+
         renderer.setColor(drawColor);
 
         renderer.rect(centerPos.x, centerPos.y, (value / maxValue) * width, height);
 
         GameManager.setIsShapeRendering(false);
+
+        // Draw text
+
+        centerPos.set(centerPos.x + getWidth() / 2, centerPos.y);
+
+        GameManager.setIsRendering(true);
+
+        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+
     }
 
     @Override
