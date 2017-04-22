@@ -68,6 +68,7 @@ public class HealthBar extends StaticDrawable {
 
         if (value > parent.getHealth()) value -= VALUE_DELTA * Utils.delta();
 
+        if (value < parent.getHealth()) value += VALUE_DELTA * Utils.delta();
 
         GameManager.setIsShapeRendering(true);
         renderer.setProjectionMatrix(GameManager.getWorldCamera().combined);
