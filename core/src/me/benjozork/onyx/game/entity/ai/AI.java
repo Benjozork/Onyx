@@ -27,6 +27,7 @@ public class AI {
     private AIConfiguration.ProjectileReluctance reluctance;
 
     private LivingEntity source;
+
     private LivingEntity target; // Should not be used for AI, only to update untrackedTarget.
 
     private float minShootStreakDelay;
@@ -244,6 +245,10 @@ public class AI {
                 log.error("ERROR: AI strategy '%s' not supported", strategy);
         }
 
+    }
+
+    public void setTarget(LivingEntity target) {
+        this.target = target;
     }
 
     public float getFactor() {

@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.event.EventManager;
 import me.benjozork.onyx.event.impl.EntityKilledEvent;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.Player;
 import me.benjozork.onyx.object.Textured;
 import me.benjozork.onyx.utils.Utils;
 
@@ -53,17 +52,11 @@ public abstract class LivingEntity extends Entity implements Textured {
         health -= v;
         if (health < 0 && ! dead) {
             dead = true;
-            if (this instanceof EnemyEntity) {
-                if(damageSource instanceof PlayerEntity) {
-                    PlayerEntity temp = (PlayerEntity) damageSource;
-                    temp.getPlayer().addScore(100);
-                }
-            }
-            this.dispose();
             EntityKilledEvent deathEvent = new EntityKilledEvent();
             deathEvent.killer = damageSource;
             deathEvent.entity = this;
             EventManager.pushEvent(deathEvent);
+            GameScreenManager.die(this);
         }
     }
 

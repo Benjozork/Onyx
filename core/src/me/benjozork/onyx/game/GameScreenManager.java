@@ -1,5 +1,6 @@
 package me.benjozork.onyx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
@@ -8,12 +9,14 @@ import java.util.Random;
 import me.benjozork.onyx.ScreenManager;
 import me.benjozork.onyx.game.entity.EnemyEntity;
 import me.benjozork.onyx.game.entity.Entity;
+import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.entity.ProjectileEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.screen.GameOverScreen;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
@@ -130,9 +133,6 @@ public class GameScreenManager {
         check();
         if (e instanceof EnemyEntity) // Remove enemy
             enemiesToRemove.add((EnemyEntity) e);
-        if (e instanceof PlayerEntity) { // Remove player
-            setIsDisposing(true);
-        }
         if (e instanceof ProjectileEntity) // Remove projectile
             ProjectileManager.removeProjectile((ProjectileEntity) e);
         entitiesToRemove.add(e);
@@ -171,6 +171,46 @@ public class GameScreenManager {
         if (! exists() && checking) throw new IllegalStateException("current screen must be GameScreen");
     }
 
+    /**
+     * Call this method when a {@link LivingEntity} dies
+     * @param livingEntity the entity that died
+     */
+    public static void die(LivingEntity livingEntity) {
+        if (livingEntity instanceof PlayerEntity) {
+            PlayerEntity playerEntity = (PlayerEntity) livingEntity;
+            if (playerEntity.getPlayer().getLives() > 1){
+                playerEntity.getPlayer().removeLife();
+                PlayerEntity newPlayerEntity = new PlayerEntity(Utils.getCenterPos(78), 50);
+                newPlayerEntity.setMaxSpeed(600f);
+                Player newPlayer = new Player(playerEntity.getPlayer().getLives(), newPlayerEntity);
+                newPlayer.setScore(playerEntity.getPlayer().getScore());
+                players.set(0, newPlayer);
+
+                playerEntity.dispose();
+
+                // Clear entities
+
+                for (Array.ArrayIterator<Entity> iter = new Array.ArrayIterator<Entity>(entities); iter.hasNext();) {
+                    Entity entity = iter.next();
+                    iter.remove();
+                    entity.dispose();
+                }
+
+                 addEntity(newPlayerEntity);
+
+                 generateRandomEnemyWave(1, 3, 0, Gdx.graphics.getWidth(), 500, Gdx.graphics.getHeight());
+
+            }
+            else {
+                playerEntity.dispose();
+                setIsDisposing(true);
+            }
+        } else if (livingEntity instanceof EnemyEntity) {
+            livingEntity.dispose();
+            removeEntity(livingEntity);
+        }
+    }
+
     public static boolean isDisposing() {
         return !checking;
     }
@@ -183,9 +223,7 @@ public class GameScreenManager {
      * Flushes the object cache when {@link GameScreen} is disposed of
      */
     public static void dispose() {
-        for (Player p: players) {
-            p = null;
-        }
+        players = new Array<Player>();
 
         for (Entity e : GameScreenManager.getEntities()) {
             e.dispose();

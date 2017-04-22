@@ -76,7 +76,7 @@ public class GameScreen implements Screen {
 
         players.add(player);
 
-        for (Player p: players) {
+        for (Player p : players) {
             GameScreenManager.addEntity(p.getPlayerEntity());
         }
 
@@ -95,9 +95,6 @@ public class GameScreen implements Screen {
         background.setPosition(0, 0);
         background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        LifeIcons.setMaxLives(3);
-        LifeIcons.setLives(3);
 
         // Setup CrossFadeColorEffect
 

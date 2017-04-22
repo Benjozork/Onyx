@@ -159,6 +159,10 @@ public class EnemyEntity extends LivingEntity {
         return ENEMY_TEXTURE.getHeight();
     }
 
+    public AI getAI() {
+        return ai;
+    }
+
     public enum DrawState {
         IDLE,
         FIRING,

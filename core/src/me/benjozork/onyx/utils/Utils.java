@@ -59,7 +59,7 @@ public class Utils {
      * @return a centered position
      */
     @Deprecated
-    public static float getCenterPos(int w) {
+    public static float getCenterPos(float w) {
         return (Gdx.graphics.getWidth() / 2) + w / 2;
     }
 

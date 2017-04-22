@@ -38,13 +38,20 @@ public class Player {
         return highScore;
     }
 
-
     public int getLives() {
         return lives;
     }
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    public void addLife() {
+        lives++;
+    }
+
+    public void removeLife() {
+        lives--;
     }
 
     public PlayerEntity getPlayerEntity() {
@@ -55,4 +62,5 @@ public class Player {
         this.playerEntity = playerEntity;
         playerEntity.setPlayer(this);
     }
+
 }

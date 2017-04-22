@@ -11,13 +11,14 @@ import me.benjozork.onyx.logger.Log;
 /**
  * @author Benjozork
  */
-public class OnyxEnemyListener implements EventListener {
+public class OnyxEntityListener implements EventListener {
 
     Log log = Log.create(this);
 
-    public boolean onEvent(EntityKilledEvent e) {
+    public boolean onEntityKilled(EntityKilledEvent e) {
         if (e.entity instanceof EnemyEntity && e.killer.type == LivingEntity.Type.PLAYER) {
-            GameScreenManager.getStaticObjects().add(new PopupText(e.entity, String.valueOf(+100)));
+            GameScreenManager.getStaticObjects().add(new PopupText(e.entity, "+100"));
+            GameScreenManager.getPlayers().first().addScore(100);
         }
         return true;
     }

@@ -37,7 +37,7 @@ public class PlayerEntity extends LivingEntity {
     private DrawState state = DrawState.IDLE;
     private Direction direction = Direction.STRAIGHT;
 
-    private final HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
+    private HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
 
     public PlayerEntity(float x, float y) {
         super(x, y);
@@ -57,7 +57,6 @@ public class PlayerEntity extends LivingEntity {
         // Init health bar
 
         GameScreenManager.getStaticObjects().add(healthBar);
-
     }
 
     @Override
