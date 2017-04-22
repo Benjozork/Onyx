@@ -22,7 +22,7 @@ public class FTFGeneratorCache {
     private static FreeTypeFontGenerator defaultGenerator;
 
     static {
-        ProjectConfig projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+        ProjectConfig projectConfig = Configs.loadCached(ProjectConfig.class);
         defaultGenerator = new FreeTypeFontGenerator(Gdx.files.internal(projectConfig.default_font));
         cache.put("default", defaultGenerator);
     }

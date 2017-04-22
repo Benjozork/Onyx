@@ -22,7 +22,7 @@ import me.benjozork.onyx.utils.Utils;
 @SuppressWarnings ("WeakerAccess")
 public class PopupText extends StaticDrawable {
 
-    private static final ProjectConfig projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+    private static final ProjectConfig projectConfig = Configs.loadCached(ProjectConfig.class);
 
     private Vector2 position = new Vector2();
     private Vector2 initialPosition = new Vector2();

@@ -5,6 +5,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 
+import java.util.NoSuchElementException;
+
 import me.benjozork.onyx.config.serializer.BoundsSerializer;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.Bounds;
@@ -184,12 +186,39 @@ public class Configs {
     }
 
     /**
+     * Loads the cached instance of the specified config.<br/>
+     * Use this if you know for sure that the provided config has already been<br/>
+     * loaded, i.e. post-initialization code.
+     *
+     * @param clazz the class of the config file that has to be retrieved
+     *
+     * @return the retrieved file
+     *
+     * @throws NoSuchElementException if no cached config with the specified class is found
+     */
+    public static <T> T loadCached(Class<T> clazz) throws NoSuchElementException {
+        for (Object o : cache.values()) {
+            if (o.getClass().equals(clazz)) return (T) o;
+        }
+        throw new NoSuchElementException(String.format("no config of class '%s' found in config cache", clazz.getSimpleName()));
+    }
+
+    /**
+     * Reloads all of the configs already present in the cache
+     */
+    public static void reloadAllCached() {
+        for (Object o : cache.values()) {
+            reload(cache.findKey(o, true), o.getClass());
+        }
+    }
+
+    /**
      * Clears the file cache
      */
     public static void clearCache() {
         cache.clear();
         int cacheSize = cache.size;
-        log.print("cache cleared, removed %d items", cacheSize);
+        log.print("Cache cleared, removed %d items", cacheSize);
     }
 
 }
