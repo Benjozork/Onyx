@@ -28,11 +28,21 @@ public class Log {
     /**
      * Creates a new logger with the supplied tag
      * @param tag the tag to be used
-     * @return the logger
+     * @return a logger
      */
     public static Log create(String tag) {
         return new Log(tag);
     }
+
+    /**
+     * Creates a new logger with the supplied object class name as the tag
+     * @param obj the object to use to se the tag
+     * @return a logger
+     */
+    public static Log create(Object obj) {
+        return new Log(obj.getClass().getSimpleName());
+    }
+
 
     /**
      * Prints a formatted string
