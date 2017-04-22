@@ -56,9 +56,9 @@ public abstract class StaticDrawable implements Disposable {
     public abstract void dispose();
 
     /**
-     * Checks if the Drawable collides with a specified {@link Polygon}
+     * Checks if the StaticDrawable collides with a specified {@link Polygon}
      * @param otherBounds the polygon used to perform the check
-     * @return whether the Drawable collides with otherBounds
+     * @return whether the StaticDrawable collides with otherBounds
      */
     public boolean collidesWith(Polygon otherBounds) {
         return PolygonHelper.collidePolygon(bounds, otherBounds);

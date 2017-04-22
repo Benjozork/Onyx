@@ -1,8 +1,11 @@
-package me.benjozork.onyx.console;
+package me.benjozork.onyx.console.impl;
 
 import com.badlogic.gdx.Gdx;
 
 import me.benjozork.onyx.ScreenManager;
+import me.benjozork.onyx.console.CommandProcessor;
+import me.benjozork.onyx.console.Console;
+import me.benjozork.onyx.console.ConsoleCommand;
 import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
@@ -19,7 +22,7 @@ import me.benjozork.onyx.utils.PolygonHelper;
  */
 public class OnyxCommandProcessor implements CommandProcessor {
 
-    private static Log log = Log.create("OnyxCommandProcessor");
+    private Log log = Log.create(this);
 
     @Override
     public boolean onCommand(ConsoleCommand c) {

@@ -3,8 +3,6 @@ package me.benjozork.onyx.game.entity.ai;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.Random;
-
 import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
@@ -20,8 +18,6 @@ import me.benjozork.onyx.utils.Utils;
  * @author Benjozork
  */
 public class AI {
-
-    private Random random = new Random();
 
     private Log log;
 
@@ -56,7 +52,7 @@ public class AI {
     private float maxTargetTrackingDelta;
     private float targetTrackingDelta;
 
-    public boolean isFiring = true;
+    private boolean isFiring = true;
 
     private float factor;
 
