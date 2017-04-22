@@ -88,6 +88,8 @@ public class EnemyEntity extends LivingEntity {
 
         ai.update(Utils.delta());
 
+        // Update texture
+
         if (state == EnemyEntity.DrawState.IDLE) {
             currentTexture.setTexture(ENEMY_TEXTURE);
         } else if (state == EnemyEntity.DrawState.MOVING) {
@@ -100,6 +102,8 @@ public class EnemyEntity extends LivingEntity {
 
         currentTexture.setPosition(getX(), getY());
         currentTexture.setRotation(- getRotation() * MathUtils.radiansToDegrees);
+
+        // Rotate bounds
 
         bounds.setRotation(- getRotation() * MathUtils.radiansToDegrees);
 

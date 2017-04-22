@@ -30,7 +30,7 @@ public class ProjectileManager {
     public static boolean collides(LivingEntity src) {
         for (ProjectileEntity pr : projectiles) {
             if (PolygonHelper.collidePolygon(pr.getBounds(), src.getBounds())) {
-                if (pr.source != src.type) {
+                if (pr.source.type != src.type) {
                     return true;
                 }
             }

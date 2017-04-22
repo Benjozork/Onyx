@@ -25,7 +25,7 @@ public class ProjectileEntity extends Entity {
 
     private Texture texture;
 
-    public LivingEntity.Type source;
+    public LivingEntity source;
 
     public ProjectileEntity(float x, float y, float targetx, float targety, String texturePath) {
         super(x, y);
@@ -58,15 +58,15 @@ public class ProjectileEntity extends Entity {
         if (GameScreenManager.getEnemies().size == 0) return;
 
         for (EnemyEntity enemy : GameScreenManager.getEnemies()) {
-            if (this.collidesWith(enemy.getBounds()) && enemy.type != source) {
-                enemy.damage(10f);
+            if (this.collidesWith(enemy.getBounds()) && enemy.type != source.type) {
+                enemy.damage(10f, source);
                 this.dispose();
             }
         }
 
         PlayerEntity player = GameScreenManager.getPlayer();
-        if (this.collidesWith(player.getBounds()) && player.type != source) {
-            player.damage(10f);
+        if (this.collidesWith(player.getBounds()) && player.type != source.type) {
+            player.damage(10f, source);
             this.dispose();
         }
     }

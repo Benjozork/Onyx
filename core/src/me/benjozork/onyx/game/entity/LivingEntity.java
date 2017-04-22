@@ -3,7 +3,7 @@ package me.benjozork.onyx.game.entity;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.event.EventManager;
-import me.benjozork.onyx.event.impl.EntityDeathEvent;
+import me.benjozork.onyx.event.impl.EntityKilledEvent;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.object.Textured;
 import me.benjozork.onyx.utils.Utils;
@@ -37,7 +37,7 @@ public abstract class LivingEntity extends Entity implements Textured {
             ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety, path);
             projectile.getVelocity().scl(2550f);
             projectile.setDamage(10f);
-            projectile.source = type;
+            projectile.source = this;
 
             GameScreenManager.addEntity(projectile);
 
@@ -48,15 +48,15 @@ public abstract class LivingEntity extends Entity implements Textured {
         }
     }
 
-    public void damage(float v) {
+    public void damage(float v, LivingEntity damageSource) {
         health -= v;
         if (health < 0 && ! dead) {
             dead = true;
             if (this instanceof EnemyEntity) GameScreenManager.addScore(100);
             this.dispose();
-            EntityDeathEvent deathEvent = new EntityDeathEvent();
+            EntityKilledEvent deathEvent = new EntityKilledEvent();
+            deathEvent.killer = damageSource;
             deathEvent.entity = this;
-            deathEvent.cause = DeathCause.KILLED;
             EventManager.pushEvent(deathEvent);
         }
     }

@@ -89,7 +89,7 @@ public class PlayerEntity extends LivingEntity {
         if (velocity.len() > 0) velocity.setLength(velocity.len() - 15f);
         else velocity.setLength(velocity.len() + 15f);
 
-        // Set current texture depending on state
+        // Update texture
 
         if (state == DrawState.IDLE) {
             currentTexture.setTexture(PLAYER_TEXTURE);
@@ -101,7 +101,7 @@ public class PlayerEntity extends LivingEntity {
             currentTexture.setTexture(MOVING_FIRING_PLAYER_TEXTURE);
         }
 
-        // Rotate texture
+        // Update texture
 
         currentTexture.setPosition(getX(), getY());
         currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
