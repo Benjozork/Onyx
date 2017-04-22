@@ -1,5 +1,5 @@
 {
 	"version": "0.5.0-alpha",
 	"initial_screen": "game",
-	"default_font": "ui/cc_red_alert_inet.ttf"
+	"default_font": "cc_red_alert_inet.ttf"
 }
