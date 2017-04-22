@@ -23,10 +23,10 @@ public class EventManager {
      */
     public static void pushEvent(Event e) {
         for (EventListener eventListener : eventProcessors.keys()) {
-            ArrayMap<Method, Class<? extends Event>> classes = eventProcessors.get(eventListener);
-            for (Method m : classes.keys()) {
+            ArrayMap<Method, Class<? extends Event>> eventTypes = eventProcessors.get(eventListener);
+            for (Method m : eventTypes.keys()) {
                 String name = m.getName();
-                if (classes.get(m).equals(e.getClass())) {
+                if (eventTypes.get(m).equals(e.getClass()) && ! e.cancelled) {
                     String className = eventListener.getClass().getSimpleName();
                     try {
                         m.invoke(eventListener, e);
