@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
 
 import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
@@ -105,7 +106,11 @@ public class GameScreen implements Screen {
         zoomPulseConfig.targetZoom = 0.5f;
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
-        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()));
+        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()), OnyxGame.projectConfig.default_font);
+        scoreText.getParameter().color = Color.WHITE;
+        scoreText.getParameter().borderColor = Color.BLACK;
+        scoreText.getParameter().size = 30;
+        scoreText.update();
 
     }
 
@@ -171,7 +176,7 @@ public class GameScreen implements Screen {
 
         // Draw score text
 
-        scoreText.draw(batch, Gdx.graphics.getWidth() - 20, 20);
+        scoreText.draw(batch, Gdx.graphics.getWidth() - scoreText.getLayout().width - 20, Gdx.graphics.getHeight() - scoreText.getLayout().height - 10);
 
         batch.setProjectionMatrix(worldCam.combined);
 
