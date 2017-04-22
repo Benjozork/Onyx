@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.FTFGeneratorCache;
+import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
  * Defines a text that is drawn on the screen. Includes font and style methods to ease implementation of text.<br/>
- * A certain font path is specified along with a string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.<br/>
- * Drawing methods to render the text are provided, which can also center the text if it is necessary.
+ * A certain font path can be specified along with a text string and a {@link FreeTypeFontGenerator.FreeTypeFontParameter}.<br/>
+ * Drawing methods to render the text are provided, which can also center the text if necessary.
  *
  * @author Benjozork
  */
@@ -57,10 +58,9 @@ public class TextComponent {
      * @param text the text to be displayed
      */
     public TextComponent(String text) {
-        ProjectConfig projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+        ProjectConfig projectConfig = Configs.loadCached(ProjectConfig.class);
         this.text = text;
-        this.fontPath = projectConfig.default_font;
-        this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
+        this.generatedFont = GameManager.getFont();
         this.layout = new GlyphLayout(generatedFont, text);
     }
 
@@ -68,14 +68,14 @@ public class TextComponent {
     /**
      * Returns and generates a new {@link BitmapFont}
      */
-    public BitmapFont generateFont() {
-        generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
+    public BitmapFont update() {
+        if (fontPath != null) generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
         updateLayout();
         return generatedFont;
     }
 
     /**
-     * Returns a {@link BitmapFont} without regenerating it.
+     * Returns a {@link BitmapFont} without regenerating it
      */
     public BitmapFont getFont() {
         return generatedFont;
@@ -195,12 +195,12 @@ public class TextComponent {
 
     public void setFontPath(String fontPath) {
         this.fontPath = fontPath;
-        generateFont();
+        update();
     }
 
     /**
      * Returns the FreeTypeFontParameter of the font used to render the text.<br/>
-     * WARNING: {@link TextComponent#generateFont()} should ALWAYS be called after editing the parameter.
+     * WARNING: {@link TextComponent#update()} should ALWAYS be called after editing the parameter.
      */
     public FreeTypeFontGenerator.FreeTypeFontParameter getParameter() {
         return parameter;
@@ -213,7 +213,7 @@ public class TextComponent {
      */
     public void setParameter(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         this.parameter = parameter;
-        generateFont();
+        update();
     }
 
     /**
