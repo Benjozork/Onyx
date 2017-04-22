@@ -13,10 +13,8 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 
+import me.benjozork.onyx.DebugInfo;
 import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.ScreenManager;
-import me.benjozork.onyx.game.GameScreen;
-import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -58,6 +56,10 @@ public class Console {
 
     private static boolean resetColor = true;
 
+    private static Array<String> linesBuf = new Array<String>();
+    private static final float BUFFER_INTERVAL = 0.05f;
+    private static float bufferTimer = 0f;
+
     /**
      * Prepares the console. Should only be called once in the code, before any call<br/>
      * of {@link Console#update()} or {@link Console#draw()}.
@@ -77,7 +79,7 @@ public class Console {
                     - Ben
          */
 
-        OnyxCommandProcessor ocpInstance = new OnyxCommandProcessor();
+        me.benjozork.onyx.console.impl.OnyxCommandProcessor ocpInstance = new me.benjozork.onyx.console.impl.OnyxCommandProcessor();
         Array<String> ocpCommands = new Array<String>();
         ocpCommands.add("screen");
         ocpCommands.add("debug");
@@ -90,6 +92,14 @@ public class Console {
      * Updates the console. Should be called every frame before {@link Console#draw()}.
      */
     public static void update() {
+        bufferTimer += Utils.delta();
+        if (bufferTimer > BUFFER_INTERVAL) {
+            if (linesBuf.size != 0) {
+                lines.add(linesBuf.get(0));
+                linesBuf.removeIndex(0);
+            }
+        }
+
         if (Gdx.input.justTouched()) {
             if (textBox.contains(Utils.unprojectGui(Gdx.input.getX(), Gdx.input.getY()))) {
                 isTextBoxFocused = true;
@@ -134,50 +144,7 @@ public class Console {
 
         // Draw debug info
 
-        if (ScreenManager.getCurrentScreen() instanceof GameScreen) {
-
-            // Draw FPS and entity count
-
-            font.draw (
-                batch,
-                "[#FF00FF]"
-                    + Gdx.graphics.getFramesPerSecond()
-                    + "  []fps,  [#FF00FF]"
-                    + GameScreenManager.getEntities().size
-                    + "  []entities",
-                400, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET
-            );
-
-            // Draw current screen
-
-            font.draw (
-                batch,
-                "current screen:  [#FF00FF]"
-                    + ScreenManager.getCurrentScreen().getClass().getSimpleName()
-                    + "[]",
-                20, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET
-            );
-        } else {
-
-            // Draw FPS
-
-            font.draw (
-                batch,
-                Gdx.graphics.getFramesPerSecond()
-                    + " fps ",
-                400, Gdx.graphics.getHeight() - 10
-            );
-
-            // Draw current screen
-
-            font.draw (
-                batch,
-                "current screen:  [#FF00FF]"
-                    + ScreenManager.getCurrentScreen().getClass().getSimpleName()
-                    + "[]",
-                20, Gdx.graphics.getHeight() - 30
-            );
-        }
+        font.draw(batch, DebugInfo.get(), CONSOLE_WIDTH + 20, Gdx.graphics.getHeight() - CONSOLE_INNER_VERTICAL_OFFSET);
 
         if (lines.size != 0) {
             int i = lines.size;
@@ -198,8 +165,8 @@ public class Console {
      * @param x the object to print
      */
     public static void print(Object x) {
-        if (x.toString().startsWith("->")) lines.add(x.toString().replace("->", Utils.toMarkupColor(color)));
-        else lines.add(Utils.toMarkupColor(color) + x.toString());
+        if (x.toString().startsWith("->")) linesBuf.add(x.toString().replace("->", Utils.toMarkupColor(color)));
+        else linesBuf.add(Utils.toMarkupColor(color) + x.toString());
         if (resetColor) Console.color(Color.WHITE);
     }
 
@@ -222,7 +189,7 @@ public class Console {
     }
 
     private static void newLine() {
-        lines.add("[]\n"); // Resets markup and breaks lines
+        linesBuf.add("[]\n"); // Resets markup and breaks lines
     }
 
      public static void color(Color color) {
