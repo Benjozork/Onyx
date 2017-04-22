@@ -27,7 +27,7 @@ import me.benjozork.onyx.screen.GameOverScreen;
  */
 public class GameScreenManager {
 
-    private static PlayerEntity player;
+    private static Array<Player> players;
 
     private static Array<EnemyEntity> enemies = new Array<EnemyEntity>();
     private static Array<EnemyEntity> enemiesToRemove = new Array<EnemyEntity>();
@@ -36,12 +36,6 @@ public class GameScreenManager {
     private static Array<Entity> entitiesToRemove = new Array<Entity>();
 
     private static Array<StaticDrawable> staticObjects = new Array<StaticDrawable>();
-
-    private static int score = 0;
-    private static int highScore = 0;
-
-    private static int maxLives = 3;
-    private static int lifeCount = maxLives;
 
     private static Log log = Log.create("GameScreenManager");
 
@@ -52,23 +46,25 @@ public class GameScreenManager {
     }
 
     /**
-     * Returns the {@link PlayerEntity} instance used by {@link GameScreen}
-     * @return the player instance
+     * Returns the {@link Array<Player>} instance used by {@link GameScreen}
+     * @returns the player array
      */
-    public static PlayerEntity getPlayer() {
+    public static Array<Player> getPlayers() {
         check();
-        return player;
+        return players;
     }
+
 
     /**
-     * Sets the {@link PlayerEntity} instance to be used by {@link GameScreen}
-     * @param p the player instance
+     * Sets the {@link Array<Player>} instance used by {@link GameScreen}
+     * @param players the player array
      */
-    public static void setPlayer(PlayerEntity p) {
+    public static void setPlayers(Array<Player> players) {
         check();
-        player = p;
+        //// TODO: 22-04-2017 Add check for data 
+        GameScreenManager.players = players;
     }
-
+    
     /**
      * Removes {@link Entity} objects that have been marked for removal
      */
@@ -161,57 +157,6 @@ public class GameScreenManager {
         log.print("Generated %s enemies in range [x: %s, y: %s] and [x: %s, y: %s]", count, xmin, ymin, xmax, ymax);
     }
 
-    public static int getScore() {
-        check();
-        return score;
-    }
-
-    public static void setScore(int v) {
-        check();
-        score = v;
-        updateHighScore();
-    }
-
-    public static void addScore(int v) {
-        check();
-        score += v;
-        updateHighScore();
-    }
-
-    public int getHighScore() {
-        check();
-        return highScore;
-    }
-
-    public static void setHighScore(int highScore) {
-        check();
-        highScore = highScore;
-    }
-
-    private static void updateHighScore() {
-        if (score > highScore) highScore = score;
-    }
-
-    public static int getLives() {
-        check();
-        return lifeCount;
-    }
-
-    public static void setLives(int i) {
-        check();
-        lifeCount = i;
-    }
-
-    public static int getMaxLives() {
-        check();
-        return maxLives;
-    }
-
-    public static void setMaxLives(int i) {
-        check();
-        maxLives = i;
-    }
-
     /**
      * Checks whether a {@link GameScreen} is currently being played
      */
@@ -238,7 +183,9 @@ public class GameScreenManager {
      * Flushes the object cache when {@link GameScreen} is disposed of
      */
     public static void dispose() {
-        player = null;
+        for (Player p: players) {
+            p = null;
+        }
 
         for (Entity e : GameScreenManager.getEntities()) {
             e.dispose();
@@ -248,12 +195,6 @@ public class GameScreenManager {
         entitiesToRemove = new Array<Entity>();
 
         staticObjects = new Array<StaticDrawable>();
-
-        score = 0;
-        highScore = 0;
-
-        maxLives = 0;
-        lifeCount = 0;
 
         setIsDisposing(false);
         ScreenManager.setCurrentScreen(new GameOverScreen());

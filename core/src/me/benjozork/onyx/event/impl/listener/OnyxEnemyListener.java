@@ -18,7 +18,6 @@ public class OnyxEnemyListener implements EventListener {
     public boolean onEvent(EntityKilledEvent e) {
         if (e.entity instanceof EnemyEntity && e.killer.type == LivingEntity.Type.PLAYER) {
             GameScreenManager.getStaticObjects().add(new PopupText(e.entity, String.valueOf(+100)));
-            GameScreenManager.addScore(100);
         }
         return true;
     }

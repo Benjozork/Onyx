@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.PolygonLoader;
 import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.game.Player;
 import me.benjozork.onyx.game.object.HealthBar;
 import me.benjozork.onyx.utils.Utils;
 
@@ -17,6 +18,9 @@ import me.benjozork.onyx.utils.Utils;
  * @author Benjozork
  */
 public class PlayerEntity extends LivingEntity {
+
+
+    private Player player;
 
     // Player textures
 
@@ -157,6 +161,14 @@ public class PlayerEntity extends LivingEntity {
      */
     public void setDirection(Direction v) {
         this.direction = v;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public boolean isFiring() {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.OnyxGame;
@@ -42,7 +43,7 @@ public class GameScreen implements Screen {
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
-    private PlayerEntity player;
+    private Array<Player> players;
 
     private OrthographicCamera worldCam, guiCam;
 
@@ -67,11 +68,19 @@ public class GameScreen implements Screen {
 
         // Setup player
 
-        PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
-        GameScreenManager.setPlayer(player);
-        player.setMaxSpeed(600f);
-        GameScreenManager.addEntity(player);
-        this.player = player;
+        players = new Array<Player>();
+
+        Player player = new Player(3, new PlayerEntity(Utils.getCenterPos(78), 50));
+
+        player.getPlayerEntity().setMaxSpeed(600f);
+
+        players.add(player);
+
+        for (Player p: players) {
+            GameScreenManager.addEntity(p.getPlayerEntity());
+        }
+
+        GameScreenManager.setPlayers(players);
 
         // Setup cameras
 
@@ -106,7 +115,7 @@ public class GameScreen implements Screen {
         zoomPulseConfig.targetZoom = 0.5f;
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
-        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()), OnyxGame.projectConfig.default_font);
+        scoreText = new TextComponent(String.valueOf(GameScreenManager.getPlayers().first().getScore()), OnyxGame.projectConfig.default_font);
         scoreText.getParameter().color = Color.WHITE;
         scoreText.getParameter().borderColor = Color.BLACK;
         scoreText.getParameter().size = 30;
@@ -117,18 +126,20 @@ public class GameScreen implements Screen {
     public void update(float delta) {
 
         // Update DrawState of player
-
-        if (player.isFiring()) {
-            player.setState(PlayerEntity.DrawState.FIRING);
-        }
-        if (player.getVelocity().len() != 0) {
-            player.setState(PlayerEntity.DrawState.MOVING);
-            if (player.isFiring()) {
-                player.setState(PlayerEntity.DrawState.FIRING_MOVING);
+        for (Player p: players) {
+            PlayerEntity playerEntity = p.getPlayerEntity();
+            if (playerEntity.isFiring()) {
+                playerEntity.setState(PlayerEntity.DrawState.FIRING);
             }
-        }
-        if (! player.isFiring() && player.getVelocity().len() == 0f) {
-            player.setState(PlayerEntity.DrawState.IDLE);
+            if (playerEntity.getVelocity().len() != 0) {
+                playerEntity.setState(PlayerEntity.DrawState.MOVING);
+                if (playerEntity.isFiring()) {
+                    playerEntity.setState(PlayerEntity.DrawState.FIRING_MOVING);
+                }
+            }
+            if (!playerEntity.isFiring() && playerEntity.getVelocity().len() == 0f) {
+                playerEntity.setState(PlayerEntity.DrawState.IDLE);
+            }
         }
 
         // Update crossfade
@@ -139,7 +150,7 @@ public class GameScreen implements Screen {
 
         zoomPulseCamera.update();
 
-        scoreText.setText(String.valueOf(GameScreenManager.getScore()));
+        scoreText.setText(String.valueOf(GameScreenManager.getPlayers().first().getScore()));
 
         if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(1, 3, 0, 1920, 500, 1200);
 

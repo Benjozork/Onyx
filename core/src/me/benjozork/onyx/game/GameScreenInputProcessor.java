@@ -18,19 +18,19 @@ public class GameScreenInputProcessor extends OnyxInputProcessor {
         if (GameScreenManager.exists()) { // GameScreen input here
 
             if (! isKeyDown(KeymapLoader.getKeyCode("player_movement_left")) && ! isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
-                GameScreenManager.getPlayer().setDirection(PlayerEntity.Direction.STRAIGHT);
+                GameScreenManager.getPlayers().first().getPlayerEntity().setDirection(PlayerEntity.Direction.STRAIGHT);
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
-                GameScreenManager.getPlayer().setDirection(PlayerEntity.Direction.RIGHT);
-                GameScreenManager.getPlayer().accelerate(new Vector2(1000f, 0f));
+                GameScreenManager.getPlayers().first().getPlayerEntity().setDirection(PlayerEntity.Direction.RIGHT);
+                GameScreenManager.getPlayers().first().getPlayerEntity().accelerate(new Vector2(1000f, 0f));
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_movement_left"))) {
-                GameScreenManager.getPlayer().setDirection(PlayerEntity.Direction.LEFT);
-                GameScreenManager.getPlayer().accelerate(new Vector2(- 1000f, 0f));
+                GameScreenManager.getPlayers().first().getPlayerEntity().setDirection(PlayerEntity.Direction.LEFT);
+                GameScreenManager.getPlayers().first().getPlayerEntity().accelerate(new Vector2(- 1000f, 0f));
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_fire_primary"))) {
                 Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-                GameScreenManager.getPlayer().fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
+                GameScreenManager.getPlayers().first().getPlayerEntity().fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
             }
 
         }

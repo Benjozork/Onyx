@@ -61,7 +61,10 @@ public class EnemyEntity extends LivingEntity {
         aiConfiguration.strategy = AIConfiguration.AIStrategy.LINEAR;
         aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.MED;
         aiConfiguration.source = this;
-        aiConfiguration.target = GameScreenManager.getPlayer();
+
+        // For now, the AI's target is set to the first player, change it as required later
+        aiConfiguration.target = GameScreenManager.getPlayers().first().getPlayerEntity();
+
         aiConfiguration.factor = 100f;
         AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
         shootingConfiguration.minStreakDelay = 1.5f;

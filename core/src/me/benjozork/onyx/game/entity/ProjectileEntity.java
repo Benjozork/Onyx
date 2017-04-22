@@ -64,7 +64,7 @@ public class ProjectileEntity extends Entity {
             }
         }
 
-        PlayerEntity player = GameScreenManager.getPlayer();
+        PlayerEntity player = GameScreenManager.getPlayers().first().getPlayerEntity();
         if (this.collidesWith(player.getBounds()) && player.type != source.type) {
             player.damage(10f, source);
             this.dispose();
