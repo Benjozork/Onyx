@@ -103,7 +103,7 @@ public class GameManager {
     public static void setIsRendering(boolean v) {
         if (v) {
             if (renderer.isDrawing() && ! batch.isDrawing()) {
-                renderer.begin();
+                renderer.end();
                 shapeCache = true;
             }
             if (! batch.isDrawing()) batch.begin();
