@@ -1,10 +1,10 @@
 package me.benjozork.onyx.event.impl.listener;
 
 import me.benjozork.onyx.event.EventListener;
-import me.benjozork.onyx.event.impl.EntityDeathEvent;
+import me.benjozork.onyx.event.impl.EntityKilledEvent;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.entity.DeathCause;
 import me.benjozork.onyx.game.entity.EnemyEntity;
+import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.object.PopupText;
 import me.benjozork.onyx.logger.Log;
 
@@ -13,10 +13,10 @@ import me.benjozork.onyx.logger.Log;
  */
 public class OnyxEnemyListener implements EventListener {
 
-    Log log = Log.create("EnemyListener");
+    Log log = Log.create(this);
 
-    public boolean onEvent(EntityDeathEvent e) {
-        if (e.entity instanceof EnemyEntity && e.cause == DeathCause.KILLED) {
+    public boolean onEvent(EntityKilledEvent e) {
+        if (e.entity instanceof EnemyEntity && e.killer.type == LivingEntity.Type.PLAYER) {
             GameScreenManager.getStaticObjects().add(new PopupText(e.entity, String.valueOf(+100)));
             GameScreenManager.addScore(100);
         }
