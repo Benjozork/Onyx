@@ -5,8 +5,8 @@ import me.benjozork.onyx.game.entity.PlayerEntity;
 /**
  * @author Rishi Raj
  */
-
 public class Player {
+
     private int score;
     private int lives;
     private PlayerEntity playerEntity;

@@ -19,7 +19,6 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class PlayerEntity extends LivingEntity {
 
-
     private Player player;
 
     // Player textures
