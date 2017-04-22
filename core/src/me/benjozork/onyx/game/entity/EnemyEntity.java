@@ -84,6 +84,11 @@ public class EnemyEntity extends LivingEntity {
         type = Type.ENEMY;
 
         setBulletShootOrigin(ENEMY_TEXTURE.getWidth() / 2, ENEMY_TEXTURE.getHeight() / 2);
+
+        // Init health bar
+
+        GameScreenManager.getStaticObjects().add(healthBar);
+
     }
 
     @Override
@@ -116,12 +121,12 @@ public class EnemyEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
-        healthBar.draw();
     }
 
     @Override
     public void dispose() {
         GameScreenManager.removeEntity(this);
+        GameScreenManager.getStaticObjects().removeValue(this.healthBar, true);
     }
 
     /**

@@ -53,6 +53,11 @@ public class PlayerEntity extends LivingEntity {
 
 		setBulletShootOrigin(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
 		setBulletImpactTarget(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
+
+        // Init health bar
+
+        GameScreenManager.getStaticObjects().add(healthBar);
+
     }
 
     @Override
@@ -118,12 +123,12 @@ public class PlayerEntity extends LivingEntity {
     public void draw() {
         SpriteBatch batch = GameManager.getBatch();
         currentTexture.draw(batch);
-        healthBar.draw();
     }
 
     @Override
     public void dispose() {
         GameScreenManager.removeEntity(this);
+        GameScreenManager.getStaticObjects().removeValue(healthBar, true);
         PLAYER_TEXTURE.dispose();
         FIRING_PLAYER_TEXTURE.dispose();
         MOVING_FIRING_PLAYER_TEXTURE.dispose();

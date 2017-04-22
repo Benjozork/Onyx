@@ -16,6 +16,7 @@ import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.CenteredDrawer;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -45,9 +46,15 @@ public class HealthBar extends StaticDrawable {
 
     public HealthBar(LivingEntity parent, float width, float height, float maxValue) {
         super(parent.getX(), parent.getY());
+
         this.parent = parent;
+        this.position = parent.getPosition().cpy();
+
         this.width = width;
         this.height = height;
+
+        this.bounds = PolygonHelper.getPolygon(getX(), getY(), width, height);
+
         this.maxValue = maxValue;
         this.value = parent.getHealth();
         this.component = new TextComponent(String.valueOf(maxValue), Configs.loadCached(ProjectConfig.class).default_font);
@@ -82,6 +89,8 @@ public class HealthBar extends StaticDrawable {
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 
         component.setText(String.valueOf(bd.toPlainString()));
+
+        this.bounds = PolygonHelper.getPolygon(getX(), getY()- HEALTH_TEXT_VERTICAL_OFFSET - component.getLayout().height, width, height);
     }
 
     @Override
@@ -100,7 +109,7 @@ public class HealthBar extends StaticDrawable {
 
         Vector2 centerPos = CenteredDrawer.get(CenteredDrawer.CenteredDrawingType.CENTERED_AT_POINT, parent.getX() + parent.getTextureWidth() / 2, parent.getY() - getHeight() / 0.5f, getWidth(), getHeight());
         renderer.rect(centerPos.x, centerPos.y, getWidth(), getHeight());
-        getPosition().set(centerPos.x ,centerPos.y - getHeight() - HEALTH_TEXT_VERTICAL_OFFSET);
+        getPosition().set(centerPos.x ,centerPos.y);
 
         // Draw health
 
@@ -129,7 +138,7 @@ public class HealthBar extends StaticDrawable {
 
         GameManager.setIsRendering(true);
 
-        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY() - getHeight() - HEALTH_TEXT_VERTICAL_OFFSET, getWidth(), getHeight());
 
     }
 
