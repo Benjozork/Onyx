@@ -50,6 +50,8 @@ public class OnyxGame extends Game {
 
         projectConfig = Configs.loadCached(ProjectConfig.class);
 
+        FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
+
         log.print("Onyx %s starting", projectConfig.version);
         log.print("Current libGDX version is %s", Version.VERSION);
         log.print("Current backend is %s/%s", Gdx.app.getType(), System.getProperty("os.name"));

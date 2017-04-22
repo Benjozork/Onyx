@@ -28,7 +28,7 @@ public class PopupText extends StaticDrawable {
     private Vector2 initialPosition = new Vector2();
     private Vector2 size = new Vector2();
 
-    private final TextComponent component;
+    private static TextComponent component;
 
     private final BitmapFont font;
 
