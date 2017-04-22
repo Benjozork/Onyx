@@ -17,6 +17,7 @@ import me.benjozork.onyx.event.EventManager;
 import me.benjozork.onyx.event.impl.listener.OnyxEnemyListener;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -39,6 +40,7 @@ public class OnyxGame extends Game {
 
     public static ProjectConfig projectConfig;
 
+    private static TextComponent debugComponent;
     private static boolean debug = false;
 
     @Override
@@ -46,7 +48,7 @@ public class OnyxGame extends Game {
 
         // Load config
 
-        projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+        projectConfig = Configs.loadCached(ProjectConfig.class);
 
         log.print("Onyx %s starting", projectConfig.version);
         log.print("Current libGDX version is %s", Version.VERSION);
@@ -98,6 +100,10 @@ public class OnyxGame extends Game {
         OnyxEnemyListener listener = new OnyxEnemyListener();
         EventManager.subscribe(listener);
 
+        // Setup info component
+
+        debugComponent = new TextComponent("");
+
     }
 
 
@@ -123,6 +129,10 @@ public class OnyxGame extends Game {
 
         OnyxInputProcessor.getCurrentProcessor().processInput();
 
+        // Update debug info component
+
+        debugComponent.setText(DebugInfo.get());
+
     }
 
     @Override
@@ -142,8 +152,14 @@ public class OnyxGame extends Game {
 
         // Draw console
 
+        DebugInfo.frameTimes.add(Utils.delta());
+
+        GameManager.setIsRendering(true);
         if (debug)
             Console.draw();
+        else debugComponent.draw(GameManager.getBatch(), 20, Gdx.graphics.getHeight() - 10);
+        GameManager.setIsRendering(false);
+
     }
 
     @Override
