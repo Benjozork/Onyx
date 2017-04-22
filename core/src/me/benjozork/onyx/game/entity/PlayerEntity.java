@@ -47,7 +47,7 @@ public class PlayerEntity extends LivingEntity {
     public void init() {
         // Initialize hitbox
 
-        bounds = PolygonLoader.getPolygon("Ship",PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
+        bounds = PolygonLoader.getPolygon("Ship", PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
 
 		type = Type.PLAYER;
 

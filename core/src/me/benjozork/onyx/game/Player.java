@@ -8,7 +8,11 @@ import me.benjozork.onyx.game.entity.PlayerEntity;
 public class Player {
 
     private int score;
+
+    private static int highScore;
+
     private int lives;
+
     private PlayerEntity playerEntity;
 
     public Player(int lives, PlayerEntity playerEntity) {
@@ -22,11 +26,18 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+        if (score > highScore) highScore = score;
     }
 
     public void addScore(int v) {
         score += v;
+        if (score > highScore) highScore = score;
     }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
 
     public int getLives() {
         return lives;

@@ -120,13 +120,15 @@ public class GameScreen implements Screen {
         scoreText.getParameter().borderColor = Color.BLACK;
         scoreText.getParameter().size = 30;
         scoreText.update();
+        scoreText.getFont().getData().markupEnabled = true;
 
     }
 
     public void update(float delta) {
 
         // Update DrawState of player
-        for (Player p: players) {
+
+        for (Player p : players) {
             PlayerEntity playerEntity = p.getPlayerEntity();
             if (playerEntity.isFiring()) {
                 playerEntity.setState(PlayerEntity.DrawState.FIRING);
@@ -150,11 +152,12 @@ public class GameScreen implements Screen {
 
         zoomPulseCamera.update();
 
-        scoreText.setText(String.valueOf(GameScreenManager.getPlayers().first().getScore()));
+        scoreText.setText(String.valueOf(GameScreenManager.getPlayers().first().getScore() + " / [#CCCCCC]" + GameScreenManager.getPlayers().first().getHighScore()));
 
         if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(1, 3, 0, 1920, 500, 1200);
 
         // Update maxFrametime
+
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
         }

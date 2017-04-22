@@ -90,7 +90,7 @@ public class HealthBar extends StaticDrawable {
 
         component.setText(String.valueOf(bd.toPlainString()));
 
-        this.bounds = PolygonHelper.getPolygon(getX(), getY()- HEALTH_TEXT_VERTICAL_OFFSET - component.getLayout().height, width, height);
+        this.bounds = PolygonHelper.getPolygon(getX(), getY() - getHeight() - HEALTH_TEXT_VERTICAL_OFFSET, width, height);
     }
 
     @Override
