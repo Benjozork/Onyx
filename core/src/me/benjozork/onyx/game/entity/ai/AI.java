@@ -131,7 +131,7 @@ public class AI {
 
         // Update rotation
 
-        if (targetAngle - source.getRotation() < ANGLE_DELTA_TOLERANCE || targetAngle - source.getRotation() >  ANGLE_DELTA_TOLERANCE) source.setRotation((float) targetAngle);
+        if (targetAngle - source.getRotation() < ANGLE_DELTA_TOLERANCE || targetAngle - source.getRotation() > ANGLE_DELTA_TOLERANCE) source.setRotation((float) targetAngle);
         if (source.getRotation() > targetAngle) source.setRotation(source.getRotation() - (ANGLE_DELTA * MathUtils.degreesToRadians) * delta);
         if (source.getRotation() < targetAngle) source.setRotation(source.getRotation() + (ANGLE_DELTA * MathUtils.degreesToRadians) * delta);
 
