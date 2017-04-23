@@ -171,7 +171,7 @@ public class GameScreenManager {
      */
     private static void check() {
         if (! exists() && checking) throw new IllegalStateException("current screen must be GameScreen");
-    }a
+    }
 
     /**
      * Call this method when a {@link LivingEntity} dies
