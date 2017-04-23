@@ -79,7 +79,7 @@ public class PlayerEntity extends LivingEntity {
             velocity.x -= velocity.x * 2;
             velocity.y = 0;
         } else if (direction == Direction.LEFT) {
-            if (spriteRotation > - 25 * MathUtils.degreesToRadians)
+            if (spriteRotation > - TARGET_ANGLE * MathUtils.degreesToRadians)
                 spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
             velocity.setAngle(180f);
             velocity.x += velocity.x * 2;
