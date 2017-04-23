@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
 
         background = new Sprite(new Texture("hud/background_base.png"));
         background.setPosition(0, 0);
-        background.setColor(backgroundColor);
+        //background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Setup CrossFadeColorEffect
@@ -174,7 +174,7 @@ public class GameScreen implements Screen {
 
         // Draw background
 
-        background.setColor(backgroundColor);
+        //background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
         batch.setProjectionMatrix(guiCam.combined);
@@ -183,7 +183,7 @@ public class GameScreen implements Screen {
         // Draw life icons
 
         batch.enableBlending();
-        LifeIcons.draw(batch, backgroundColor, 10, 0, 0.6f);
+        LifeIcons.draw(batch, Color.WHITE, 10, 0, 0.6f);
 
         // Draw score text
 

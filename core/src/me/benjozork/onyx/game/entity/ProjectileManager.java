@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.benjozork.onyx.game.weapon.projectile.Projectile;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.PolygonHelper;
 
@@ -16,10 +17,10 @@ public class ProjectileManager {
     private static Log log = Log.create("ProjectileManager");
     private static boolean debug = false;
 
-    private static List<ProjectileEntity> projectiles;
+    private static List<Projectile> projectiles;
 
     public static void init() {
-        projectiles = new ArrayList<ProjectileEntity>();
+        projectiles = new ArrayList<Projectile>();
     }
 
     /**
@@ -28,9 +29,9 @@ public class ProjectileManager {
      * @param src the {@link LivingEntity} used to perform the check
      */
     public static boolean collides(LivingEntity src) {
-        for (ProjectileEntity pr : projectiles) {
+        for (Projectile pr : projectiles) {
             if (PolygonHelper.collidePolygon(pr.getBounds(), src.getBounds())) {
-                if (pr.source.type != src.type) {
+                if (pr.getParentEntity().type != src.type) {
                     return true;
                 }
             }
@@ -47,7 +48,7 @@ public class ProjectileManager {
         float dx, dy, dis, least , vx, vy;
         Vector2 currentEscape = new Vector2(0, 0);
         least = 0;
-        for (ProjectileEntity pr :
+        for (Projectile pr :
                 projectiles) {
             dx = pr.getX() - src.getX();
             dy = pr.getY() - src.getY();
@@ -69,12 +70,12 @@ public class ProjectileManager {
         return currentEscape.nor();
     }
 
-    public static void addProjectile(ProjectileEntity projectile) {
+    public static void addProjectile(Projectile projectile) {
         if (debug) log.print("Added projectile");
         projectiles.add(projectile);
     }
 
-    public static boolean removeProjectile(ProjectileEntity projectile) {
+    public static boolean removeProjectile(Projectile projectile) {
         return projectiles.remove(projectile);
     }
 

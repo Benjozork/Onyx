@@ -1,12 +1,13 @@
 package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.event.EventManager;
 import me.benjozork.onyx.event.impl.EntityKilledEvent;
 import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.game.weapon.Weapon;
 import me.benjozork.onyx.object.Textured;
-import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Benjozork
@@ -27,24 +28,32 @@ public abstract class LivingEntity extends Entity implements Textured {
 
     public Type type;
 
+    private Array<Weapon> weapons = new Array<Weapon>();
+
     public LivingEntity(float x, float y) {
         super(x, y);
     }
 
-    public void fireProjectileAt(String path, float targetx, float targety) {
-        bulletTimer += Utils.delta();
-        if (bulletTimer >= MAX_BULLET_TIME || ! (this instanceof PlayerEntity)) {
-            ProjectileEntity projectile = new ProjectileEntity(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y, targetx, targety, path);
-            projectile.getVelocity().scl(2550f);
-            projectile.setDamage(10f);
-            projectile.source = this;
 
-            GameScreenManager.addEntity(projectile);
+    public Array<Weapon> getWeapons() {
+        return weapons;
+    }
 
-            //if (ammo < 0) return;
-            //ammo -= 1;
+    public void addWeapon(Weapon weapon) {
+        weapons.add(weapon);
+    }
 
-            bulletTimer = 0f;
+    public void fireWeapon(Class<? extends Weapon> clazz, float targetx, float targety) {
+        for (Array.ArrayIterator<Weapon> iter = new Array.ArrayIterator<Weapon>(weapons); iter.hasNext();) {
+            Weapon weapon = iter.next();
+            if (weapon.getClass() == clazz) weapon.fire(targetx, targety);
+        }
+    }
+
+    @Override
+    public void update() {
+        for (Weapon weapon : weapons) {
+            weapon.update();
         }
     }
 

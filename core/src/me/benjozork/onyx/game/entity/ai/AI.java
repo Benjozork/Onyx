@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
+import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.utils.Utils;
 
@@ -174,7 +175,8 @@ public class AI {
 
                     precisionTemp = untrackedTarget.cpy().add(shootImprecision, shootImprecision);
 
-                    source.fireProjectileAt("entity/enemy/bullet.png", precisionTemp.x, precisionTemp.y);
+                    source.fireWeapon(SimpleCannon.class, precisionTemp.x, precisionTemp.y);
+
                     shootBulletTimer = 0f;
                 }
             } else {

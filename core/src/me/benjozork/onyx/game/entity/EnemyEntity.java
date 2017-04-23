@@ -14,6 +14,7 @@ import me.benjozork.onyx.game.entity.ai.AI;
 import me.benjozork.onyx.game.entity.ai.AIConfiguration;
 import me.benjozork.onyx.game.entity.ai.AIShootingConfiguration;
 import me.benjozork.onyx.game.object.HealthBar;
+import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -42,6 +43,12 @@ public class EnemyEntity extends LivingEntity {
 
     public EnemyEntity(float x, float y) {
         super(x, y);
+
+        /* TEMPORARY */
+
+        addWeapon(new SimpleCannon(this));
+
+        /* END TEMPORARY */
     }
 
     @Override
@@ -63,7 +70,7 @@ public class EnemyEntity extends LivingEntity {
         aiConfiguration.source = this;
 
         // For now, the AI's target is set to the first player, change it as required later
-        aiConfiguration.target = GameScreenManager.getPlayers().first().getPlayerEntity();
+        aiConfiguration.target = GameScreenManager.getLocalPlayerEntity();
 
         aiConfiguration.factor = 100f;
         AIShootingConfiguration shootingConfiguration = new AIShootingConfiguration();
@@ -93,6 +100,7 @@ public class EnemyEntity extends LivingEntity {
 
     @Override
     public void update() {
+        super.update();
 
         ai.update(Utils.delta());
 

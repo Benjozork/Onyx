@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.KeymapLoader;
 import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.game.entity.PlayerEntity;
+import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -13,24 +14,30 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class GameScreenInputProcessor extends OnyxInputProcessor {
 
+    private float bulletTimer = 0f;
+    private final float MAX_BULLET_TIME = 0.1f;
+
     @Override
     public void processInput() {
+        bulletTimer += Utils.delta();
+
         if (GameScreenManager.exists()) { // GameScreen input here
 
             if (! isKeyDown(KeymapLoader.getKeyCode("player_movement_left")) && ! isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
-                GameScreenManager.getPlayers().first().getPlayerEntity().setDirection(PlayerEntity.Direction.STRAIGHT);
+                GameScreenManager.getLocalPlayerEntity().setDirection(PlayerEntity.Direction.STRAIGHT);
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
-                GameScreenManager.getPlayers().first().getPlayerEntity().setDirection(PlayerEntity.Direction.RIGHT);
-                GameScreenManager.getPlayers().first().getPlayerEntity().accelerate(new Vector2(1000f, 0f));
+                GameScreenManager.getLocalPlayerEntity().setDirection(PlayerEntity.Direction.RIGHT);
+                GameScreenManager.getLocalPlayerEntity().accelerate(new Vector2(1000f, 0f));
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_movement_left"))) {
-                GameScreenManager.getPlayers().first().getPlayerEntity().setDirection(PlayerEntity.Direction.LEFT);
-                GameScreenManager.getPlayers().first().getPlayerEntity().accelerate(new Vector2(- 1000f, 0f));
+                GameScreenManager.getLocalPlayerEntity().setDirection(PlayerEntity.Direction.LEFT);
+                GameScreenManager.getLocalPlayerEntity().accelerate(new Vector2(- 1000f, 0f));
             }
-            if (isKeyDown(KeymapLoader.getKeyCode("player_fire_primary"))) {
+            if (isKeyDown(KeymapLoader.getKeyCode("player_fire_primary")) && bulletTimer > MAX_BULLET_TIME) {
+                bulletTimer = 0f;
                 Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-                GameScreenManager.getPlayers().first().getPlayerEntity().fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
+                GameScreenManager.getLocalPlayerEntity().fireWeapon(SimpleCannon.class, mouse.x, mouse.y);
             }
 
         }

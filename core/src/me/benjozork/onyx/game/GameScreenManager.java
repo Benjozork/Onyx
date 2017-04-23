@@ -11,7 +11,6 @@ import me.benjozork.onyx.game.entity.EnemyEntity;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
-import me.benjozork.onyx.game.entity.ProjectileEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.StaticDrawable;
@@ -67,6 +66,14 @@ public class GameScreenManager {
         //// TODO: 22-04-2017 Add check for data 
         GameScreenManager.players = players;
     }
+
+    public static Player getLocalPlayer() {
+        return getPlayers().first();
+    }
+
+    public static PlayerEntity getLocalPlayerEntity() {
+        return getPlayers().first().getPlayerEntity();
+    }
     
     /**
      * Removes {@link Entity} objects that have been marked for removal
@@ -112,8 +119,6 @@ public class GameScreenManager {
         check();
         if (! entities.contains(e, false)){
             entities.add(e);
-            if (e instanceof ProjectileEntity)
-                ProjectileManager.addProjectile((ProjectileEntity) e);
         }
     }
 
@@ -133,8 +138,6 @@ public class GameScreenManager {
         check();
         if (e instanceof EnemyEntity) // Remove enemy
             enemiesToRemove.add((EnemyEntity) e);
-        if (e instanceof ProjectileEntity) // Remove projectile
-            ProjectileManager.removeProjectile((ProjectileEntity) e);
         entitiesToRemove.add(e);
     }
 

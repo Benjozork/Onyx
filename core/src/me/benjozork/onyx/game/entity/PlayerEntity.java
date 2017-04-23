@@ -12,6 +12,7 @@ import me.benjozork.onyx.PolygonLoader;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.game.Player;
 import me.benjozork.onyx.game.object.HealthBar;
+import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -41,6 +42,12 @@ public class PlayerEntity extends LivingEntity {
 
     public PlayerEntity(float x, float y) {
         super(x, y);
+
+        /* TEMPORARY */
+
+        addWeapon(new SimpleCannon(this));
+
+        /* END TEMPORARY */
     }
 
     @Override
@@ -62,6 +69,7 @@ public class PlayerEntity extends LivingEntity {
     @Override
     public void update() {
         super.update(Utils.delta());
+        super.update();
 
         // Get rotation depending on direction
 

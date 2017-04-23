@@ -1,6 +1,7 @@
 package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -44,7 +45,7 @@ public class ProjectileEntity extends Entity {
 
         // Set velocity accordingly to target
 
-        velocity.set(target.sub(getX(), getY()));
+        velocity.set(target.cpy().sub(getX(), getY()));
 
         velocity.nor().scl(speed);
     }
@@ -64,7 +65,7 @@ public class ProjectileEntity extends Entity {
             }
         }
 
-        PlayerEntity player = GameScreenManager.getPlayers().first().getPlayerEntity();
+        PlayerEntity player = GameScreenManager.getLocalPlayerEntity();
         if (this.collidesWith(player.getBounds()) && player.type != source.type) {
             player.damage(10f, source);
             this.dispose();
@@ -73,13 +74,18 @@ public class ProjectileEntity extends Entity {
 
     @Override
     public void draw() {
+        GameManager.setIsShapeRendering(true);
+        GameManager.getRenderer().setProjectionMatrix(GameManager.getWorldCamera().combined);
+        if (source instanceof PlayerEntity) GameManager.getRenderer().setColor(Color.ORANGE);
+        else if (source instanceof EnemyEntity) GameManager.getRenderer().setColor(Color.BLUE);
+        GameManager.getRenderer().line(source.getPosition(), target);
+        GameManager.setIsShapeRendering(false);
         batch.draw(texture, bounds.getX(), bounds.getY(), 10, 10);
     }
 
     @Override
     public void dispose() {
         GameScreenManager.removeEntity(this);
-        ProjectileManager.removeProjectile(this);
         texture.dispose();
     }
 
