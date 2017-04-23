@@ -48,7 +48,7 @@ public class KeymapLoader {
                  }
                  keymaps.put(name, Input.Keys.valueOf((String) value));
                  if (keymaps.get(name) == -1) {
-                    log.print("ERROR: Keymap '%s' bound to invalid key '%s'!", name, value);
+                    log.error("ERROR: Keymap '%s' bound to invalid key '%s'!", name, value);
                     illegalKeyMapIDs.add((String) value);
                     keymaps.removeKey(name);
                     continue;
