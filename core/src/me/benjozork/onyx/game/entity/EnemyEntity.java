@@ -1,7 +1,5 @@
 package me.benjozork.onyx.game.entity;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,9 +23,9 @@ public class EnemyEntity extends LivingEntity {
     // Enemy textures
 
     private final Texture ENEMY_TEXTURE = new Texture("entity/enemy/texture_0.png");
-    private final Texture FIRING_ENEMY_TEXTURE = new Texture("entity/enemy/texture_0.png");
-    private final Texture MOVING_FIRING_ENEMY_TEXTURE = new Texture("entity/enemy/texture_0.png");
-    private final Texture MOVING_ENEMY_TEXTURE = new Texture("entity/enemy/texture_0.png");
+    private final Texture FIRING_ENEMY_TEXTURE = new Texture("entity/enemy/texture_1.png");
+    private final Texture MOVING_FIRING_ENEMY_TEXTURE = new Texture("entity/enemy/texture_3.png");
+    private final Texture MOVING_ENEMY_TEXTURE = new Texture("entity/enemy/texture_2.png");
 
     private Sprite currentTexture = new Sprite(ENEMY_TEXTURE);
 
@@ -40,6 +38,8 @@ public class EnemyEntity extends LivingEntity {
     private HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
 
     private boolean debug = true;
+
+    private boolean isFiring = false;
 
     public EnemyEntity(float x, float y) {
         super(x, y);
@@ -104,15 +104,22 @@ public class EnemyEntity extends LivingEntity {
 
         ai.update(Utils.delta());
 
+        if (velocity.len() > 10f) {
+            setState(DrawState.MOVING);
+            if (isFiring()) setState(DrawState.FIRING_MOVING);
+        }
+        else if (isFiring()) setState(DrawState.FIRING);
+        else setState(DrawState.IDLE);
+
         // Update texture
 
-        if (state == EnemyEntity.DrawState.IDLE) {
+        if (state == DrawState.IDLE) {
             currentTexture.setTexture(ENEMY_TEXTURE);
-        } else if (state == EnemyEntity.DrawState.MOVING) {
+        } else if (state == DrawState.MOVING) {
             currentTexture.setTexture(MOVING_ENEMY_TEXTURE);
-        } else if (state == EnemyEntity.DrawState.FIRING) {
+        } else if (state == DrawState.FIRING) {
             currentTexture.setTexture(FIRING_ENEMY_TEXTURE);
-        } else if (state == EnemyEntity.DrawState.FIRING_MOVING) {
+        } else if (state == DrawState.FIRING_MOVING) {
             currentTexture.setTexture(MOVING_FIRING_ENEMY_TEXTURE);
         }
 
@@ -151,10 +158,6 @@ public class EnemyEntity extends LivingEntity {
      */
     public void setState(DrawState v) {
         this.state = v;
-    }
-
-    public boolean isFiring() {
-        return Gdx.input.isKeyPressed(Input.Keys.SPACE);
     }
 
     @Override

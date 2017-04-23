@@ -72,12 +72,12 @@ public class GameScreen implements Screen {
 
         Player player = new Player(3, new PlayerEntity(Utils.getCenterPos(78), 50));
 
-        player.getPlayerEntity().setMaxSpeed(600f);
+        player.getEntity().setMaxSpeed(600f);
 
         players.add(player);
 
         for (Player p : players) {
-            GameScreenManager.addEntity(p.getPlayerEntity());
+            GameScreenManager.addEntity(p.getEntity());
         }
 
         GameScreenManager.setPlayers(players);
@@ -126,7 +126,7 @@ public class GameScreen implements Screen {
         // Update DrawState of player
 
         for (Player p : players) {
-            PlayerEntity playerEntity = p.getPlayerEntity();
+            PlayerEntity playerEntity = p.getEntity();
             if (playerEntity.isFiring()) {
                 playerEntity.setState(PlayerEntity.DrawState.FIRING);
             }

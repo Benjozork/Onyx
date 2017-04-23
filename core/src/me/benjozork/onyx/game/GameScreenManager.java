@@ -71,7 +71,7 @@ public class GameScreenManager {
     }
 
     public static PlayerEntity getLocalPlayerEntity() {
-        return getPlayers().first().getPlayerEntity();
+        return getPlayers().first().getEntity();
     }
     
     /**

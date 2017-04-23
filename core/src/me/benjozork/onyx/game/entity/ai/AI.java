@@ -153,6 +153,8 @@ public class AI {
 
         if (! isFiring) {
 
+            source.setIsFiring(false);
+
             // Check if it is time to start firing
 
             if (shootStreakTimer > shootStreakDelay) {
@@ -161,6 +163,8 @@ public class AI {
             }
 
         } else {
+
+            source.setIsFiring(true);
 
             // Check if we should still fire
 

@@ -13,11 +13,11 @@ public class Player {
 
     private int lives;
 
-    private PlayerEntity playerEntity;
+    private PlayerEntity entity;
 
     public Player(int lives, PlayerEntity playerEntity) {
         setLives(lives);
-        setPlayerEntity(playerEntity);
+        setEntity(playerEntity);
     }
 
     public int getScore() {
@@ -54,13 +54,13 @@ public class Player {
         lives--;
     }
 
-    public PlayerEntity getPlayerEntity() {
-        return playerEntity;
+    public PlayerEntity getEntity() {
+        return entity;
     }
 
-    public void setPlayerEntity(PlayerEntity playerEntity) {
-        this.playerEntity = playerEntity;
-        playerEntity.setPlayer(this);
+    public void setEntity(PlayerEntity entity) {
+        this.entity = entity;
+        entity.setPlayer(this);
     }
 
 }

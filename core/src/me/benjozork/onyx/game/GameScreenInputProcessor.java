@@ -35,10 +35,11 @@ public class GameScreenInputProcessor extends OnyxInputProcessor {
                 GameScreenManager.getLocalPlayerEntity().accelerate(new Vector2(- 1000f, 0f));
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_fire_primary")) && bulletTimer > MAX_BULLET_TIME) {
+                GameScreenManager.getLocalPlayerEntity().setIsFiring(true);
                 bulletTimer = 0f;
                 Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
                 GameScreenManager.getLocalPlayerEntity().fireWeapon(SimpleCannon.class, mouse.x, mouse.y);
-            }
+            } else GameScreenManager.getLocalPlayerEntity().setIsFiring(false);
 
         }
     }

@@ -30,6 +30,8 @@ public abstract class LivingEntity extends Entity implements Textured {
 
     private Array<Weapon> weapons = new Array<Weapon>();
 
+    private boolean isFiring = false;
+
     public LivingEntity(float x, float y) {
         super(x, y);
     }
@@ -104,6 +106,14 @@ public abstract class LivingEntity extends Entity implements Textured {
     public abstract float getTextureWidth();
 
     public abstract float getTextureHeight();
+
+    public boolean isFiring() {
+        return isFiring;
+    }
+
+    public void setIsFiring(boolean firing) {
+        isFiring = firing;
+    }
 
     public enum Type {
         ENEMY,
