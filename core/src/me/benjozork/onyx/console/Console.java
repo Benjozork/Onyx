@@ -165,7 +165,7 @@ public class Console {
      * @param x the object to print
      */
     public static void print(Object x) {
-        if (x.toString().startsWith("->")) linesBuf.add(x.toString().replace("->", Utils.toMarkupColor(color)));
+        if (x.toString().startsWith("->")) linesBuf.add(x.toString().replace("->", Utils.toMarkupColor(color) + "->"));
         else linesBuf.add(Utils.toMarkupColor(color) + x.toString());
         if (resetColor) Console.color(Color.WHITE);
     }
