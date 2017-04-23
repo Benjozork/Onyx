@@ -15,7 +15,6 @@ import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.screen.GameOverScreen;
-import me.benjozork.onyx.utils.Utils;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
@@ -172,7 +171,7 @@ public class GameScreenManager {
      */
     private static void check() {
         if (! exists() && checking) throw new IllegalStateException("current screen must be GameScreen");
-    }
+    }a
 
     /**
      * Call this method when a {@link LivingEntity} dies
@@ -183,7 +182,7 @@ public class GameScreenManager {
             PlayerEntity playerEntity = (PlayerEntity) livingEntity;
             if (playerEntity.getPlayer().getLives() > 1){
                 playerEntity.getPlayer().removeLife();
-                PlayerEntity newPlayerEntity = new PlayerEntity(Utils.getCenterPos(78), 50);
+                PlayerEntity newPlayerEntity = new PlayerEntity(playerEntity.getX(), playerEntity.getY());
                 newPlayerEntity.setMaxSpeed(600f);
                 Player newPlayer = new Player(playerEntity.getPlayer().getLives(), newPlayerEntity);
                 newPlayer.setScore(playerEntity.getPlayer().getScore());
