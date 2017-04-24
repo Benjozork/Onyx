@@ -184,11 +184,11 @@ public class GameScreenManager {
                 playerEntity.getPlayer().removeLife();
                 PlayerEntity newPlayerEntity = new PlayerEntity(playerEntity.getX(), playerEntity.getY());
                 newPlayerEntity.setMaxSpeed(600f);
-                Player newPlayer = new Player(playerEntity.getPlayer().getLives(), newPlayerEntity);
-                newPlayer.setScore(playerEntity.getPlayer().getScore());
-                players.set(0, newPlayer);
-
+                playerEntity.getPlayer().setEntity(newPlayerEntity);
                 playerEntity.dispose();
+                addEntity(newPlayerEntity);
+            }
+            else {
 
                 // Clear entities
 
@@ -198,12 +198,6 @@ public class GameScreenManager {
                     entity.dispose();
                 }
 
-                 addEntity(newPlayerEntity);
-
-                 generateRandomEnemyWave(1, 3, 0, Gdx.graphics.getWidth(), 500, Gdx.graphics.getHeight());
-
-            }
-            else {
                 playerEntity.dispose();
                 setIsDisposing(true);
             }
