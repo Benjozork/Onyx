@@ -28,11 +28,15 @@ public class LifeIndicator {
     public static void draw(SpriteBatch batch, float x, float y) {
         component.setText("x " + GameScreenManager.getLocalPlayer().getLives());
         if (GameScreenManager.getLocalPlayer().getLives() == 0) {
-            component.getParameter().color = Color.RED;
-            component.update();
+            if (component.getParameter().color != Color.RED) {
+                component.getParameter().color = Color.RED;
+                component.update();
+            }
         } else {
-            component.getParameter().color = Color.WHITE;
-            component.update();
+            if (component.getParameter().color != Color.WHITE) {
+                component.getParameter().color = Color.WHITE;
+                component.update();
+            }
         }
         component.draw(batch, x + LIFE_ICON.getWidth(), y + component.getLayout().height * 3.5f);
 
