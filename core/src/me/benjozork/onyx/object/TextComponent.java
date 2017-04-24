@@ -184,8 +184,10 @@ public class TextComponent {
     }
 
     public void setText(String text) {
-        this.text = text;
-        updateLayout();
+        if (! text.equals(this.text)) { // To prevent unnecessary computations
+            this.text = text;
+            updateLayout();
+        }
     }
 
 

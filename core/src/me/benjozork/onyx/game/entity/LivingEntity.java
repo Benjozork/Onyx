@@ -32,6 +32,11 @@ public abstract class LivingEntity extends Entity implements Textured {
 
     private boolean isFiring = false;
 
+    // Cached instances for shootOrigin/impactTarget
+
+    private Vector2 vector2 = new Vector2();
+    private Vector2 vector21 = new Vector2();
+
     public LivingEntity(float x, float y) {
         super(x, y);
     }
@@ -80,7 +85,8 @@ public abstract class LivingEntity extends Entity implements Textured {
     }
 
     public Vector2 getBulletShootOrigin() {
-        return new Vector2(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y);
+        vector2.set(getX() + bulletShootOrigin.x, getY() + bulletShootOrigin.y);
+        return vector2;
     }
 
     public void setBulletShootOrigin(float x, float y) {
@@ -88,7 +94,8 @@ public abstract class LivingEntity extends Entity implements Textured {
     }
 
     public Vector2 getBulletImpactTarget() {
-        return new Vector2(getX() + bulletImpactTarget.x, getY() + bulletImpactTarget.y);
+        vector21.set(getX() + bulletImpactTarget.x, getY() + bulletImpactTarget.y);
+        return vector21;
     }
 
     public void setBulletImpactTarget(float x, float y) {

@@ -28,11 +28,11 @@ public class GameScreenInputProcessor extends OnyxInputProcessor {
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_movement_right"))) {
                 GameScreenManager.getLocalPlayerEntity().setDirection(PlayerEntity.Direction.RIGHT);
-                GameScreenManager.getLocalPlayerEntity().accelerate(new Vector2(1000f, 0f));
+                GameScreenManager.getLocalPlayerEntity().accelerate(1000f, 0f);
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_movement_left"))) {
                 GameScreenManager.getLocalPlayerEntity().setDirection(PlayerEntity.Direction.LEFT);
-                GameScreenManager.getLocalPlayerEntity().accelerate(new Vector2(- 1000f, 0f));
+                GameScreenManager.getLocalPlayerEntity().accelerate(- 1000f, 0f);
             }
             if (isKeyDown(KeymapLoader.getKeyCode("player_fire_primary")) && bulletTimer > MAX_BULLET_TIME) {
                 GameScreenManager.getLocalPlayerEntity().setIsFiring(true);

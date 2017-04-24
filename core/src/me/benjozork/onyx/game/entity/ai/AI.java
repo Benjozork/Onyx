@@ -58,7 +58,7 @@ public class AI {
 
     private float factor;
 
-    private Vector2 sourceDir;
+    private Vector2 sourceDir = new Vector2();
     private Vector2 bulletEscapeDir;
     private Vector2 temp;
 
@@ -205,7 +205,7 @@ public class AI {
         }
 
         bulletEscapeDir = ProjectileManager.bulletEscapeDir(source);
-        sourceDir = new Vector2(target.getX() - source.getX(), target.getY() - source.getY());
+        sourceDir.set(target.getX() - source.getX(), target.getY() - source.getY());
 
         sourceDir.nor();
         bulletEscapeDir.nor();
@@ -237,7 +237,7 @@ public class AI {
                 temp.nor();
                 temp.scl(factor);
                 source.setAcceleration(temp);
-                source.accelerate(temp);
+                source.accelerate(temp.x, temp.y);
                 if (debug) log.print("acc: " + source.getAcceleration());
                 break;
             case LINEAR:

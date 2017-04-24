@@ -19,6 +19,8 @@ public class ProjectileManager {
 
     private static List<Projectile> projectiles;
 
+    private static final Vector2 currentEscape = new Vector2(0, 0);
+
     public static void init() {
         projectiles = new ArrayList<Projectile>();
     }
@@ -46,7 +48,6 @@ public class ProjectileManager {
      */
     public static Vector2 bulletEscapeDir(LivingEntity src) {
         float dx, dy, dis, least , vx, vy;
-        Vector2 currentEscape = new Vector2(0, 0);
         least = 0;
         for (Projectile pr :
                 projectiles) {

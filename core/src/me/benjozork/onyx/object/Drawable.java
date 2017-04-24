@@ -128,8 +128,8 @@ public abstract class Drawable implements Disposable {
     /**
      * Adds a scaled directional {@link Vector2} to the velocity
      */
-    public void accelerate(Vector2 dv) {
-        velocity.add(dv);
+    public void accelerate(float dx, float dy) {
+        velocity.add(dx, dy);
     }
 
     public void rotate(float v) {
