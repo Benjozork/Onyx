@@ -15,7 +15,7 @@ import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
-import me.benjozork.onyx.game.object.LifeIcons;
+import me.benjozork.onyx.game.hud.LifeIndicator;
 import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
@@ -183,7 +183,7 @@ public class GameScreen implements Screen {
         // Draw life icons
 
         batch.enableBlending();
-        LifeIcons.draw(batch, Color.WHITE, 10, 0, 0.6f);
+        LifeIndicator.draw(batch, 10, 0);
 
         // Draw score text
 

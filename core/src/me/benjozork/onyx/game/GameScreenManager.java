@@ -180,7 +180,7 @@ public class GameScreenManager {
     public static void die(LivingEntity livingEntity) {
         if (livingEntity instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) livingEntity;
-            if (playerEntity.getPlayer().getLives() > 1){
+            if (playerEntity.getPlayer().getLives() > 0){
                 playerEntity.getPlayer().removeLife();
                 PlayerEntity newPlayerEntity = new PlayerEntity(playerEntity.getX(), playerEntity.getY());
                 newPlayerEntity.setMaxSpeed(600f);
