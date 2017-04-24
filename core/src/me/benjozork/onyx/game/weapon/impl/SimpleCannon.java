@@ -5,6 +5,7 @@ import me.benjozork.onyx.game.weapon.ProjectileWeapon;
 import me.benjozork.onyx.game.weapon.impl.projectile.SimpleCannonProjectile;
 
 /**
+ * A simple implementation of a {@link ProjectileWeapon}.
  * @author Benjozork
  */
 public class SimpleCannon extends ProjectileWeapon<SimpleCannonProjectile> {

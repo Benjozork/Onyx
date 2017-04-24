@@ -15,13 +15,14 @@ import me.benjozork.onyx.game.weapon.projectile.Projectile;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
+ * Implementation of a {@link Projectile} fired by a {@link SimpleCannon}.
  * @author Benjozork
  */
 public class SimpleCannonProjectile extends Projectile<SimpleCannon> {
 
     public SimpleCannonProjectile(SimpleCannon parent, float targetx, float targety) {
         super(parent);
-        sprite = new Sprite(new Texture("entity/" + parent.getParent().type.name().toLowerCase() + "/bullet.png"));
+        sprite = new Sprite(new Texture("entity/" + getParentEntity().type.name().toLowerCase() + "/bullet.png"));
         sprite.setSize(10, 10);
 
         Vector2 target = new Vector2(targetx, targety);

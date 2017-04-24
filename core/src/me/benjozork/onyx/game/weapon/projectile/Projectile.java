@@ -7,6 +7,10 @@ import me.benjozork.onyx.game.weapon.ProjectileWeapon;
 import me.benjozork.onyx.object.Drawable;
 
 /**
+ * Describes a projectile fired by a {@link ProjectileWeapon}.
+ *
+ * @param <T> the {@link ProjectileWeapon} that can fire this projectile
+ *
  * @author Benjozork
  */
 public abstract class Projectile<T extends ProjectileWeapon> extends Drawable {
@@ -31,10 +35,16 @@ public abstract class Projectile<T extends ProjectileWeapon> extends Drawable {
 
     public abstract void dispose();
 
+    /**
+     * @return the {@link ProjectileWeapon} that fired this projectile
+     */
     public T getParent() {
         return parent;
     }
 
+    /**
+     * @return the {@link LivingEntity} which possesses the {@link ProjectileWeapon} that fired this projectile
+     */
     public LivingEntity getParentEntity() {
         return entity;
     }
