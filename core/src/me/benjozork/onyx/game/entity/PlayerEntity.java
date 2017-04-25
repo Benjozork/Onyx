@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.MathUtils;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.PolygonLoader;
 import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.Player;
 import me.benjozork.onyx.game.object.HealthBar;
 import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.utils.Utils;
@@ -20,7 +19,11 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class PlayerEntity extends LivingEntity {
 
-    private Player player;
+    private int score;
+
+    private static int highScore;
+
+    private int lives;
 
     // Player textures
 
@@ -60,6 +63,8 @@ public class PlayerEntity extends LivingEntity {
 
 		setBulletShootOrigin(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
 		setBulletImpactTarget(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
+
+        lives = 3;
 
         // Init health bar
 
@@ -143,6 +148,15 @@ public class PlayerEntity extends LivingEntity {
     }
 
     /**
+     * To set the playerEntity to it's initial configuration
+     */
+    public void revive() {
+        dead = false;
+        health = 100;
+        healthBar.init();
+    }
+
+    /**
      * The current DrawState
      * @return the state
      */
@@ -174,13 +188,44 @@ public class PlayerEntity extends LivingEntity {
         this.direction = v;
     }
 
-    public Player getPlayer() {
-        return player;
+    public int getLives() {
+        return lives;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setLives(int lives) {
+        this.lives = lives;
     }
+
+    public void addLife() {
+        lives++;
+    }
+
+    public void removeLife() {
+        lives--;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        if (score > highScore) highScore = score;
+    }
+
+    public void addScore(int v) {
+        score += v;
+        if (score > highScore) highScore = score;
+    }
+
+    public static int getHighScore() {
+        return highScore;
+    }
+
+    public static void setHighScore(int highScore) {
+        PlayerEntity.highScore = highScore;
+    }
+
 
     public boolean isFiring() {
         return Gdx.input.isKeyPressed(Input.Keys.SPACE);

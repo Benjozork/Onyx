@@ -38,7 +38,7 @@ public class HealthBar extends StaticDrawable {
 
     private final Color BACKGROUND_COLOR = Utils.rgba(0, 0, 0, 200);
 
-    private final float VALUE_DELTA = 70f;
+    private final float VALUE_DELTA = 150f;
 
     private final float HEALTH_TEXT_VERTICAL_OFFSET = 5;
 
@@ -73,7 +73,7 @@ public class HealthBar extends StaticDrawable {
 
     @Override
     public void init() {
-
+        this.value = parent.getHealth();
     }
 
     @Override

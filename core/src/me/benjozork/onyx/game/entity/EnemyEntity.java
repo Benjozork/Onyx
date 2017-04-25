@@ -66,7 +66,7 @@ public class EnemyEntity extends LivingEntity {
 
         AIConfiguration aiConfiguration = new AIConfiguration();
         aiConfiguration.strategy = AIConfiguration.AIStrategy.LINEAR;
-        aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.MED;
+        aiConfiguration.reluctance = AIConfiguration.ProjectileReluctance.HIGH;
         aiConfiguration.source = this;
 
         // For now, the AI's target is set to the first player, change it as required later
