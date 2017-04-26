@@ -1,6 +1,5 @@
 package me.benjozork.onyx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.StaticDrawable;
-import me.benjozork.onyx.screen.GameOverScreen;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
@@ -211,7 +209,7 @@ public class GameScreenManager {
         return !checking;
     }
 
-    public static void setIsDisposing(boolean v) {
+    private static void setIsDisposing(boolean v) {
         checking = !v ;
     }
 
@@ -231,7 +229,7 @@ public class GameScreenManager {
         staticObjects = new Array<StaticDrawable>();
 
         setIsDisposing(false);
-        ScreenManager.setCurrentScreen(new GameOverScreen());
+        //ScreenManager.setCurrentScreen(new GameOverScreen());
     }
 
 }

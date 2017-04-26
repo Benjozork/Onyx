@@ -3,7 +3,8 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.object.Drawable;
+import me.benjozork.onyx.object.StaticDrawable;
+import me.benjozork.onyx.ui.container.UIContainer;
 import me.benjozork.onyx.ui.object.Action;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.utils.PolygonHelper;
@@ -12,11 +13,13 @@ import me.benjozork.onyx.utils.PolygonHelper;
  * Allows the user to interact with the UI
  * @author Benjozork
  */
-public abstract class UIElement extends Drawable {
+public abstract class UIElement extends StaticDrawable {
+
+    protected Vector2 relativePosition = new Vector2();
 
     private Array<Action> actions = new Array<Action>();
 
-    private UIScreen parent;
+    private me.benjozork.onyx.ui.container.UIContainer parent;
 
     private String identifier;
 
@@ -26,11 +29,19 @@ public abstract class UIElement extends Drawable {
 
     private Vector2 dimensions = new Vector2();
 
-    public UIElement(float x, float y) {
+    public UIElement(float x, float y, me.benjozork.onyx.ui.container.UIContainer parent) {
         super(x, y);
+        this.parent = parent;
+        parent.addElement(this);
+        this.relativePosition.set(x, y);
+        Vector2 absolute = getAbsolutePosition();
+        this.position.set(absolute.x, absolute.y);
     }
 
+    @Override
     public void update(float dt) {
+        super.update(dt);
+        if (getPosition().x != getAbsolutePosition().x || getPosition().y != getAbsolutePosition().y) getPosition().set(getAbsolutePosition());
         if (hovering()) {
             if (justHovered) return;
             triggerEvent(ActionEvent.HOVERED);
@@ -86,9 +97,9 @@ public abstract class UIElement extends Drawable {
     }
 
     /**
-     * Returns {@link UIScreen} in which the element is stored
+     * Returns {@link me.benjozork.onyx.ui.container.UIScreen} in which the element is stored
      */
-    public UIScreen getParent() {
+    public me.benjozork.onyx.ui.container.UIContainer getParent() {
         return parent;
     }
 
@@ -125,16 +136,20 @@ public abstract class UIElement extends Drawable {
         PolygonHelper.setHeight(bounds, v);
     }
 
-    public void resize(float dx, float dy) {
-        this.dimensions.x += dx;
-        this.dimensions.y += dy;
-        PolygonHelper.setDimensions(bounds, dimensions.x, dimensions.y);
-    }
-
-    public void setDimensions(float w, float h) {
+    public void resize(float w, float h) {
         this.dimensions.x = w;
         this.dimensions.y = h;
         PolygonHelper.setDimensions(bounds, w, h);
+    }
+
+    public Vector2 getAbsolutePosition() {
+        float x = relativePosition.x;
+        float y = relativePosition.y;
+        for (UIContainer par = getParent(); par.hasParent(); par = par.getParent()) {
+            x += par.getRelativePosition().x;
+            y += par.getRelativePosition().y;
+        }
+        return new Vector2(x, y);
     }
 
 }

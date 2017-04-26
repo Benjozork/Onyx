@@ -73,4 +73,5 @@ public class GameScreenInputProcessor extends OnyxInputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }

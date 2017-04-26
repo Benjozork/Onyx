@@ -65,8 +65,8 @@ public class UIDropdown extends UIElement {
 
     private boolean expanded = false;
 
-    public UIDropdown(float x, float y, float width, float height, TextComponent component) {
-        super(x, y);
+    public UIDropdown(float x, float y, float width, float height, TextComponent component, me.benjozork.onyx.ui.container.UIContainer parent) {
+        super(x, y, parent);
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);

@@ -34,13 +34,13 @@ public class PopupText extends StaticDrawable {
 
     // Public attributes
 
-    public int initialFontSize = 35;
-    public Color initialFontColor = Color.WHITE;
+    public static int initialFontSize = 35;
+    public static Color initialFontColor = Color.WHITE;
 
-    public float scaleDelta = 6f;
-    public float transparencyDelta = 550f;
+    public static float scaleDelta = 6f;
+    public static float transparencyDelta = 550f;
 
-    public float transparencyDeltaTolerance = 0.05f;
+    public static float transparencyDeltaTolerance = 0.05f;
 
     // End public attributes
 

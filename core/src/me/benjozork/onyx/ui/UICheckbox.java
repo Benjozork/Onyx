@@ -24,7 +24,6 @@ public class UICheckbox extends UIElement {
 
     private TextComponent component;
 
-
     private Vector2 dimension = new Vector2();
 
     private boolean checked = false;
@@ -32,8 +31,8 @@ public class UICheckbox extends UIElement {
     private float colorTimer;
     private float maxColorTimer = 0.1f;
 
-    public UICheckbox(float x, float y, float width, float height, TextComponent component) {
-        super(x, y);
+    public UICheckbox(float x, float y, float width, float height, TextComponent component, me.benjozork.onyx.ui.container.UIContainer parent) {
+        super(x, y, parent);
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);

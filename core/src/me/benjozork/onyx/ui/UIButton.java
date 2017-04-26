@@ -30,8 +30,8 @@ public class UIButton extends UIElement {
     private float colorTimer;
     private final float maxColorTimer = 0.1f;
 
-    public UIButton(float x, float y, float width, float height, TextComponent component) {
-        super(x, y);
+    public UIButton(float x, float y, float width, float height, TextComponent component, me.benjozork.onyx.ui.container.UIContainer parent) {
+        super(x, y, parent);
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
         setHeight(height);

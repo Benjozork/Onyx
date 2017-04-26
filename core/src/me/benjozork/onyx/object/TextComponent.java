@@ -8,8 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.FTFGeneratorCache;
 import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.config.Configs;
-import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
@@ -36,7 +34,7 @@ public class TextComponent {
      * @param parameter the {@link FreeTypeFontGenerator.FreeTypeFontParameter} to be used
      */
     public TextComponent(String text, String fontPath, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
-        this.text = text;
+        this.text = text.trim();
         this.fontPath = fontPath;
         this.parameter = parameter;
         this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
@@ -48,7 +46,7 @@ public class TextComponent {
      * @param fontPath  the font path to be used
      */
     public TextComponent(String text, String fontPath) {
-        this.text = text;
+        this.text = text.trim();
         this.fontPath = fontPath;
         this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
         this.layout = new GlyphLayout(generatedFont, text);
@@ -58,8 +56,7 @@ public class TextComponent {
      * @param text the text to be displayed
      */
     public TextComponent(String text) {
-        ProjectConfig projectConfig = Configs.loadCached(ProjectConfig.class);
-        this.text = text;
+        this.text = text.trim();
         this.generatedFont = GameManager.getFont();
         this.layout = new GlyphLayout(generatedFont, text);
     }
@@ -185,7 +182,7 @@ public class TextComponent {
 
     public void setText(String text) {
         if (! text.equals(this.text)) { // To prevent unnecessary computations
-            this.text = text;
+            this.text = text.trim();
             updateLayout();
         }
     }

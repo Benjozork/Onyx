@@ -11,11 +11,12 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.OnyxGame;
 import me.benjozork.onyx.OnyxInputProcessor;
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.hud.LifeIndicator;
+import me.benjozork.onyx.game.hud.ScoreIndicator;
+import me.benjozork.onyx.game.hud.WeaponIndicator;
 import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
@@ -112,13 +113,6 @@ public class GameScreen implements Screen {
         zoomPulseConfig.targetZoom = 0.5f;
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
-        scoreText = new TextComponent(String.valueOf(GameScreenManager.getPlayers().first().getScore()), OnyxGame.projectConfig.default_font);
-        scoreText.getParameter().color = Color.WHITE;
-        scoreText.getParameter().borderColor = Color.BLACK;
-        scoreText.getParameter().size = 30;
-        scoreText.update();
-        scoreText.getFont().getData().markupEnabled = true;
-
     }
 
     public void update(float delta) {
@@ -149,9 +143,15 @@ public class GameScreen implements Screen {
 
         zoomPulseCamera.update();
 
-        scoreText.setText(String.valueOf(GameScreenManager.getPlayers().first().getScore() + " / [#CCCCCC]" + GameScreenManager.getPlayers().first().getHighScore()));
-
         if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(1, 3, 0, 1920, 500, 1200);
+
+        // Update score text
+
+        ScoreIndicator.update();
+
+        // Update weapon indicator
+
+        WeaponIndicator.update();
 
         // Update maxFrametime
 
@@ -174,7 +174,6 @@ public class GameScreen implements Screen {
 
         // Draw background
 
-        //background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
         batch.setProjectionMatrix(guiCam.combined);
@@ -184,12 +183,15 @@ public class GameScreen implements Screen {
 
         batch.enableBlending();
         LifeIndicator.draw(batch, 10, 0);
+        batch.setProjectionMatrix(worldCam.combined);
 
         // Draw score text
 
-        scoreText.draw(batch, Gdx.graphics.getWidth() - scoreText.getLayout().width - 20, Gdx.graphics.getHeight() - scoreText.getLayout().height - 10);
+        ScoreIndicator.draw(batch, Gdx.graphics.getWidth() - ScoreIndicator.component.getLayout().width - 30, Gdx.graphics.getHeight() - 35);
 
-        batch.setProjectionMatrix(worldCam.combined);
+        // Draw weapon indicator
+
+        WeaponIndicator.draw(batch, Gdx.graphics.getWidth() - WeaponIndicator.component.getLayout().width - 35, WeaponIndicator.component.getLayout().height + 35);
 
         // Update then draw entities
 
@@ -259,7 +261,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         GameScreenManager.dispose();
-        scoreText.dispose();
     }
 
     private void collisionCheck() {

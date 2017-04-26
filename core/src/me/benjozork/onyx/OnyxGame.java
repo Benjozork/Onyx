@@ -18,6 +18,7 @@ import me.benjozork.onyx.event.impl.listener.OnyxEntityListener;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.screen.TestUIScreen;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -95,7 +96,7 @@ public class OnyxGame extends Game {
 
         // Setup Initial Screen
 
-        Console.dispatchCommand("screen " + projectConfig.initial_screen);
+        ScreenManager.setCurrentScreen(new TestUIScreen());
 
         // Event handling
 

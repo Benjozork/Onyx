@@ -16,7 +16,7 @@ public class UIRadioButtonGroup extends UIElement {
     private int selected;
 
     public UIRadioButtonGroup() {
-        super(0, 0);
+        super(0, 0, null);
     }
 
     /**

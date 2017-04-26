@@ -13,8 +13,8 @@ public class UILabel extends UIElement {
 
     private TextComponent component;
 
-    public UILabel(float x, float y, TextComponent component) {
-        super(x, y);
+    public UILabel(float x, float y, TextComponent component, me.benjozork.onyx.ui.container.UIContainer parent) {
+        super(x, y, parent);
         bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
         this.component = component;
     }

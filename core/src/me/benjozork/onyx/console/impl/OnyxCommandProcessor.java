@@ -10,7 +10,6 @@ import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.Drawable;
-import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
@@ -37,7 +36,7 @@ public class OnyxCommandProcessor implements CommandProcessor {
                     ScreenManager.setCurrentScreen(new GameScreen());
                     return true;
                 } else if (c.getArgs()[0].equals("menu")) {
-                    ScreenManager.setCurrentScreen(new MenuScreen());
+                    //ScreenManager.setCurrentScreen(new MenuScreen());
                     return true;
                 } else {
                     log.warn("Invalid argument '%s'", c.getArgs()[0]);

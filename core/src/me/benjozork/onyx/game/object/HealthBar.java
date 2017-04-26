@@ -36,11 +36,11 @@ public class HealthBar extends StaticDrawable {
 
     private ShapeRenderer renderer = GameManager.getRenderer();
 
-    private final Color BACKGROUND_COLOR = Utils.rgba(0, 0, 0, 200);
+    private static final Color BACKGROUND_COLOR = Utils.rgba(0, 0, 0, 200);
 
-    private final float VALUE_DELTA = 70f;
+    private static final float VALUE_DELTA = 70f;
 
-    private final float HEALTH_TEXT_VERTICAL_OFFSET = 5;
+    private static final float HEALTH_TEXT_VERTICAL_OFFSET = 5;
 
     private BigDecimal bd;
 
@@ -58,17 +58,19 @@ public class HealthBar extends StaticDrawable {
         this.maxValue = maxValue;
         this.value = parent.getHealth();
         this.component = new TextComponent(String.valueOf(maxValue), Configs.loadCached(ProjectConfig.class).default_font);
+        this.component.getParameter().size = 20;
+        this.component.update();
 
-        healthColors.put(10, Utils.rgb(255, 0, 0));
-        healthColors.put(20, Utils.rgb(226, 26, 0));
-        healthColors.put(30, Utils.rgb(198, 56, 0));
-        healthColors.put(40, Utils.rgb(170, 85, 0));
-        healthColors.put(50, Utils.rgb(141, 113, 0));
-        healthColors.put(60, Utils.rgb(113, 141, 0));
-        healthColors.put(70, Utils.rgb(85, 170, 0));
-        healthColors.put(80, Utils.rgb(56, 198, 0));
-        healthColors.put(90, Utils.rgb(28, 226, 0));
-        healthColors.put(100, Utils.rgb(0, 255, 0));
+        healthColors.put(10, Color.valueOf("FF0000"));
+        healthColors.put(20, Color.valueOf("FF3300"));
+        healthColors.put(30, Color.valueOf("FF6600"));
+        healthColors.put(40, Color.valueOf("FF9900"));
+        healthColors.put(50, Color.valueOf("FFCC00"));
+        healthColors.put(60, Color.valueOf("FFFF00"));
+        healthColors.put(70, Color.valueOf("BFFF00"));
+        healthColors.put(80, Color.valueOf("7FFF00"));
+        healthColors.put(90, Color.valueOf("3FFF00"));
+        healthColors.put(100, Color.valueOf("00FF00"));
     }
 
     @Override

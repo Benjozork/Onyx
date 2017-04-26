@@ -17,7 +17,7 @@ public class LifeIndicator {
 
     private static final Sprite LIFE_ICON = new Sprite(new Texture("hud/lifeicon.png"));
 
-    private static TextComponent component = new TextComponent("", Configs.loadCached(ProjectConfig.class).default_font);
+    public static TextComponent component = new TextComponent("", Configs.loadCached(ProjectConfig.class).default_font);
 
     static {
         LIFE_ICON.setScale(0.5f, 0.5f);
