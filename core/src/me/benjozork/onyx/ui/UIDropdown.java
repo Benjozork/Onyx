@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.ui.container.UIContainer;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
@@ -65,7 +66,7 @@ public class UIDropdown extends UIElement {
 
     private boolean expanded = false;
 
-    public UIDropdown(float x, float y, float width, float height, TextComponent component, me.benjozork.onyx.ui.container.UIContainer parent) {
+    public UIDropdown(float x, float y, float width, float height, TextComponent component, UIContainer parent) {
         super(x, y, parent);
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);
@@ -93,7 +94,7 @@ public class UIDropdown extends UIElement {
             PolygonHelper.setHeight(bounds, getHeight());
         }
 
-        // Reset click color
+        // Reset click backgroundColor
 
         if (colorTimer <= maxColorTimer && colorTimer > 0) {
             colorTimer += Utils.delta();

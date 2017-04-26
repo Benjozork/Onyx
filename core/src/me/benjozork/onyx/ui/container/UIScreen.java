@@ -6,8 +6,7 @@ import me.benjozork.onyx.ui.UIElement;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * Contains {@link UIElement}s
- * @author Benjozork
+ * An {@link UIContainer} that does not have a position nor a width and height.
  */
 public class UIScreen extends UIContainer {
 

@@ -18,7 +18,7 @@ import me.benjozork.onyx.ui.container.UISelectionPane;
 public class TestUIScreen implements Screen {
 
     private UIScreen screen;
-    private UISelectionPane pane;
+    private UISelectionPane selectionPane;
     private UIPane childPane, childPane2;
 
     @Override
@@ -26,20 +26,20 @@ public class TestUIScreen implements Screen {
         OnyxInputProcessor.setCurrentProcessor(new GameScreenInputProcessor());
 
         screen = new UIScreen();
-        pane = new UISelectionPane(50, 50, 200, 200, screen);
+        selectionPane = new UISelectionPane(50, 50, 200, 200, screen);
 
-        childPane = new UIPane(0, 0, 0, 0, pane);
+        childPane = new UIPane(0, 0, 0, 0, selectionPane);
         new UIButton(10, 10, 100, 35, new TextComponent("Test1"), childPane);
-        pane.addSelectorItem(new TextComponent("test1"), childPane);
+        selectionPane.addSelectorItem(new TextComponent("test1"), childPane);
 
-        childPane2 = new UIPane(0, 0, 0, 0, pane);
-        new UIButton(10, 50, 100, 35, new TextComponent("Test1"),  childPane2);
-        pane.addSelectorItem(new TextComponent("test2"), childPane2);
+        childPane2 = new UIPane(0, 0, 0, 0, selectionPane);
+        new UIButton(10, 50, 100, 35, new TextComponent("Test2"),  childPane2);
+        selectionPane.addSelectorItem(new TextComponent("test2"), childPane2);
     }
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) pane.setRelativeY(500);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) selectionPane.setRelativeY(500);
         screen.update();
         screen.draw();
     }
@@ -68,4 +68,5 @@ public class TestUIScreen implements Screen {
     public void dispose() {
         screen.dispose();
     }
+
 }

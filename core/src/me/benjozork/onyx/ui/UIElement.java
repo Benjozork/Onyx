@@ -19,7 +19,7 @@ public abstract class UIElement extends StaticDrawable {
 
     private Array<Action> actions = new Array<Action>();
 
-    private me.benjozork.onyx.ui.container.UIContainer parent;
+    private UIContainer parent;
 
     private String identifier;
 
@@ -29,7 +29,7 @@ public abstract class UIElement extends StaticDrawable {
 
     private Vector2 dimensions = new Vector2();
 
-    public UIElement(float x, float y, me.benjozork.onyx.ui.container.UIContainer parent) {
+    public UIElement(float x, float y, UIContainer parent) {
         super(x, y);
         this.parent = parent;
         parent.addElement(this);
@@ -99,7 +99,7 @@ public abstract class UIElement extends StaticDrawable {
     /**
      * Returns {@link me.benjozork.onyx.ui.container.UIScreen} in which the element is stored
      */
-    public me.benjozork.onyx.ui.container.UIContainer getParent() {
+    public UIContainer getParent() {
         return parent;
     }
 

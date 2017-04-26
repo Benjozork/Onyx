@@ -13,6 +13,7 @@ import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.StaticDrawable;
+import me.benjozork.onyx.screen.GameOverScreen;
 
 /**
  * Allows to interact with a {@link GameScreen} and it's properties.<br/>
@@ -229,7 +230,7 @@ public class GameScreenManager {
         staticObjects = new Array<StaticDrawable>();
 
         setIsDisposing(false);
-        //ScreenManager.setCurrentScreen(new GameOverScreen());
+        ScreenManager.setCurrentScreen(new GameOverScreen());
     }
 
 }

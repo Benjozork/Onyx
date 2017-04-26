@@ -12,14 +12,29 @@ import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * Allows to display an {@link UIPane} from a list of selections, based on a clickable list.
  * @author Benjozork
  */
 public class UISelectionPane extends UIPane {
 
+    /**
+     * The background backgroundColor of the displayed {@link UIPane}
+     */
     public Color selectedPaneBackgroundColor = Utils.rgba(160, 160, 160, 200);
+
+    /**
+     * The backgroundColor of an unselected item from the list
+     */
     public Color selectorBackgroundColorUnselected = Utils.rgba(130, 130, 130, 200);
+
+    /**
+     * The backgroundColor of a selected item from the list
+     */
     public Color selectorBackgroundColorSelected = Utils.rgba(160, 160, 160, 110);
 
+    /**
+     * The width of the list
+     */
     public float selectorItemWidth = 80;
 
     private float SELECTOR_ITEM_HEIGHT;
@@ -31,6 +46,11 @@ public class UISelectionPane extends UIPane {
         super(x, y, w, h, parent);
     }
 
+    /**
+     * Adds an {@link UIPane} to the list along with it's {@link TextComponent}, used to represent the former.
+     * @param item the {@link TextComponent} to add in the clickable list
+     * @param pane the {@link UIPane} to be added
+     */
     public void addSelectorItem(TextComponent item, UIPane pane) {
         pane.setRelativeX(selectorItemWidth);
         pane.setRelativeY(0);
@@ -93,4 +113,5 @@ public class UISelectionPane extends UIPane {
         }
         return false;
     }
+
 }

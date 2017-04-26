@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.ui.container.UIContainer;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -30,7 +31,7 @@ public class UIButton extends UIElement {
     private float colorTimer;
     private final float maxColorTimer = 0.1f;
 
-    public UIButton(float x, float y, float width, float height, TextComponent component, me.benjozork.onyx.ui.container.UIContainer parent) {
+    public UIButton(float x, float y, float width, float height, TextComponent component, UIContainer parent) {
         super(x, y, parent);
         bounds = PolygonHelper.getPolygon(x, y, width, height);
         setWidth(width);

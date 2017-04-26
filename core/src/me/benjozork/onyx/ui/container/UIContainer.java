@@ -8,6 +8,10 @@ import me.benjozork.onyx.ui.UIElement;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * Displays and organizes {@link UIElement} objects.<br/>
+ * Can also contain other {@link UIContainer} objects, described as children. They will<br/>
+ * be updated, drawn and disposed of at the same time as the parent {@link UIContainer}.
+ *
  * @author Benjozork
  */
 public abstract class UIContainer {
@@ -70,10 +74,18 @@ public abstract class UIContainer {
 
     // Position
 
+    /**
+     * Returns the container's position, relative to the parent container
+     * @return a relatiive {@link Vector2}
+     */
     public Vector2 getRelativePosition() {
         return relativePosition;
     }
 
+    /**
+     * Returns the container's position, relative to the screen origin
+     * @return an aboslutely relative {@link Vector2}
+     */
     public Vector2 getAbsolutePosition() {
         float x = relativePosition.x;
         float y = relativePosition.y;
@@ -84,45 +96,73 @@ public abstract class UIContainer {
         return new Vector2(x, y);
     }
 
-
+    /**
+     * Returns the x coordinate, relative to the screen origin
+     * @return an absolutely relative {@link Vector2}
+     */
     public float getAbsoluteX() {
         return position.x;
     }
 
+    /**
+     * Returns the x coordinate, relative to the parent {@link UIContainer}
+     * @return a relative {@link Vector2}
+     */
     public float getRelativeX() {
         return relativePosition.x;
     }
 
+    /**
+     * Returns the y coordinate, relative to the screen origin
+     * @return an absolutely relative {@link Vector2}
+     */
     public float getAbsoluteY() {
         return position.y;
     }
 
+    /**
+     * Returns the y coordinate, relative to the parent {@link UIContainer}
+     * @return a relative {@link Vector2}
+     */
     public float getRelativeY() {
         return relativePosition.y;
     }
 
+    /**
+     * Sets the x coordinate, relative to the screen origin
+     */
     public void setAbsoluteX(float x) {
         this.position.x = x;
     }
 
+    /**
+     * Sets the x coordinate, relative to the parent {@link UIContainer}
+     */
     public void setRelativeX(float x) {
         this.relativePosition.x = x;
     }
 
+    /**
+     * Sets the y coordinate, relative to the screen origin
+     */
     public void setAbsoluteY(float y) {
         this.position.y = y;
     }
 
+    /**
+     * Sets the y coordinate, relative to the parent {@link UIContainer}
+     */
     public void setRelativeY(float y) {
         this.relativePosition.y = y;
     }
 
-    // Dimension
+    public void setPosition(float x, float y) {
+        this.position.set(x, y);
+    }
 
     public Vector2 getDimension() {
         return dimension;
     }
-
 
     public UIContainer getParent() {
         return parent;
