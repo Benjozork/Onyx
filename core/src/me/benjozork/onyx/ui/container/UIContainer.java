@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.ui.UIElement;
+import me.benjozork.onyx.ui.object.Anchor;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -30,7 +31,6 @@ public abstract class UIContainer {
 
     public UIContainer(float x, float y, float w, float h, UIContainer parent) {
         this.parent = parent;
-        if (parent != null) parent.addChild(this);
         this.relativePosition.set(x, y);
         Vector2 absolute = getAbsolutePosition();
         this.position.set(absolute.x, absolute.y);
@@ -176,7 +176,44 @@ public abstract class UIContainer {
         return elements;
     }
 
-    public void addElement(UIElement element) {
+    public void add(UIElement element) {
+        elements.add(element);
+    }
+
+    public void add(UIElement element, Anchor relativeAnchor) {
+        switch (relativeAnchor) {
+            case CENTER:
+                element.setRelativeX(element.getRelativeX() + (getWidth() / 2) - element.getWidth() / 2);
+                element.setRelativeY(element.getRelativeY() + (getHeight() / 2) - element.getHeight() / 2);
+                break;
+            case TOP_LEFT:
+                element.setRelativeY(getHeight() - element.getHeight() + element.getRelativeY());
+                break;
+            case TOP:
+                element.setRelativeX(element.getRelativeX() + (getWidth() / 2) - element.getWidth() / 2);
+                element.setRelativeY(getHeight() - element.getHeight() + element.getRelativeY());
+                break;
+            case TOP_RIGHT:
+                element.setRelativeX(element.getRelativeX() + getWidth() - element.getWidth());
+                element.setRelativeY(getHeight() - element.getHeight() + element.getRelativeY());
+                break;
+            case RIGHT:
+                element.setRelativeX(element.getRelativeX() + getWidth() - element.getWidth());
+                element.setRelativeY(element.getRelativeY() + (getHeight() / 2) - element.getHeight() / 2);
+                break;
+            case BOTTOM_RIGHT:
+                element.setRelativeX(element.getRelativeX() + getWidth() - element.getWidth());
+                break;
+            case BOTTOM:
+                element.setRelativeX(element.getRelativeX() + (getWidth() / 2) - element.getWidth() / 2);
+                break;
+            case BOTTOM_LEFT:
+                element.setPosition(element.getAbsolutePosition());
+                break;
+            case LEFT:
+                element.setRelativeY(element.getRelativeY() + (getHeight() / 2) - element.getHeight() / 2);
+                break;
+        }
         elements.add(element);
     }
 
@@ -206,7 +243,7 @@ public abstract class UIContainer {
         return children;
     }
 
-    public void addChild(UIContainer container) {
+    public void add(UIContainer container) {
         children.add(container);
     }
 

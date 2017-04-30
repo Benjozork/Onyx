@@ -8,6 +8,7 @@ import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.ui.UILabel;
 import me.benjozork.onyx.ui.container.UIPane;
 import me.benjozork.onyx.ui.container.UIScreen;
+import me.benjozork.onyx.ui.object.Anchor;
 import me.benjozork.onyx.utils.CenteredDrawer;
 
 /**
@@ -27,7 +28,7 @@ public class GameOverScreen implements Screen {
         Vector2 centerPos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, 0, 0, w, h, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         pane = new UIPane(centerPos.x, centerPos.y, w, h, screen);
 
-        new UILabel(60, 60, new TextComponent("0"), pane);
+        pane.add(new UILabel(0, 0, new TextComponent("0"), pane), Anchor.RIGHT);
     }
 
     @Override

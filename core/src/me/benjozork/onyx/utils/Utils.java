@@ -12,7 +12,6 @@ import java.util.Random;
 
 import me.benjozork.onyx.GameManager;
 
-
 /**
  * Provides a few useful utilities to ease development
  * @author Benjozork

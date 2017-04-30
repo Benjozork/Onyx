@@ -16,8 +16,9 @@ public class UILabel extends UIElement {
 
     public UILabel(float x, float y, TextComponent component, UIContainer parent) {
         super(x, y, parent);
-        bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
+        this.bounds = PolygonHelper.getPolygon(getX(), getY(), getWidth(), getHeight());
         this.component = component;
+        this.setDimensions(component.getLayout().width, component.getLayout().height);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class UILabel extends UIElement {
 
     @Override
     public void draw() {
-        component.draw(GameManager.getBatch(), getX(), getY());
+        component.draw(GameManager.getBatch(), getX(), getY() + component.getLayout().height);
     }
 
     @Override
