@@ -10,15 +10,21 @@ import me.benjozork.onyx.utils.Utils;
 
 /**
  * Displays and organizes {@link UIElement} objects.<br/>
- * Can also contain other {@link UIContainer} objects, described as children. They will<br/>
+ * Can also contain other {@link UIContainer} objects as children. They will<br/>
  * be updated, drawn and disposed of at the same time as the parent {@link UIContainer}.
  *
  * @author Benjozork
  */
 public abstract class UIContainer {
 
+    /*
+    The absolute position vector, used for drawing
+     */
     private Vector2 position = new Vector2();
 
+    /*
+    The relative position vector, used for positioning
+     */
     private Vector2 relativePosition = new Vector2();
 
     private Vector2 dimension = new Vector2();
@@ -70,6 +76,26 @@ public abstract class UIContainer {
         for (UIContainer container : children) {
             container.dispose();
         }
+    }
+
+    public float getWidth() {
+        return dimension.x;
+    }
+
+    public void setWidth(float width) {
+        this.dimension.x = width;
+    }
+
+    public float getHeight() {
+        return dimension.y;
+    }
+
+    public void setHeight(float height) {
+        this.dimension.y = height;
+    }
+
+    public void setDimensions(float w, float h) {
+        this.dimension.set(w, h);
     }
 
     // Position
@@ -156,30 +182,50 @@ public abstract class UIContainer {
         this.relativePosition.y = y;
     }
 
+    /**
+     * Sets the absolute position vector
+     * @param x the x position
+     * @param y the y position
+     */
     public void setPosition(float x, float y) {
         this.position.set(x, y);
     }
 
-    public Vector2 getDimension() {
-        return dimension;
-    }
-
+    /**
+     * @return the parent container of this container
+     */
     public UIContainer getParent() {
         return parent;
     }
 
+    /**
+     * Sets the parent container of this container
+     * @param parent the container to be used as parent
+     */
     public void setParent(UIContainer parent) {
         this.parent = parent;
     }
 
+    /**
+     * @return an {@link Array} of {@link UIElement} objects
+     */
     public Array<UIElement> getElements() {
         return elements;
     }
 
+    /**
+     * Adds an {@link UIElement} with a relative origin of (0, 0)
+     * @param element the element to be added
+     */
     public void add(UIElement element) {
         elements.add(element);
     }
 
+    /**
+     * Adds an {@link UIElement} with a relative origin of a specified anchor
+     * @param element the element to be added
+     * @param relativeAnchor the {@link Anchor} value used to position the element
+     */
     public void add(UIElement element, Anchor relativeAnchor) {
         switch (relativeAnchor) {
             case CENTER:
@@ -217,6 +263,10 @@ public abstract class UIContainer {
         elements.add(element);
     }
 
+    /**
+     * Calls a click event on the container, pinging all the child elements.
+     * @return whether a click was successful
+     */
     public boolean click() {
         for (UIElement element : elements) {
 
@@ -231,36 +281,26 @@ public abstract class UIContainer {
         return false;
     }
 
-    public void resize(float w, float h) {
-        this.dimension.set(w, h);
-    }
-
+    /**
+     * @return whether the container has a parent
+     */
     public boolean hasParent() {
         return parent != null;
     }
 
+    /**
+     * @return the child containers of this container
+     */
     public Array<UIContainer> getChildren() {
         return children;
     }
 
+    /**
+     * Adds a child container to this container
+     * @param container the container to be added
+     */
     public void add(UIContainer container) {
         children.add(container);
-    }
-
-    public float getWidth() {
-        return dimension.x;
-    }
-
-    public void setWidth(float width) {
-        this.dimension.x = width;
-    }
-
-    public float getHeight() {
-        return dimension.y;
-    }
-
-    public void setHeight(float height) {
-        this.dimension.y = height;
     }
 
 }

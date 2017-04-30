@@ -11,6 +11,7 @@ import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.ui.UIElement;
 import me.benjozork.onyx.ui.object.Anchor;
+import me.benjozork.onyx.ui.object.TabLayout;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -24,7 +25,7 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
      * Valid values:</br>
      *  - TOP, RIGHT, BOTTOM, LEFT
      */
-    public Anchor layout = Anchor.TOP;
+    public TabLayout layout = TabLayout.TOP;
 
     /**
      * The background color of the displayed {@link UIPane}
@@ -67,7 +68,7 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
         pane.setRelativeY(0);
         pane.setWidth(getWidth() - selectorItemWidth);
         pane.setHeight(getHeight());
-        add(pane);
+        super.add(pane);
         selectiorItems.put(item, pane);
         SELECTOR_ITEM_HEIGHT = getHeight() / selectiorItems.size;
     }
@@ -81,6 +82,11 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
         }
 
         selectiorItems.getValueAt(currentPane).update();
+        selectiorItems.getValueAt(currentPane).setWidth(getWidth() - selectiorItems.getValueAt(currentPane).getRelativeX());
+        selectiorItems.getValueAt(currentPane).update();
+        selectiorItems.getValueAt(currentPane).setHeight(getHeight() - selectiorItems.getValueAt(currentPane).getRelativeY());
+
+        SELECTOR_ITEM_HEIGHT = getHeight() / selectiorItems.size;
     }
 
     @Override
@@ -129,17 +135,17 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
 
     @Override
     public void add(UIElement e) {
-        // throw new IllegalAccessException("cannot add elements or containers to UISelectionPane");
+         throw new IllegalStateException("cannot add elements or containers to UITabPane");
     }
 
     @Override
     public void add(UIElement e, Anchor a) {
-
+        throw new IllegalStateException("cannot add elements or containers to UITabPane");
     }
 
     @Override
     public void add(UIContainer e) {
-
+        throw new IllegalStateException("cannot add elements or containers to UITabPane");
     }
 
 }

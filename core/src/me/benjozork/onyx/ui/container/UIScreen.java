@@ -1,12 +1,14 @@
 package me.benjozork.onyx.ui.container;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 
 import me.benjozork.onyx.ui.UIElement;
 import me.benjozork.onyx.utils.Utils;
 
 /**
- * An {@link UIContainer} that does not have a position nor a width and height.
+ * An {@link UIContainer} that does not have a position nor a width and height.<br/>
+ * This is needed for any {@link Screen} that displays an UI.
  */
 public class UIScreen extends UIContainer {
 
@@ -16,7 +18,7 @@ public class UIScreen extends UIContainer {
 
     @Override
     public void update() {
-        if (getWidth() != Gdx.graphics.getWidth() || getHeight() != Gdx.graphics.getHeight()) resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if (getWidth() != Gdx.graphics.getWidth() || getHeight() != Gdx.graphics.getHeight()) setDimensions(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (Gdx.input.justTouched()) {
             click();
         }

@@ -8,6 +8,7 @@ import me.benjozork.onyx.ui.container.UIContainer;
 import me.benjozork.onyx.ui.object.Action;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.ui.object.Anchor;
+import me.benjozork.onyx.ui.object.Stretch;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
@@ -20,7 +21,7 @@ public abstract class UIElement extends StaticDrawable {
 
     private Vector2 relativePosition = new Vector2();
 
-    private Anchor snapMethod;
+    private Array<Stretch> stretches = new Array<Stretch>();
 
     private Array<Action> actions = new Array<Action>();
 
@@ -52,6 +53,7 @@ public abstract class UIElement extends StaticDrawable {
         } else {
             justHovered = false;
         }
+        stretchTo((Stretch[]) stretches.toArray(Stretch.class));
     }
 
     @Override
@@ -135,16 +137,16 @@ public abstract class UIElement extends StaticDrawable {
         PolygonHelper.setHeight(bounds, v);
     }
 
-    public void resize(float w, float h) {
-        this.dimensions.x = w;
-        this.dimensions.y = h;
-        PolygonHelper.setDimensions(bounds, w, h);
-    }
-
     public void setDimensions(float width, float height) {
         this.dimensions.set(width, height);
+        PolygonHelper.setDimensions(bounds, width, height);
     }
 
+    /**
+     * Returns the calculated absolute position by adding the relative positions<br/>
+     * of all the parent containers, and the relative origin.
+     * @return an absolute position {@link Vector2}
+     */
     public Vector2 getAbsolutePosition() {
         float x = relativePosition.x;
         float y = relativePosition.y;
@@ -229,6 +231,15 @@ public abstract class UIElement extends StaticDrawable {
     }
 
     /**
+     * Sets the origin to which the relative position is added to get the absolute position, relative to the parent {@link UIContainer}
+     * @param x the x position of the relative origin
+     * @param y the x position of the relative origin
+     */
+    private void setRelativeOrigin(float x, float y) {
+        this.relativeOrigin.set(x, y);
+    }
+
+    /**
      * Snaps the element to another element, using the provided anchor
      * @param target the element to which this should be snapped to
      * @param anchor the anchor to use for the snapping
@@ -264,8 +275,35 @@ public abstract class UIElement extends StaticDrawable {
         }
     }
 
-    private void setRelativeOrigin(float x, float y) {
-        this.relativeOrigin.set(x, y);
+    /**
+     * Stretches the element in the given directions
+     * @param stretches the directions to stretch the element towards
+     */
+    public void stretchTo(Stretch... stretches) {
+        for (Stretch stretch : stretches) {
+            if (! this.stretches.contains(stretch, true)) this.stretches.add(stretch);
+            float dx, dy;
+            switch (stretch) {
+                case TOP:
+                    dy = (parent.getAbsoluteY() + parent.getHeight()) - (getAbsoluteY() + getHeight());
+                    setHeight(getHeight() + dy);
+                    break;
+                case RIGHT:
+                    dx = parent.getWidth() - (getRelativeX() + getWidth());
+                    setWidth(getWidth() + dx);
+                    break;
+                case BOTTOM:
+                    dy = (getAbsoluteY() + getHeight()) - (parent.getAbsoluteY() + parent.getHeight());
+                    getRelativePosition().y -= dy;
+                    setHeight(getHeight() + dy);
+                    break;
+                case LEFT:
+                    dx = (getAbsoluteX() + getWidth()) - (parent.getAbsoluteX() + parent.getWidth());
+                   getRelativePosition().x -= dx;
+                   setWidth(getWidth() + dx);
+                    break;
+            }
+        }
     }
 
 }
