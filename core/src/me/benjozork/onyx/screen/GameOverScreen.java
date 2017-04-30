@@ -41,7 +41,7 @@ public class GameOverScreen implements Screen {
     public void resize(int width, int height) { // fixme: pane not resizing / repositionning correctly
         float w = width / 3, h = height / 3;
         Vector2 centerPos = CenteredDrawer.getContained(CenteredDrawer.CenteredDrawingType.CENTERED_IN_CONTAINER, 0, 0, w, h, width, height);
-        pane.resize(w, h);
+        pane.setDimensions(w, h);
         pane.setPosition(centerPos.x, centerPos.y);
     }
 
