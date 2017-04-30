@@ -15,6 +15,7 @@ import me.benjozork.onyx.utils.PolygonHelper;
 public class UIRadioButton extends UIElement {
 
     // RadioButton textures
+
     private final Texture RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_0.png");
     private final Texture TICKED_RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_2.png");
     private final Texture HOVERED_RADIOBUTTON_TEXTURE = new Texture("ui/radiobutton/radiobutton_1.png");

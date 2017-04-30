@@ -23,7 +23,7 @@ public class Utils {
      * Color instances used to markup console text.
      * WARN: Warning text. Non-failing problems.
      * ERROR: Error text. Failing problems.
-     * FATAL: Critical problem that interrupts the game.
+     * FATAL: Critical problem text. Interrupts the game.
      * DEBUG: Debugging text. Technical information used for debugging.
      */
     public static final Color WARN = rgb(255, 255, 100);
@@ -121,7 +121,7 @@ public class Utils {
     }
 
     /**
-     * Returns a {@link Color} object from three integer RGB values.
+     * Returns a {@link Color} object from three integer RGB values
      *
      * @param r the red value
      * @param g the green value
@@ -137,7 +137,7 @@ public class Utils {
     }
 
     /**
-     * Returns a {@link Color} object from three integer RGBA values.
+     * Returns a {@link Color} object from three integer RGBA values
      *
      * @param r the red value
      * @param g the green value
@@ -162,8 +162,8 @@ public class Utils {
     public String list(String[] strings) {
         StringBuilder ret = new StringBuilder(new String());
         for (int i = 0; i < strings.length; i++) {
-            if (i < strings.length - 1) ret.append(strings[i] + ", ");
-            else ret.append(strings[i] + ".");
+            if (i < strings.length - 1) ret.append(strings[i]).append(", ");
+            else ret.append(strings[i]).append(".");
         }
         return ret.toString();
     }

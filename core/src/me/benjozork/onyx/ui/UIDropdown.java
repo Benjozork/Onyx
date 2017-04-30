@@ -122,20 +122,20 @@ public class UIDropdown extends UIElement {
         if (expanded) {
             for (int i = 0; i < items.size; i++) {
                 if (i == items.size - 1) {
-                    EXPANDED_MENU_LOWER.draw(
-                            GameManager.getBatch(),
-                            getX(),
-                            getY() - getHeight() * (i + 1) - 10,
-                            getWidth(),
-                            getHeight() + 10
+                    EXPANDED_MENU_LOWER.draw (
+                        GameManager.getBatch(),
+                        getX(),
+                        getY() - getHeight() * (i + 1) - 10,
+                        getWidth(),
+                        getHeight() + 10
                     );
                 } else {
-                    EXPANDED_MENU_UPPER.draw(
-                            GameManager.getBatch(),
-                            getX(),
-                            getY() - getHeight() * (i + 1),
-                            getWidth(),
-                            getHeight() + 6
+                    EXPANDED_MENU_UPPER.draw (
+                        GameManager.getBatch(),
+                        getX(),
+                        getY() - getHeight() * (i + 1),
+                        getWidth(),
+                        getHeight() + 6
                     );
                 }
             }
@@ -156,20 +156,20 @@ public class UIDropdown extends UIElement {
                 }
 
                 if (index == items.size - 1) {
-                    EXPANDED_HOVERED_MENU_LOWER.draw(
-                            GameManager.getBatch(),
-                            getX(),
-                            getY() - getHeight() * (index + 1) - 10,
-                            getWidth(),
-                            getHeight() + 10
+                    EXPANDED_HOVERED_MENU_LOWER.draw (
+                        GameManager.getBatch(),
+                        getX(),
+                        getY() - getHeight() * (index + 1) - 10,
+                        getWidth(),
+                        getHeight() + 10
                     );
                 } else {
-                    EXPANDED_HOVERED_MENU_UPPER.draw(
-                            GameManager.getBatch(),
-                            getX(),
-                            getY() - getHeight() * (index + 1),
-                            getWidth(),
-                            getHeight()
+                    EXPANDED_HOVERED_MENU_UPPER.draw (
+                        GameManager.getBatch(),
+                        getX(),
+                        getY() - getHeight() * (index + 1),
+                        getWidth(),
+                        getHeight()
                     );
                 }
 

@@ -1,6 +1,10 @@
 package me.benjozork.onyx.ui.object;
 
+import me.benjozork.onyx.ui.UIElement;
+import me.benjozork.onyx.ui.container.UIContainer;
+
 /**
+ * Specifies the anchoring point of an {@link UIElement} relative to a parent {@link UIContainer}.
  * @author Benjozork
  */
 public enum Anchor {

@@ -3,7 +3,7 @@ package me.benjozork.onyx.utils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Allows to get centered position vectors following various centering cases.
+ * Allows to get centered position vectors depending on various centering cases.
  * @author Benjozork
  */
 public class CenteredDrawer {
@@ -73,7 +73,7 @@ public class CenteredDrawer {
     }
 
     /**
-     * Allows to center {@link com.badlogic.gdx.graphics.Pixmap} objects.<br/>
+     * Allows to center {@link com.badlogic.gdx.graphics.Pixmap}/{@link com.badlogic.gdx.graphics.glutils.ShapeRenderer} objects.<br/>
      * WARNING: This method should ALWAYS be called after centering with {@link CenteredDrawer#switchToBitmap()}!
      */
     public static void switchToPixel() {
