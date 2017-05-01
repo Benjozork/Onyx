@@ -14,9 +14,11 @@ public class UIImage extends UIElement {
 
     private Sprite sprite;
 
-    public UIImage(float x, float y, Texture texture, UIContainer parent) {
+    public UIImage(Texture texture, float x, float y, float w, float h, UIContainer parent) {
         super(x, y, parent);
         this.sprite = new Sprite(texture);
+        this.sprite.setPosition(x, y);
+        this.sprite.setSize(w, h);
     }
 
     @Override
