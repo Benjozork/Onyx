@@ -16,6 +16,7 @@ public class UIImage extends UIElement {
 
     public UIImage(Texture texture, float x, float y, float w, float h, UIContainer parent) {
         super(x, y, parent);
+        setDimensions(w, h);
         this.sprite = new Sprite(texture);
         this.sprite.setPosition(x, y);
         this.sprite.setSize(w, h);
@@ -28,7 +29,8 @@ public class UIImage extends UIElement {
 
     @Override
     public void update() {
-
+        sprite.setPosition(getAbsoluteX(), getAbsoluteX());
+        sprite.setSize(getWidth(), getHeight());
     }
 
     @Override
