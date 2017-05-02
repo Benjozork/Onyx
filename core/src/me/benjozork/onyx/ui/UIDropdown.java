@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.utils.PolygonHelper;
@@ -55,7 +55,6 @@ public class UIDropdown extends UIElement {
 
     private TextComponent component;
 
-    private Vector2 dimension = new Vector2();
     private String text = new String();
     private NinePatch currentPatch = DROPDOWN;
 

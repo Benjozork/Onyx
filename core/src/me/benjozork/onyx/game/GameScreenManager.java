@@ -1,17 +1,19 @@
 package me.benjozork.onyx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
 import java.util.Random;
 
-import me.benjozork.onyx.entity.EnemyEntity;
-import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.PlayerEntity;
-import me.benjozork.onyx.entity.ProjectileEntity;
-import me.benjozork.onyx.entity.ProjectileManager;
-import me.benjozork.onyx.internal.ScreenManager;
+import me.benjozork.onyx.ScreenManager;
+import me.benjozork.onyx.game.entity.EnemyEntity;
+import me.benjozork.onyx.game.entity.Entity;
+import me.benjozork.onyx.game.entity.LivingEntity;
+import me.benjozork.onyx.game.entity.PlayerEntity;
+import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.screen.GameOverScreen;
 
 /**
@@ -20,11 +22,13 @@ import me.benjozork.onyx.screen.GameOverScreen;
  * {@link GameScreenManager#dispose()}throw an {@link IllegalStateException}<br/>
  * if {@link ScreenManager#getCurrentScreen()} DOES NOT return {@link GameScreen}.
  *
+ * @see GameScreen
+ *
  * @author Benjozork
  */
 public class GameScreenManager {
 
-    private static PlayerEntity player;
+    private static Array<PlayerEntity> players;
 
     private static Array<EnemyEntity> enemies = new Array<EnemyEntity>();
     private static Array<EnemyEntity> enemiesToRemove = new Array<EnemyEntity>();
@@ -32,11 +36,7 @@ public class GameScreenManager {
     private static Array<Entity> entities = new Array<Entity>();
     private static Array<Entity> entitiesToRemove = new Array<Entity>();
 
-    private static int score = 0;
-    private static int highScore = 0;
-
-    private static int maxLives = 3;
-    private static int lifeCount = maxLives;
+    private static Array<StaticDrawable> staticObjects = new Array<StaticDrawable>();
 
     private static Log log = Log.create("GameScreenManager");
 
@@ -47,23 +47,33 @@ public class GameScreenManager {
     }
 
     /**
-     * Returns the {@link PlayerEntity} instance used by {@link GameScreen}
-     * @return the player instance
+     * Returns the {@link Array<PlayerEntity>} instance used by {@link GameScreen}
+     * @returns the player array
      */
-    public static PlayerEntity getPlayer() {
+    public static Array<PlayerEntity> getPlayers() {
         check();
-        return player;
+        return players;
     }
+
 
     /**
-     * Sets the {@link PlayerEntity} instance to be used by {@link GameScreen}
-     * @param p the player instance
+     * Sets the {@link Array<PlayerEntity>} instance used by {@link GameScreen}
+     * @param players the player array
      */
-    public static void setPlayer(PlayerEntity p) {
+    public static void setPlayers(Array<PlayerEntity> players) {
         check();
-        player = p;
+        //// TODO: 22-04-2017 Add check for data 
+        GameScreenManager.players = players;
     }
 
+    public static PlayerEntity getLocalPlayer() {
+        return getPlayers().first();
+    }
+
+    public static PlayerEntity getLocalPlayerEntity() {
+        return getPlayers().first();
+    }
+    
     /**
      * Removes {@link Entity} objects that have been marked for removal
      */
@@ -108,8 +118,6 @@ public class GameScreenManager {
         check();
         if (! entities.contains(e, false)){
             entities.add(e);
-            if(e instanceof ProjectileEntity)
-                ProjectileManager.addProjectile((ProjectileEntity)e);
         }
     }
 
@@ -129,12 +137,14 @@ public class GameScreenManager {
         check();
         if (e instanceof EnemyEntity) // Remove enemy
             enemiesToRemove.add((EnemyEntity) e);
-        if (e instanceof PlayerEntity) { // Remove player
-            setIsDisposing(true);
-        }
-        if (e instanceof ProjectileEntity) // Remove projectile
-            ProjectileManager.removeProjectile((ProjectileEntity) e);
         entitiesToRemove.add(e);
+    }
+
+    /**
+     * @return an {@link Array} of {@link StaticDrawable} objects.
+     */
+    public static Array<StaticDrawable> getStaticObjects() {
+        return staticObjects;
     }
 
     public static void generateRandomEnemyWave(int min, int max, int xmin, int xmax, int ymin, int ymax) {
@@ -147,58 +157,6 @@ public class GameScreenManager {
             addEntity(new EnemyEntity(posx, posy));
         }
         log.print("Generated %s enemies in range [x: %s, y: %s] and [x: %s, y: %s]", count, xmin, ymin, xmax, ymax);
-    }
-
-    public static int getScore() {
-        check();
-        return score;
-    }
-
-    public static void setScore(int v) {
-        check();
-        score = v;
-        updateHighScore();
-    }
-
-    public static void addScore(int v) {
-        check();
-        score += v;
-        updateHighScore();
-    }
-
-
-    public int getHighScore() {
-        check();
-        return highScore;
-    }
-
-    public static void setHighScore(int highScore) {
-        check();
-        highScore = highScore;
-    }
-
-    private static void updateHighScore() {
-        if (score > highScore) highScore = score;
-    }
-
-    public static int getLives() {
-        check();
-        return lifeCount;
-    }
-
-    public static void setLives(int i) {
-        check();
-        lifeCount = i;
-    }
-
-    public static int getMaxLives() {
-        check();
-        return maxLives;
-    }
-
-    public static void setMaxLives(int i) {
-        check();
-        maxLives = i;
     }
 
     /**
@@ -215,6 +173,36 @@ public class GameScreenManager {
         if (! exists() && checking) throw new IllegalStateException("current screen must be GameScreen");
     }
 
+    /**
+     * Call this method when a {@link LivingEntity} dies
+     * @param livingEntity the entity that died
+     */
+    public static void die(LivingEntity livingEntity) {
+        if (livingEntity instanceof PlayerEntity) {
+            PlayerEntity playerEntity = (PlayerEntity) livingEntity;
+            if (playerEntity.getLives() > 0){
+                playerEntity.removeLife();
+                playerEntity.revive();
+            }
+            else {
+
+                // Clear entities
+
+                for (Array.ArrayIterator<Entity> iter = new Array.ArrayIterator<Entity>(entities); iter.hasNext();) {
+                    Entity entity = iter.next();
+                    iter.remove();
+                    entity.dispose();
+                }
+
+                playerEntity.dispose();
+                setIsDisposing(true);
+            }
+        } else if (livingEntity instanceof EnemyEntity) {
+            livingEntity.dispose();
+            removeEntity(livingEntity);
+        }
+    }
+
     public static boolean isDisposing() {
         return !checking;
     }
@@ -227,7 +215,7 @@ public class GameScreenManager {
      * Flushes the object cache when {@link GameScreen} is disposed of
      */
     public static void dispose() {
-        player = null;
+        players = new Array<PlayerEntity>();
 
         for (Entity e : GameScreenManager.getEntities()) {
             e.dispose();
@@ -236,11 +224,7 @@ public class GameScreenManager {
         entities = new Array<Entity>();
         entitiesToRemove = new Array<Entity>();
 
-        score = 0;
-        highScore = 0;
-
-        maxLives = 0;
-        lifeCount = 0;
+        staticObjects = new Array<StaticDrawable>();
 
         setIsDisposing(false);
         ScreenManager.setCurrentScreen(new GameOverScreen());

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -20,7 +20,6 @@ public abstract class Drawable implements Disposable {
     protected Vector2 velocity = new Vector2(0, 0);
     protected Vector2 acceleration = new Vector2(0, 0);
 
-    protected float maxVelocity = 100f;
     protected float angle;
 
     protected Polygon bounds;
@@ -28,7 +27,7 @@ public abstract class Drawable implements Disposable {
     private float maxSpeed;
     private boolean defaultMaxSpeed = true;
 
-    private static boolean debug = true;
+    private static boolean debug = false;
 
     public Drawable(float x, float y) {
         this.position = new Vector2(x, y);
@@ -50,9 +49,6 @@ public abstract class Drawable implements Disposable {
 
         velocity.add(acceleration);
         position.add(velocity.cpy().scl(dt));
-
-        setPosition(position);
-        setAcceleration(acceleration);
 
         bounds.setPosition(position.x, position.y);
 
@@ -132,8 +128,8 @@ public abstract class Drawable implements Disposable {
     /**
      * Adds a scaled directional {@link Vector2} to the velocity
      */
-    public void accelerate(Vector2 dv) {
-        velocity.add(dv);
+    public void accelerate(float dx, float dy) {
+        velocity.add(dx, dy);
     }
 
     public void rotate(float v) {

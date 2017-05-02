@@ -1,21 +1,22 @@
 package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.entity.EnemyEntity;
-import me.benjozork.onyx.entity.Entity;
-import me.benjozork.onyx.entity.PlayerEntity;
-import me.benjozork.onyx.internal.GameManager;
+import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.OnyxGame;
+import me.benjozork.onyx.OnyxInputProcessor;
+import me.benjozork.onyx.game.entity.Entity;
+import me.benjozork.onyx.game.entity.PlayerEntity;
+import me.benjozork.onyx.game.hud.LifeIndicator;
+import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffect;
 import me.benjozork.onyx.specialeffect.crossfade.CrossFadeColorEffectConfiguration;
@@ -28,6 +29,8 @@ import me.benjozork.onyx.utils.Utils;
  * Manages the logic when a level is being played.<br/>
  * Use {@link GameScreenManager} to interact with this {@link Screen}'s contents.
  *
+ * @see GameScreenManager
+ *
  * @author Benjozork
  */
 public class GameScreen implements Screen {
@@ -36,18 +39,15 @@ public class GameScreen implements Screen {
 
     private float maxFrameTime;
 
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     private TextComponent scoreText;
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
-    private PlayerEntity player;
-    private EnemyEntity enemy;
+    private Array<PlayerEntity> players;
 
     private OrthographicCamera worldCam, guiCam;
 
     private Sprite background;
-    private Sprite lifeIcon;
 
     private SpriteBatch batch;
 
@@ -62,14 +62,25 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
 
+        // Setup input processing
+
+        OnyxInputProcessor.setCurrentProcessor(new GameScreenInputProcessor());
+
         // Setup player
 
+        players = new Array<PlayerEntity>();
+
         PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
-        GameScreenManager.setPlayer(player);
+
         player.setMaxSpeed(600f);
-        GameScreenManager.addEntity(player);
-        this.player = player;
-        this.enemy = enemy;
+
+        players.add(player);
+
+        for (PlayerEntity p : players) {
+            GameScreenManager.addEntity(p);
+        }
+
+        GameScreenManager.setPlayers(players);
 
         // Setup cameras
 
@@ -82,13 +93,8 @@ public class GameScreen implements Screen {
 
         background = new Sprite(new Texture("hud/background_base.png"));
         background.setPosition(0, 0);
-        background.setColor(backgroundColor);
+        //background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        // Setup life icons
-
-        lifeIcon = new Sprite(new Texture("hud/ship_silouhette.png"));
-        lifeIcon.setScale(0.4f, 0.4f);
 
         // Setup CrossFadeColorEffect
 
@@ -106,7 +112,12 @@ public class GameScreen implements Screen {
         zoomPulseConfig.targetZoom = 0.5f;
         zoomPulseCamera = new ZoomPulseEffect(zoomPulseConfig, worldCam, guiCam);
 
-        scoreText = new TextComponent(String.valueOf(GameScreenManager.getScore()));
+        scoreText = new TextComponent(String.valueOf(GameScreenManager.getPlayers().first().getScore()), OnyxGame.projectConfig.default_font);
+        scoreText.getParameter().color = Color.WHITE;
+        scoreText.getParameter().borderColor = Color.BLACK;
+        scoreText.getParameter().size = 30;
+        scoreText.update();
+        scoreText.getFont().getData().markupEnabled = true;
 
     }
 
@@ -114,48 +125,19 @@ public class GameScreen implements Screen {
 
         // Update DrawState of player
 
-        if (player.isFiring()) {
-            player.setState(PlayerEntity.DrawState.FIRING);
-        }
-        if (player.getVelocity().len() != 0) {
-            player.setState(PlayerEntity.DrawState.MOVING);
-            if (player.isFiring()) {
-                player.setState(PlayerEntity.DrawState.FIRING_MOVING);
+        for (PlayerEntity playerEntity : players) {
+            if (playerEntity.isFiring()) {
+                playerEntity.setState(PlayerEntity.DrawState.FIRING);
             }
-        }
-        if (! player.isFiring() && player.getVelocity().len() == 0f) {
-            player.setState(PlayerEntity.DrawState.IDLE);
-        }
-
-        // Update input
-
-        if (! Gdx.input.isKeyPressed(Input.Keys.A) && ! Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(PlayerEntity.Direction.STRAIGHT);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.setDirection(PlayerEntity.Direction.RIGHT);
-            player.accelerate(new Vector2(1000f, 0f));
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.setDirection(PlayerEntity.Direction.LEFT);
-            player.accelerate(new Vector2(-1000f, 0f));
-        }
-        /*if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.accelerate(100f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.accelerate(-100f);
-        }*/
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Vector2 mouse = Utils.unprojectWorld(Gdx.input.getX(), Gdx.input.getY());
-            player.fireProjectileAt("entity/player/bullet.png", mouse.x, mouse.y);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (crossFadeBackgroundColor.isActive()) crossFadeBackgroundColor.pause();
-            else crossFadeBackgroundColor.resume();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-            zoomPulseCamera.toggle();
+            if (playerEntity.getVelocity().len() != 0) {
+                playerEntity.setState(PlayerEntity.DrawState.MOVING);
+                if (playerEntity.isFiring()) {
+                    playerEntity.setState(PlayerEntity.DrawState.FIRING_MOVING);
+                }
+            }
+            if (!playerEntity.isFiring() && playerEntity.getVelocity().len() == 0f) {
+                playerEntity.setState(PlayerEntity.DrawState.IDLE);
+            }
         }
 
         // Update crossfade
@@ -166,14 +148,16 @@ public class GameScreen implements Screen {
 
         zoomPulseCamera.update();
 
-        scoreText.setText(String.valueOf(GameScreenManager.getScore()));
+        scoreText.setText(String.valueOf(GameScreenManager.getPlayers().first().getScore() + " / [#CCCCCC]" + GameScreenManager.getPlayers().first().getHighScore()));
 
-        if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(5, 15, 0, 1920, 500, 1200);
+        if (GameScreenManager.getEnemies().size == 0) GameScreenManager.generateRandomEnemyWave(1, 3, 0, 1920, 500, 1200);
 
         // Update maxFrametime
+
         if (delta > maxFrameTime) {
             maxFrameTime = delta;
         }
+
     }
 
     public void render(float delta) {
@@ -189,7 +173,7 @@ public class GameScreen implements Screen {
 
         // Draw background
 
-        background.setColor(backgroundColor);
+        //background.setColor(backgroundColor);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.disableBlending();
         batch.setProjectionMatrix(guiCam.combined);
@@ -198,15 +182,11 @@ public class GameScreen implements Screen {
         // Draw life icons
 
         batch.enableBlending();
-        for (int i = 0; i < GameScreenManager.getMaxLives(); i++) {
-            lifeIcon.setColor(backgroundColor);
-            lifeIcon.setPosition(20 + i * (lifeIcon.getTexture().getWidth() * 0.5f), 0);
-            lifeIcon.draw(batch);
-        }
+        LifeIndicator.draw(batch, 10, 0);
 
         // Draw score text
 
-        scoreText.draw(batch, Gdx.graphics.getWidth() - 20, 20);
+        scoreText.draw(batch, Gdx.graphics.getWidth() - scoreText.getLayout().width - 20, Gdx.graphics.getHeight() - scoreText.getLayout().height - 10);
 
         batch.setProjectionMatrix(worldCam.combined);
 
@@ -216,12 +196,24 @@ public class GameScreen implements Screen {
             e.update(delta); // This call updates the Drawable class internally
         }
 
+        for (StaticDrawable sd : GameScreenManager.getStaticObjects()) {
+            sd.update(delta);
+        }
+
         for (Entity e : GameScreenManager.getEntities()) {
             e.update();
         }
 
+        for (StaticDrawable sd : GameScreenManager.getStaticObjects()) {
+            sd.update();
+        }
+
         for (Entity e : GameScreenManager.getEntities()) {
             e.draw();
+        }
+
+        for (StaticDrawable sd : GameScreenManager.getStaticObjects()) {
+            sd.draw();
         }
 
 		 /*
@@ -267,10 +259,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         GameScreenManager.dispose();
         scoreText.dispose();
-    }
-
-    public EnemyEntity getEnemy() {
-        return enemy;
     }
 
     private void collisionCheck() {

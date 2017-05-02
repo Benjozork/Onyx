@@ -2,7 +2,6 @@ package me.benjozork.onyx;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,20 +11,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.internal.FTFGeneratorCache;
-import me.benjozork.onyx.internal.GameManager;
-import me.benjozork.onyx.internal.PolygonLoader;
-import me.benjozork.onyx.internal.ScreenManager;
-import me.benjozork.onyx.internal.console.Console;
-import me.benjozork.onyx.internal.console.ConsoleCommand;
-import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.console.Console;
+import me.benjozork.onyx.console.ConsoleCommand;
+import me.benjozork.onyx.event.EventManager;
+import me.benjozork.onyx.event.impl.listener.OnyxEntityListener;
 import me.benjozork.onyx.game.GameScreenManager;
+import me.benjozork.onyx.logger.Log;
+import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * The main Onyx client
  *
- * @version 0.3.0-alpha
+ * @version 0.5.0-alpha
  *
  * Written with <3 by :
  *
@@ -39,8 +37,10 @@ import me.benjozork.onyx.utils.Utils;
 public class OnyxGame extends Game {
 
     private static final Log log = Log.create("Onyx");
+
     public static ProjectConfig projectConfig;
 
+    private static TextComponent debugComponent;
     private static boolean debug = false;
 
     @Override
@@ -48,7 +48,9 @@ public class OnyxGame extends Game {
 
         // Load config
 
-        projectConfig = Configs.loadRequire("config/project.json", ProjectConfig.class);
+        projectConfig = Configs.loadCached(ProjectConfig.class);
+
+        FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
 
         log.print("Onyx %s starting", projectConfig.version);
         log.print("Current libGDX version is %s", Version.VERSION);
@@ -84,17 +86,32 @@ public class OnyxGame extends Game {
         Console.init();
 
         // Init PolygonLoader
+
         PolygonLoader.init();
+
+        // Init KeymapLoader
+
+        KeymapLoader.init();
 
         // Setup Initial Screen
 
         Console.dispatchCommand("screen " + projectConfig.initial_screen);
 
+        // Event handling
+
+        OnyxEntityListener listener = new OnyxEntityListener();
+        EventManager.subscribe(listener);
+
+        // Setup info component
+
+        debugComponent = new TextComponent("");
+
     }
 
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+
+        if (Gdx.input.isKeyJustPressed(KeymapLoader.getKeyCode("game_toggle_debug"))) {
             Console.dispatchCommand(new ConsoleCommand("screen"));
             toggleDebug();
         }
@@ -109,8 +126,16 @@ public class OnyxGame extends Game {
 
         if (ScreenManager.getCurrentScreen() != getScreen())
             setScreen(ScreenManager.getCurrentScreen());
-    }
 
+        // Process input
+
+        OnyxInputProcessor.getCurrentProcessor().processInput();
+
+        // Update debug info component
+
+        debugComponent.setText(DebugInfo.get());
+
+    }
 
     @Override
     public void render() {
@@ -129,8 +154,14 @@ public class OnyxGame extends Game {
 
         // Draw console
 
+        DebugInfo.frameTimes.add(Utils.delta());
+
+        GameManager.setIsRendering(true);
         if (debug)
             Console.draw();
+        else debugComponent.draw(GameManager.getBatch(), 20, Gdx.graphics.getHeight() - 10);
+        GameManager.setIsRendering(false);
+
     }
 
     @Override

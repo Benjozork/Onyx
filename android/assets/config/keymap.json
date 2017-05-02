@@ -1,0 +1,9 @@
+{
+	"player_movement_forward": "W",
+	"player_movement_left": "A",
+	"player_movement_backward": "S",
+	"player_movement_right": "D",
+	"player_fire_primary": "SPACE",
+
+	"game_toggle_debug": "F3"
+}

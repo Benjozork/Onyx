@@ -3,11 +3,14 @@ package me.benjozork.onyx.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.internal.GameManager;
+import java.util.Random;
+
+import me.benjozork.onyx.GameManager;
 
 
 /**
@@ -18,6 +21,18 @@ import me.benjozork.onyx.internal.GameManager;
 public class Utils {
 
     /*
+     * Color instances used to markup console text.
+     * WARN: Warning text. Non-failing problems.
+     * ERROR: Error text. Failing problems.
+     * FATAL: Critical problem that interrupts the game.
+     * DEBUG: Debugging text. Technical information used for debugging.
+     */
+    public static final Color WARN = rgb(255, 255, 100);
+    public static final Color ERROR = rgb(255, 100, 100);
+    public static final Color FATAL = rgb(255, 65, 65);
+    public static final Color DEBUG = rgb(255, 100, 255);
+
+    /*
      * Cached instances used for calculations or returning results.
      * Note: This potentially leads to bugs if the same temporary instance is used
      * multiple times throughout a method without care. If more cached instances
@@ -26,8 +41,10 @@ public class Utils {
     private static final Vector2 v2 = new Vector2();
     private static final Vector3 v3 = new Vector3();
 
+    private static final Random random = new Random();
+
     /**
-     * The current frame-time
+     * Returns the current frame-time
      */
     public static float delta() {
         return Gdx.graphics.getDeltaTime();
@@ -42,7 +59,7 @@ public class Utils {
      * @return a centered position
      */
     @Deprecated
-    public static float getCenterPos(int w) {
+    public static float getCenterPos(float w) {
         return (Gdx.graphics.getWidth() / 2) + w / 2;
     }
 
@@ -165,19 +182,33 @@ public class Utils {
         return ret;
     }
 
+
     /**
-     * Converts vector to one of its perpendicular vector
-     * @param v
+     * Returns a random value between two floats
+     * @param min the lower bound
+     * @param max the upper bound
+     * @return the random value generated
      */
-    public static void toPerpendicularVector(Vector2 v)
-    {
-        v.set(-v.y,v.x);
+    public static float randomBetween(float min, float max) {
+        return random.nextFloat() * (max - min) + min;
     }
 
-    public static <T> void requireNonNull(T obj) {
-        if (obj == null)
-            throw new NullPointerException();
+    /**
+     * Removes package names in instances where {@link Class#getSimpleName()} cannot be called, i.e. reflection.
+     * @param s the unsanitized class name
+     * @return the sanitized class name
+     */
+    public static String sanitizeClassName(String s) {
+        return s.substring(s.lastIndexOf(".") + 1);
+    }
+
+    /**
+     * Returns a string that can be used in the formatting of {@link BitmapFont}
+     * @param c the color to be used
+     * @return the converted string
+     */
+    public static String toMarkupColor(Color c) {
+        return "[#" + c.toString().toUpperCase() + "]";
     }
 
 }
-
