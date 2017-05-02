@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.ui.container.UIContainer;
+import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
  * @author Benjozork
@@ -16,7 +17,8 @@ public class UIImage extends UIElement {
 
     public UIImage(Texture texture, float x, float y, float w, float h, UIContainer parent) {
         super(x, y, parent);
-        setDimensions(w, h);
+        this.bounds = PolygonHelper.getPolygon(x, y, w, h);
+        this.setDimensions(w, h);
         this.sprite = new Sprite(texture);
         this.sprite.setPosition(x, y);
         this.sprite.setSize(w, h);

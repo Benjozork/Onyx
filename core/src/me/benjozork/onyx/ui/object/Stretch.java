@@ -10,5 +10,8 @@ public enum Stretch {
     TOP,
     RIGHT,
     BOTTOM,
-    LEFT
+    LEFT,
+    WIDTH,
+    HEIGHT,
+    ALL
 }

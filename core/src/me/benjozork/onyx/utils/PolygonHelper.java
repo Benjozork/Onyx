@@ -20,7 +20,6 @@ public class PolygonHelper {
     private static final Log log = Log.create("PolygonHelper");
     private static boolean debug = false;
 
-
     /**
      * WARNING: EXPENSIVE OPERATION USE ONLY IN INITIALISATION STEPS
      * This method is used to create a new rectangular polygon

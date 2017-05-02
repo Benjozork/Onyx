@@ -4,6 +4,7 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import me.benjozork.onyx.ui.container.UIContainer;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.utils.PolygonHelper;
 
@@ -15,41 +16,10 @@ public class UIRadioButtonGroup extends UIElement {
     private Array<UIRadioButton> buttons = new Array<UIRadioButton>();
     private int selected;
 
-    public UIRadioButtonGroup() {
-        super(0, 0, null);
-    }
-
-    /**
-     * The button that is currently selected
-     * @return the button's index
-     */
-    public int getSelected() {
-        return selected;
-    }
-
-    /**
-     * Sets the button that is currently selected
-     * @param selected the button's index
-     */
-    public void setSelected(int selected) {
-        this.selected = selected;
-    }
-
-    /**
-     * The list of buttons that the UIRadioButtonGroup contains
-     * @return the list of buttons
-     */
-    public Array<UIRadioButton> getButtons() {
-        return buttons;
-    }
-
-    /**
-     * Adds a button to the list
-     * @param b the button
-     */
-    public void addButton(UIRadioButton b) {
-        b.setGroup(this);
-        buttons.add(b);
+    public UIRadioButtonGroup(UIContainer parent) {
+        super(0, 0, parent);
+        this.bounds = PolygonHelper.getPolygon(0, 0, 0,0);
+        selected = 0;
     }
 
     /**
@@ -72,8 +42,7 @@ public class UIRadioButtonGroup extends UIElement {
 
     @Override
     public void init() {
-        bounds = PolygonHelper.getPolygon(0, 0, 0, 0);
-        selected = buttons.size - 1;
+
     }
 
     @Override
@@ -101,4 +70,9 @@ public class UIRadioButtonGroup extends UIElement {
             b.dispose();
         }
     }
+
+    public void addButton(UIRadioButton uiRadioButton) {
+        buttons.add(uiRadioButton);
+    }
+
 }

@@ -1,58 +1,57 @@
 package me.benjozork.onyx.ui.container;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.ui.UIElement;
-import me.benjozork.onyx.ui.object.Anchor;
-import me.benjozork.onyx.ui.object.TabLayout;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * Allows to display an {@link UIPane} from a list of selections, based on a clickable list.
+ *
  * @author Benjozork
  */
-public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no customizable drawing methods/textures
+public class UITabPane extends UIPane {
 
-    /**
-     * The position of the tabs.<br/>
-     * Valid values:</br>
-     *  - TOP, RIGHT, BOTTOM, LEFT
+    // Horizontal tab textures
+
+    private static final NinePatch HORIZONTAL_LEFT_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_left_0.png"), 2, 2, 2, 2);
+    private static final NinePatch HOVERED_HORIZONTAL_LEFT_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_left_1.png"), 2, 2, 2, 2);
+    private static final NinePatch CLICKED_HORIZONTAL_LEFT_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_left_2.png"), 2, 1, 2, 1);
+
+    private static final NinePatch HORIZONTAL_CENTER_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_center_0.png"), 2, 2, 2, 2);
+    private static final NinePatch HOVERED_HORIZONTAL_CENTER_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_center_1.png"), 2, 2, 2,2);
+    private static final NinePatch CLICKED_HORIZONTAL_CENTER_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_center_2.png"), 1, 1, 2, 1);
+
+    private static final NinePatch HORIZONTAL_RIGHT_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_right_0.png"), 2, 2, 2, 2);
+    private static final NinePatch HOVERED_HORIZONTAL_RIGHT_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_right_1.png"), 2, 2, 2, 2);
+    private static final NinePatch CLICKED_HORIZONTAL_RIGHT_TAB_TEXTURE = new NinePatch(new Texture("ui/tabpane/tabpane_tab_horizontal_right_2.png"), 1, 2, 2, 1);
+
+    /*
+     * The tab height
      */
-    public TabLayout layout = TabLayout.TOP;
+    public float tabHeight = 50f;
 
-    /**
-     * The background color of the displayed {@link UIPane}
+    /*
+     * The vertical offset to apply to a selected tab
      */
-    public Color selectedPaneBackgroundColor = Utils.rgba(160, 160, 160, 200);
+    public float tabSelectedVerticalOffset = 2f;
 
-    /**
-     * The color of an unselected item from the list
-     */
-    public Color selectorBackgroundColorUnselected = Utils.rgba(130, 130, 130, 200);
+    private float tabRequiredSize;
 
-    /**
-     * The color of a selected item from the list
-     */
-    public Color selectorBackgroundColorSelected = Utils.rgba(160, 160, 160, 110);
+    private ArrayMap<TextComponent, UIPane> tabs = new ArrayMap<TextComponent, UIPane>();
 
-    /**
-     * The width of the list
-     */
-    public float selectorItemWidth = 80;
+    private int currentTab = 0;
 
-    // Private members
+    private final SpriteBatch batch = GameManager.getBatch();
 
-    private float SELECTOR_ITEM_HEIGHT;
-
-    private ArrayMap<TextComponent, UIPane> selectiorItems = new ArrayMap<TextComponent, UIPane>();
-    private int currentPane = 0;
+    private Vector2 mouse = new Vector2();
 
     public UITabPane(float x, float y, float w, float h, UIContainer parent) {
         super(x, y, w, h, parent);
@@ -60,17 +59,19 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
 
     /**
      * Adds an {@link UIPane} to the list along with it's {@link TextComponent}, used to represent the former.
+     *
      * @param item the {@link TextComponent} to add in the clickable list
      * @param pane the {@link UIPane} to be added
      */
-    public void addSelection(TextComponent item, UIPane pane) {
-        pane.setRelativeX(selectorItemWidth);
+    public void addTab(TextComponent item, UIPane pane) {
+        pane.setRelativeX(0);
         pane.setRelativeY(0);
-        pane.setWidth(getWidth() - selectorItemWidth);
+        pane.setWidth(getWidth());
         pane.setHeight(getHeight());
+
         super.add(pane);
-        selectiorItems.put(item, pane);
-        SELECTOR_ITEM_HEIGHT = getHeight() / selectiorItems.size;
+        tabs.put(item, pane);
+            tabRequiredSize = getWidth() / tabs.size;
     }
 
     // Overridden methods
@@ -81,40 +82,58 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
             click();
         }
 
-        selectiorItems.getValueAt(currentPane).update();
-        selectiorItems.getValueAt(currentPane).setWidth(getWidth() - selectiorItems.getValueAt(currentPane).getRelativeX());
-        selectiorItems.getValueAt(currentPane).update();
-        selectiorItems.getValueAt(currentPane).setHeight(getHeight() - selectiorItems.getValueAt(currentPane).getRelativeY());
+        for (UIPane pane : tabs.values()) {
+            pane.update();
+            pane.setWidth(getWidth() - pane.getRelativeX());
+            pane.setHeight(getHeight() - pane.getRelativeY());
+        }
 
-        SELECTOR_ITEM_HEIGHT = getHeight() / selectiorItems.size;
+        tabRequiredSize = getWidth() / tabs.size;
     }
 
     @Override
-    public void draw() { // @TODO: Improve this horrible drawing method, add customizations
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        GameManager.setIsShapeRendering(true);
-        GameManager.getRenderer().set(ShapeRenderer.ShapeType.Filled);
-        GameManager.getRenderer().setColor(selectedPaneBackgroundColor);
-        GameManager.getRenderer().rect(getAbsoluteX() + selectorItemWidth, getAbsoluteY(), getWidth() - selectorItemWidth, getHeight());
-        GameManager.setIsShapeRendering(false);
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-        for (TextComponent component : selectiorItems.keys()) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            GameManager.setIsShapeRendering(true);
-            GameManager.getRenderer().set(ShapeRenderer.ShapeType.Filled);
-            if (selectiorItems.indexOfKey(component) != currentPane) {
-                GameManager.getRenderer().setColor(selectorBackgroundColorUnselected);
-            } else GameManager.getRenderer().setColor(selectorBackgroundColorSelected);
+    public void draw() {
+        mouse.set(Gdx.input.getX(), Gdx.input.getY());
+        mouse = Utils.unprojectGui(mouse);
 
-            GameManager.getRenderer().rect(getAbsoluteX(), getAbsoluteY() + getHeight() - (SELECTOR_ITEM_HEIGHT * (selectiorItems.indexOfKey(component) + 1)), selectorItemWidth, SELECTOR_ITEM_HEIGHT);
-            GameManager.setIsShapeRendering(false);
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-            component.drawCenteredInContainer(GameManager.getBatch(), getAbsoluteX(), getAbsoluteY() + getHeight() - ((selectiorItems.indexOfKey(component) + 1) * SELECTOR_ITEM_HEIGHT), selectorItemWidth, SELECTOR_ITEM_HEIGHT);
+        float dx = mouse.x - getAbsoluteX();
+        int index = (int) (dx / tabRequiredSize);
+
+        for (TextComponent component : tabs.keys()) {
+            if (currentTab == tabs.indexOfKey(component)) {
+                if (tabs.indexOfKey(component) == 0) {
+                    CLICKED_HORIZONTAL_LEFT_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight + tabSelectedVerticalOffset);
+                } else if (tabs.indexOfKey(component) == tabs.size - 1) {
+                    CLICKED_HORIZONTAL_RIGHT_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight + tabSelectedVerticalOffset);
+                } else {
+                    CLICKED_HORIZONTAL_CENTER_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight + tabSelectedVerticalOffset);
+                }
+            } else if (hovering() && index == tabs.indexOfKey(component)) {
+                    if (index == 0) {
+                        HOVERED_HORIZONTAL_LEFT_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * index + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight + tabSelectedVerticalOffset);
+                    } else if (index == tabs.size - 1) {
+                        HOVERED_HORIZONTAL_RIGHT_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * index + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight + tabSelectedVerticalOffset);
+                    } else {
+                        HOVERED_HORIZONTAL_CENTER_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * index + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight + tabSelectedVerticalOffset);
+                    }
+            } else {
+                if (tabs.indexOfKey(component) == 0) {
+                    HORIZONTAL_LEFT_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight);
+                } else if (tabs.indexOfKey(component) == tabs.size - 1) {
+                    HORIZONTAL_RIGHT_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight);
+                } else {
+                    HORIZONTAL_CENTER_TAB_TEXTURE.draw(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight);
+                }
+            }
+            component.drawCenteredInContainer(batch, getAbsoluteX() + (tabRequiredSize * tabs.indexOfKey(component) + 1), getAbsoluteY() + getHeight(), tabRequiredSize, tabHeight);
         }
 
-        selectiorItems.getValueAt(currentPane).draw();
+        tabs.getValueAt(currentTab).draw();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 
     @Override
@@ -123,11 +142,11 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
         Vector2 unprojected = Utils.unprojectWorld(mouse);
 
         if (unprojected.x > getAbsoluteX()
-            && unprojected.x < getAbsoluteX() + selectorItemWidth
-            && unprojected.y > getAbsoluteY()
-            && unprojected.y < getAbsoluteY() + getHeight()) {
-            float dy = getAbsoluteY() + getHeight() - unprojected.y;
-            currentPane = (int) (dy / SELECTOR_ITEM_HEIGHT);
+                && unprojected.x < getAbsoluteX() + getWidth()
+                && unprojected.y > getAbsoluteY() + getHeight()
+                && unprojected.y < getAbsoluteY() + getHeight() + tabHeight) {
+            float dx = unprojected.x - getAbsoluteX();
+            currentTab = (int) (dx / tabRequiredSize);
             return true;
         }
         return false;
@@ -135,17 +154,17 @@ public class UITabPane extends UIPane { // NFP: Undone layout-based drawing, no 
 
     @Override
     public void add(UIElement e) {
-         throw new IllegalStateException("cannot add elements or containers to UITabPane");
-    }
-
-    @Override
-    public void add(UIElement e, Anchor a) {
         throw new IllegalStateException("cannot add elements or containers to UITabPane");
     }
 
     @Override
     public void add(UIContainer e) {
         throw new IllegalStateException("cannot add elements or containers to UITabPane");
+    }
+
+    private boolean hovering() {
+        return (mouse.x > getAbsoluteX() && mouse.x < getAbsoluteX() + getWidth() &&
+        mouse.y > getAbsoluteY() + getHeight() && mouse.y < getAbsoluteY() + getHeight() + tabHeight);
     }
 
 }

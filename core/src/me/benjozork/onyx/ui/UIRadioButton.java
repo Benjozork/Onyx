@@ -29,11 +29,14 @@ public class UIRadioButton extends UIElement {
 
     private boolean selected = false;
 
-    public UIRadioButton(float x, float y, float width, float height, TextComponent component, UIContainer parent) {
+    private float size;
+
+    public UIRadioButton(float x, float y, float size, TextComponent component, UIContainer parent) {
         super(x, y, parent);
-        bounds = PolygonHelper.getPolygon(x, y, width, height);
-        setWidth(width);
-        setHeight(height);
+        this.size = size;
+        this.bounds = PolygonHelper.getPolygon(x, y, size + component.getLayout().width + 10, size);
+        this.setWidth(size + component.getLayout().width + 10);
+        this.setHeight(size);
         this.component = component;
     }
 
@@ -44,14 +47,14 @@ public class UIRadioButton extends UIElement {
 
     @Override
     public void update() {
-        PolygonHelper.setDimensions(bounds, getWidth() + component.getLayout().width + 10, getHeight());
+        PolygonHelper.setDimensions(bounds, getWidth() + component.getLayout().width + 10, size);
         currentTexture = selected ? (hovering() ? HOVERED_TICKED_RADIOBUTTON_TEXTURE : TICKED_RADIOBUTTON_TEXTURE) : (hovering() ? HOVERED_RADIOBUTTON_TEXTURE : RADIOBUTTON_TEXTURE);
     }
 
     @Override
     public void draw() {
-        GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
-        component.drawCenteredInContainer(GameManager.getBatch(), getX() + getWidth() + 10, getY(), getWidth() + component.getLayout().width + 50, getHeight(), false, true);
+        GameManager.getBatch().draw(currentTexture, getX(), getY(), size, size);
+        component.drawCenteredInContainer(GameManager.getBatch(), getX() + size + 10, getY(), size + component.getLayout().width + 50, size, false, true);
     }
 
     @Override
@@ -83,5 +86,7 @@ public class UIRadioButton extends UIElement {
      */
     public void setGroup(UIRadioButtonGroup group) {
         this.group = group;
+        group.addButton(this);
     }
+
 }

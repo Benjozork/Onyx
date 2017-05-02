@@ -11,19 +11,16 @@ public class Action {
 
     private ActionEvent event;
     private Runnable action;
-    private String identifier;
 
     private UIElement parent;
 
     /**
      * @param parent     the {@link UIElement} to which the Action is assigned.
-     * @param identifier the identifier of the Action
      * @param action     the code to be run when the event is triggered
      * @param event      the {@link ActionEvent} to which the Action listens to
      */
-    public Action(UIElement parent, String identifier, Runnable action, ActionEvent event) {
+    public Action(UIElement parent, Runnable action, ActionEvent event) {
         this.parent = parent;
-        this.identifier = identifier;
         this.action = action;
         this.event = event;
     }
@@ -45,14 +42,6 @@ public class Action {
 
     public void setAction(Runnable action) {
         this.action = action;
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
     }
 
     /**

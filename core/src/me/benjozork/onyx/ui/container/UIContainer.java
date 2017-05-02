@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.ui.UIElement;
-import me.benjozork.onyx.ui.object.Anchor;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -218,48 +217,6 @@ public abstract class UIContainer {
      * @param element the element to be added
      */
     public void add(UIElement element) {
-        elements.add(element);
-    }
-
-    /**
-     * Adds an {@link UIElement} with a relative origin of a specified anchor
-     * @param element the element to be added
-     * @param relativeAnchor the {@link Anchor} value used to position the element
-     */
-    public void add(UIElement element, Anchor relativeAnchor) {
-        switch (relativeAnchor) {
-            case CENTER:
-                element.setRelativeX(element.getRelativeX() + (getWidth() / 2) - element.getWidth() / 2);
-                element.setRelativeY(element.getRelativeY() + (getHeight() / 2) - element.getHeight() / 2);
-                break;
-            case TOP_LEFT:
-                element.setRelativeY(getHeight() - element.getHeight() + element.getRelativeY());
-                break;
-            case TOP:
-                element.setRelativeX(element.getRelativeX() + (getWidth() / 2) - element.getWidth() / 2);
-                element.setRelativeY(getHeight() - element.getHeight() + element.getRelativeY());
-                break;
-            case TOP_RIGHT:
-                element.setRelativeX(element.getRelativeX() + getWidth() - element.getWidth());
-                element.setRelativeY(getHeight() - element.getHeight() + element.getRelativeY());
-                break;
-            case RIGHT:
-                element.setRelativeX(element.getRelativeX() + getWidth() - element.getWidth());
-                element.setRelativeY(element.getRelativeY() + (getHeight() / 2) - element.getHeight() / 2);
-                break;
-            case BOTTOM_RIGHT:
-                element.setRelativeX(element.getRelativeX() + getWidth() - element.getWidth());
-                break;
-            case BOTTOM:
-                element.setRelativeX(element.getRelativeX() + (getWidth() / 2) - element.getWidth() / 2);
-                break;
-            case BOTTOM_LEFT:
-                element.setPosition(element.getAbsolutePosition());
-                break;
-            case LEFT:
-                element.setRelativeY(element.getRelativeY() + (getHeight() / 2) - element.getHeight() / 2);
-                break;
-        }
         elements.add(element);
     }
 

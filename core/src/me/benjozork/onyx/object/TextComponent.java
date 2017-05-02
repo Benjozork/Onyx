@@ -44,6 +44,20 @@ public class TextComponent {
     /**
      * @param text      the text to be displayed
      * @param fontPath  the font path to be used
+     * @param size      the size of the font to be used
+     */
+    public TextComponent(String text, String fontPath, int size) {
+        this.text = text.trim();
+        this.fontPath = fontPath;
+        this.generatedFont = FTFGeneratorCache.getFTFGenerator(fontPath).generateFont(parameter);
+        this.getParameter().size = size;
+        this.layout = new GlyphLayout(generatedFont, text);
+        this.update();
+    }
+
+    /**
+     * @param text      the text to be displayed
+     * @param fontPath  the font path to be used
      */
     public TextComponent(String text, String fontPath) {
         this.text = text.trim();

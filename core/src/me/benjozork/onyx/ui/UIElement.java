@@ -22,6 +22,7 @@ public abstract class UIElement extends StaticDrawable {
     private Vector2 relativePosition = new Vector2();
 
     private Array<Stretch> stretches = new Array<Stretch>();
+    private Anchor anchor;
 
     private Array<Action> actions = new Array<Action>();
 
@@ -54,6 +55,7 @@ public abstract class UIElement extends StaticDrawable {
             justHovered = false;
         }
         stretchTo((Stretch[]) stretches.toArray(Stretch.class));
+        if (anchor != null) anchorTo(anchor);
     }
 
     @Override
@@ -111,12 +113,11 @@ public abstract class UIElement extends StaticDrawable {
     /**
      * Adds a new {@link Action} to the element
      *
-     * @param identifier the action's identifier
      * @param action     the code to execute
      * @param event      the {@link ActionEvent} to listen to
      */
-    public void addAction(String identifier, Runnable action, ActionEvent event) {
-        actions.add(new Action(this, identifier, action, event));
+    public void addAction(Runnable action, ActionEvent event) {
+        actions.add(new Action(this, action, event));
     }
 
     public float getWidth() {
@@ -240,11 +241,48 @@ public abstract class UIElement extends StaticDrawable {
     }
 
     /**
+     * Anchors the element to the speicifed anchor in the parent container
+     * @param anchor the {@link Anchor} value used to position the element
+     */
+    public void anchorTo(Anchor anchor) {
+        this.anchor = anchor;
+        switch (anchor) {
+            case CENTER:
+                this.setRelativeOrigin(parent.getWidth() / 2 - getWidth() / 2, parent.getHeight() / 2 - getHeight() / 2);
+                break;
+            case TOP_LEFT:
+                this.setRelativeOrigin(0, parent.getHeight() - getHeight());
+                break;
+            case TOP:
+                this.setRelativeOrigin(parent.getWidth() / 2 - getWidth() / 2, parent.getHeight() - getHeight());
+                break;
+            case TOP_RIGHT:
+                this.setRelativeOrigin(parent.getWidth() - getWidth(), parent.getHeight() - getHeight());
+                break;
+            case RIGHT:
+                this.setRelativeOrigin(parent.getWidth() - getWidth(), parent.getHeight() / 2 - getHeight() / 2);
+                break;
+            case BOTTOM_RIGHT:
+                this.setRelativeOrigin(parent.getWidth() - getWidth(), 0);
+                break;
+            case BOTTOM:
+                this.setRelativeOrigin(parent.getWidth() / 2 - getWidth() / 2, 0);
+                break;
+            case BOTTOM_LEFT:
+                this.setPosition(this.getAbsolutePosition());
+                break;
+            case LEFT:
+                this.setRelativeOrigin(0, parent.getHeight() / 2 - getHeight() / 2);
+                break;
+        }
+    }
+
+    /**
      * Snaps the element to another element, using the provided anchor
      * @param target the element to which this should be snapped to
      * @param anchor the anchor to use for the snapping
      */
-    public void snapTo(UIElement target, Anchor anchor) { // NFP: Adjust snapping to keep relative position on movement
+    public void snapTo(UIElement target, Anchor anchor) {
         switch (anchor) {
             case CENTER:
                 throw new IllegalArgumentException("cannot use center anchor for snapping");
@@ -299,9 +337,19 @@ public abstract class UIElement extends StaticDrawable {
                     break;
                 case LEFT:
                     dx = (getAbsoluteX() + getWidth()) - (parent.getAbsoluteX() + parent.getWidth());
-                   getRelativePosition().x -= dx;
-                   setWidth(getWidth() + dx);
+                    getRelativePosition().x -= dx;
+                    setWidth(getWidth() + dx);
                     break;
+                case WIDTH:
+                    setRelativeX(0);
+                    setWidth(parent.getWidth());
+                case HEIGHT:
+                    setRelativeY(0);
+                    setHeight(parent.getHeight());
+                case ALL:
+                    setRelativeX(0);
+                    setRelativeY(0);
+                    setDimensions(parent.getWidth(), parent.getHeight());
             }
         }
     }

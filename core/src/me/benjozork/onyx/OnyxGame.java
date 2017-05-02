@@ -15,16 +15,16 @@ import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.console.ConsoleCommand;
 import me.benjozork.onyx.event.EventManager;
 import me.benjozork.onyx.event.impl.listener.OnyxEntityListener;
+import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.TextComponent;
-import me.benjozork.onyx.screen.TestUIScreen;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * The main Onyx client
  *
- * @version 0.5.0-alpha
+ * @version 0.6.0-alpha
  *
  * Written with <3 by :
  *
@@ -96,7 +96,7 @@ public class OnyxGame extends Game {
 
         // Setup Initial Screen
 
-        ScreenManager.setCurrentScreen(new TestUIScreen());
+        ScreenManager.setCurrentScreen(new GameScreen());
 
         // Event handling
 
