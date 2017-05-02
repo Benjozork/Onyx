@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
 
     private Color backgroundColor = INITIAL_BACKGROUND_COLOR.cpy();
 
-    private Array<Player> players;
+    private Array<PlayerEntity> players;
 
     private OrthographicCamera worldCam, guiCam;
 
@@ -69,16 +69,16 @@ public class GameScreen implements Screen {
 
         // Setup player
 
-        players = new Array<Player>();
+        players = new Array<PlayerEntity>();
 
-        Player player = new Player(3, new PlayerEntity(Utils.getCenterPos(78), 50));
+        PlayerEntity player = new PlayerEntity(Utils.getCenterPos(78), 50);
 
-        player.getEntity().setMaxSpeed(600f);
+        player.setMaxSpeed(600f);
 
         players.add(player);
 
-        for (Player p : players) {
-            GameScreenManager.addEntity(p.getEntity());
+        for (PlayerEntity p : players) {
+            GameScreenManager.addEntity(p);
         }
 
         GameScreenManager.setPlayers(players);
@@ -119,8 +119,7 @@ public class GameScreen implements Screen {
 
         // Update DrawState of player
 
-        for (Player p : players) {
-            PlayerEntity playerEntity = p.getEntity();
+        for (PlayerEntity playerEntity : players) {
             if (playerEntity.isFiring()) {
                 playerEntity.setState(PlayerEntity.DrawState.FIRING);
             }

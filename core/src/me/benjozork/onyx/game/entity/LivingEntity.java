@@ -16,9 +16,9 @@ public abstract class LivingEntity extends Entity implements Textured {
 
     private float rotation;
 
-    private float health = 100f;
+    protected float health = 100f;
 
-    private boolean dead = false;
+    protected boolean dead = false;
 
     private final float MAX_BULLET_TIME = 0.1f;
     private float bulletTimer = 0f;

@@ -27,7 +27,7 @@ import me.benjozork.onyx.screen.GameOverScreen;
  */
 public class GameScreenManager {
 
-    private static Array<Player> players;
+    private static Array<PlayerEntity> players;
 
     private static Array<EnemyEntity> enemies = new Array<EnemyEntity>();
     private static Array<EnemyEntity> enemiesToRemove = new Array<EnemyEntity>();
@@ -46,31 +46,31 @@ public class GameScreenManager {
     }
 
     /**
-     * Returns the {@link Array<Player>} instance used by {@link GameScreen}
+     * Returns the {@link Array<PlayerEntity>} instance used by {@link GameScreen}
      * @returns the player array
      */
-    public static Array<Player> getPlayers() {
+    public static Array<PlayerEntity> getPlayers() {
         check();
         return players;
     }
 
 
     /**
-     * Sets the {@link Array<Player>} instance used by {@link GameScreen}
+     * Sets the {@link Array<PlayerEntity>} instance used by {@link GameScreen}
      * @param players the player array
      */
-    public static void setPlayers(Array<Player> players) {
+    public static void setPlayers(Array<PlayerEntity> players) {
         check();
         //// TODO: 22-04-2017 Add check for data 
         GameScreenManager.players = players;
     }
 
-    public static Player getLocalPlayer() {
+    public static PlayerEntity getLocalPlayer() {
         return getPlayers().first();
     }
 
     public static PlayerEntity getLocalPlayerEntity() {
-        return getPlayers().first().getEntity();
+        return getPlayers().first();
     }
     
     /**
@@ -179,13 +179,9 @@ public class GameScreenManager {
     public static void die(LivingEntity livingEntity) {
         if (livingEntity instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) livingEntity;
-            if (playerEntity.getPlayer().getLives() > 0){
-                playerEntity.getPlayer().removeLife();
-                PlayerEntity newPlayerEntity = new PlayerEntity(playerEntity.getX(), playerEntity.getY());
-                newPlayerEntity.setMaxSpeed(600f);
-                playerEntity.getPlayer().setEntity(newPlayerEntity);
-                playerEntity.dispose();
-                addEntity(newPlayerEntity);
+            if (playerEntity.getLives() > 0){
+                playerEntity.removeLife();
+                playerEntity.revive();
             }
             else {
 
@@ -218,7 +214,7 @@ public class GameScreenManager {
      * Flushes the object cache when {@link GameScreen} is disposed of
      */
     public static void dispose() {
-        players = new Array<Player>();
+        players = new Array<PlayerEntity>();
 
         for (Entity e : GameScreenManager.getEntities()) {
             e.dispose();
