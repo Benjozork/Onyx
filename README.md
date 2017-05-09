@@ -11,7 +11,5 @@ The game is set to be a 2D shoot-em-up game with nice graphical effects (I have 
 ## Contributors
 **Benjozork**: Developer  
 **RishiRaj22**: Developer  
-**m1sterlurk**: SFX  
-**jim**: SFX
 
 **We are actively looking for graphics/sound artists and developers ! Hit us up on [Discord](https://discord.gg/gqhcbRP) for more information !**
