@@ -23,7 +23,7 @@ import me.benjozork.onyx.utils.Utils;
 /**
  * The main Onyx client
  *
- * @version 0.5.0-alpha
+ * @version 0.5.1-alpha
  *
  * Written with <3 by :
  *
