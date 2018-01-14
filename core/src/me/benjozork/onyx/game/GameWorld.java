@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 
 import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
+import me.benjozork.onyx.utils.Utils;
 
 /**
  * Contains all of the entities of the game world.
@@ -21,6 +22,25 @@ public class GameWorld {
     public GameWorld(GameScreen gameScreen) {
         this.entities = new Array<Entity>();
         this.gameScreen = gameScreen;
+    }
+
+    public void update() {
+
+        for (Entity entity : this.getEntities()) {
+            // This first call invokes the update method of the Drawable class.
+            // This is necessary in order for the automatic internal movement mechanics to work.
+            entity.update(Utils.delta());
+            entity.update();
+        }
+
+    }
+
+    public void draw() {
+
+        for (Entity entity : this.getEntities()) {
+            entity.draw();
+        }
+
     }
 
     public PlayerEntity getPlayer() {

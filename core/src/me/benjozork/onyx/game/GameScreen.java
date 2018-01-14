@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.game.entity.Entity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
-import me.benjozork.onyx.utils.Utils;
 
 /**
  * Implementation of {@link com.badlogic.gdx.Screen} for the main playing screen.<br/>
@@ -16,9 +14,9 @@ import me.benjozork.onyx.utils.Utils;
  */
 public class GameScreen implements Screen {
 
-    private GameWorld gameWorld;
+    private static GameWorld gameWorld;
 
-    private GameHUD gameHUD;
+    private static GameHUD gameHUD;
 
     @Override
     public void show() {
@@ -45,18 +43,10 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Start by drawing the background
+        // First, render the game world
 
-        // Next, render the game world, with it's entities
-
-        for (Entity entity : gameWorld.getEntities()) {
-            entity.update(Utils.delta());
-            entity.update();
-        }
-
-        for (Entity entity : gameWorld.getEntities()) {
-            entity.draw();
-        }
+        gameWorld.update();
+        gameWorld.draw();
 
         // Finally, render the HUD and UI objects, such as HealthBars and PopupTexts
 
@@ -93,11 +83,11 @@ public class GameScreen implements Screen {
 
     }
 
-    public GameWorld getGameWorld() {
+    public static GameWorld getGameWorld() {
         return gameWorld;
     }
 
-    public GameHUD getGameHUD() {
+    public static GameHUD getGameHUD() {
         return gameHUD;
     }
 
