@@ -6,30 +6,62 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.KeymapLoader;
+import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
+ * Class for the player entity. Contains the necessary movement and shooting mechanics.
+ *
  * @author Benjozork
  */
 public class PlayerEntity extends Entity {
 
+    /**
+     * The number that is added to the velocity vector, in the direction of the key that was pressed
+     */
     private final int ACCELERATION = 10;
 
+    /**
+     * The maximum speed, in both the x and y axis, of the player
+     */
     private final int MAX_SPEED = 400;
 
+    /**
+     * The number, multiplied by the delta time, which is subtracted from the velocity vector in both the x and y axis every frame
+     */
     private final int SPEED_DECAY_DELTA = 400;
 
+    /**
+     * The target rotation angle, in degrees, of the player sprite
+     */
     private final int ROTATION_ANGLE_TARGET = 25;
 
+    /**
+     * The number, multiplied by the delta time, which is added/subtracted from the player sprite angle every frame
+     */
     private final int ROTATION_ANGLE_DELTA = 155;
 
+    /**
+     * The level, above or below, at which the player sprite angle "snaps" to zero
+     */
     private final float ROTATION_ANGLE_TOLERANCE = 0.1f;
 
+    /**
+     * The rate at which the player can fire when holding the firing key, in fires per minute.
+     */
+    private final float FIRING_RATE = 400;
+
+    /**
+     * The initial speed of every projectile.
+     */
+    private final float INITIAL_PROJECTILE_SPEED = 800;
 
     private Sprite playerSprite;
 
     private Direction currDirection = Direction.STRAIGHT;
+
+    private float fireInterval, fireTimer = 0;
 
     public PlayerEntity(float x, float y) {
         super(x, y);
@@ -42,6 +74,8 @@ public class PlayerEntity extends Entity {
         this.setBounds(PolygonHelper.getPolygon(this.getX(), this.getY(), this.width, this.height));
 
         this.setMaxSpeed(MAX_SPEED);
+
+        this.fireInterval = (60 / FIRING_RATE);
     }
 
     @Override
@@ -135,6 +169,18 @@ public class PlayerEntity extends Entity {
 
         this.playerSprite.setPosition(this.getX() - width / 2, this.getY() - width / 2);
 
+        /////////// *-* ///////////
+
+        // Fire projectile if firing key is pressed
+
+        fireTimer += Utils.delta();
+
+        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_fire_primary")) &&
+                fireTimer > fireInterval) {
+            GameScreen.getGameWorld().addEntity(new ProjectileEntity(this.getX(), this.getY(), 50, 50, INITIAL_PROJECTILE_SPEED));
+            this.fireTimer = 0;
+        }
+
     }
 
     @Override
@@ -144,7 +190,7 @@ public class PlayerEntity extends Entity {
 
     @Override
     public void dispose() {
-
+        playerSprite.getTexture().dispose();
     }
 
     private enum Direction {
