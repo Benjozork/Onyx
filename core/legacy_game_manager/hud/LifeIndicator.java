@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.object.TextComponent;
 
 /**
@@ -26,8 +25,8 @@ public class LifeIndicator {
     }
 
     public static void draw(SpriteBatch batch, float x, float y) {
-        component.setText("x " + GameScreenManager.getLocalPlayer().getLives());
-        if (GameScreenManager.getLocalPlayer().getLives() == 0) {
+        component.setText("x " + GameScreenManager.getPlayer().getLives());
+        if (GameScreenManager.getPlayer().getLives() == 0) {
             if (component.getParameter().color != Color.RED) {
                 component.getParameter().color = Color.RED;
                 component.update();

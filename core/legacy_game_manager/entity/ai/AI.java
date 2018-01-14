@@ -3,7 +3,6 @@ package me.benjozork.onyx.game.entity.ai;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.logger.Log;

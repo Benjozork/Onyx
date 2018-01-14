@@ -8,8 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
-import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.object.StaticDrawable;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.CenteredDrawer;

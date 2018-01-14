@@ -2,7 +2,6 @@ package me.benjozork.onyx.game.weapon.projectile;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.weapon.ProjectileWeapon;
 import me.benjozork.onyx.object.Drawable;
 

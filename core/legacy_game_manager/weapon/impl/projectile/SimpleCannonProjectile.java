@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import me.benjozork.onyx.GameManager;
 import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.game.entity.EnemyEntity;
-import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
 import me.benjozork.onyx.game.weapon.projectile.Projectile;

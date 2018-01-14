@@ -1,7 +1,5 @@
 package me.benjozork.onyx.game.entity.ai;
 
-import me.benjozork.onyx.game.entity.LivingEntity;
-
 /**
  * Describes an AI behavior
  * @author Benjozork

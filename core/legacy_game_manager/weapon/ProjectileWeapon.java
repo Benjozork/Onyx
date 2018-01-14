@@ -2,7 +2,6 @@ package me.benjozork.onyx.game.weapon;
 
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.weapon.projectile.Projectile;
 import me.benjozork.onyx.utils.Utils;
 

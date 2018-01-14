@@ -1,7 +1,5 @@
 package me.benjozork.onyx.game.weapon;
 
-import me.benjozork.onyx.game.entity.LivingEntity;
-
 /**
  * Describes a weapon that can be fired by a {@link LivingEntity}.
  * @author Benjozork
