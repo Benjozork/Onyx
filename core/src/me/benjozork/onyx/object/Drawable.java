@@ -12,6 +12,7 @@ import me.benjozork.onyx.utils.Utils;
 
 /**
  * Describes an object that is to be drawn on the screen
+ *
  * @author Benjozork
  */
 public abstract class Drawable implements Disposable {
