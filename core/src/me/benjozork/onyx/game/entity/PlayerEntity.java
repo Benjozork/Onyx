@@ -1,257 +1,156 @@
 package me.benjozork.onyx.game.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 
 import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.PolygonLoader;
-import me.benjozork.onyx.game.GameScreenManager;
-import me.benjozork.onyx.game.object.HealthBar;
-import me.benjozork.onyx.game.weapon.impl.SimpleCannon;
+import me.benjozork.onyx.KeymapLoader;
+import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * @author Benjozork
  */
-public class PlayerEntity extends LivingEntity {
+public class PlayerEntity extends Entity {
 
-    private int score;
+    private final int ACCELERATION = 10;
 
-    private static int highScore;
+    private final int MAX_SPEED = 400;
 
-    private int lives;
+    private final int SPEED_DECAY_DELTA = 400;
 
-    // Player textures
+    private final int ROTATION_ANGLE_TARGET = 25;
 
-    private final Texture PLAYER_TEXTURE = new Texture("entity/player/texture_0.png");
-    private final Texture FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_1.png");
-    private final Texture MOVING_FIRING_PLAYER_TEXTURE = new Texture("entity/player/texture_3.png");
-    private final Texture MOVING_PLAYER_TEXTURE = new Texture("entity/player/texture_2.png");
+    private final int ROTATION_ANGLE_DELTA = 155;
 
-    Sprite currentTexture = new Sprite(PLAYER_TEXTURE);
+    private final float ROTATION_ANGLE_TOLERANCE = 0.1f;
 
-    private final float ANGLE_DELTA = 100, TARGET_ANGLE = 25, ANGLE_DELTA_TOLERANCE = 0.1f;
 
-    private float spriteRotation;
+    private Sprite playerSprite;
 
-    private DrawState state = DrawState.IDLE;
-    private Direction direction = Direction.STRAIGHT;
-
-    private HealthBar healthBar = new HealthBar(this, 100f, 10f, 100f);
+    private Direction currDirection = Direction.STRAIGHT;
 
     public PlayerEntity(float x, float y) {
         super(x, y);
 
-        /* TEMPORARY */
+        this.playerSprite = new Sprite(new Texture("entity/player/texture_0.png"));
 
-        addWeapon(new SimpleCannon(this));
+        this.width = playerSprite.getWidth();
+        this.height = playerSprite.getHeight();
 
-        /* END TEMPORARY */
+        this.setBounds(PolygonHelper.getPolygon(this.getX(), this.getY(), this.width, this.height));
+
+        this.setMaxSpeed(MAX_SPEED);
     }
 
     @Override
     public void init() {
-        // Initialize hitbox
 
-        bounds = PolygonLoader.getPolygon("Ship", PLAYER_TEXTURE.getWidth(), PLAYER_TEXTURE.getHeight());
-
-		type = Type.PLAYER;
-
-		setBulletShootOrigin(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
-		setBulletImpactTarget(PLAYER_TEXTURE.getWidth() / 2, PLAYER_TEXTURE.getHeight() / 2);
-
-        lives = 3;
-
-        // Init health bar
-
-        GameScreenManager.getStaticObjects().add(healthBar);
     }
 
     @Override
     public void update() {
-        super.update(Utils.delta());
-        super.update();
 
-        // Get rotation depending on direction
+        // Center camera on player
 
-        if (direction == Direction.STRAIGHT) {
-            if (spriteRotation < ANGLE_DELTA_TOLERANCE && spriteRotation > - ANGLE_DELTA_TOLERANCE) spriteRotation = 0f;
-            if (spriteRotation < 0 * MathUtils.degreesToRadians)
-                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-            else if (spriteRotation > 0 * MathUtils.degreesToRadians)
-                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.y = 0;
-        } else if (direction == Direction.RIGHT) {
-            if (spriteRotation < TARGET_ANGLE * MathUtils.degreesToRadians)
-                spriteRotation += (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.setAngle(- 180f);
-            velocity.x -= velocity.x * 2;
-            velocity.y = 0;
-        } else if (direction == Direction.LEFT) {
-            if (spriteRotation > - TARGET_ANGLE * MathUtils.degreesToRadians)
-                spriteRotation -= (ANGLE_DELTA * MathUtils.degreesToRadians) * Utils.delta();
-            velocity.setAngle(180f);
-            velocity.x += velocity.x * 2;
-            velocity.y = 0;
+        GameManager.getWorldCamera().position.set(position, 0);
+        GameManager.getWorldCamera().update();
+
+        GameManager.getBatch().setProjectionMatrix(GameManager.getWorldCamera().combined);
+
+        // Accelerate if movement keys are pressed
+
+        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_forward"))) {
+            this.accelerate(0, ACCELERATION);
         }
 
-        // Check and block out-of-bounds movement
-
-        if (getX() < 0) setX(0);
-        if (getX() > Gdx.graphics.getWidth() - PLAYER_TEXTURE.getWidth()) setX(Gdx.graphics.getWidth() - PLAYER_TEXTURE.getWidth());
-
-        // Add/sub speed decay
-
-        if (velocity.len() > 0) velocity.setLength(velocity.len() - 15f);
-        else velocity.setLength(velocity.len() + 15f);
-
-        // Update texture
-
-        if (state == DrawState.IDLE) {
-            currentTexture.setTexture(PLAYER_TEXTURE);
-        } else if (state == DrawState.MOVING) {
-            currentTexture.setTexture(MOVING_PLAYER_TEXTURE);
-        } else if (state == DrawState.FIRING) {
-            currentTexture.setTexture(FIRING_PLAYER_TEXTURE);
-        } else if (state == DrawState.FIRING_MOVING) {
-            currentTexture.setTexture(MOVING_FIRING_PLAYER_TEXTURE);
+        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_backward"))) {
+            this.accelerate(0, -ACCELERATION);
         }
 
-        // Update texture
+        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_left"))) {
+            this.accelerate(-ACCELERATION, 0);
+            this.currDirection = Direction.LEFT;
+        }
 
-        currentTexture.setPosition(getX(), getY());
-        currentTexture.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_right"))) {
+            this.accelerate(ACCELERATION, 0);
+            this.currDirection = Direction.RIGHT;
+        }
 
-        // Rotate bounds
+        if (! Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_right"))
+                && ! Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_left"))) {
+            this.currDirection = Direction.STRAIGHT;
+        }
 
-        bounds.setRotation(- spriteRotation * MathUtils.radiansToDegrees);
+        // Decay the speed for positive x
+
+        if (this.velocity.x > 0f) {
+            this.velocity.x -= SPEED_DECAY_DELTA * Utils.delta();
+            if (this.velocity.x < 0) this.velocity.x = 0;
+        }
+
+        // Decay the speed for negative x
+
+        else if (this.velocity.x < 0f) {
+            this.velocity.x += SPEED_DECAY_DELTA * Utils.delta();
+            if (this.velocity.x > 0) this.velocity.x = 0;
+        }
+
+        // Decay the speed for positive y
+
+        if (this.velocity.y > 0f) {
+            this.velocity.y -= SPEED_DECAY_DELTA * Utils.delta();
+            if (this.velocity.y < 0) this.velocity.y = 0;
+        }
+
+        // Decay the speed for negative y
+
+        else if (this.velocity.y < 0f) {
+            this.velocity.y += SPEED_DECAY_DELTA * Utils.delta();
+            if (this.velocity.y > 0) this.velocity.y = 0;
+        }
+
+        // Rotate sprite to match direction
+
+        if (this.currDirection == Direction.STRAIGHT && playerSprite.getRotation() < 0) {
+            playerSprite.setRotation(playerSprite.getRotation() + ROTATION_ANGLE_DELTA * Utils.delta());
+            if (playerSprite.getRotation() > - ROTATION_ANGLE_TOLERANCE) playerSprite.setRotation(0);
+        }
+        if (this.currDirection == Direction.STRAIGHT && playerSprite.getRotation() > 0) {
+            playerSprite.setRotation(playerSprite.getRotation() - ROTATION_ANGLE_DELTA * Utils.delta());
+            if (playerSprite.getRotation() < ROTATION_ANGLE_TOLERANCE) playerSprite.setRotation(0);
+        }
+
+        if (this.currDirection == Direction.LEFT && playerSprite.getRotation() < ROTATION_ANGLE_TARGET) {
+            playerSprite.setRotation(playerSprite.getRotation() + ROTATION_ANGLE_DELTA * Utils.delta());
+        }
+
+        if (this.currDirection == Direction.RIGHT && playerSprite.getRotation() > - ROTATION_ANGLE_TARGET) {
+            playerSprite.setRotation(playerSprite.getRotation() - ROTATION_ANGLE_DELTA * Utils.delta());
+        }
+
+        // Update sprite position to entity position
+
+        this.playerSprite.setPosition(this.getX() - width / 2, this.getY() - width / 2);
+
     }
 
     @Override
     public void draw() {
-        SpriteBatch batch = GameManager.getBatch();
-        currentTexture.draw(batch);
+        playerSprite.draw(GameManager.getBatch());
     }
 
     @Override
     public void dispose() {
-        GameScreenManager.removeEntity(this);
-        GameScreenManager.getStaticObjects().removeValue(healthBar, true);
-        PLAYER_TEXTURE.dispose();
-        FIRING_PLAYER_TEXTURE.dispose();
-        MOVING_FIRING_PLAYER_TEXTURE.dispose();
-        MOVING_PLAYER_TEXTURE.dispose();
+
     }
 
-    /**
-     * To set the playerEntity to it's initial configuration
-     */
-    public void revive() {
-        dead = false;
-        health = 100;
-        healthBar.init();
-    }
-
-    /**
-     * The current DrawState
-     * @return the state
-     */
-    public DrawState getState() {
-        return state;
-    }
-
-    /**
-     * Sets the current DrawState
-     * @param v the state to be used
-     */
-    public void setState(DrawState v) {
-        this.state = v;
-    }
-
-    /**
-     * The direction of the player
-     * @return the direction
-     */
-    public Direction getDirection() {
-        return direction;
-    }
-
-    /**
-     * Changes the direction of the player
-     * @param v the direction to be used
-     */
-    public void setDirection(Direction v) {
-        this.direction = v;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public void addLife() {
-        lives++;
-    }
-
-    public void removeLife() {
-        lives--;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-        if (score > highScore) highScore = score;
-    }
-
-    public void addScore(int v) {
-        score += v;
-        if (score > highScore) highScore = score;
-    }
-
-    public static int getHighScore() {
-        return highScore;
-    }
-
-    public static void setHighScore(int highScore) {
-        PlayerEntity.highScore = highScore;
-    }
-
-
-    public boolean isFiring() {
-        return Gdx.input.isKeyPressed(Input.Keys.SPACE);
-    }
-
-    @Override
-    public float getTextureWidth() {
-        return PLAYER_TEXTURE.getWidth();
-    }
-
-    @Override
-    public float getTextureHeight() {
-        return PLAYER_TEXTURE.getHeight();
-    }
-
-    public enum DrawState {
-        IDLE,
-        FIRING,
-        MOVING,
-        FIRING_MOVING,
-    }
-
-    public enum Direction {
+    private enum Direction {
+        LEFT,
         STRAIGHT,
-        RIGHT,
-        LEFT
+        RIGHT
     }
 
 }

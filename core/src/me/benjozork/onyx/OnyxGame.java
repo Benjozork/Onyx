@@ -12,10 +12,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.console.Console;
-import me.benjozork.onyx.console.ConsoleCommand;
-import me.benjozork.onyx.event.EventManager;
-import me.benjozork.onyx.event.impl.listener.OnyxEntityListener;
-import me.benjozork.onyx.game.GameScreenManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.Utils;
@@ -23,7 +19,7 @@ import me.benjozork.onyx.utils.Utils;
 /**
  * The main Onyx client
  *
- * @version 0.5.1-alpha
+ * @version 0.6.0-alpha
  *
  * Written with <3 by :
  *
@@ -50,7 +46,11 @@ public class OnyxGame extends Game {
 
         projectConfig = Configs.loadCached(ProjectConfig.class);
 
+        // Force pre-caching of default font
+
         FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
+
+        // Print debug info
 
         log.print("Onyx %s starting", projectConfig.version);
         log.print("Current libGDX version is %s", Version.VERSION);
@@ -97,11 +97,6 @@ public class OnyxGame extends Game {
 
         Console.dispatchCommand("screen " + projectConfig.initial_screen);
 
-        // Event handling
-
-        OnyxEntityListener listener = new OnyxEntityListener();
-        EventManager.subscribe(listener);
-
         // Setup info component
 
         debugComponent = new TextComponent("");
@@ -111,8 +106,9 @@ public class OnyxGame extends Game {
 
     public void update() {
 
+        // Open console on key press
+
         if (Gdx.input.isKeyJustPressed(KeymapLoader.getKeyCode("game_toggle_debug"))) {
-            Console.dispatchCommand(new ConsoleCommand("screen"));
             toggleDebug();
         }
 
@@ -126,10 +122,6 @@ public class OnyxGame extends Game {
 
         if (ScreenManager.getCurrentScreen() != getScreen())
             setScreen(ScreenManager.getCurrentScreen());
-
-        // Process input
-
-        OnyxInputProcessor.getCurrentProcessor().processInput();
 
         // Update debug info component
 
@@ -176,7 +168,6 @@ public class OnyxGame extends Game {
         GameManager.dispose();
         FTFGeneratorCache.dispose();
         PolygonLoader.dispose();
-        if (GameScreenManager.exists()) GameScreenManager.dispose();
 
     }
 
@@ -193,6 +184,9 @@ public class OnyxGame extends Game {
         worldCam.setToOrtho(false);
         worldCam.viewportWidth = Gdx.graphics.getWidth();
         worldCam.viewportHeight = Gdx.graphics.getHeight();
+
+        // ? fixme
+        GameManager.getBatch().setProjectionMatrix(worldCam.combined);
 
         OrthographicCamera guiCam = GameManager.getGuiCamera();
         guiCam.setToOrtho(false);

@@ -7,7 +7,6 @@ import me.benjozork.onyx.console.CommandProcessor;
 import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.console.ConsoleCommand;
 import me.benjozork.onyx.game.GameScreen;
-import me.benjozork.onyx.game.entity.ProjectileManager;
 import me.benjozork.onyx.logger.Log;
 import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.screen.MenuScreen;
@@ -58,8 +57,7 @@ public class OnyxCommandProcessor implements CommandProcessor {
                 } else if (c.getArgs()[0].equals("ai")) {
                     //@TODO
                 } else if (c.getArgs()[0].equals("projectile")) {
-                    ProjectileManager.toggleDebug();
-                    return true;
+                    //@TODO
                 } else if (c.getArgs()[0].equals("polygon")) {
                     PolygonHelper.toggleDebug();
                     return true;

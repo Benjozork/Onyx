@@ -2,7 +2,6 @@ package me.benjozork.onyx;
 
 import com.badlogic.gdx.Screen;
 
-import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.logger.Log;
 
 /**
@@ -21,9 +20,8 @@ public class ScreenManager {
 
     public static void setCurrentScreen(Screen currentScreen) {
 
-        // Because GameScreen requires special disposing, we don't dispose it here.
+        // GameScreen may require special disposal in the future. TODO
 
-        if (ScreenManager.currentScreen != null && ! (ScreenManager.currentScreen instanceof GameScreen)) ScreenManager.currentScreen.dispose();
         String name = currentScreen.getClass().getSimpleName();
         log.print("Changed screen to '%s'", name);
         ScreenManager.currentScreen = currentScreen;
