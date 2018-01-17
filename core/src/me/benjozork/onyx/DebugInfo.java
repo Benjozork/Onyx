@@ -3,6 +3,7 @@ package me.benjozork.onyx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
+import me.benjozork.onyx.backend.handlers.ScreenHandler;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 
@@ -17,7 +18,7 @@ public class DebugInfo {
         return
         Gdx.graphics.getFramesPerSecond()
         + "fps\n"
-        + ScreenManager.getCurrentScreen().getClass().getSimpleName()
+        + ScreenHandler.getCurrentScreen().getClass().getSimpleName()
         + "\n"
         + "averageFrameTime: "
         + averageFrameTime()

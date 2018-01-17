@@ -1,6 +1,6 @@
 package me.benjozork.onyx.game.hud;
 
-import me.benjozork.onyx.object.StaticDrawable;
+import me.benjozork.onyx.backend.models.StaticDrawable;
 
 /**
  * @author Benjozork

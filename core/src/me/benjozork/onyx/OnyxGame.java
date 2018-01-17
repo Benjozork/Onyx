@@ -9,11 +9,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import me.benjozork.onyx.backend.handlers.FTFGeneratorCache;
+import me.benjozork.onyx.backend.handlers.KeymapHandler;
+import me.benjozork.onyx.backend.handlers.PolygonHandler;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
+import me.benjozork.onyx.backend.handlers.ScreenHandler;
+import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.object.TextComponent;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -48,7 +53,7 @@ public class OnyxGame extends Game {
 
         // Force pre-caching of default font
 
-        FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
+        me.benjozork.onyx.backend.handlers.FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
 
         // Print debug info
 
@@ -71,15 +76,15 @@ public class OnyxGame extends Game {
 
         // Setup GameManager
 
-        GameManager.setWorldCamera(worldCam);
-        GameManager.setGuiCamera(guiCam);
+        RessourceHandler.setWorldCamera(worldCam);
+        RessourceHandler.setGuiCamera(guiCam);
 
-        GameManager.setRenderer(new ShapeRenderer());
-        GameManager.getRenderer().setAutoShapeType(true);
+        RessourceHandler.setRenderer(new ShapeRenderer());
+        RessourceHandler.getRenderer().setAutoShapeType(true);
 
-        GameManager.setBatch(new SpriteBatch());
+        RessourceHandler.setBatch(new SpriteBatch());
 
-        GameManager.setFont(new BitmapFont());
+        RessourceHandler.setFont(new BitmapFont());
 
         // Init console
 
@@ -87,11 +92,11 @@ public class OnyxGame extends Game {
 
         // Init PolygonLoader
 
-        PolygonLoader.init();
+        PolygonHandler.init();
 
         // Init KeymapLoader
 
-        KeymapLoader.init();
+        KeymapHandler.init();
 
         // Setup Initial Screen
 
@@ -108,7 +113,7 @@ public class OnyxGame extends Game {
 
         // Open console on key press
 
-        if (Gdx.input.isKeyJustPressed(KeymapLoader.getKeyCode("game_toggle_debug"))) {
+        if (Gdx.input.isKeyJustPressed(KeymapHandler.getKeyCode("game_toggle_debug"))) {
             toggleDebug();
         }
 
@@ -118,10 +123,10 @@ public class OnyxGame extends Game {
 
         // Update camera
 
-        GameManager.getWorldCamera().update();
+        RessourceHandler.getWorldCamera().update();
 
-        if (ScreenManager.getCurrentScreen() != getScreen())
-            setScreen(ScreenManager.getCurrentScreen());
+        if (ScreenHandler.getCurrentScreen() != getScreen())
+            setScreen(ScreenHandler.getCurrentScreen());
 
         // Update debug info component
 
@@ -140,19 +145,25 @@ public class OnyxGame extends Game {
 
         // Render frame
 
-        GameManager.setIsRendering(true);
+        RessourceHandler.setIsRendering(true);
         getScreen().render(Utils.delta());
-        GameManager.setIsRendering(false);
+        RessourceHandler.setIsRendering(false);
 
         // Draw console
 
+        RessourceHandler.getRenderer().setProjectionMatrix(RessourceHandler.getGuiCamera().combined);
+        RessourceHandler.getBatch().setProjectionMatrix(RessourceHandler.getGuiCamera().combined);
+
         DebugInfo.frameTimes.add(Utils.delta());
 
-        GameManager.setIsRendering(true);
+        RessourceHandler.setIsRendering(true);
         if (debug)
             Console.draw();
-        else debugComponent.draw(GameManager.getBatch(), 20, Gdx.graphics.getHeight() - 10);
-        GameManager.setIsRendering(false);
+        else debugComponent.draw(RessourceHandler.getBatch(), 20, Gdx.graphics.getHeight() - 10);
+        RessourceHandler.setIsRendering(false);
+
+        RessourceHandler.getRenderer().setProjectionMatrix(RessourceHandler.getWorldCamera().combined);
+        RessourceHandler.getBatch().setProjectionMatrix(RessourceHandler.getWorldCamera().combined);
 
     }
 
@@ -161,13 +172,13 @@ public class OnyxGame extends Game {
 
         // Dispose active screen
 
-        ScreenManager.getCurrentScreen().dispose();
+        ScreenHandler.getCurrentScreen().dispose();
 
         // Dispose various resources
 
-        GameManager.dispose();
+        RessourceHandler.dispose();
         FTFGeneratorCache.dispose();
-        PolygonLoader.dispose();
+        PolygonHandler.dispose();
 
     }
 
@@ -180,15 +191,15 @@ public class OnyxGame extends Game {
 
         // Update cameras
 
-        OrthographicCamera worldCam = GameManager.getWorldCamera();
+        OrthographicCamera worldCam = RessourceHandler.getWorldCamera();
         worldCam.setToOrtho(false);
         worldCam.viewportWidth = Gdx.graphics.getWidth();
         worldCam.viewportHeight = Gdx.graphics.getHeight();
 
         // ? fixme
-        GameManager.getBatch().setProjectionMatrix(worldCam.combined);
+        RessourceHandler.getBatch().setProjectionMatrix(worldCam.combined);
 
-        OrthographicCamera guiCam = GameManager.getGuiCamera();
+        OrthographicCamera guiCam = RessourceHandler.getGuiCamera();
         guiCam.setToOrtho(false);
         guiCam.viewportWidth = Gdx.graphics.getWidth();
         guiCam.viewportHeight = Gdx.graphics.getHeight();

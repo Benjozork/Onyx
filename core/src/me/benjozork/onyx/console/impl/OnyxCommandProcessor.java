@@ -2,13 +2,13 @@ package me.benjozork.onyx.console.impl;
 
 import com.badlogic.gdx.Gdx;
 
-import me.benjozork.onyx.ScreenManager;
+import me.benjozork.onyx.backend.handlers.ScreenHandler;
+import me.benjozork.onyx.backend.models.Drawable;
 import me.benjozork.onyx.console.CommandProcessor;
 import me.benjozork.onyx.console.Console;
 import me.benjozork.onyx.console.ConsoleCommand;
 import me.benjozork.onyx.game.GameScreen;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.object.Drawable;
 import me.benjozork.onyx.screen.MenuScreen;
 import me.benjozork.onyx.utils.PolygonHelper;
 
@@ -33,10 +33,10 @@ public class OnyxCommandProcessor implements CommandProcessor {
                 return false;
             } else {
                 if (c.getArgs()[0].equals("game")) {
-                    ScreenManager.setCurrentScreen(new GameScreen());
+                    ScreenHandler.setCurrentScreen(new GameScreen());
                     return true;
                 } else if (c.getArgs()[0].equals("menu")) {
-                    ScreenManager.setCurrentScreen(new MenuScreen());
+                    ScreenHandler.setCurrentScreen(new MenuScreen());
                     return true;
                 } else {
                     log.warn("Invalid argument '%s'", c.getArgs()[0]);

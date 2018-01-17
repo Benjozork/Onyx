@@ -1,4 +1,4 @@
-package me.benjozork.onyx;
+package me.benjozork.onyx.backend.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

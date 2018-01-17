@@ -1,4 +1,4 @@
-package me.benjozork.onyx;
+package me.benjozork.onyx.backend.handlers;
 
 import com.badlogic.gdx.Screen;
 
@@ -8,7 +8,7 @@ import me.benjozork.onyx.logger.Log;
  * Manages {@link Screen}s and their switching
  * @author Benjozork
  */
-public class ScreenManager {
+public class ScreenHandler {
 
     private static final Log log = Log.create("ScreenManager");
 
@@ -24,7 +24,7 @@ public class ScreenManager {
 
         String name = currentScreen.getClass().getSimpleName();
         log.print("Changed screen to '%s'", name);
-        ScreenManager.currentScreen = currentScreen;
+        ScreenHandler.currentScreen = currentScreen;
     }
 
 }

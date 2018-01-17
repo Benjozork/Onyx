@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
-import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
 
 
 /**
@@ -86,7 +86,7 @@ public class Utils {
      */
     public static Vector2 unprojectWorld(float x, float y) {
         v3.set(x, y, 0);
-        OrthographicCamera camera = GameManager.getWorldCamera();
+        OrthographicCamera camera = RessourceHandler.getWorldCamera();
         camera.unproject(v3);
         v2.set(v3.x, v3.y);
         return v2;
@@ -115,7 +115,7 @@ public class Utils {
      */
     public static Vector2 unprojectGui(float x, float y) {
         v3.set(x, y, 0);
-        OrthographicCamera camera = GameManager.getGuiCamera();
+        OrthographicCamera camera = RessourceHandler.getGuiCamera();
         camera.unproject(v3);
         v2.set(v3.x, v3.y);
         return v2;

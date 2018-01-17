@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializer;
 import com.badlogic.gdx.utils.JsonValue;
 
-import me.benjozork.onyx.object.Bounds;
+import me.benjozork.onyx.backend.models.Bounds;
 
 public class BoundsSerializer implements Serializer<Bounds> {
 

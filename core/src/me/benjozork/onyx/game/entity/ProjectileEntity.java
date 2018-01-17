@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
@@ -68,7 +68,7 @@ public class ProjectileEntity extends Entity {
 
     @Override
     public void draw() {
-        projectileSprite.draw(GameManager.getBatch());
+        projectileSprite.draw(RessourceHandler.getBatch());
     }
 
     @Override

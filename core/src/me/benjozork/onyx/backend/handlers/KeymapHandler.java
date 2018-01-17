@@ -1,4 +1,4 @@
-package me.benjozork.onyx;
+package me.benjozork.onyx.backend.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,22 +8,22 @@ import com.badlogic.gdx.utils.ArrayMap;
 
 import java.lang.reflect.Field;
 
+import me.benjozork.onyx.backend.models.Maybe;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.KeymapConfig;
 import me.benjozork.onyx.config.ProjectConfig;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.object.Maybe;
 import me.benjozork.onyx.utils.Utils;
 
 /**
  * Loads keymaps from {@code config/keymap.json}.<br/>
- * WARNING: {@link KeymapLoader#init()} should ALWAYS be called before requesting any keycodes!
+ * WARNING: {@link KeymapHandler#init()} should ALWAYS be called before requesting any keycodes!
  *
  * @see KeymapConfig
  *
  * @author Benjozork
  */
-public class KeymapLoader {
+public class KeymapHandler {
 
     private final static Log log = Log.create("KeymapLoader");
 

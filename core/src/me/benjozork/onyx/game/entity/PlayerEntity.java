@@ -3,10 +3,12 @@ package me.benjozork.onyx.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.KeymapLoader;
+import me.benjozork.onyx.backend.handlers.KeymapHandler;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
 import me.benjozork.onyx.game.GameScreen;
+import me.benjozork.onyx.game.GameWorld;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -88,33 +90,51 @@ public class PlayerEntity extends Entity {
 
         // Center camera on player
 
-        GameManager.getWorldCamera().position.set(position, 0);
-        GameManager.getWorldCamera().update();
+        RessourceHandler.getWorldCamera().position.set(position, 0);
+        RessourceHandler.getWorldCamera().update();
 
-        GameManager.getBatch().setProjectionMatrix(GameManager.getWorldCamera().combined);
+        RessourceHandler.getBatch().setProjectionMatrix(RessourceHandler.getWorldCamera().combined);
+
+        // Make sure player doesn't exit world bounds
+
+        if (this.getX() - (playerSprite.getWidth() / 2) < - GameWorld.WORLD_SIZE_X / 2) {
+            this.setX(- GameWorld.WORLD_SIZE_X / 2 + playerSprite.getWidth() / 2);
+        }
+
+        if (this.getX() + (playerSprite.getWidth() / 2) > GameWorld.WORLD_SIZE_X / 2) {
+            this.setX(GameWorld.WORLD_SIZE_X / 2 - playerSprite.getWidth() / 2);
+        }
+
+        if (this.getY() - (playerSprite.getHeight() / 2) < - GameWorld.WORLD_SIZE_Y / 2) {
+            this.setY(- GameWorld.WORLD_SIZE_Y / 2 + playerSprite.getHeight() / 2);
+        }
+
+        if (this.getY() + (playerSprite.getHeight() / 2) > GameWorld.WORLD_SIZE_Y / 2) {
+            this.setY(GameWorld.WORLD_SIZE_Y / 2 - playerSprite.getHeight() / 2);
+        }
 
         // Accelerate if movement keys are pressed
 
-        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_forward"))) {
+        if (Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_movement_forward"))) {
             this.accelerate(0, ACCELERATION);
         }
 
-        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_backward"))) {
+        if (Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_movement_backward"))) {
             this.accelerate(0, -ACCELERATION);
         }
 
-        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_left"))) {
+        if (Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_movement_left"))) {
             this.accelerate(-ACCELERATION, 0);
             this.currDirection = Direction.LEFT;
         }
 
-        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_right"))) {
+        if (Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_movement_right"))) {
             this.accelerate(ACCELERATION, 0);
             this.currDirection = Direction.RIGHT;
         }
 
-        if (! Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_right"))
-                && ! Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_movement_left"))) {
+        if (! Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_movement_right"))
+                && ! Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_movement_left"))) {
             this.currDirection = Direction.STRAIGHT;
         }
 
@@ -175,9 +195,13 @@ public class PlayerEntity extends Entity {
 
         fireTimer += Utils.delta();
 
-        if (Gdx.input.isKeyPressed(KeymapLoader.getKeyCode("player_fire_primary")) &&
+        if (Gdx.input.isKeyPressed(KeymapHandler.getKeyCode("player_fire_primary")) &&
                 fireTimer > fireInterval) {
-            GameScreen.getGameWorld().addEntity(new ProjectileEntity(this.getX(), this.getY(), 50, 50, INITIAL_PROJECTILE_SPEED));
+
+            Vector2 mouseTarget = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            mouseTarget.set(Utils.unprojectWorld(mouseTarget));
+
+            GameScreen.getGameWorld().addEntity(new ProjectileEntity(this.getX(), this.getY(), mouseTarget.x, mouseTarget.y, INITIAL_PROJECTILE_SPEED));
             this.fireTimer = 0;
         }
 
@@ -185,7 +209,7 @@ public class PlayerEntity extends Entity {
 
     @Override
     public void draw() {
-        playerSprite.draw(GameManager.getBatch());
+        playerSprite.draw(RessourceHandler.getBatch());
     }
 
     @Override

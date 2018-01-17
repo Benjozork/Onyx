@@ -1,4 +1,4 @@
-package me.benjozork.onyx;
+package me.benjozork.onyx.backend.handlers;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Polygon;
@@ -14,7 +14,7 @@ import me.benjozork.onyx.utils.PolygonHelper;
  * Loads {@link Polygon} objects form JSON files and serves them to the game.
  * @author Rishi Raj
  */
-public class PolygonLoader {
+public class PolygonHandler {
 
     private static JsonValue value;
 

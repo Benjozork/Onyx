@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
+import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
 
@@ -63,8 +63,8 @@ public class UIButton extends UIElement {
 
     @Override
     public void draw() {
-        currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+        currentPatch.draw(RessourceHandler.getBatch(), getX(), getY(), getWidth(), getHeight());
+        component.drawCenteredInContainer(RessourceHandler.getBatch(), getX(), getY(), getWidth(), getHeight());
     }
 
     @Override

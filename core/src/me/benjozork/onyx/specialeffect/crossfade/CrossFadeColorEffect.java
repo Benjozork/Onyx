@@ -2,7 +2,7 @@ package me.benjozork.onyx.specialeffect.crossfade;
 
 import com.badlogic.gdx.graphics.Color;
 
-import me.benjozork.onyx.object.collection.CycleList;
+import me.benjozork.onyx.backend.collection.CycleList;
 import me.benjozork.onyx.specialeffect.Effect;
 import me.benjozork.onyx.utils.Utils;
 

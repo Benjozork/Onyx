@@ -1,6 +1,6 @@
 package me.benjozork.onyx.config;
 
-import me.benjozork.onyx.object.Bounds;
+import me.benjozork.onyx.backend.models.Bounds;
 
 /**
  * @author angelickite

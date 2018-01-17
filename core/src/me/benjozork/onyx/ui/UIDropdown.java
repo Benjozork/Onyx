@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
+import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.utils.PolygonHelper;
 import me.benjozork.onyx.utils.Utils;
@@ -122,7 +122,7 @@ public class UIDropdown extends UIElement {
             for (int i = 0; i < items.size; i++) {
                 if (i == items.size - 1) {
                     EXPANDED_MENU_LOWER.draw(
-                            GameManager.getBatch(),
+                            RessourceHandler.getBatch(),
                             getX(),
                             getY() - getHeight() * (i + 1) - 10,
                             getWidth(),
@@ -130,7 +130,7 @@ public class UIDropdown extends UIElement {
                     );
                 } else {
                     EXPANDED_MENU_UPPER.draw(
-                            GameManager.getBatch(),
+                            RessourceHandler.getBatch(),
                             getX(),
                             getY() - getHeight() * (i + 1),
                             getWidth(),
@@ -146,8 +146,8 @@ public class UIDropdown extends UIElement {
                 float dy = getY() - mouse.y;
                 int index = (int) (dy / getHeight());
                 if (index < 0 || dy < 0) {
-                    currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
-                    component.getFont().draw(GameManager.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
+                    currentPatch.draw(RessourceHandler.getBatch(), getX(), getY(), getWidth(), getHeight());
+                    component.getFont().draw(RessourceHandler.getBatch(), component.getText(), (getX() + getWidth() / 2) - component.getLayout().width / 2, (getY() + getHeight() / 2) + component.getLayout().height / 2);
 
                     drawText();
 
@@ -156,7 +156,7 @@ public class UIDropdown extends UIElement {
 
                 if (index == items.size - 1) {
                     EXPANDED_HOVERED_MENU_LOWER.draw(
-                            GameManager.getBatch(),
+                            RessourceHandler.getBatch(),
                             getX(),
                             getY() - getHeight() * (index + 1) - 10,
                             getWidth(),
@@ -164,7 +164,7 @@ public class UIDropdown extends UIElement {
                     );
                 } else {
                     EXPANDED_HOVERED_MENU_UPPER.draw(
-                            GameManager.getBatch(),
+                            RessourceHandler.getBatch(),
                             getX(),
                             getY() - getHeight() * (index + 1),
                             getWidth(),
@@ -182,9 +182,9 @@ public class UIDropdown extends UIElement {
 
         // Draw button
 
-        currentPatch.draw(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+        currentPatch.draw(RessourceHandler.getBatch(), getX(), getY(), getWidth(), getHeight());
         component.setText(text);
-        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), getWidth(), getHeight());
+        component.drawCenteredInContainer(RessourceHandler.getBatch(), getX(), getY(), getWidth(), getHeight());
 
     }
 
@@ -217,7 +217,7 @@ public class UIDropdown extends UIElement {
     public void drawText() {
         for (int j = 0; j < items.size; j++) {
             component.setText(items.get(j));
-            component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY() - (j  * getHeight()) - getHeight(), getWidth(), getHeight());
+            component.drawCenteredInContainer(RessourceHandler.getBatch(), getX(), getY() - (j  * getHeight()) - getHeight(), getWidth(), getHeight());
         }
         component.setText(text);
     }

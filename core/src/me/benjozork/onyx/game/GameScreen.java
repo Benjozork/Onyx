@@ -1,9 +1,8 @@
 package me.benjozork.onyx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 
 /**
@@ -23,12 +22,12 @@ public class GameScreen implements Screen {
 
         // Create the GameWorld
 
-        gameWorld = new GameWorld(this);
+        gameWorld = new GameWorld();
 
         // Create the Player Object.
 
         //TODO: Temporary initial player pos. !
-        PlayerEntity playerEntity = new PlayerEntity(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        PlayerEntity playerEntity = new PlayerEntity(0, 0);
 
         gameWorld.setPlayer(playerEntity);
 
@@ -42,6 +41,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        System.out.println("x: " + gameWorld.getPlayer().getX() + " y: " + gameWorld.getPlayer().getY());
+
 
         // First, render the game world
 
@@ -57,8 +59,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        GameManager.getWorldCamera().setToOrtho(false, width, height);
-        GameManager.getGuiCamera().setToOrtho(false, width, height);
+        RessourceHandler.getWorldCamera().setToOrtho(false, width, height);
+        RessourceHandler.getGuiCamera().setToOrtho(false, width, height);
     }
 
     @Override

@@ -3,8 +3,8 @@ package me.benjozork.onyx.ui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
+import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.ui.object.ActionEvent;
 import me.benjozork.onyx.utils.PolygonHelper;
 
@@ -58,8 +58,8 @@ public class UICheckbox extends UIElement {
 
     @Override
     public void draw() {
-        GameManager.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
-        component.drawCenteredInContainer(GameManager.getBatch(), getX() + getWidth() + 10, getY(), getWidth() + component.getLayout().width + 50, getHeight(), false, true);
+        RessourceHandler.getBatch().draw(currentTexture, getX(), getY(), getWidth(), getHeight());
+        component.drawCenteredInContainer(RessourceHandler.getBatch(), getX() + getWidth() + 10, getY(), getWidth() + component.getLayout().width + 50, getHeight(), false, true);
     }
 
     @Override

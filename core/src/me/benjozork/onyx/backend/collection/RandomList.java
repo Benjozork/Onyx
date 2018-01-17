@@ -1,4 +1,4 @@
-package me.benjozork.onyx.object.collection;
+package me.benjozork.onyx.backend.collection;
 
 import com.badlogic.gdx.utils.Array;
 

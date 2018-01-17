@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
+import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.ui.UIButton;
 import me.benjozork.onyx.ui.UIScreen;
 import me.benjozork.onyx.utils.CenteredDrawer;
@@ -68,9 +68,9 @@ public class MenuScreen implements Screen {
 
         background.setColor(Color.GRAY);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        GameManager.getBatch().disableBlending();
-        background.draw(GameManager.getBatch());
-        GameManager.getBatch().enableBlending();
+        RessourceHandler.getBatch().disableBlending();
+        background.draw(RessourceHandler.getBatch());
+        RessourceHandler.getBatch().enableBlending();
 
         uiScreen.update();
         uiScreen.draw();

@@ -2,8 +2,8 @@ package me.benjozork.onyx.ui;
 
 import com.badlogic.gdx.math.Vector2;
 
-import me.benjozork.onyx.GameManager;
-import me.benjozork.onyx.object.TextComponent;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
+import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.utils.PolygonHelper;
 
 /**
@@ -31,7 +31,7 @@ public class UILabel extends UIElement {
 
     @Override
     public void draw() {
-        component.drawCenteredInContainer(GameManager.getBatch(), getX(), getY(), component.getLayout().width, component.getLayout().height);
+        component.drawCenteredInContainer(RessourceHandler.getBatch(), getX(), getY(), component.getLayout().width, component.getLayout().height);
     }
 
     @Override

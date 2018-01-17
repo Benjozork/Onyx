@@ -1,4 +1,4 @@
-package me.benjozork.onyx;
+package me.benjozork.onyx.backend.handlers;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * Holds {@link SpriteBatch}, {@link OrthographicCamera}, {@link ShapeRenderer} and {@link BitmapFont} objects.
  * @author Benjozork
  */
-public class GameManager {
+public class RessourceHandler {
 
     /**
      * The camera instance that is used when rendering world objects
@@ -42,7 +42,7 @@ public class GameManager {
      * @param worldCamera the camera instance to be used
      */
     public static void setWorldCamera(OrthographicCamera worldCamera) {
-        GameManager.worldCamera = worldCamera;
+        RessourceHandler.worldCamera = worldCamera;
     }
 
     /**
@@ -58,7 +58,7 @@ public class GameManager {
      * @param guiCamera the camera instance to be used
      */
     public static void setGuiCamera(OrthographicCamera guiCamera) {
-        GameManager.guiCamera = guiCamera;
+        RessourceHandler.guiCamera = guiCamera;
     }
 
     /**
@@ -74,7 +74,7 @@ public class GameManager {
      * @param renderer the ShapeRenderer to be used
      */
     public static void setRenderer(ShapeRenderer renderer) {
-        GameManager.renderer = renderer;
+        RessourceHandler.renderer = renderer;
     }
 
     /**
@@ -90,7 +90,7 @@ public class GameManager {
      * @param batch the {@link SpriteBatch} to be used
      */
     public static void setBatch(SpriteBatch batch) {
-        GameManager.batch = batch;
+        RessourceHandler.batch = batch;
     }
 
     /**
@@ -144,7 +144,7 @@ public class GameManager {
     }
 
     public static void setFont(BitmapFont font) {
-        GameManager.font = font;
+        RessourceHandler.font = font;
     }
 
     public static void dispose() {

@@ -7,10 +7,10 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.NoSuchElementException;
 
+import me.benjozork.onyx.backend.models.Bounds;
+import me.benjozork.onyx.backend.models.Maybe;
 import me.benjozork.onyx.config.serializer.BoundsSerializer;
 import me.benjozork.onyx.logger.Log;
-import me.benjozork.onyx.object.Bounds;
-import me.benjozork.onyx.object.Maybe;
 
 /**
  * Manages the game's various configuration files.

@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.HashMap;
 
 import me.benjozork.onyx.DebugInfo;
-import me.benjozork.onyx.GameManager;
+import me.benjozork.onyx.backend.handlers.RessourceHandler;
 import me.benjozork.onyx.utils.Utils;
 
 /**
@@ -29,7 +29,7 @@ public class Console {
     private static Array<String> lines = new Array<String>(), prevLines = new Array<String>();
 
     private static GlyphLayout layout = new GlyphLayout();
-    private static BitmapFont font = GameManager.getFont();
+    private static BitmapFont font = RessourceHandler.getFont();
 
     private static Rectangle textBox = new Rectangle();
 
@@ -69,8 +69,8 @@ public class Console {
         textBox.set(10, Gdx.graphics.getHeight() - 600 + 10, 580, 25);
         font = new BitmapFont();
 
-        batch = GameManager.getBatch();
-        renderer = GameManager.getRenderer();
+        batch = RessourceHandler.getBatch();
+        renderer = RessourceHandler.getRenderer();
 
         /*
         Here, we add all the commands from the base game.
@@ -124,21 +124,21 @@ public class Console {
                     - Ben
          */
 
-        GameManager.setIsShapeRendering(true);
+        RessourceHandler.setIsShapeRendering(true);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         renderer.setAutoShapeType(true);
         renderer.set(ShapeRenderer.ShapeType.Filled);
-        renderer.setProjectionMatrix(GameManager.getGuiCamera().combined);
+        renderer.setProjectionMatrix(RessourceHandler.getGuiCamera().combined);
         renderer.setColor(0.1f, 0.1f, 0.1f, 0.6f);
         renderer.rect(0, Gdx.graphics.getHeight() - CONSOLE_HEIGHT, CONSOLE_WIDTH, CONSOLE_HEIGHT);
         renderer.setColor(0.1f, 0.1f, 0.1f, 0.6f);
         renderer.rect(CONSOLE_INNER_HORIZONTAL_OFFSET, Gdx.graphics.getHeight() - CONSOLE_HEIGHT + CONSOLE_INNER_VERTICAL_OFFSET, CONSOLE_WIDTH - CONSOLE_INNER_HORIZONTAL_OFFSET * 2, CONSOLE_TEXTBOX_HEIGHT);
-        GameManager.setIsShapeRendering(false);
+        RessourceHandler.setIsShapeRendering(false);
         Gdx.gl.glDisable(GL20.GL_BLEND);
-        GameManager.setIsRendering(true);
+        RessourceHandler.setIsRendering(true);
 
-        batch.setProjectionMatrix(GameManager.getGuiCamera().combined);
+        batch.setProjectionMatrix(RessourceHandler.getGuiCamera().combined);
 
         font.getData().markupEnabled = true;
 
@@ -156,7 +156,7 @@ public class Console {
             }
         }
 
-        GameManager.setIsRendering(false);
+        RessourceHandler.setIsRendering(false);
 
     }
 

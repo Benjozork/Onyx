@@ -1,9 +1,9 @@
 package me.benjozork.onyx.config;
 
-import me.benjozork.onyx.KeymapLoader;
+import me.benjozork.onyx.backend.handlers.KeymapHandler;
 
 /**
- * @see KeymapLoader
+ * @see KeymapHandler
  *
  * @author Benjozork
  */

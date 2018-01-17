@@ -1,6 +1,6 @@
 package me.benjozork.onyx.game.entity;
 
-import me.benjozork.onyx.object.Drawable;
+import me.benjozork.onyx.backend.models.Drawable;
 
 /**
  * @author Benjozork
