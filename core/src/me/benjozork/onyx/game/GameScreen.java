@@ -42,9 +42,6 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        System.out.println("x: " + gameWorld.getPlayer().getX() + " y: " + gameWorld.getPlayer().getY());
-
-
         // First, render the game world
 
         gameWorld.update();
