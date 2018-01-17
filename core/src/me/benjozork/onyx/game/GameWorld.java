@@ -45,22 +45,6 @@ public class GameWorld {
 
         // First, draw the background and level boundaries
 
-        int leftLineX = (int) -(WORLD_SIZE_X / 2);
-        int leftLineY1 = (int) -(WORLD_SIZE_Y / 2);
-        int leftLineY2 = (int) WORLD_SIZE_Y / 2;
-
-        int rightLineX = (int) WORLD_SIZE_X / 2;
-        int rightLineY1 = leftLineY1;
-        int rightLineY2 = leftLineY2;
-
-        int topLineX1 = leftLineX;
-        int topLineX2 = rightLineX;
-        int topLineY = leftLineY2;
-
-        int bottomLineX1 = topLineX1;
-        int bottomLineX2 = topLineX2;
-        int bottomLineY = leftLineY1;
-
         ShapeRenderer shapeRenderer = RessourceHandler.getRenderer();
 
         shapeRenderer.setProjectionMatrix(RessourceHandler.getWorldCamera().combined);
@@ -69,10 +53,7 @@ public class GameWorld {
 
         shapeRenderer.setColor(Color.RED);
 
-        shapeRenderer.line(leftLineX, leftLineY1, leftLineX, leftLineY2);
-        shapeRenderer.line(rightLineX, rightLineY1, rightLineX, rightLineY2);
-        shapeRenderer.line(topLineX1, topLineY, topLineX2, topLineY);
-        shapeRenderer.line(bottomLineX1, bottomLineY, bottomLineX2, bottomLineY);
+        shapeRenderer.rect(- WORLD_SIZE_X / 2, - WORLD_SIZE_Y / 2, WORLD_SIZE_X, WORLD_SIZE_Y);
 
         RessourceHandler.setIsShapeRendering(false);
 
