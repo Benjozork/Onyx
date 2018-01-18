@@ -43,7 +43,6 @@ public abstract class Drawable implements Disposable {
         if (defaultMaxSpeed) maxSpeed = velocity.len() + 1f;
 
         if (velocity.len() > maxSpeed) velocity.setLength(maxSpeed);
-        if (velocity.len() < - maxSpeed) velocity.setLength(-maxSpeed);
 
         if (angle != 0) {
             velocity.set(velocity.x * (float)Math.sin(angle), velocity.y * (float)Math.cos(angle));
