@@ -22,7 +22,7 @@ public class PlayerEntity extends Entity {
     /**
      * The number that is added to the velocity vector, in the direction of the key that was pressed
      */
-    private final int ACCELERATION = 10;
+    private final int ACCELERATION = 15;
 
     /**
      * The maximum speed, in both the x and y axis, of the player
@@ -32,17 +32,17 @@ public class PlayerEntity extends Entity {
     /**
      * The number, multiplied by the delta time, which is subtracted from the velocity vector in both the x and y axis every frame
      */
-    private final int SPEED_DECAY_DELTA = 400;
+    private final int SPEED_DECAY_DELTA = 175;
 
     /**
      * The target rotation angle, in degrees, of the player sprite
      */
-    private final int ROTATION_ANGLE_TARGET = 25;
+    private final int ROTATION_ANGLE_TARGET = 5;
 
     /**
      * The number, multiplied by the delta time, which is added/subtracted from the player sprite angle every frame
      */
-    private final int ROTATION_ANGLE_DELTA = 155;
+    private final int ROTATION_ANGLE_DELTA = 10;
 
     /**
      * The level, above or below, at which the player sprite angle "snaps" to zero
@@ -52,7 +52,7 @@ public class PlayerEntity extends Entity {
     /**
      * The rate at which the player can fire when holding the firing key, in fires per minute.
      */
-    private final float FIRING_RATE = 400;
+    private final float FIRING_RATE = 600;
 
     /**
      * The initial speed of every projectile.
@@ -91,6 +91,15 @@ public class PlayerEntity extends Entity {
         // Center camera on player
 
         RessourceHandler.getWorldCamera().position.set(position, 0);
+
+        // Adjust camera rotation
+
+        RessourceHandler.getWorldCamera().up.set(0, 1, 0);
+        RessourceHandler.getWorldCamera().direction.set(0, 0, -1);
+        RessourceHandler.getWorldCamera().rotate(-playerSprite.getRotation());
+
+        // Update camera
+
         RessourceHandler.getWorldCamera().update();
 
         RessourceHandler.getBatch().setProjectionMatrix(RessourceHandler.getWorldCamera().combined);
