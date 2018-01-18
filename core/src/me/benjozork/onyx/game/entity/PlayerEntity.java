@@ -90,7 +90,7 @@ public class PlayerEntity extends Entity {
 
         // Center camera on player
 
-        RessourceHandler.getWorldCamera().position.set(position, 0);
+        RessourceHandler.getWorldCamera().position.set(position.cpy().add(0, Gdx.graphics.getHeight() / 3), 0);
 
         // Adjust camera rotation
 
