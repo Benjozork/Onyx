@@ -53,7 +53,7 @@ public class OnyxGame extends Game {
 
         // Force pre-caching of default font
 
-        me.benjozork.onyx.backend.handlers.FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
+        FTFGeneratorCache.getFTFGenerator(projectConfig.default_font);
 
         // Print debug info
 
