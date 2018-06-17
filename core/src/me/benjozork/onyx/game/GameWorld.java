@@ -1,11 +1,12 @@
 package me.benjozork.onyx.game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-
 import me.benjozork.onyx.backend.handlers.RessourceHandler;
 import me.benjozork.onyx.game.entity.Entity;
+import me.benjozork.onyx.game.entity.LivingEntity;
 import me.benjozork.onyx.game.entity.PlayerEntity;
 import me.benjozork.onyx.utils.Utils;
 
@@ -24,6 +25,10 @@ public class GameWorld {
 
     private Array<Entity> entities;
 
+    private boolean boundsDebug = false;
+
+    private final Texture background = new Texture("hud/background_base.png");
+
     public GameWorld() {
         this.entities = new Array<Entity>();
     }
@@ -37,13 +42,45 @@ public class GameWorld {
 
             entity.update(Utils.delta());
             entity.update();
+
+            // Dispose of any LivingEntities with no health remaining
+
+            if (entity instanceof LivingEntity) {
+
+                if (((LivingEntity) entity).getHealth() <= 0) {
+
+                    this.removeEntity(entity);
+                    entity.dispose();
+                }
+            }
+
+        }
+
+        // Remove out-of-bounds entities
+
+        System.out.println(this.getEntities().size);
+
+        for (Entity entity : this.getEntities()) {
+
+            if (entity.getX() > 2 * WORLD_SIZE_X || entity.getX() < 2 *-WORLD_SIZE_X || entity.getY() > 2 *WORLD_SIZE_Y || entity.getY() < 2 * -WORLD_SIZE_Y)
+                this.removeEntity(entity);
+
         }
 
     }
 
     public void draw() {
 
-        // First, draw the background and level boundaries
+        // First, draw the background
+
+        int bgWidth = (int) (WORLD_SIZE_X * 2);
+        int bgHeight = bgWidth;
+
+        RessourceHandler.setIsRendering(true);
+        RessourceHandler.getBatch().draw(background, 0 - bgWidth / 2, 0 - bgHeight / 2, bgWidth, bgHeight);
+        RessourceHandler.setIsRendering(false);
+
+        // Then, the level boundaries
 
         ShapeRenderer shapeRenderer = RessourceHandler.getRenderer();
 
@@ -51,7 +88,7 @@ public class GameWorld {
 
         RessourceHandler.setIsShapeRendering(true);
 
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(Utils.rgb(75, 75, 75));
 
         shapeRenderer.rect(- WORLD_SIZE_X / 2, - WORLD_SIZE_Y / 2, WORLD_SIZE_X, WORLD_SIZE_Y);
 
@@ -59,8 +96,23 @@ public class GameWorld {
 
         // Then, draw the entities
 
+        RessourceHandler.setIsRendering(true);
+
         for (Entity entity : this.getEntities()) {
             entity.draw();
+        }
+
+        RessourceHandler.setIsRendering(false);
+
+        // Draw debug bounds if enabled
+
+        if (boundsDebug) {
+            for (Entity entity : this.getEntities()) {
+                RessourceHandler.setIsShapeRendering(true);
+                RessourceHandler.getRenderer().setColor(Color.GREEN);
+                RessourceHandler.getRenderer().polygon(entity.getBounds().getTransformedVertices());
+                RessourceHandler.setIsShapeRendering(false);
+            }
         }
 
     }
@@ -83,6 +135,7 @@ public class GameWorld {
 
     public void removeEntity(Entity e) {
         this.entities.removeValue(e, true);
+        e.dispose();
     }
 
     public void dispose() {

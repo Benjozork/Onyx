@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-
 import me.benjozork.onyx.backend.handlers.KeymapHandler;
 import me.benjozork.onyx.backend.handlers.RessourceHandler;
 import me.benjozork.onyx.game.GameScreen;
@@ -17,7 +16,7 @@ import me.benjozork.onyx.utils.Utils;
  *
  * @author Benjozork
  */
-public class PlayerEntity extends Entity {
+public class PlayerEntity extends LivingEntity {
 
     /**
      * The number that is added to the velocity vector, in the direction of the key that was pressed
@@ -52,14 +51,19 @@ public class PlayerEntity extends Entity {
     /**
      * The rate at which the player can fire when holding the firing key, in fires per minute.
      */
-    private final float FIRING_RATE = 600;
+    private final float FIRING_RATE = 1300;
 
     /**
      * The initial speed of every projectile.
      */
-    private final float INITIAL_PROJECTILE_SPEED = 800;
+    private final float INITIAL_PROJECTILE_SPEED = 1300;
 
-    private Sprite playerSprite;
+    /**
+     * The initial and maximum health.
+     */
+    private final float MAX_HEALTH = 100f;
+
+    private final Sprite playerSprite;
 
     private Direction currDirection = Direction.STRAIGHT;
 
@@ -77,6 +81,9 @@ public class PlayerEntity extends Entity {
 
         this.setMaxSpeed(MAX_SPEED);
 
+        this.setMaxHealth(MAX_HEALTH);
+        this.setHealth(this.getMaxHealth());
+
         this.fireInterval = (60 / FIRING_RATE);
     }
 
@@ -90,7 +97,7 @@ public class PlayerEntity extends Entity {
 
         // Center camera on player
 
-        RessourceHandler.getWorldCamera().position.set(position.cpy().add(0, Gdx.graphics.getHeight() / 3), 0);
+        RessourceHandler.getWorldCamera().position.set(position.cpy().add(this.width / 2, this.height / 2).add(0, Gdx.graphics.getHeight() / 3), 0);
 
         // Adjust camera rotation
 
@@ -194,9 +201,11 @@ public class PlayerEntity extends Entity {
             playerSprite.setRotation(playerSprite.getRotation() - ROTATION_ANGLE_DELTA * Utils.delta());
         }
 
-        // Update sprite position to entity position
+        // Update sprite position to entity position and rotation
 
-        this.playerSprite.setPosition(this.getX() - width / 2, this.getY() - width / 2);
+        this.playerSprite.setPosition(this.getX(), this.getY());
+
+        this.getBounds().setRotation(this.playerSprite.getRotation());
 
         /////////// *-* ///////////
 
@@ -210,7 +219,7 @@ public class PlayerEntity extends Entity {
             Vector2 mouseTarget = new Vector2(Gdx.input.getX(), Gdx.input.getY());
             mouseTarget.set(Utils.unprojectWorld(mouseTarget));
 
-            GameScreen.getGameWorld().addEntity(new ProjectileEntity(this.getX(), this.getY(), mouseTarget.x, mouseTarget.y, INITIAL_PROJECTILE_SPEED));
+            GameScreen.getGameWorld().addEntity(new ProjectileEntity(this.getX(), this.getY(), mouseTarget.x, mouseTarget.y, INITIAL_PROJECTILE_SPEED, this));
             this.fireTimer = 0;
         }
 

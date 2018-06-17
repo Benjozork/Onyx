@@ -1,25 +1,19 @@
 package me.benjozork.onyx.config.serializer;
 
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.Json.Serializer;
-import com.badlogic.gdx.utils.JsonValue;
-
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import me.benjozork.onyx.backend.models.Bounds;
 
-public class BoundsSerializer implements Serializer<Bounds> {
+import java.lang.reflect.Type;
+
+public class BoundsSerializer implements JsonDeserializer<Bounds> {
 
     @Override
-    public void write(Json json, Bounds object, Class knownType) {
-        json.writeObjectStart();
-        json.writeValue("width", object.width);
-        json.writeValue("height", object.height);
-        json.writeObjectEnd();
-    }
-
-    @Override
-    public Bounds read(Json json, JsonValue jsonData, Class type) {
-        int width = jsonData.getInt("width");
-        int height = jsonData.getInt("height");
+    public Bounds deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        int width = json.getAsJsonObject().get("width").getAsInt();
+        int height = json.getAsJsonObject().get("height").getAsInt();
         Bounds bounds = new Bounds(width, height);
         return bounds;
     }

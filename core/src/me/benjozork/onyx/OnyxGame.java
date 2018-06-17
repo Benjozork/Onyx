@@ -8,12 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import me.benjozork.onyx.backend.handlers.FTFGeneratorCache;
-import me.benjozork.onyx.backend.handlers.KeymapHandler;
-import me.benjozork.onyx.backend.handlers.PolygonHandler;
-import me.benjozork.onyx.backend.handlers.RessourceHandler;
-import me.benjozork.onyx.backend.handlers.ScreenHandler;
+import me.benjozork.onyx.backend.handlers.*;
 import me.benjozork.onyx.backend.models.TextComponent;
 import me.benjozork.onyx.config.Configs;
 import me.benjozork.onyx.config.ProjectConfig;
@@ -140,7 +135,7 @@ public class OnyxGame extends Game {
 
         // Clear screen
 
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render frame

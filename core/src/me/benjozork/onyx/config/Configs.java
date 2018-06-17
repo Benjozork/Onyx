@@ -2,30 +2,36 @@ package me.benjozork.onyx.config;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
-
-import java.util.NoSuchElementException;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.benjozork.onyx.backend.models.Bounds;
 import me.benjozork.onyx.backend.models.Maybe;
 import me.benjozork.onyx.config.serializer.BoundsSerializer;
 import me.benjozork.onyx.logger.Log;
 
+import java.util.NoSuchElementException;
+
 /**
  * Manages the game's various configuration files.
+ *
  * @author angelickite
+ * @author Benjozork
  */
 public class Configs {
 
     private static final Log log = Log.create("Configs");
-    private static final Json json = new Json();
+
+    private static final Gson gson;
+
     private static Files files;
 
     private static ObjectMap<String, Object> cache = new ObjectMap<String, Object>();
 
     static {
-        json.setSerializer(Bounds.class, new BoundsSerializer());
+        gson = new GsonBuilder()
+                .registerTypeAdapter(Bounds.class, new BoundsSerializer())
+                .create();
     }
 
     /**
@@ -65,7 +71,7 @@ public class Configs {
         if (! handle.exists())
             return Maybe.empty();
 
-        T config = json.fromJson(clazz, handle);
+        T config = gson.fromJson(handle.reader(), clazz);
 
         if (config == null) {
             log.print("Could not read config file '%s'", internalPath);
